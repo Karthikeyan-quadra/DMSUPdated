@@ -1,0 +1,99 @@
+@import "~office-ui-fabric-react/dist/sass/References.scss";
+
+:global {
+  #workbenchPageContent,
+  .CanvasComponent.LCS .CanvasZone {
+    max-width: 100% !important;
+  }
+}
+.gridx{float: left;
+
+padding: 2%;
+height:13%;
+width:13%;
+border: 1px solid gray;
+margin: 1%;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.19);
+text-align:center;
+border-radius:5px
+}
+.gridx:hover{
+ 
+  background-color: #d0e7f8;
+    border-color: #0078d4;
+  
+  }
+  
+.QmsDashboard {
+  margin-top: 10px;
+  .filter {
+    float: right;
+  }
+  .list {
+    clear: both;
+    overflow: auto;
+  }
+}
+
+.Popup {
+  label {
+    margin: 5px;
+    vertical-align: 10px;
+    font-size: 13px;
+  }
+}
+.textDialog {
+  max-width: 100%;
+  width: 700px;
+  max-height: 100%;
+  height: 380px;
+}
+.addProjectDialog {
+  max-width: 100%;
+  width: 550px;
+  max-height: 100%;
+  height: 350px;
+}
+.addSectionDialog {
+  max-width: 100%;
+  width: 550px;
+  max-height: 100%;
+  height: 370px;
+}
+.flowSectionDialog {
+  max-width: 100%;
+  width: 1000px;
+  max-height: 100%;
+  height: 550px;
+}
+.normalDialog {
+  max-width: 100%;
+  width: 500px;
+  max-height: 100%;
+  height: 320px;
+}
+
+.anihover{
+color:black;
+border: 1px solid rgb(245 242 239);
+    border-radius: 10px;
+}
+
+.anihover:hover{
+  background-color: rgb(245 242 239);
+}
+.list {
+  clear: both;
+  overflow: auto;
+  
+}
+.manage{
+  font-size: 18px;
+  width: "100%";
+  text-align: "center";
+border-radius:5px;
+padding: 0 10px;
+}
+.manage:hover{
+  background-color: rgb(212, 210, 207);
+}
