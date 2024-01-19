@@ -1,6 +1,7 @@
 import "@pnp/sp/lists";
 import { getSp } from "../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
+import "@pnp/sp/items/get-all";
 
 export async function getSitelist() {
   const sp:SPFI=getSp()
@@ -24,20 +25,27 @@ export async function getEditSitelist() {
 
 export async function Get_departmentusers(Dept){
   const sp:SPFI=getSp()
- return await sp.web.lists.getByTitle("Approver list").items.filter(`Department eq '${Dept}'`).getAll();
+ return await sp.web.lists.getByTitle("Approverlist").items.filter(`Department eq '${Dept}'`).getAll();
 
 
 }
+// export async function getRequestlevellist() {
+//   const sp:SPFI=getSp();
+//   const items: any[] = await sp.web.lists.getByTitle("Request Level").items()
+//   return items;
+// }
+
 export async function getRequestlevellist() {
-  const sp:SPFI=getSp()
-  const items: any[] = await sp.web.lists.getByTitle("Request Level").items();
+  const sp: SPFI = getSp();
+  const items:any[] = await sp.web.lists.getByTitle("Request Level").items.getAll();
   return items;
 }
+
 
 export async function getName(mailID){
   const sp:SPFI=getSp()
  let a= await sp.web.lists
-            .getByTitle("Approver list")
+            .getByTitle("Approverlist")
             .items.filter(`EmailID eq '${mailID}'`)
             .getAll()
             return a
@@ -58,14 +66,14 @@ export async function getInitialApprovers(Department, Level, SubDepartment) {
   let items: any[];
   if (SubDepartment == "")
     items = await sp.web.lists
-      .getByTitle("Approver list")
+      .getByTitle("Approverlist")
       .items.filter(
         `Department eq '${Department}' and Level eq '${Level}' `
       )
       .getAll();
   else
     items = await sp.web.lists
-      .getByTitle("Approver list")
+      .getByTitle("Approverlist")
       .items.filter(
         `Department eq '${Department}' and Level eq '${Level}' and SubDepartment eq '${SubDepartment}'`
       )

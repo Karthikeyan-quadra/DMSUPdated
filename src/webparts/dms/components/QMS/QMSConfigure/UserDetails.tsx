@@ -1,4 +1,4 @@
-import { Web } from "@pnp/sp/presets/all";
+// import { Web } from "@pnp/sp/presets/all";
 import {
   mergeStyles,
   TextField,
@@ -19,7 +19,8 @@ import * as React from "react";
 import styles from "../QMSRequestPage/QmsDashboard.module.scss";
 import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
-
+import "@pnp/sp/lists";
+import "@pnp/sp/items/get-all";
 
 const textFieldStyles: Partial<ITextFieldStyles> = {
   root: { maxWidth: "250px", float: "right" },
@@ -405,7 +406,7 @@ const sp:SPFI=getSp();
     };
 
     const handleAddUser = async () => {
-const sp:SPFI=getSp();
+        const sp:SPFI=getSp();
 
 
       let status = this.state.overalllist.filter(
@@ -470,7 +471,7 @@ const sp:SPFI=getSp();
       }
     };
     const handleeditUser = async () => {
-const sp:SPFI=getSp();
+    const sp:SPFI=getSp();
 
       let status = this.state.overalllist.filter(
         (res) =>
@@ -521,9 +522,9 @@ const sp:SPFI=getSp();
     };
 
     const DeleteUser = async () => {
-const sp:SPFI=getSp();
+      const sp:SPFI=getSp();
 
-      const list = await sp.web.lists.getByTitle("Userdetails");
+      const list:any = await sp.web.lists.getByTitle("Userdetails");
       await list.items
         .getById(this.state.selecteditem)
         .delete()
@@ -535,6 +536,47 @@ const sp:SPFI=getSp();
           })
         );
     };
+
+
+    // const DeleteUser = async () => {
+    //   try {
+    //     const sp: SPFI = getSp();
+    
+    //     if (!sp) {
+    //       console.error("SharePoint context object is not available.");
+    //       return;
+    //     }
+    
+    //     const list = sp.web.lists.getByTitle("Userdetails");
+    
+    //     if (!list || !list.items || !list.items.getById) {
+    //       console.error("List or list items are not properly initialized.");
+    //       return;
+    //     }
+    
+    //     const itemId = this.state.selecteditem;
+    
+    //     if (!itemId) {
+    //       console.error("Selected item ID is not available.");
+    //       return;
+    //     }
+    
+    //     await list.items.getById(itemId).delete();
+    
+    //     // Refresh the user list after deletion
+    //     this.setState({
+    //       isEdited: false,
+    //       items: await sp.web.lists.getByTitle("Userdetails").items(),
+    //       overalllist: await sp.web.lists.getByTitle("Userdetails").items(),
+    //     });
+    
+    //     console.log("User deleted successfully.");
+    //   } catch (error) {
+    //     console.error("Error deleting user:", error);
+    //   }
+    // };
+    
+  
     return (
       <div>
         <div>

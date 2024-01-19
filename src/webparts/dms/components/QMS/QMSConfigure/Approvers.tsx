@@ -86,33 +86,64 @@ export default class QMSConfigure extends React.Component<{}, any> {
     };
   }
 
+  // public async componentDidMount() {
+  //   this.setState({
+  //     levelitems: await getRequestlevellist().then(async (item) => {
+  //       let list: { Key: any; text: any }[] = [];
+  //       await item.map(async (val) => {
+  //          list.push({
+  //           Key: val.Key,
+  //           text: val.Text,
+  //         });
+  //       });
+  //       console.log(list);
+  //       return list;
+  //     }),
+  //     Departmentitems: await getDepartmentlist().then(async (item) => {
+  //       let list: { Key: any; text: any }[] = [];
+  //       await item.map(async (val) => {
+  //         await list.push({
+  //           Key: val.Title,
+  //           text: val.Departments,
+  //         });
+  //       });
+  //       return list;
+  //     }),
+  //   });
+// }
+
   public async componentDidMount() {
-    this.setState({
-      levelitems: await getRequestlevellist().then(async (item) => {
-        let list: { Key: any; text: any }[] = [];
-        await item.map(async (val) => {
-           list.push({
-            Key: val.Key,
-            text: val.Text,
-          });
-        });
-        return list;
-      }),
-      Departmentitems: await getDepartmentlist().then(async (item) => {
-        let list: { Key: any; text: any }[] = [];
-        await item.map(async (val) => {
-          await list.push({
-            Key: val.Title,
-            text: val.Departments,
-          });
-        });
-        return list;
-      }),
-    });
+    try {
+      const levelItems = await getRequestlevellist();
+      const departmentItems = await getDepartmentlist();
+  
+      const processedLevelItems = levelItems.map((val) => ({
+        Key: val.Key,
+        text: val.Text,
+      }));
+  
+      const processedDepartmentItems = departmentItems.map((val) => ({
+        Key: val.Title,
+        text: val.Departments,
+      }));
+  
+      this.setState({
+        levelitems: processedLevelItems,
+        Departmentitems: processedDepartmentItems,
+      });
+  
+      console.log("Intermediate State:", this.state);
+    } catch (error) {
+      console.error("Error fetching levels and departments:", error);
+    }
   }
+  
+
+
 
   render() {
     const HandleLevel = async (e, value: any) => {
+      console.log("Selected Level:", value);
       console.log(this.state.SubDepartment);
       console.log(value);
       this.setState(
@@ -154,7 +185,52 @@ export default class QMSConfigure extends React.Component<{}, any> {
                 return list;
               }),
 
-              Approver_A: await getApprover1(
+// ApproverA: await getInitialApprovers(
+//   this.state.Department,
+//   this.state.Level,
+//   this.state.SubDepartment
+// )
+//   .then((item) => {
+//     try {
+//       console.log("Initial Approvers for Approver_A:", item);
+
+//       // Process the items and return the list
+//       const list: {
+//         Key: any;
+//         text: any;
+//         Level: any;
+//         Department: any;
+//         SubDepartment: any;
+//       }[] = item.map((val) => ({
+//         text: val.Name,
+//         Key: val.EmailID,
+//         Level: val.Level,
+//         Department: val.Department,
+//         SubDepartment: val.SubDepartment,
+//       }));
+
+//       if (list.length === 0) {
+//         this.setState({
+//           errmsgApproverA: "No Data found",
+//         });
+//       }
+
+//       console.log(list);
+//       return list;
+//     } catch (error) {
+//       console.error("Error processing initial approvers:", error);
+//       throw error; // Throw the error to be caught by the .catch block
+//     }
+//   })
+//   .catch((error) => {
+//     console.error("Error fetching initial approvers:", error);
+//     this.setState({
+//       errmsgApproverA: "Error fetching data",
+//     });
+//     return [];
+//   }),
+
+    Approver_A: await getApprover1(
                 this.state.Department,
                 this.state.Level,
                 this.state.SubDepartment
@@ -171,6 +247,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
     };
 
     const Handlechange = async () => {
+      const sp:SPFI=getSp()
       console.log(this.state.Approver_A);
       console.log(this.state.Approver_B);
       if (this.state.Approver_A.EmailID == this.state.Approver_B.EmailID) {
@@ -289,7 +366,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
                 this.state.Level,
                 ""
               ).then(async (item) => {
-                let list = [];
+                let list:any = [];
                 // await item.map(async (val) => {
                 //   await list.push({
                 //     text: val.Name,
@@ -301,6 +378,18 @@ export default class QMSConfigure extends React.Component<{}, any> {
                 //     SubDepartment: val.SubDepartment,
                 //   });
                 // });
+
+                await item.map(async (val) => {
+                  await list.push({
+                    text: val.Name,
+                    key: val.EmailID,
+                    //Authority: val.Authority,
+                    Level: val.Level,
+
+                    Department: val.Department,
+                    SubDepartment: val.SubDepartment,
+                  });
+                });
                 
                 if (list.length == 0) {
                   this.setState({
@@ -375,9 +464,28 @@ export default class QMSConfigure extends React.Component<{}, any> {
         }
       );
     };
+    // const HandleApproverA = async (e, value: any) => {
+    //   console.log(value);
+    //   console.log(e);
+    //   this.setState({
+    //     Approver_A: {
+    //       Name: value.text,
+    //       EmailID: value.key,
+    //       //Authority: value.Authority,
+    //       Level: value.Level,
+    //       ApproverLevel: "APPROVER 2",
+    //       Department: value.Department,
+    //       SubDepartment: value.SubDepartment,
+    //     },
+    //     ischanged: false,
+    //     errmsgApprover: "",
+    //   });
+    // };
+
     const HandleApproverA = async (e, value: any) => {
-      console.log(value);
-      console.log(e);
+      console.log("HandleApproverA triggered");
+      console.log("Selected Value:", value);
+      console.log("Event Object:", e);
       this.setState({
         Approver_A: {
           Name: value.text,
@@ -392,6 +500,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
         errmsgApprover: "",
       });
     };
+
     const HandleApproverB = async (e, value: any) => {
       console.log(value);
 

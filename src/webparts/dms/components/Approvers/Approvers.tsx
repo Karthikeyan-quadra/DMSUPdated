@@ -186,7 +186,7 @@ export default class header extends React.Component<{}, any> {
     // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
     const sp:SPFI=getSp();
 
-    const items: any[] = await sp.web.lists.getByTitle("Approver list").items();
+    const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
     const filesForApproval: any[] = await sp.web.lists
       .getByTitle("User Files")
       .items();

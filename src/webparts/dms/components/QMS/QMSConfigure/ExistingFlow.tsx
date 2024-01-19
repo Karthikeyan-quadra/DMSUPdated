@@ -181,7 +181,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
   }
 
   public async componentDidMount() {
-    const sp:SPFI=getSp()
+    const sp:SPFI=getSp();
     console.log(await sp.web.currentUser());
     console.log(await (await sp.web.currentUser()).Email);
     this.setState(
@@ -316,6 +316,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
     };
 
     const SubmitFlow = async () => {
+      const sp:SPFI=getSp();
       if (this.state.Selected_item.Approver2 != "") {
         if (this.state.Selected_item.Approver3 != "") {
           await sp.web.lists

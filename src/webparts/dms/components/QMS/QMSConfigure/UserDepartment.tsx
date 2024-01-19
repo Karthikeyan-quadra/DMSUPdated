@@ -335,6 +335,7 @@ import {
             selectedval: value,
           },
           async () => {
+            const sp:SPFI=getSp()
             const list = await sp.web.lists.getByTitle("Approverlist");
             console.log(this.state.selecteditem);
             await list.items
