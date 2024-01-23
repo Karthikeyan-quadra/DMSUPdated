@@ -185,6 +185,70 @@ export default class QMSConfigure extends React.Component<{}, any> {
                 return list;
               }),
 
+
+//Original code
+// this.setState(
+//   {
+//     ischanged: true,
+//     approveshow: true,
+//     errmsgApproverA: "",
+//     errmsgApproverB: "",
+//     errmsgApprover: "",
+//     SubDepartment: "",
+//     Department: value.text,
+//     SubDepartmentlist: await getSubDepartmentlist(value.text),
+//   },
+//   async () => {
+//     this.setState({
+//       sub_Status: this.state.SubDepartmentlist.length == 0 ? true : false,
+//     });
+//     if (this.state.SubDepartmentlist.length == 0) {
+//       this.setState({
+//         ApproverA: await getInitialApprovers(
+//           this.state.Department,
+//           this.state.Level,
+//           ""
+//         ).then(async (item) => {
+//           // let list = [];
+//           const list: { Key: any; text: any, Level:any,  Department:any, SubDepartment: any}[] = [];
+
+//           await item.map(async (val) => {
+//             await list.push({
+//               text: val.Name,
+//               Key: val.EmailID,
+//               //Authority: val.Authority,
+//               Level: val.Level,
+
+//               Department: val.Department,
+//               SubDepartment: val.SubDepartment,
+//             });
+//           });
+//           if (list.length == 0) {
+//             this.setState({
+//               errmsgApproverA: "No Data found",
+//             });
+//           }
+//           console.log(list);
+//           return list;
+//         }),
+
+//         Approver_A: await getApprover1(
+//           this.state.Department,
+//           this.state.Level,
+//           ""
+//         ),
+//         Approver_B: await getApprover2(
+//           this.state.Department,
+//           this.state.Level,
+//           ""
+//         ),
+//       });
+//     }
+//   }
+// );
+// };
+              
+
 // ApproverA: await getInitialApprovers(
 //   this.state.Department,
 //   this.state.Level,
@@ -230,6 +294,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
 //     return [];
 //   }),
 
+    
     Approver_A: await getApprover1(
                 this.state.Department,
                 this.state.Level,
@@ -244,7 +309,101 @@ export default class QMSConfigure extends React.Component<{}, any> {
           }
         }
       );
-    };
+
+      }
+// this.setState(
+//   {
+//     Level: value.text,
+//     errmsgApproverA: "",
+//     errmsgApprover: "",
+//     errmsgApproverB: "",
+//     show: false,
+//     ischanged: true,
+//   },
+//   async () => {
+//     console.log(this.state.SubDepartment);
+//     if (this.state.Department !== "") {
+//       this.setState({
+//         ApproverA: await getInitialApprovers(
+//           this.state.Department,
+//           this.state.Level,
+//           this.state.SubDepartment
+//         ).then(async (item) => {
+//           const list: {
+//             Key: any;
+//             text: any;
+//             Level: any;
+//             Department: any;
+//             SubDepartment: any;
+//           }[] = [];
+//           await item.map(async (val) => {
+//             await list.push({
+//               text: val.Name,
+//               Key: val.EmailID,
+//               Level: val.Level,
+//               Department: val.Department,
+//               SubDepartment: val.SubDepartment,
+//             });
+//           });
+
+//           if (list.length == 0) {
+//             this.setState({
+//               errmsgApproverA: "No Data found",
+//             });
+//           }
+//           console.log(list);
+//           return list;
+//         }),
+//       });
+
+//       this.setState({
+//         ApproverB: await getInitialApprovers(
+//           this.state.Department,
+//           this.state.Level,
+//           this.state.SubDepartment
+//         ).then(async (item) => {
+//           const list: {
+//             Key: any;
+//             text: any;
+//             Level: any;
+//             Department: any;
+//             SubDepartment: any;
+//           }[] = [];
+//           await item.map(async (val) => {
+//             await list.push({
+//               text: val.Name,
+//               Key: val.EmailID,
+//               Level: val.Level,
+//               Department: val.Department,
+//               SubDepartment: val.SubDepartment,
+//             });
+//           });
+
+//           if (list.length == 0) {
+//             this.setState({
+//               errmsgApproverB: "No Data found",
+//             });
+//           }
+//           console.log(list);
+//           return list;
+//         }),
+//       });
+//       this.setState({
+//         Approver_A: await getApprover1(
+//           this.state.Department,
+//           this.state.Level,
+//           this.state.SubDepartment
+//         ),
+//         Approver_B: await getApprover2(
+//           this.state.Department,
+//           this.state.Level,
+//           this.state.SubDepartment
+//         ),
+//       });
+//     }
+//   }
+// );
+// };
 
     const Handlechange = async () => {
       const sp:SPFI=getSp()
@@ -502,6 +661,9 @@ export default class QMSConfigure extends React.Component<{}, any> {
     };
 
     const HandleApproverB = async (e, value: any) => {
+      console.log("HandleApproverB triggered");
+      console.log("Selected Value:", value);
+      console.log("Event Object:", e);
       console.log(value);
 
       this.setState({

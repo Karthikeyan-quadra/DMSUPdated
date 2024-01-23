@@ -1,5 +1,6 @@
 import * as React from "react";
-// import { Web } from "@pnp/sp/presets/all";
+import { Web } from "@pnp/sp/presets/all";
+
 import "@pnp/sp/items/get-all";
 import "@pnp/sp/files";
 import "@pnp/sp/lists";
@@ -9,6 +10,10 @@ import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/files/web";
+import "@pnp/sp/folders";
+import "@pnp/sp/batching";
+import "@pnp/sp/presets/all";
+
 import { folderFromServerRelativePath } from "@pnp/sp/folders";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { Dialog, DialogType, DialogFooter } from "@fluentui/react/lib/Dialog";
@@ -18,7 +23,7 @@ import {
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
 import { TextField } from "@fluentui/react/lib/TextField";
-// import ReactTable from "react-table";
+import ReactTable from "react-table";
 // import Navbar from './Navbar/Navbar';
 import { ISharingResult, SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
 import { Button, Table } from "react-bootstrap";
@@ -118,9 +123,9 @@ const options1: IDropdownOption[] = [
   { key: "Manual", text: "Manual" },
   { key: "Policy", text: "Policy" },
   { key: "SOP", text: "SOP" },
-  { key: "Work Instruction", text: "Work Instruction" },
+  { key: "Work Instruction", text: "Work Instruction"},
   { key: "MSOP", text: "MSOP" },
-  { key: "Forms", text: "Forms" },
+  { key: "Form", text: "Form" },
 ];
 
 const choose: IDropdownOption[] = [];
@@ -301,7 +306,7 @@ export default class header extends React.Component<{}, any> {
     //   return (toTimestamp(prev.y) > toTimestamp(current.y)) ? prev : current
     // })
     // console.log("max",max);
-    let sss = await sp.web.lists
+    let sss:any = await sp.web.lists
       .getByTitle("User Files")
       .items.select(
         "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
@@ -334,7 +339,6 @@ export default class header extends React.Component<{}, any> {
         }
         // })
       );
-
     const items: any[] = await sp.web.lists.getByTitle("Project List").items();
     console.log(items.length);
     this.setState({
@@ -398,7 +402,7 @@ export default class header extends React.Component<{}, any> {
     // // console.log(DocumentType);
     await sp.web.lists
       .getByTitle("Sub departments")
-      .items.select("Subfolders ,ParentFolder")
+      .items.select("Subfolders,ParentFolder")
       .getAll()
       .then(async (item) => {
         item.map(async (nn) => {
@@ -408,7 +412,7 @@ export default class header extends React.Component<{}, any> {
           await SubDepartments1.push({
             SubFolders: nn.Subfolders,
             ParentFolders: nn.ParentFolder,
-          });
+          });0
           await SubdepartmentsParents.push(nn.ParentFolder);
         });
 
@@ -609,53 +613,155 @@ export default class header extends React.Component<{}, any> {
       console.log(this.context);
     };
 
-    const changeValuedepartmentName = async (e, value: any) => {
-      // console.log(value);
-      this.setState({
-        params1: "",
-        params3: "",
-        params4: "",
-        params5: "",
-      });
-      console.log(this.state.SubdepartmentsMain);
-      console.log(this.state.Subdepartments);
-      await sss.push(value.text);
-      if (this.state.SubfoldersMainParent.includes(value.text)) {
-        // let array1 = [];
-        let array1:any = [];
-        // console.log(this.state.SubdepartmentsMain2);
-        await this.state.SubdepartmentsMain2.filter((names) => {
-          // console.log(names.ParentFolders)
-          // console.log(names)
-          if (names.ParentFolders === value.text) {
-            // console.log(names.SubFolders);
-            array1.push({
-              text: names.SubFolders,
-              Key: names.SubFolders,
-              Code: names.Code,
-            });
-          }
-        });
-        // await console.log(array1)
-        this.setState({
-          SubfolderState: true,
-          SubdepartmentsMain: array1,
-          // params1: value.text,
-          params111: value.Key,
-          params11: value.text,
-          some: [value.text],
-        });
-      } else {
-        this.setState({
-          SubfolderState: false,
-          // params1: value.Key,
-          params111: value.Key,
-          params11: value.text,
-        });
-      }
+    //original code
+    // const changeValuedepartmentName = async (e, value: any) => {
+    //   console.log(value);
+    //   this.setState({
+    //     params1: "",
+    //     params3: "",
+    //     params4: "",
+    //     params5: "",
+    //   });
+    //   console.log(this.state.SubdepartmentsMain);
+    //   console.log(this.state.Subdepartments);
+    //   await sss.push(value.text);
+    //   if (this.state.SubfoldersMainParent.includes(value.text)) {
+    //     // let array1 = [];
+    //     let array1:any = [];
+    //     console.log(this.state.SubdepartmentsMain2);
+    //     await this.state.SubdepartmentsMain2.filter((names) => {
+    //       console.log(names.ParentFolders)
+    //       console.log(names)
+    //       if (names.ParentFolders === value.text) {
+    //         console.log(names.SubFolders);
+    //         array1.push({
+    //           text: names.SubFolders,
+    //           Key: names.SubFolders,
+    //           Code: names.Code,
+    //         });
+    //       }
+    //     });
+    //     await console.log(array1);
+    //     await this.setState({
+    //       SubfolderState: true,
+    //       SubdepartmentsMain: array1,
+    //       // params1: value.text,
+    //       params111: value.Key,
+    //       params11: value.text,
+    //       some: [value.text],
+    //     });
+    //   } else {
+    //     this.setState({
+    //       SubfolderState: false,
+    //       // params1: value.Key,
+    //       params111: value.Key,
+    //       params11: value.text,
+    //     });
+    //   }
 
-      // await console.log(this.state.some)
+    //   await console.log(this.state.some)
+    // };
+
+
+    const changeValuedepartmentName = async (e, value: any) => {
+      console.log("changeValuedepartmentName function called.");
+      console.log("Selected department value:", value);
+    
+      try {
+        const sp: SPFI = getSp();
+        this.setState({
+          params1: "",
+          params3: "",
+          params4: "",
+          params5: "",
+        });
+    
+        const selectedDepartment = value.text;
+        console.log("Selected department:", selectedDepartment);
+    
+        // Check if the selected department has subfolders
+        if (this.state.SubfoldersMainParent.includes(selectedDepartment)) {
+          console.log("Selected department has subfolders.");
+    
+          const subfolders = this.state.SubdepartmentsMain2
+            .filter((subfolder) => subfolder.ParentFolders === selectedDepartment)
+            .map((subfolder) => ({
+              text: subfolder.SubFolders,
+              Key: subfolder.SubFolders,
+              Code: subfolder.Code,
+            }));
+    
+          console.log("SubdepartmentsMain array:", subfolders);
+    
+          this.setState({
+            SubfolderState: true,
+            SubdepartmentsMain: subfolders,
+            params111: value.Key,
+            params11: selectedDepartment,
+            some: [selectedDepartment],
+          });
+        } else {
+          console.log("Selected department does not have subfolders.");
+    
+          this.setState({
+            SubfolderState: false,
+            params111: value.Key,
+            params11: selectedDepartment,
+          });
+        }
+    
+        console.log("Updated state:", this.state);
+      } catch (error) {
+        console.error("Error in changeValuedepartmentName:", error);
+      }
     };
+    
+    
+    
+
+    // const changeValuedepartmentName = (e, value) => {
+    //   console.log(value);
+    //   const sp: SPFI = getSp();
+    //   this.setState({
+    //     params1: "",
+    //     params3: "",
+    //     params4: "",
+    //     params5: "",
+    //   });
+    
+    //   const sssCopy = [...this.state.sss]; // Assuming sss is an array in your state
+    //   sssCopy.push(value.text);
+    
+    //   if (this.state.SubfoldersMainParent.includes(value.text)) {
+    //     const array1 = this.state.SubdepartmentsMain2
+    //       .filter((names) => names.ParentFolders === value.text)
+    //       .map((names) => ({
+    //         text: names.SubFolders,
+    //         Key: names.SubFolders,
+    //         Code: names.Code,
+    //       }));
+    
+    //     console.log(array1);
+    
+    //     this.setState({
+    //       SubfolderState: true,
+    //       SubdepartmentsMain: array1,
+    //       params111: value.Key,
+    //       params11: value.text,
+    //       some: [value.text],
+    //     });
+    //   } else {
+    //     this.setState({
+    //       SubfolderState: false,
+    //       params111: value.Key,
+    //       params11: value.text,
+    //     });
+    //   }
+    //   console.log(this.state.departmentName);
+    //   // Update the state with the modified sssCopy array
+    //   this.setState({ sss: sssCopy });
+    // };
+    
 
     const changeValuedocumentType = async (e, value: any) => {
       console.log(value);
@@ -852,20 +958,26 @@ export default class header extends React.Component<{}, any> {
         // let digitArray = [];
         let digitArray:any = [];
 
+        // console.log(
+        //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
+        // );
         console.log(
-          `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
+          `/sites/DMS-TATA/Shared%20Documents1/${somee2.join("/")}`
         );
         // const sp:SPFI=getSp();
         // let somss:any = await sp.web
         //   .getFolderByServerRelativePath(
         //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
         //   .files.getAll()
+
         const sp:SPFI=getSp();
-        let folderPath:any = `/sites/DMSportal/Original File/${somee2.join("/")}`;
+        // let folderPath:any = `/sites/DMSportal/Original File/${somee2.join("/")}`;
+        let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
+
         let folder:any = await sp.web.getFolderByServerRelativePath(folderPath).files;
 
         let somss:any = await folder.getAll().then(async (s) => {
-            // console.log(s)
+            console.log(s)
             if (s.length > 0) {
               console.log(s);
               s.map((ss) => {
@@ -976,14 +1088,22 @@ export default class header extends React.Component<{}, any> {
       console.log(somee);
       console.log(somee.join("/"));
       let fileUrl:any = somee.join("/");
-      console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
+      // console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
+
+      console.log(`/sites/DMS-TATA/Shared%20Documents1/${fileUrl}`);
+
       const sp:SPFI=getSp()
       // let filesName = [];
       let filesName:any = [];
 
-      const folder:any = sp.web.getFolderByServerRelativePath(
-  `/sites/DMSportal/Original File/${fileUrl}`
+//       const folder:any = sp.web.getFolderByServerRelativePath(
+//   `/sites/DMSportal/Original File/${fileUrl}`
+// );
+
+const folder:any = sp.web.getFolderByServerRelativePath(
+  `/sites/DMS-TATA/Original%20File/${fileUrl}`
 );
+
 
 const items:any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
 
@@ -1029,8 +1149,8 @@ this.setState({
           { key: "Work Instruction", text: "Common" },
           { key: "MSOP", text: "Common MSOP" },
           { key: "MSOP", text: "Cosmetic Visual Inspection" },
-          { key: "Forms", text: "Excel Form" },
-          { key: "Forms", text: "Word Form" },
+          { key: "Form", text: "Excel Form" },
+          { key: "Form", text: "Word Form" },
         ];
 
         array.map((i) => {
@@ -1053,8 +1173,8 @@ this.setState({
           { key: "Work Instruction", text: "Common" },
           { key: "MSOP", text: "Common MSOP" },
           { key: "MSOP", text: "Cosmetic Visual Inspection" },
-          { key: "Forms", text: "Excel Form" },
-          { key: "Forms", text: "Word Form" },
+          { key: "Form", text: "Excel Form" },
+          { key: "Form", text: "Word Form" },
         ];
 
         array.map((i) => {
@@ -1063,8 +1183,8 @@ this.setState({
           }
         });
         console.log(choose);
-      } else if (value.text === "Forms") {
-        console.log("entyered in Forms");
+      } else if (value.text === "Form") {
+        console.log("entyered in Form");
 
         this.setState({
           choose: true,
@@ -1078,8 +1198,8 @@ this.setState({
           { key: "Work Instruction", text: "Common" },
           { key: "MSOP", text: "Common MSOP" },
           { key: "MSOP", text: "Cosmetic Visual Inspection" },
-          { key: "Forms", text: "Excel Form" },
-          { key: "Forms", text: "Word Form" },
+          { key: "Form", text: "Excel Form" },
+          { key: "Form", text: "Word Form" },
         ];
 
         array.map((i) => {
@@ -1950,13 +2070,50 @@ this.setState({
         //       let somss = await web.lists.getByTitle("User Files").items();
         // console.log(somss)
         console.log(myfile.name);
-        let fileexe:any = myfile.name.split(".").pop();
-        console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        // let fileexe:any = myfile.name.split(".").pop();
+        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+                // console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
+
+        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+        // const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+
+        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
   
-        await folder.files.add(`${this.state.fileNameStruct}.${fileexe}`, myfile, true)
+        // await folder.files.add(`${this.state.fileNameStruct}.${fileexe}`, myfile, true)
+        //   .then(async (f) => {
+        //     await f.file.getItem().then(async (item) => {
+        //       await item
+        //         .update({
+        //           FileDescription: this.state.fileDes,
+        //           FileName: this.state.filenames,
+        //           DocID: String(this.state.DocID + 1),
+        //         })
+        //         .then(async (myupdate) => {
+        //           console.log(myupdate);
+        //         });
+  
+        //       await item.get().then(async (myupdate) => {
+        //         console.log(myupdate);
+        //         this.setState({
+        //           fileIDs: myupdate.ID,
+        //         });
+        //         // console.log("Metadata Updated");
+        //       });
+        //     });
+        //   });
+
+       
+            let fileexe:any = myfile.name.split(".").pop();
+                console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
+
+        console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+        const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        await folder.files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
           .then(async (f) => {
             await f.file.getItem().then(async (item) => {
               await item
@@ -1974,16 +2131,21 @@ this.setState({
                 this.setState({
                   fileIDs: myupdate.ID,
                 });
-                // console.log("Metadata Updated");
+                console.log("Metadata Updated");
               });
             });
           });
+
+
+
 
         this.state.fileUrl;
         let fileurl:any = "";
         await sp.web
           .getFolderByServerRelativePath(
-            `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+            `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`
+
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
           .select() // Fields to retrieve
@@ -2036,7 +2198,9 @@ this.setState({
               Fileurl: fileurl,
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
-              RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2062,7 +2226,10 @@ this.setState({
               Fileurl: fileurl,
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
-              RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+               RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+
+
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2085,11 +2252,17 @@ this.setState({
         const sp:SPFI=getSp()
         console.log(myfile.name);
         let fileexe = myfile.name.split(".").pop();
-        console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
+
         console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        await sp.web
+        // await sp.web
+        //   .getFolderByServerRelativePath(
+        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+        //   )
+          await sp.web
           .getFolderByServerRelativePath(
-            `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+            `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
@@ -2137,7 +2310,10 @@ this.setState({
         //   });
         let fileurl: any = "";
 
-        const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+
+        const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+
         const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
         
         const items:any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
@@ -2175,7 +2351,8 @@ this.setState({
                 Fileurl: fileurl,
                 DocID: String(this.state.DocID + 1),
                 Status: "Pending",
-                RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
                 Department: Department,
                 SubDepartment: Subdepartment,
               })
@@ -2200,7 +2377,9 @@ this.setState({
               Requester: Title,
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
-              RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+
               Department: Department,
               SubDepartment: Subdepartment,
             })

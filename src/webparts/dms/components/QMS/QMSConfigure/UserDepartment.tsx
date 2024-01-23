@@ -135,7 +135,7 @@ import {
     private _getKey(item: any, index?: number): string {
       return item.key;
     }
-    public async componentDidMount() {
+    // public async componentDidMount() {
       // this.setState(
 
       //   {
@@ -158,23 +158,37 @@ import {
       //   }
       // );
 
-      const sp:SPFI=getSp()
-      sp.web.lists
-      .getByTitle("Department Names")
-      .items()
-      .then((res) => {
-        console.log("Department Data:", res);
-        this.setState({
-          Departments: res.map((val) => ({
+
+      public async componentDidMount() {
+        const sp: SPFI = getSp();
+      
+        try {
+          const [items, overalllist, departmentItems] = await Promise.all([
+            sp.web.lists.getByTitle("Approverlist").items.getAll(),
+            sp.web.lists.getByTitle("Approverlist").items.getAll(),
+            sp.web.lists.getByTitle("Department Names").items.getAll(),
+          ]);
+      
+          const Departments = departmentItems.map((val) => ({
             text: val.Departments,
             key: val.code,
-          })),
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching department data:", error);
-      });
-    }
+          }));
+      
+          this.setState(
+            {
+              items,
+              overalllist,
+              Departments,
+            },
+            () => {
+              console.log(this.state.Departments);
+            }
+          );
+        } catch (error) {
+          console.error('Error in componentDidMount:', error);
+        }
+      }
+      
     public toggleHideDialog = () => {
       console.log(this.state.hideDialog);
       if (this.state.hideDialog)
@@ -272,11 +286,21 @@ import {
           add_UserName: value,
         });
       };
+      
       const handleadd_UserMailID = (event, value) => {
         this.setState({
           add_EmailID: value,
         });
       };
+
+//       const handleadd_UserMailID = (event, value) => {
+//   const suffix = "@quadrasystems.net"; // Specify your desired email suffix
+//   const fullEmailID = value + suffix;
+
+//   this.setState({
+//     add_EmailID: fullEmailID,
+//   });
+// };
       const handleeditUser = async () => {
         if (this.state.edit_Department != "") {
           if (this.state.edit_UserName != "") {
@@ -485,7 +509,7 @@ import {
   
                     <div style={{ width: "350px", marginTop: "15px" }}>
                       <TextField
-                        suffix="@tataelectronics.co.in"
+                        suffix="@quadrasystems.net"
                         required
                         label="User MailID"
                         placeholder="Specify User MailID"

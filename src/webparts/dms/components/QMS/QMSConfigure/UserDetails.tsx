@@ -640,7 +640,7 @@ const sp:SPFI=getSp();
 
                   <div style={{ width: "350px", marginTop: "15px" }}>
                     <TextField
-                      suffix="@tataelectronics.co.in"
+                      suffix="@quadrasystems.net"
                       required
                       label="User MailID"
                       placeholder="Specify User MailID"
