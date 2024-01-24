@@ -55,7 +55,10 @@ export async function Approvalmail(Content, level, Sender, Approver1) {
 
       <p style="text-align: center;">To view the file.<a class="button" href=${Content.Fileurl}>View</a></p>
 
-      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal">Navigate</a></p>
+      // <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal">Navigate</a></p>
+
+      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA">Navigate</a></p>
+
 
 
 
@@ -122,7 +125,10 @@ export async function Denymail(Content, Sender, Comment) {
 
       <p style="text-align: center;">To view the file. <a class="button" href=${Content.Fileurl}>View</a></p>
 
-      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal">Navigate</a></p>
+      // <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal">Navigate</a></p>
+      
+      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA">Navigate</a></p>
+
 
       <p style="text-align: center;">&nbsp;</p>
       <p style="text-align: center;">&nbsp;</p>

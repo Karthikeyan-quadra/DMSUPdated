@@ -35,7 +35,10 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
         <h3 style="text-align: center;">&nbsp;</h3>
         <h3 style="text-align: center;">Request for file upload</h3>
         <p style="text-align: center;" aria-hidden="true">&nbsp;</p>
+        // <p style="text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/2489/2489187.png" alt="Girl in a jacket" width="189" height="190" /></p>
+        
         <p style="text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/2489/2489187.png" alt="Girl in a jacket" width="189" height="190" /></p>
+
         <h4 style="text-align: center;">&nbsp;</h4>
         <h4 style="text-align: center;">Approval Info</h4>
         <p style="text-align: center;"><strong>Approver :</strong>&nbsp;  ${ApprovedBy}</p>
@@ -46,7 +49,10 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
         <p style="text-align: center;"><strong>Date:</strong> ${Content.FileUploadDate}</p>
         <p style="text-align: center;">&nbsp;</p>
         <p style="text-align: center;">To view the request.</p>
-        <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal/SitePages/Home.aspx#/Approvers">View</a></p>
+        // <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal/SitePages/Home.aspx#/Approvers">View</a></p>
+
+        <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA/SitePages/Home.aspx#/Approvers">View</a></p>
+
         <p style="text-align: center;">&nbsp;</p>
         <p style="text-align: center;">&nbsp;</p>
         </body>
@@ -95,7 +101,10 @@ export async function UserApprovalmail(Content) {
   <p style="text-align: center;"><strong>Date:</strong> ${Content.FileUploadDate}</p>
   <p style="text-align: center;">&nbsp;</p>
   <p style="text-align: center;">To view the file.</p>
-  <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal#/">View</a></p>
+  // <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal#/">View</a></p>
+
+  <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA#/">View</a></p>
+
   <p style="text-align: center;">&nbsp;</p>
   <p style="text-align: center;">&nbsp;</p>
   </body>

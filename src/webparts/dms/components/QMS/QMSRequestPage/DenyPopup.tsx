@@ -72,6 +72,7 @@ export default class DenyPopup extends React.Component<{}, any> {
   };
 
   public HandleDenystatus = async () => {
+    const sp:SPFI=getSp();
     console.log(this.state.comment);
     if (this.state.comment == undefined || this.state.comment == "") {
       this.setState({

@@ -883,7 +883,164 @@ export default class header extends React.Component<{}, any> {
       }
     };
 
-    const clickGenerate = async () => {
+
+//ORIGINAL CODE
+    // const clickGenerate = async () => {
+    //   console.log(this.state);
+    //   // let somee = [];
+    //   // let somee1 = [];
+    //   // let somee2 = [];
+    //   let somee:any = [];
+    //   let somee1:any = [];
+    //   let somee2:any = [];
+
+
+    //   if (this.state.params111.length <= 0) {
+    //     alert("Please add Department Name before generating ID!");
+    //   } else if (this.state.params2.length <= 0) {
+    //     alert("Please add Document Name before generating ID!");
+    //   } else if (this.state.params5.length <= 0) {
+    //     alert("Please add Project Name before generating ID!");
+    //   } else if (
+    //     this.state.SubfolderState === true &&
+    //     this.state.params3.length <= 0
+    //   ) {
+    //     alert("Please add Sub Folders Main before generating ID!");
+    //   } else if (
+    //     this.state.SubfolderState1 === true &&
+    //     this.state.params4.length <= 0
+    //   ) {
+    //     alert("Please add Sub Folders before generating ID!");
+    //   } else {
+    //     // COMMON-TEPL-EHS-SOP-002.xlsx
+    //     // TEPL-COMMON-QL-QM-PR-0002.xlsx
+    //     if (this.state.params5.length > 0) {
+    //       console.log(this.state.params5);
+    //       await somee1.push("TEPL");
+    //       // await somee2.push("TEPL");
+    //       await somee1.push(this.state.params5);
+    //       // await somee2.push(this.state.params5);
+    //     }
+    //     if (this.state.params111.length > 0) {
+    //       console.log(this.state.params1);
+    //       await somee.push(this.state.params111);
+    //       await somee1.push(this.state.params111);
+    //       if (this.state.params1.length > 0) {
+    //         await somee1.push(this.state.params1);
+    //       }
+    //       await somee2.push(this.state.params11);
+    //     }
+    //     if (this.state.params3.length > 0) {
+    //       console.log(this.state.params3);
+    //       await somee.push(this.state.params3);
+    //       await somee2.push(this.state.params3);
+    //       // await somee1.push(this.state.params3);
+    //     }
+    //     if (this.state.params4.length > 0) {
+    //       console.log(this.state.params4);
+    //       await somee.push(this.state.params4);
+    //       await somee2.push(this.state.params4);
+    //       // await somee1.push(this.state.params4);
+    //     }
+
+    //     if (this.state.params2.length > 0) {
+    //       console.log(this.state.params2);
+    //       await somee.push(this.state.params2);
+    //       await somee1.push(this.state.params2);
+    //       await somee2.push(this.state.params22);
+    //     }
+
+    //     console.log(somee);
+    //     console.log(somee.join("/"));
+    //     console.log(somee1.join("-"));
+    //     console.log(somee2.join("/"));
+    //     // let lastDigit = "";
+    //     let lastDigit:any = "";
+    //     let params6;
+    //     // let digitArray = [];
+    //     let digitArray:any = [];
+
+    //     // console.log(
+    //     //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
+    //     // );
+    //     console.log(
+    //       `/sites/DMS-TATA/Shared%20Documents1/${somee2.join("/")}`
+    //     );
+    //     // const sp:SPFI=getSp();
+    //     // let somss:any = await sp.web
+    //     //   .getFolderByServerRelativePath(
+    //     //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
+    //     //   .files.getAll()
+
+    //     const sp:SPFI=getSp();
+    //     // let folderPath:any = `/sites/DMSportal/Original File/${somee2.join("/")}`;
+    //     // let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
+
+    //     // let folder:any = await sp.web.getFolderByServerRelativePath(folderPath).files;
+
+    //     // let somss:any = await folder.getAll().then(async (s) => {
+
+
+    //     let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
+    //     let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
+    //     let somss:any = await folder.files.getAll().then(async (s) => {
+
+    //         console.log(s)
+    //         if (s.length > 0) {
+    //           console.log(s);
+    //           s.map((ss) => {
+    //             let last = ss.Name.split("-").pop();
+    //             console.log(last);
+    //             let splitFileEx = last.split(".")[0];
+    //             digitArray.push(splitFileEx);
+    //             // console.log(Number(splitFileEx) + 1);
+    //           });
+
+    //           let sortNumebrs = await digitArray.sort();
+
+    //           let last = await sortNumebrs[sortNumebrs.length - 1];
+
+    //           let returnNumber = String(Number(last) + 1);
+    //           console.log(returnNumber);
+    //           if (returnNumber.length === 1) {
+    //             console.log("00" + returnNumber);
+    //             lastDigit = "000" + returnNumber;
+    //             // return "00" + returnNumber;
+    //           } else if (returnNumber.length === 2) {
+    //             console.log("0" + returnNumber);
+    //             lastDigit = "00" + returnNumber;
+    //             return "0" + last;
+    //           } else if (returnNumber.length === 3) {
+    //             console.log(returnNumber);
+    //             lastDigit = "0" + returnNumber;
+    //             // return last;
+    //           } else if (returnNumber.length === 4) {
+    //             console.log(returnNumber);
+    //             lastDigit = returnNumber;
+    //             // return last;
+    //           }
+    //         } else {
+    //           lastDigit = "0001";
+    //         }
+
+    //         // console.log();
+    //       });
+
+    //     await somee1.push(lastDigit);
+
+    //     console.log(lastDigit);
+    //     console.log(somee1);
+    //     this.setState({
+    //       fileUrl: somee2.join("/"),
+    //       fileNameStruct: somee1.join("-"),
+    //     });
+
+    //     console.log(this.state);
+    //   }
+    // };
+
+
+   const clickGenerate = async () => {
       console.log(this.state);
       // let somee = [];
       // let somee1 = [];
@@ -962,7 +1119,7 @@ export default class header extends React.Component<{}, any> {
         //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
         // );
         console.log(
-          `/sites/DMS-TATA/Shared%20Documents1/${somee2.join("/")}`
+          `/sites/DMS-TATA/Shared Documents1/${somee2.join("/")}`
         );
         // const sp:SPFI=getSp();
         // let somss:any = await sp.web
@@ -970,66 +1127,56 @@ export default class header extends React.Component<{}, any> {
         //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
         //   .files.getAll()
 
-        const sp:SPFI=getSp();
-        // let folderPath:any = `/sites/DMSportal/Original File/${somee2.join("/")}`;
-        let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
-
-        let folder:any = await sp.web.getFolderByServerRelativePath(folderPath).files;
-
-        let somss:any = await folder.getAll().then(async (s) => {
-            console.log(s)
-            if (s.length > 0) {
-              console.log(s);
-              s.map((ss) => {
-                let last = ss.Name.split("-").pop();
-                console.log(last);
-                let splitFileEx = last.split(".")[0];
-                digitArray.push(splitFileEx);
-                // console.log(Number(splitFileEx) + 1);
-              });
-
-              let sortNumebrs = await digitArray.sort();
-
-              let last = await sortNumebrs[sortNumebrs.length - 1];
-
-              let returnNumber = String(Number(last) + 1);
-              console.log(returnNumber);
-              if (returnNumber.length === 1) {
-                console.log("00" + returnNumber);
-                lastDigit = "000" + returnNumber;
-                // return "00" + returnNumber;
-              } else if (returnNumber.length === 2) {
-                console.log("0" + returnNumber);
-                lastDigit = "00" + returnNumber;
-                return "0" + last;
-              } else if (returnNumber.length === 3) {
-                console.log(returnNumber);
-                lastDigit = "0" + returnNumber;
-                // return last;
-              } else if (returnNumber.length === 4) {
-                console.log(returnNumber);
-                lastDigit = returnNumber;
-                // return last;
-              }
-            } else {
-              lastDigit = "0001";
-            }
-
-            // console.log();
-          });
-
-        await somee1.push(lastDigit);
-
+        const sp: SPFI = getSp();
+        let folderPath: any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+        let folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
+        let files: any = await folder.files.get();
+        
+        // Process files
+        files.forEach(async (file: any) => {
+          let last = file.Name.split("-").pop();
+          console.log(last);
+        
+          let splitFileEx = last.split(".")[0];
+          digitArray.push(splitFileEx);
+        });
+        
+        // Calculate lastDigit and update state
+        if (digitArray.length > 0) {
+          let sortNumbers = digitArray.sort();
+          let last = sortNumbers[sortNumbers.length - 1];
+          let returnNumber = String(Number(last) + 1);
+        
+          if (returnNumber.length === 1) {
+            lastDigit = "000" + returnNumber;
+          } else if (returnNumber.length === 2) {
+            lastDigit = "00" + returnNumber;
+          } else if (returnNumber.length === 3) {
+            lastDigit = "0" + returnNumber;
+          } else if (returnNumber.length === 4) {
+            lastDigit = returnNumber;
+          }
+        } else {
+          lastDigit = "0001";
+        }
+        
+        somee1.push(lastDigit);
         console.log(lastDigit);
         console.log(somee1);
+        
         this.setState({
           fileUrl: somee2.join("/"),
           fileNameStruct: somee1.join("-"),
         });
-
+        
         console.log(this.state);
       }
     };
+
+
+
+
+
 
     const changeValueFileID = async (e, value: any) => {
       // console.log(value);
@@ -1090,7 +1237,7 @@ export default class header extends React.Component<{}, any> {
       let fileUrl:any = somee.join("/");
       // console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
 
-      console.log(`/sites/DMS-TATA/Shared%20Documents1/${fileUrl}`);
+      console.log(`/sites/DMS-TATA/Shared Documents1/${fileUrl}`);
 
       const sp:SPFI=getSp()
       // let filesName = [];
@@ -1101,7 +1248,7 @@ export default class header extends React.Component<{}, any> {
 // );
 
 const folder:any = sp.web.getFolderByServerRelativePath(
-  `/sites/DMS-TATA/Original%20File/${fileUrl}`
+  `/sites/DMS-TATA/Original File/${fileUrl}`
 );
 
 
@@ -2042,7 +2189,7 @@ this.setState({
     } else {
       console.log(this.state.fileNameStruct);
 
-      let myfile:any = (document.querySelector("#newfile") as HTMLInputElement);
+      let myfile:any = document.querySelector("#newfile") as HTMLInputElement
       console.log(myfile);
       this.setState({
         Uploading: true,
@@ -2071,17 +2218,52 @@ this.setState({
         // console.log(somss)
         console.log(myfile.name);
 
-        // let fileexe:any = myfile.name.split(".").pop();
+        let fileexe:any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-                // console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
+                console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+
+        console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+        const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+
+        const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+        await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+        .then(async (f) => {
+            await f.file.getItem().then(async (item) => {
+              await item
+                .update({
+                  FileDescription: this.state.fileDes,
+                  FileName: this.state.filenames,
+                  DocID: String(this.state.DocID + 1),
+                })
+                .then(async (myupdate) => {
+                  console.log(myupdate);
+                });
+  
+              });
+              });
+          //     await item.getAll().then(async (myupdate) => {
+          //       console.log(myupdate);
+          //       this.setState({
+          //         fileIDs: myupdate.ID,
+          //       });
+          //       // console.log("Metadata Updated");
+          //     });
+          //   });
+          // });
+
+       
+          //This code works
+        //     let fileexe:any = myfile.name.split(".").pop();
+        //   console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
 
         // console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        // const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
-
+        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-  
-        // await folder.files.add(`${this.state.fileNameStruct}.${fileexe}`, myfile, true)
+
+        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+        // // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
         //   .then(async (f) => {
         //     await f.file.getItem().then(async (item) => {
         //       await item
@@ -2094,47 +2276,15 @@ this.setState({
         //           console.log(myupdate);
         //         });
   
-        //       await item.get().then(async (myupdate) => {
-        //         console.log(myupdate);
-        //         this.setState({
-        //           fileIDs: myupdate.ID,
-        //         });
-        //         // console.log("Metadata Updated");
-        //       });
+        //       // await item.get().then(async (myupdate) => {
+        //       //   console.log(myupdate);
+        //       //   this.setState({
+        //       //     fileIDs: myupdate.ID,
+        //       //   });
+        //       //   console.log("Metadata Updated");
+        //       // });
         //     });
         //   });
-
-       
-            let fileexe:any = myfile.name.split(".").pop();
-                console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
-
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
-        const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        await folder.files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
-          .then(async (f) => {
-            await f.file.getItem().then(async (item) => {
-              await item
-                .update({
-                  FileDescription: this.state.fileDes,
-                  FileName: this.state.filenames,
-                  DocID: String(this.state.DocID + 1),
-                })
-                .then(async (myupdate) => {
-                  console.log(myupdate);
-                });
-  
-              await item.get().then(async (myupdate) => {
-                console.log(myupdate);
-                this.setState({
-                  fileIDs: myupdate.ID,
-                });
-                console.log("Metadata Updated");
-              });
-            });
-          });
 
 
 
@@ -2144,7 +2294,7 @@ this.setState({
         await sp.web
           .getFolderByServerRelativePath(
             // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`
+            `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
 
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
@@ -2153,6 +2303,7 @@ this.setState({
           .then(async (item) => {
             console.log(item);
             item.filter((file) => {
+              console.log(file);
               console.log(file.LinkingUri);
               if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
                 fileurl = file.LinkingUri;
@@ -2199,7 +2350,7 @@ this.setState({
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
 
               Department: Department,
               SubDepartment: Subdepartment,
@@ -2227,7 +2378,7 @@ this.setState({
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-               RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+               RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
 
 
               Department: Department,
@@ -2253,7 +2404,7 @@ this.setState({
         console.log(myfile.name);
         let fileexe = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
 
         console.log(`${this.state.fileNameStruct}.${fileexe}`);
         // await sp.web
@@ -2262,7 +2413,7 @@ this.setState({
         //   )
           await sp.web
           .getFolderByServerRelativePath(
-            `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`
+            `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
@@ -2312,7 +2463,7 @@ this.setState({
 
         // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
 
-        const folderPath:any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+        const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
 
         const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
         
@@ -2352,7 +2503,7 @@ this.setState({
                 DocID: String(this.state.DocID + 1),
                 Status: "Pending",
                 // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-                RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
                 Department: Department,
                 SubDepartment: Subdepartment,
               })
@@ -2378,7 +2529,7 @@ this.setState({
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
 
               Department: Department,
               SubDepartment: Subdepartment,
