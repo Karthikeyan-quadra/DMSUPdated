@@ -319,6 +319,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
       const sp:SPFI=getSp();
       if (this.state.Selected_item.Approver2 != "") {
         if (this.state.Selected_item.Approver3 != "") {
+          const sp:SPFI=getSp();
           await sp.web.lists
             .getByTitle("User Files")
             .items.getById(this.state.Selected_item.ID)

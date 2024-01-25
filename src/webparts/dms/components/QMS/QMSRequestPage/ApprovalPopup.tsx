@@ -47,7 +47,7 @@ import { SPFI } from "@pnp/sp";
 import { Approvalmail } from "./MailTrigger";
 import { off } from "process";
 
-const sp:SPFI=getSp()
+const sp:SPFI=getSp();
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 200 },
 };
@@ -160,6 +160,7 @@ export default class ApprovalPopup extends React.Component<{}, any> {
   }
 
   public SendRequest = async () => {
+    const sp: SPFI = getSp();
     if (this.state.Level != "") {
       console.log(this.state.Approver_A);
       console.log(this.state.Approver_B);
@@ -175,6 +176,7 @@ export default class ApprovalPopup extends React.Component<{}, any> {
           Denystatus: false,
         });
         console.log(this.state.QMSApprover);
+            const sp: SPFI = getSp();
         await sp.web.lists
           .getByTitle("User Files")
           .items.getById(this.state.UniqueItem.ID)
@@ -184,7 +186,9 @@ export default class ApprovalPopup extends React.Component<{}, any> {
             Level: this.state.Level,
             Approver2: this.state.Approver_A.EmailID,
             Approver3: this.state.Approver_B.EmailID,
-            Approver4: this.state.QMSApprover[0].EmailID,
+            // Approver4: this.state.QMSApprover[0].EmailID,
+            Approver4: this.state.QMSApprover && this.state.QMSApprover[0] ? this.state.QMSApprover[0].EmailID : "",
+
             Remainder: this.formatDate(date),
           });
 

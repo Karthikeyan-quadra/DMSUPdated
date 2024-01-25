@@ -1126,20 +1126,23 @@ export default class header extends React.Component<{}, any> {
         //   .getFolderByServerRelativePath(
         //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
         //   .files.getAll()
-
-        const sp: SPFI = getSp();
-        let folderPath: any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-        let folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
-        let files: any = await folder.files.get();
-        
+        const sp:SPFI=getSp();
+        let folderPath:any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+        let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
+        console.log(folder);
+        // Use getItemsByCAMLQuery to get all items (files) in the folder
+        let somss: any = await folder.files.getAll();
+        console.log(folder)
         // Process files
-        files.forEach(async (file: any) => {
+        somss.forEach(async (file: any) => {
           let last = file.Name.split("-").pop();
           console.log(last);
         
-          let splitFileEx = last.split(".")[0];
+          let splitFileEx: any = last.split(".")[0];
           digitArray.push(splitFileEx);
         });
+        
+        
         
         // Calculate lastDigit and update state
         if (digitArray.length > 0) {
@@ -2402,7 +2405,7 @@ this.setState({
       } else {
         const sp:SPFI=getSp()
         console.log(myfile.name);
-        let fileexe = myfile.name.split(".").pop();
+        let fileexe:any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
 

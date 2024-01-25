@@ -253,7 +253,7 @@ console.log(item.File);
     // // console.log(DocumentType);
     await sp.web.lists
       .getByTitle("Sub departments")
-      .items.select("SubFolders,ParentFolder")
+      .items.select("Subfolders,ParentFolder")
       .getAll()
       .then(async (item) => {
         await item.map(async (nn) => {
@@ -558,7 +558,10 @@ console.log(item.File);
       let lastDigit = "";
       let params6;
       let digitArray:any = [];
-      await console.log(`/sites/DMSportal/Shared Documents/${somee.join("/")}`);
+      // await console.log(`/sites/DMSportal/Shared Documents/${somee.join("/")}`);
+      await console.log(`/sites/DMS-TATA/Shared Documents1/${somee.join("/")}`);
+
+  
       
       const sp:SPFI=getSp()
     //   let somss:any = await sp.web
@@ -567,10 +570,11 @@ console.log(item.File);
     //     )
     //     .files.getAll()
 
-    const folderPath:any = `/sites/DMSportal/Shared Documents/{somee.join("/")`;
+    const folderPath:any = `/sites/DMS-TATA/Shared Documents1/{somee.join("/")`;
+
 
 const folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
-const files = await folder.files.getAll().then(async (s) => {
+const files:any = await folder.files.getAll().then(async (s) => {
           // console.log(s)
           if (s.length > 0) {
             s.map((ss) => {
@@ -700,7 +704,8 @@ const sp: SPFI = getSp();
 let filesName:any = [];
 
 try {
-  const folderPath:any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
+  // const folderPath:any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
+  const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
   const folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
   const files:any = await folder.files.getAll();
 
@@ -753,7 +758,9 @@ try {
     //     })
 
     try {
-        const folderPath: any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
+        // const folderPath: any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
+        const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
+
         const folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
         const files: any = await folder.files.getAll();
       

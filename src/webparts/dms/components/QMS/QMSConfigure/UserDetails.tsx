@@ -333,7 +333,7 @@ const sp:SPFI=getSp();
         edit_EmailID: value,
       });
     };
-
+    //original code
     const edit_uploader = (event, isChecked) => {
       isChecked == true
         ? this.setState({
@@ -363,6 +363,28 @@ const sp:SPFI=getSp();
             edit_Approver: "false",
           });
     };
+
+
+    // const toggleCheckbox = (key) => {
+    //   this.setState((prevState) => ({
+    //     [key]: prevState[key] === "true" ? "false" : "true",
+    //   }));
+    // };
+    
+    // const edit_uploader = (event, isChecked) => {
+    //   toggleCheckbox("edit_Uploader");
+    // };
+    
+    // const edit_QMS = (event, isChecked) => {
+    //   toggleCheckbox("edit_QMS");
+    // };
+    
+    // const edit_Approver = (event, isChecked) => {
+    //   toggleCheckbox("edit_Approver");
+    // };
+    
+    
+    
 
     const handleadd_Username = (event, value) => {
       this.setState({
@@ -492,8 +514,10 @@ const sp:SPFI=getSp();
                 Username: this.state.edit_UserName,
                 EmailID: this.state.edit_EmailID,
                 Fileuploader: this.state.edit_Uploader,
-                Approver: this.state.edit_QMS,
-                QMS: this.state.edit_Approver,
+                // Approver: this.state.edit_QMS,
+                // QMS: this.state.edit_Approver,
+                Approver: this.state.edit_Approver,
+                QMS: this.state.edit_QMS,
               })
               .then(async (res) =>
                 this.setState({

@@ -353,6 +353,8 @@ export default class header extends React.Component<{}, any> {
       console.log("inside approver 4");
 
       if (exists === true) {
+        const sp:SPFI=getSp()
+
         const folderPath = `${destinationUrl}/${value.Filename}`;
         
         // Upload the file content to the specified folder

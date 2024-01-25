@@ -142,268 +142,382 @@ export default class QMSConfigure extends React.Component<{}, any> {
 
 
   render() {
-    const HandleLevel = async (e, value: any) => {
-      console.log("Selected Level:", value);
-      console.log(this.state.SubDepartment);
-      console.log(value);
-      this.setState(
-        {
-          Level: value.text,
-          errmsgApproverA: "",
-          errmsgApprover: "",
-          errmsgApproverB: "",
-          show: false,
-          ischanged: true,
-        },
-        async () => {
-          console.log(this.state.SubDepartment);
-          if (this.state.Department != "") {
-            this.setState({
-              ApproverA: await getInitialApprovers(
-                this.state.Department,
-                this.state.Level,
-                this.state.SubDepartment
-              ).then(async (item) => {
-                const list: { Key: any; text: any, Level:any,  Department:any, SubDepartment: any}[] = [];
-                await item.map(async (val) => {
-                  await list.push({
-                    text: val.Name,
-                    Key: val.EmailID,
-                    //Authority: val.Authority,
-                    Level: val.Level,
-
-                    Department: val.Department,
-                    SubDepartment: val.SubDepartment,
-                  });
-                });
-                if (list.length == 0) {
-                  this.setState({
-                    errmsgApproverA: "No Data found",
-                  });
-                }
-                console.log(list);
-                return list;
-              }),
-
-
-//Original code
-// this.setState(
-//   {
-//     ischanged: true,
-//     approveshow: true,
-//     errmsgApproverA: "",
-//     errmsgApproverB: "",
-//     errmsgApprover: "",
-//     SubDepartment: "",
-//     Department: value.text,
-//     SubDepartmentlist: await getSubDepartmentlist(value.text),
-//   },
-//   async () => {
-//     this.setState({
-//       sub_Status: this.state.SubDepartmentlist.length == 0 ? true : false,
-//     });
-//     if (this.state.SubDepartmentlist.length == 0) {
-//       this.setState({
-//         ApproverA: await getInitialApprovers(
-//           this.state.Department,
-//           this.state.Level,
-//           ""
-//         ).then(async (item) => {
-//           // let list = [];
-//           const list: { Key: any; text: any, Level:any,  Department:any, SubDepartment: any}[] = [];
-
-//           await item.map(async (val) => {
-//             await list.push({
-//               text: val.Name,
-//               Key: val.EmailID,
-//               //Authority: val.Authority,
-//               Level: val.Level,
-
-//               Department: val.Department,
-//               SubDepartment: val.SubDepartment,
-//             });
-//           });
-//           if (list.length == 0) {
+//     const HandleLevel = async (e, value: any) => {
+//       console.log(this.state.SubDepartment);
+//       console.log(value);
+//       this.setState(
+//         {
+//           Level: value.text,
+//           errmsgApproverA: "",
+//           errmsgApprover: "",
+//           errmsgApproverB: "",
+//           show: false,
+//           ischanged: true,
+          
+//         },
+//         async () => {
+//           console.log(this.state.SubDepartment);
+//           if (this.state.Department != "") {
 //             this.setState({
-//               errmsgApproverA: "No Data found",
-//             });
-//           }
-//           console.log(list);
-//           return list;
-//         }),
+//               ApproverA: await getInitialApprovers(
+//                 this.state.Department,
+//                 this.state.Level,
+//                 this.state.SubDepartment
+//               ).then(async (item) => {
+//                 let list:any = [];
+//                 await item.map(async (val) => {
+//                   await list.push({
+//                     text: val.Name,
+//                     key: val.EmailID,
+//                     //Authority: val.Authority,
+//                     Level: val.Level,
 
-//         Approver_A: await getApprover1(
-//           this.state.Department,
-//           this.state.Level,
-//           ""
-//         ),
-//         Approver_B: await getApprover2(
-//           this.state.Department,
-//           this.state.Level,
-//           ""
-//         ),
-//       });
-//     }
-//   }
-// );
-// };
+//                     Department: val.Department,
+//                     SubDepartment: val.SubDepartment,
+//                   });
+//                 });
+//                 if (list.length == 0) {
+//                   this.setState({
+//                     errmsgApproverA: "No Data found",
+//                   });
+//                 }
+//                 console.log(list);
+//                 return list;
+//               }),
+              
+//               ApproverB: await getInitialApprovers(
+//                 this.state.Department,
+//                 this.state.Level,
+//                 this.state.SubDepartment
+//               ).then(async (item) => {
+//                 let list:any = [];
+//                 await item.map(async (val) => {
+//                   await list.push({
+//                     text: val.Name,
+//                     key: val.EmailID,
+//                     //Authority: val.Authority,
+//                     Level: val.Level,
+
+//                     Department: val.Department,
+//                     SubDepartment: val.SubDepartment,
+//                   });
+//                 });
+//                 if (list.length == 0) {
+//                   this.setState({
+//                     errmsgApproverA: "No Data found",
+//                   });
+//                 }
+//                 console.log(list);
+//                 return list;
+//               }),
+
               
 
-// ApproverA: await getInitialApprovers(
-//   this.state.Department,
-//   this.state.Level,
-//   this.state.SubDepartment
-// )
-//   .then((item) => {
-//     try {
-//       console.log("Initial Approvers for Approver_A:", item);
+              
+              
 
-//       // Process the items and return the list
-//       const list: {
-//         Key: any;
-//         text: any;
-//         Level: any;
-//         Department: any;
-//         SubDepartment: any;
-//       }[] = item.map((val) => ({
-//         text: val.Name,
-//         Key: val.EmailID,
-//         Level: val.Level,
-//         Department: val.Department,
-//         SubDepartment: val.SubDepartment,
-//       }));
+//               Approver_A: await getApprover1(
+//                 this.state.Department,
+//                 this.state.Level,
+//                 this.state.SubDepartment
+//               ),
+//               Approver_B: await getApprover2(
+//                 this.state.Department,
+//                 this.state.Level,
+//                 this.state.SubDepartment
+//               ),
+//             });
+//           }
+//         }
+//       );
+//     };
 
-//       if (list.length === 0) {
-//         this.setState({
-//           errmsgApproverA: "No Data found",
-//         });
-//       }
+// //Original code
+// // this.setState(
+// //   {
+// //     ischanged: true,
+// //     approveshow: true,
+// //     errmsgApproverA: "",
+// //     errmsgApproverB: "",
+// //     errmsgApprover: "",
+// //     SubDepartment: "",
+// //     Department: value.text,
+// //     SubDepartmentlist: await getSubDepartmentlist(value.text),
+// //   },
+// //   async () => {
+// //     this.setState({
+// //       sub_Status: this.state.SubDepartmentlist.length == 0 ? true : false,
+// //     });
+// //     if (this.state.SubDepartmentlist.length == 0) {
+// //       this.setState({
+// //         ApproverA: await getInitialApprovers(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           ""
+// //         ).then(async (item) => {
+// //           // let list = [];
+// //           const list: { Key: any; text: any, Level:any,  Department:any, SubDepartment: any}[] = [];
 
-//       console.log(list);
-//       return list;
-//     } catch (error) {
-//       console.error("Error processing initial approvers:", error);
-//       throw error; // Throw the error to be caught by the .catch block
-//     }
-//   })
-//   .catch((error) => {
-//     console.error("Error fetching initial approvers:", error);
-//     this.setState({
-//       errmsgApproverA: "Error fetching data",
-//     });
-//     return [];
-//   }),
+// //           await item.map(async (val) => {
+// //             await list.push({
+// //               text: val.Name,
+// //               Key: val.EmailID,
+// //               //Authority: val.Authority,
+// //               Level: val.Level,
+
+// //               Department: val.Department,
+// //               SubDepartment: val.SubDepartment,
+// //             });
+// //           });
+// //           if (list.length == 0) {
+// //             this.setState({
+// //               errmsgApproverA: "No Data found",
+// //             });
+// //           }
+// //           console.log(list);
+// //           return list;
+// //         }),
+
+// //         Approver_A: await getApprover1(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           ""
+// //         ),
+// //         Approver_B: await getApprover2(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           ""
+// //         ),
+// //       });
+// //     }
+// //   }
+// // );
+// // };
+              
+
+// // ApproverA: await getInitialApprovers(
+// //   this.state.Department,
+// //   this.state.Level,
+// //   this.state.SubDepartment
+// // )
+// //   .then((item) => {
+// //     try {
+// //       console.log("Initial Approvers for Approver_A:", item);
+
+// //       // Process the items and return the list
+// //       const list: {
+// //         Key: any;
+// //         text: any;
+// //         Level: any;
+// //         Department: any;
+// //         SubDepartment: any;
+// //       }[] = item.map((val) => ({
+// //         text: val.Name,
+// //         Key: val.EmailID,
+// //         Level: val.Level,
+// //         Department: val.Department,
+// //         SubDepartment: val.SubDepartment,
+// //       }));
+
+// //       if (list.length === 0) {
+// //         this.setState({
+// //           errmsgApproverA: "No Data found",
+// //         });
+// //       }
+
+// //       console.log(list);
+// //       return list;
+// //     } catch (error) {
+// //       console.error("Error processing initial approvers:", error);
+// //       throw error; // Throw the error to be caught by the .catch block
+// //     }
+// //   })
+// //   .catch((error) => {
+// //     console.error("Error fetching initial approvers:", error);
+// //     this.setState({
+// //       errmsgApproverA: "Error fetching data",
+// //     });
+// //     return [];
+// //   }),
 
     
-    Approver_A: await getApprover1(
-                this.state.Department,
-                this.state.Level,
-                this.state.SubDepartment
-              ),
-              Approver_B: await getApprover2(
-                this.state.Department,
-                this.state.Level,
-                this.state.SubDepartment
-              ),
-            });
-          }
-        }
-      );
+//     // Approver_A: await getApprover1(
+//     //             this.state.Department,
+//     //             this.state.Level,
+//     //             this.state.SubDepartment
+//     //           ),
+//     //           Approver_B: await getApprover2(
+//     //             this.state.Department,
+//     //             this.state.Level,
+//     //             this.state.SubDepartment
+//     //           ),
+//     //         });
+//     //       }
+//     //     }
+//     //   );
+//     //   }
+// // this.setState(
+// //   {
+// //     Level: value.text,
+// //     errmsgApproverA: "",
+// //     errmsgApprover: "",
+// //     errmsgApproverB: "",
+// //     show: false,
+// //     ischanged: true,
+// //   },
+// //   async () => {
+// //     console.log(this.state.SubDepartment);
+// //     if (this.state.Department !== "") {
+// //       this.setState({
+// //         ApproverA: await getInitialApprovers(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           this.state.SubDepartment
+// //         ).then(async (item) => {
+// //           const list: {
+// //             Key: any;
+// //             text: any;
+// //             Level: any;
+// //             Department: any;
+// //             SubDepartment: any;
+// //           }[] = [];
+// //           await item.map(async (val) => {
+// //             await list.push({
+// //               text: val.Name,
+// //               Key: val.EmailID,
+// //               Level: val.Level,
+// //               Department: val.Department,
+// //               SubDepartment: val.SubDepartment,
+// //             });
+// //           });
 
+// //           if (list.length == 0) {
+// //             this.setState({
+// //               errmsgApproverA: "No Data found",
+// //             });
+// //           }
+// //           console.log(list);
+// //           return list;
+// //         }),
+// //       });
+
+// //       this.setState({
+// //         ApproverB: await getInitialApprovers(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           this.state.SubDepartment
+// //         ).then(async (item) => {
+// //           const list: {
+// //             Key: any;
+// //             text: any;
+// //             Level: any;
+// //             Department: any;
+// //             SubDepartment: any;
+// //           }[] = [];
+// //           await item.map(async (val) => {
+// //             await list.push({
+// //               text: val.Name,
+// //               Key: val.EmailID,
+// //               Level: val.Level,
+// //               Department: val.Department,
+// //               SubDepartment: val.SubDepartment,
+// //             });
+// //           });
+
+// //           if (list.length == 0) {
+// //             this.setState({
+// //               errmsgApproverB: "No Data found",
+// //             });
+// //           }
+// //           console.log(list);
+// //           return list;
+// //         }),
+// //       });
+// //       this.setState({
+// //         Approver_A: await getApprover1(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           this.state.SubDepartment
+// //         ),
+// //         Approver_B: await getApprover2(
+// //           this.state.Department,
+// //           this.state.Level,
+// //           this.state.SubDepartment
+// //         ),
+// //       });
+// //     }
+// //   }
+// // );
+// // };
+
+
+const HandleLevel = async (e, value: any) => {
+  console.log(this.state.SubDepartment);
+  console.log(value);
+
+  try {
+    // Set initial state
+    this.setState({
+      Level: value.text,
+      errmsgApproverA: "",
+      errmsgApprover: "",
+      errmsgApproverB: "",
+      show: false,
+      ischanged: true,
+    });
+
+    if (this.state.Department !== "") {
+      // Fetch data for ApproverA and ApproverB
+      const [approverAData, approverBData] = await Promise.all([
+        getInitialApprovers(this.state.Department, this.state.Level, this.state.SubDepartment),
+        getInitialApprovers(this.state.Department, this.state.Level, this.state.SubDepartment),
+      ]);
+
+      // Process data for ApproverA
+      const approverAList = approverAData.map((val) => ({
+        text: val.Name,
+        key: val.EmailID,
+        Level: val.Level,
+        Department: val.Department,
+        SubDepartment: val.SubDepartment,
+      }));
+
+      if (approverAList.length === 0) {
+        this.setState({
+          errmsgApproverA: "No Data found",
+        });
       }
-// this.setState(
-//   {
-//     Level: value.text,
-//     errmsgApproverA: "",
-//     errmsgApprover: "",
-//     errmsgApproverB: "",
-//     show: false,
-//     ischanged: true,
-//   },
-//   async () => {
-//     console.log(this.state.SubDepartment);
-//     if (this.state.Department !== "") {
-//       this.setState({
-//         ApproverA: await getInitialApprovers(
-//           this.state.Department,
-//           this.state.Level,
-//           this.state.SubDepartment
-//         ).then(async (item) => {
-//           const list: {
-//             Key: any;
-//             text: any;
-//             Level: any;
-//             Department: any;
-//             SubDepartment: any;
-//           }[] = [];
-//           await item.map(async (val) => {
-//             await list.push({
-//               text: val.Name,
-//               Key: val.EmailID,
-//               Level: val.Level,
-//               Department: val.Department,
-//               SubDepartment: val.SubDepartment,
-//             });
-//           });
 
-//           if (list.length == 0) {
-//             this.setState({
-//               errmsgApproverA: "No Data found",
-//             });
-//           }
-//           console.log(list);
-//           return list;
-//         }),
-//       });
+      // Process data for ApproverB
+      const approverBList = approverBData.map((val) => ({
+        text: val.Name,
+        key: val.EmailID,
+        Level: val.Level,
+        Department: val.Department,
+        SubDepartment: val.SubDepartment,
+      }));
 
-//       this.setState({
-//         ApproverB: await getInitialApprovers(
-//           this.state.Department,
-//           this.state.Level,
-//           this.state.SubDepartment
-//         ).then(async (item) => {
-//           const list: {
-//             Key: any;
-//             text: any;
-//             Level: any;
-//             Department: any;
-//             SubDepartment: any;
-//           }[] = [];
-//           await item.map(async (val) => {
-//             await list.push({
-//               text: val.Name,
-//               Key: val.EmailID,
-//               Level: val.Level,
-//               Department: val.Department,
-//               SubDepartment: val.SubDepartment,
-//             });
-//           });
+      if (approverBList.length === 0) {
+        this.setState({
+          errmsgApproverB: "No Data found",
+        });
+      }
 
-//           if (list.length == 0) {
-//             this.setState({
-//               errmsgApproverB: "No Data found",
-//             });
-//           }
-//           console.log(list);
-//           return list;
-//         }),
-//       });
-//       this.setState({
-//         Approver_A: await getApprover1(
-//           this.state.Department,
-//           this.state.Level,
-//           this.state.SubDepartment
-//         ),
-//         Approver_B: await getApprover2(
-//           this.state.Department,
-//           this.state.Level,
-//           this.state.SubDepartment
-//         ),
-//       });
-//     }
-//   }
-// );
-// };
+      // Set state for both Approvers
+      this.setState({
+        ApproverA: approverAList,
+        ApproverB: approverBList,
+        Approver_A: await getApprover1(this.state.Department, this.state.Level, this.state.SubDepartment),
+        Approver_B: await getApprover2(this.state.Department, this.state.Level, this.state.SubDepartment),
+      });
+    }
+  } catch (error) {
+    console.error("Error in HandleLevel:", error);
+    // Handle errors as needed
+  }
+};
+
+
 
     const Handlechange = async () => {
       const sp:SPFI=getSp()
@@ -623,6 +737,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
         }
       );
     };
+    
     // const HandleApproverA = async (e, value: any) => {
     //   console.log(value);
     //   console.log(e);
@@ -680,6 +795,8 @@ export default class QMSConfigure extends React.Component<{}, any> {
         errmsgApprover: "",
       });
     };
+
+    
     const toggleHideDialog = () => {
       this.setState({
         hideDialog: true,
