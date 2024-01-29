@@ -7,11 +7,14 @@ import { Dropdown, Table } from "react-bootstrap";
 import { ITextFieldStyles } from 'office-ui-fabric-react';
 import { getSitelist } from "../Data/GetSiteList";
 import { Approvalmail,Denymail, UserApprovalmail } from "../Mailtrigger";
+
 import { TablePagination } from '@material-ui/core';
 import Logo  from "../../../../Images/Illustration.png";
 import { SPFI } from "@pnp/sp";
 import { getSp } from "../../../../helpers/PnPConfig";
 import "@pnp/sp/lists";
+import "@pnp/sp/items/get-all";
+
 
 var date = new Date();
 
@@ -181,69 +184,138 @@ export default class header extends React.Component<{}, any> {
 
 
 
+  // public async componentDidMount() {
+
+  //   // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
+  //   const sp:SPFI=getSp()
+
+  //   const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
+  //   const filesForApproval: any[] = await sp.web.lists
+  //     .getByTitle("User Files")
+  //     .items();
+  //   console.log(filesForApproval);
+  //   let user = await sp.web.currentUser();
+  //   console.log(user.Email);
+  //   // let userDetails = [];
+  //   // let fileArray = [];
+  //   // let fileArrayUpdated = [];
+
+  //   let userDetails:any = [];
+  //   let fileArray:any = [];
+  //   let fileArrayUpdated:any = [];
+
+  //   await filesForApproval.map(async (files) => {
+  //     if (files.Approver2 === user.Email && files.ApprovalStatus === "APPROVER 2") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver3 === user.Email && files.ApprovalStatus === "APPROVER 3") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver4 === user.Email && files.ApprovalStatus === "APPROVER 4") {
+  //       await userDetails.push(files);
+  //     }
+  //   });
+
+  //   await console.log(userDetails);
+
+  //   var uniq = {};
+  //   // var arr  = [{"id":"1"},{"id":"1"},{"id":"2"}]
+  //   fileArray = userDetails.filter(
+  //     (obj) => !uniq[obj.ID] && (uniq[obj.ID] = true)
+  //   );
+
+  //   console.log("fileArray", fileArray);
+
+  //   await fileArray.filter(async (files) => {
+  //     if (files.Status === "Processing") {
+  //       fileArrayUpdated.push(files);
+  //     }
+  //   });
+
+  //   console.log("fileArrayUpdated", fileArrayUpdated);
+
+  //   this.setState({
+  //     value: fileArrayUpdated,
+  //     CurrentUser: user.Email
+  // },()=>{
+  //   this.setState({
+  //     count:this.state.value.length,items:this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
+  //     overalllist:this.state.value
+  //   })
+  // })
+
   public async componentDidMount() {
 
-    // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
-    const sp:SPFI=getSp()
+  try {
+    const sp: SPFI = getSp();
+    console.log("Connected to SharePoint");
 
     const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
-    const filesForApproval: any[] = await sp.web.lists
-      .getByTitle("User Files")
-      .items();
-    console.log(filesForApproval);
-    let user = await sp.web.currentUser();
-    console.log(user.Email);
-    // let userDetails = [];
-    // let fileArray = [];
-    // let fileArrayUpdated = [];
+    console.log("Approverlist items:", items);
 
-    let userDetails:any = [];
-    let fileArray:any = [];
-    let fileArrayUpdated:any = [];
+    const filesForApproval: any[] = await sp.web.lists.getByTitle("User Files").items();
+    console.log("User Files items:", filesForApproval);
 
-    await filesForApproval.map(async (files) => {
-      if (files.Approver2 === user.Email && files.ApprovalStatus === "APPROVER 2") {
-        await userDetails.push(files);
+    let user:any = await sp.web.currentUser();
+    console.log("Current user:", user.Email);
+
+    let userDetails: any[] = [];
+    let fileArrayUpdated: any[] = [];
+
+    for (const files of filesForApproval) {
+      console.log("Processing file:", files);
+    
+      // Check if the current user's email matches any Approver field
+      if (
+        (files.Approver2 && files.Approver2.toLowerCase() === user.Email.toLowerCase()) ||
+        (files.Approver3 && files.Approver3.toLowerCase() === user.Email.toLowerCase()) ||
+        (files.Approver4 && files.Approver4.toLowerCase() === user.Email.toLowerCase())
+      ) {
+        console.log("Adding file to userDetails:", files);
+        userDetails.push(files);
       }
-      if (files.Approver3 === user.Email && files.ApprovalStatus === "APPROVER 3") {
-        await userDetails.push(files);
-      }
-      if (files.Approver4 === user.Email && files.ApprovalStatus === "APPROVER 4") {
-        await userDetails.push(files);
-      }
+    }
+    
+    console.log("userDetails:", userDetails);
+
+    this.setState({
+      items: userDetails,
+      value: userDetails, // Assuming value is another state property you want to update
     });
 
-    await console.log(userDetails);
+    var uniq:any = {};
+    const fileArray:any = userDetails.filter((obj) => !uniq[obj.ID] && (uniq[obj.ID] = true));
 
-    var uniq = {};
-    // var arr  = [{"id":"1"},{"id":"1"},{"id":"2"}]
-    fileArray = userDetails.filter(
-      (obj) => !uniq[obj.ID] && (uniq[obj.ID] = true)
-    );
+    console.log("fileArray:", fileArray);
 
-    console.log("fileArray", fileArray);
-
-    await fileArray.filter(async (files) => {
+    fileArray.forEach((files) => {
       if (files.Status === "Processing") {
         fileArrayUpdated.push(files);
       }
     });
 
-    console.log("fileArrayUpdated", fileArrayUpdated);
+    console.log("fileArrayUpdated:", fileArrayUpdated);
 
-    this.setState({
-      value: fileArrayUpdated,
-      CurrentUser: user.Email
-  },()=>{
-    this.setState({
-      count:this.state.value.length,items:this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
-      overalllist:this.state.value
-    })
-  })
-
-  await console.log(this.state.item);
-  await console.log(this.state.value);
+    this.setState(
+      {
+        value: fileArrayUpdated,
+        CurrentUser: user.Email,
+        count: fileArrayUpdated.length,
+        items: fileArrayUpdated.slice(0, this.state.rowsPerPage),
+        overalllist: fileArrayUpdated,
+      },
+      () => {
+        console.log("State updated successfully");
+        console.log("this.state.items:", this.state.items);
+        console.log("this.state.value:", this.state.value);
+      }
+    );
+  } catch (error) {
+    console.error("Error in componentDidMount:", error);
   }
+}
+
+
   private _getKey(item: any, index?: number): string {
     return item.key;
   }
@@ -280,9 +352,7 @@ export default class header extends React.Component<{}, any> {
       };
 
   public render() {
-
-    const Approvemail = async (value,ApprovalStatus) => {
-
+    const Approvemail:any = async (value,ApprovalStatus) => {
 
       try {
         console.log(value);
@@ -297,9 +367,10 @@ export default class header extends React.Component<{}, any> {
       let siteUrl  = value.RelativeURL.split("/")
       siteUrl[3] = "Original File";
       console.log(siteUrl);
+      // let copy = siteUrl.join("/");
       let copy = siteUrl.join("/");
       console.log(copy)
-      console.log(`${value.RelativeURL}/${value.Filename}`)
+      console.log(`${value.RelativeURL}${value.Filename}`)
       let ApprovalStatuss = "";
       let ApproverEmail = "";
       let Statuss = "";
@@ -453,9 +524,15 @@ await folderForLinkingUri
 
 
 
+
+        
+
         //new file
+                const sp:SPFI=getSp()
         const fileRelativePath:any= `${destinationUrl}/${value.Filename}`;
-        const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
+        // const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
+        const fileExists:any = await sp.web.getFileByServerRelativePath(`${destinationUrl}/${value.Filename}`).exists();
+
 
         await fileExists.files.add(`${value.Filename}`, blob, true)
         .then(async (f) => {
@@ -501,6 +578,10 @@ await folderForLinkingUri
               }
             });
           });
+
+
+
+
 
         const items: any[] = await sp.web.lists.getByTitle("User Files").items.top(1).filter(`Filename eq '${value.Filename}'`)();
           console.log(items);
@@ -709,13 +790,28 @@ await folderForLinkingUri
 
     }
 
-    const RejectFunc = async (fileDetails)  => {
-      this.setState({
-          openDialog: true,
-          hiddenDialog: false,
-          CurrentFile: fileDetails
-        });
+//     const RejectFunc = async (fileDetails)  => {
+//       this.setState({
+//           openDialog: true,
+//           hiddenDialog: false,
+//           CurrentFile: fileDetails
+//         });
+// }
+
+const RejectFunc = async (fileDetails) => {
+  try {
+    // Display dialog for rejection comments
+    this.setState({
+      openDialog: true,
+      hiddenDialog: false,
+      CurrentFile: fileDetails,
+    });
+  } catch (error) {
+    console.error("Error displaying rejection dialog:", error);
+    alert("An error occurred. Please check the console for more details.");
+  }
 }
+
 
     const Rejectmail = async (value) => {
       console.log(value);

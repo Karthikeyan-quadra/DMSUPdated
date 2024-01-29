@@ -4,7 +4,6 @@ import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
 
 export async function Approvalmail(Content, level, Sender, Approver1) {
-  const sp:SPFI=getSp();
   const emailProps: IEmailProperties = {
     To: [Approver1],
     CC: [Content.RequestorEmail],
@@ -69,12 +68,13 @@ export async function Approvalmail(Content, level, Sender, Approver1) {
     </html>
     `,
   }
-
+  const sp:SPFI=getSp();
   await sp.utility.sendEmail(emailProps)
 }
 
 export async function Denymail(Content, Sender, Comment) {
   console.log(Content)
+
   const emailProps: IEmailProperties = {
     To: [Sender, Content.RequestorEmail],
     CC: [],

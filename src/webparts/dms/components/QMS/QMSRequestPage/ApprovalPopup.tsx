@@ -44,7 +44,9 @@ import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 
 import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
+// import { Approvalmail } from "./MailTrigger";
 import { Approvalmail } from "./MailTrigger";
+
 import { off } from "process";
 
 const sp:SPFI=getSp();

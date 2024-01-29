@@ -1,9 +1,10 @@
 import "@pnp/sp/lists";
 import {Web, IWeb, IEmailProperties } from "@pnp/sp/presets/all";
+// import { IEmailProperties } from "@pnp/sp/presets/all";  // Correct import statement
+
 import { getSp } from "../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
 
-const sp:SPFI=getSp()
 
 
 export async function Approvalmail(Content, approverEmail, ApprovedBy) {
@@ -58,8 +59,19 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
         </body>
         </html>`,
   };
+  const sp: SPFI = getSp();
 
   await sp.utility.sendEmail(emailProps);
+
+//   const sp: SPFI = getSp();
+// try {
+//   let some: any = await sp.utility.sendEmail(emailProps);
+//   console.log(some);
+// } catch (error) {
+//   console.error("Error sending email:", error);
+// }
+
+
 }
 
 export async function UserApprovalmail(Content) {
@@ -110,11 +122,23 @@ export async function UserApprovalmail(Content) {
   </body>
       </html>`,
   };
-
+  const sp: SPFI = getSp();
   await sp.utility.sendEmail(emailProps);
+
+  // const sp: SPFI = getSp();
+  // try {
+  //   let some: any = await sp.utility.sendEmail(emailProps);
+  //   console.log(some);
+  // } catch (error) {
+  //   console.error("Error sending email:", error);
+  // }
+  
+
+
 }
 
 export async function Denymail(Sender, Content, Comment) {
+  // const sp:SPFI=getSp();
   console.log(Comment);
   const emailProps: IEmailProperties = {
     To: [Sender],
@@ -146,7 +170,17 @@ export async function Denymail(Sender, Content, Comment) {
         </body>
         </html>`,
   };
-
-  let some = await sp.utility.sendEmail(emailProps);
+  const sp:SPFI=getSp();
+  let some:any = await sp.utility.sendEmail(emailProps);
   console.log(some);
+
+//   const sp: SPFI = getSp();
+// try {
+//   let some: any = await sp.utility.sendEmail(emailProps);
+//   console.log(some);
+// } catch (error) {
+//   console.error("Error sending email:", error);
+// }
+
+
 }
