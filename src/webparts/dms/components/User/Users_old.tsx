@@ -1358,7 +1358,7 @@ try {
     //     .files.add(`${this.state.fileNameStruct}.${fileexe}`, myfile, true)
 
     // const folderPath: any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-    const folderPath: any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+    const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
 
 const folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
 
@@ -1405,7 +1405,7 @@ await this.setState({
 
         this.state.fileUrl;
         // const foldPath: any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        const foldPath: any = `/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`;
+        const foldPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
 
         let fileUrl: any = "";
         
