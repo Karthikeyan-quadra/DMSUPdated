@@ -244,6 +244,9 @@ export default class header extends React.Component<{}, any> {
   //   })
   // })
 
+
+
+
   public async componentDidMount() {
 
   try {
@@ -379,6 +382,7 @@ export default class header extends React.Component<{}, any> {
         ApproverEmail = value.Approver3;
         ApprovedBy = value.Approver2;
         ApprovalStatuss = "APPROVER 3";
+        console.log(ApproverEmail);
         date.setDate(date.getDate() + 3);
         console.log(formatDate(date));
         console.log(date);
@@ -393,6 +397,7 @@ export default class header extends React.Component<{}, any> {
         ApproverEmail = value.Approver4;
         ApprovedBy = value.Approver3;
         ApprovalStatuss = "APPROVER 4";
+        console.log(ApproverEmail);
         date.setDate(date.getDate() + 2);
         console.log(formatDate(date));
         console.log(date);
@@ -408,10 +413,11 @@ export default class header extends React.Component<{}, any> {
         ApprovedBy = value.Approver4;
         ApprovalStatuss = "APPROVER 4";
         Statuss = "Completed"
+        console.log(ApproverEmail);
 
       const destinationUrl:any = `${copy}`;
-        console.log("inside approver 4");
-        const sp:SPFI=getSp()
+        console.log(destinationUrl);
+        const sp:SPFI=getSp();
       // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
 
       const buffer :ArrayBuffer = await sp.web.getFileByServerRelativePath(`${value.RelativeURL}/${value.Filename}`).getBuffer();
@@ -424,7 +430,6 @@ export default class header extends React.Component<{}, any> {
       console.log("inside approver 4");
 
       if (exists === true) {
-        const sp:SPFI=getSp()
 
         const folderPath = `${destinationUrl}/${value.Filename}`;
         
@@ -528,18 +533,19 @@ await folderForLinkingUri
         
 
         //new file
-                const sp:SPFI=getSp()
-        const fileRelativePath:any= `${destinationUrl}/${value.Filename}`;
-        // const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
-        const fileExists:any = await sp.web.getFileByServerRelativePath(`${destinationUrl}/${value.Filename}`).exists();
+                const fileRelativePath:any = `${destinationUrl}/${value.Filename}`;
+                console.log(fileRelativePath);
+                // const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
+                const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
+                console.log(fileExists);
 
 
-        await fileExists.files.add(`${value.Filename}`, blob, true)
-        .then(async (f) => {
-          console.log("File Uploaded");
-          console.log(`${destinationUrl}/${value.Filename}`);
-          await sp.web.getFileByServerRelativePath(`${destinationUrl}/${value.Filename}`).checkout();
-          await sp.web.getFileByServerRelativePath(`${value.RelativeURL}/${value.Filename}`).
+                await fileExists.files.add(value.Filename, blob, true)
+                .then(async (file) => {
+                    console.log("File Created", file);
+                    console.log(`${destinationUrl}/${value.Filename}`);
+                    await sp.web.getFileByServerRelativePath(`${destinationUrl}/${value.Filename}`).checkout();
+                  await sp.web.getFileByServerRelativePath(`${value.RelativeURL}/${value.Filename}`).
               recycle().then(function(data){
                 console.log(data);
               }).catch((e) => {
@@ -548,6 +554,7 @@ await folderForLinkingUri
         
 
                 console.log(`${destinationUrl}/${value.Filename}`);
+                
         //         let fileurl:any = "";
         //       await sp.web
         // .getFolderByServerRelativePath(`${destinationUrl}`) // Here comes a folder/subfolder path

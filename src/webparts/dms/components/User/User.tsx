@@ -1356,28 +1356,40 @@ export default class header extends React.Component<{}, any> {
   
       const list = sp.web.lists.getByTitle("Original File");
       try {
-          const items = await list.items.filter(`FileDirRef eq '${folderPath}'`).getAll();
+          const items = await list.items.select('Id,Title,FileRef,FileLeafRef,FileDirRef').filter(`FileDirRef eq '${folderPath}'`).getAll();
           console.log("Fetched items:", items);
-  
+
+    
           if (items.length > 0) {
-              items.map((item: any) => {
-                  if (item && item.FileLeafRef) {
-                      let last = item.FileLeafRef.split("-").pop();
-                      if (last) {
-                          console.log(last);
-                          let splitFileEx = last.split(".")[0];
-                          digitArray.push(splitFileEx);
-                      }
-                  }
-              });
+            console.log('HI')
+            items.forEach((item: any) => {
+              console.log(item)
+              if (item && item.FileLeafRef) {
+                console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
+          
+                // Extract digits using a regular expression
+                let extractedDigits = item.FileLeafRef.match(/\d+/);
+          
+                if (extractedDigits) {
+                  console.log("Extracted Digits:", extractedDigits[0]);
+                  digitArray.push(extractedDigits[0]);
+                } else {
+                  console.log("No valid digits found in FileLeafRef:", item.FileLeafRef);
+                }
+              }
+            });
           }
-      } catch (error) {
+
+
+}
+
+ catch (error) {
           console.error("Error fetching items:", error);
       }
       
   
       if (digitArray.length > 0) {
-        let sortNumbers = digitArray.sort();
+        let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
         let last = sortNumbers[sortNumbers.length - 1];
         let returnNumber: string = (last + 1).toString().padStart(4, '0');
   
@@ -1393,7 +1405,9 @@ export default class header extends React.Component<{}, any> {
       } else {
         lastDigit = "0001";
       }
-  
+
+      console.log("Digit Array:", digitArray);
+
       somee1.push(lastDigit);
       console.log(lastDigit);
       console.log(somee1);
