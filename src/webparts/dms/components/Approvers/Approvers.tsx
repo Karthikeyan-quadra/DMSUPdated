@@ -359,8 +359,8 @@ export default class header extends React.Component<{}, any> {
 
       try {
         console.log(value);
-      console.log(value.ID);
-      console.log(value.RelativeURL)
+        console.log(value.ID);
+        console.log(value.RelativeURL)
 
       this.setState({
         loading: true,
@@ -417,9 +417,8 @@ export default class header extends React.Component<{}, any> {
 
       const destinationUrl:any = `${copy}`;
         console.log(destinationUrl);
-        const sp:SPFI=getSp();
       // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
-
+      const sp:SPFI=getSp();
       const buffer :ArrayBuffer = await sp.web.getFileByServerRelativePath(`${value.RelativeURL}/${value.Filename}`).getBuffer();
       console.log(buffer)
       const blob: Blob = await sp.web.getFileByServerRelativePath(`${value.RelativeURL}/${value.Filename}`).getBlob();
@@ -1036,7 +1035,5 @@ rowsPerPageOptions={[5, 10, 25]}
     />
       </div>
     );
-
-
   }
 }

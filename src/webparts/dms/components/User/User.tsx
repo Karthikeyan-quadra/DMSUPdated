@@ -1368,11 +1368,11 @@ export default class header extends React.Component<{}, any> {
                 console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
           
                 // Extract digits using a regular expression
-                let extractedDigits = item.FileLeafRef.match(/\d+/);
+                let extractedDigits = item.FileLeafRef.match(/\d+/g);
           
                 if (extractedDigits) {
-                  console.log("Extracted Digits:", extractedDigits[0]);
-                  digitArray.push(extractedDigits[0]);
+                  console.log("Extracted Digits:", extractedDigits);
+                  digitArray.push(...extractedDigits); // Use spread operator to push individual digits
                 } else {
                   console.log("No valid digits found in FileLeafRef:", item.FileLeafRef);
                 }
@@ -2537,8 +2537,11 @@ const handleFileChange = (e) => {
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
 
-        await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
+
+
+        await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
           .then(async (f) => {
             await f.file.getItem().then(async (item) => {
               await item
@@ -2558,6 +2561,8 @@ const handleFileChange = (e) => {
               //   });
               //   console.log("Metadata Updated");
               // });
+
+              console.log(item);
             });
           });
 
