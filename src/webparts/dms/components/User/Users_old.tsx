@@ -559,7 +559,9 @@ console.log(item.File);
       let params6;
       let digitArray:any = [];
       // await console.log(`/sites/DMSportal/Shared Documents/${somee.join("/")}`);
-      await console.log(`/sites/DMS-TATA/Shared Documents1/${somee.join("/")}`);
+      // await console.log(`/sites/DMS-TATA/Shared Documents1/${somee.join("/")}`);
+      await console.log(`/sites/DMS-Quadra/Shared Documents1/${somee.join("/")}`);
+
 
   
       
@@ -570,7 +572,9 @@ console.log(item.File);
     //     )
     //     .files.getAll()
 
-    const folderPath:any = `/sites/DMS-TATA/Shared Documents1/{somee.join("/")`;
+    // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/{somee.join("/")`;
+    const folderPath:any = `/sites/DMS-Quadra/Shared Documents1/{somee.join("/")`;
+
 
 
 const folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
@@ -705,7 +709,9 @@ let filesName:any = [];
 
 try {
   // const folderPath:any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
-  const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
+  // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
+  const folderPath:any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+
   const folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
   const files:any = await folder.files.getAll();
 
@@ -759,7 +765,10 @@ try {
 
     try {
         // const folderPath: any = `/sites/DMSportal/Shared Documents/${fileUrl}`;
-        const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
+        // const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${fileUrl}`;
+        const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+
+        
 
         const folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
         const files: any = await folder.files.getAll();
@@ -1358,7 +1367,9 @@ try {
     //     .files.add(`${this.state.fileNameStruct}.${fileexe}`, myfile, true)
 
     // const folderPath: any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-    const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+    // const folderPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+    const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+
 
 const folder: any = await sp.web.getFolderByServerRelativePath(folderPath);
 
@@ -1405,7 +1416,9 @@ await this.setState({
 
         this.state.fileUrl;
         // const foldPath: any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        const foldPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        // const foldPath: any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        const foldPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+
 
         let fileUrl: any = "";
         

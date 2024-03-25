@@ -56,7 +56,8 @@ export async function Approvalmail(Content, level, Sender, Approver1) {
 
       // <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal">Navigate</a></p>
 
-      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA">Navigate</a></p>
+      // <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA">Navigate</a></p>
+      <p style="text-align: center;">Navigate to DMS Dashboard.<a class="button" href="https://m365x14463464.sharepoint.com/sites/DMS-Quadra">Navigate</a></p>
 
 
 

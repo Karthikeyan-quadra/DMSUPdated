@@ -52,7 +52,9 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
         <p style="text-align: center;">To view the request.</p>
         // <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal/SitePages/Home.aspx#/Approvers">View</a></p>
 
-        <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA/SitePages/Home.aspx#/Approvers">View</a></p>
+        // <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA/SitePages/Home.aspx#/Approvers">View</a></p>
+
+        <p style="text-align: center;"><a class="button" href="https://m365x14463464.sharepoint.com/sites/DMS-Quadra/Home.aspx#/Approvers">View</a></p>
 
         <p style="text-align: center;">&nbsp;</p>
         <p style="text-align: center;">&nbsp;</p>
@@ -115,7 +117,9 @@ export async function UserApprovalmail(Content) {
   <p style="text-align: center;">To view the file.</p>
   // <p style="text-align: center;"><a class="button" href="https://m365x44410739.sharepoint.com/sites/DMSportal#/">View</a></p>
 
-  <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA#/">View</a></p>
+  // <p style="text-align: center;"><a class="button" href="https://m365b125021.sharepoint.com/sites/DMS-TATA#/">View</a></p>
+  <p style="text-align: center;"><a class="button" href="https://m365x14463464.sharepoint.com/sites/DMS-Quadra/">View</a></p>
+
 
   <p style="text-align: center;">&nbsp;</p>
   <p style="text-align: center;">&nbsp;</p>

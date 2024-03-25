@@ -1351,7 +1351,9 @@ export default class header extends React.Component<{}, any> {
   
       const sp: SPFI = getSp();
       // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-            let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+            // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+            let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join("/")}`;
+
 
   
       const list = sp.web.lists.getByTitle("Original File");
@@ -1484,7 +1486,12 @@ export default class header extends React.Component<{}, any> {
       let fileUrl:any = somee.join("/");
       // console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
 
-      console.log(`/sites/DMS-TATA/Shared Documents1/${fileUrl}`);
+      // console.log(`/sites/DMS-TATA/Shared Documents1/${fileUrl}`);
+      console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
+      console.log(`${fileUrl}`);
+      
+      
+
 
       const sp:SPFI=getSp()
       // let filesName = [];
@@ -1494,9 +1501,18 @@ export default class header extends React.Component<{}, any> {
 //   `/sites/DMSportal/Original File/${fileUrl}`
 // );
 
+// const folder:any = sp.web.getFolderByServerRelativePath(
+//   `/sites/DMS-TATA/Original File/${fileUrl}`
+// );
+
+// const folder:any = sp.web.getFolderByServerRelativePath(
+//   `/sites/DMS-Quadra/Original File/${fileUrl}`
+// );
+
 const folder:any = sp.web.getFolderByServerRelativePath(
-  `/sites/DMS-TATA/Original File/${fileUrl}`
+  `/sites/DMS-Quadra/Original File${fileUrl}`
 );
+
 
 
 const items:any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
@@ -2531,7 +2547,9 @@ const handleFileChange = (e) => {
           //This code works
             let fileexe:any = myfile.name.split(".").pop();
             console.log(fileexe);
-          console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+
 
             console.log(`${this.state.fileNameStruct}.${fileexe}`);
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
@@ -2541,7 +2559,12 @@ const handleFileChange = (e) => {
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
 
 
-        await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+
+
+                await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+
+
           .then(async (f) => {
             await f.file.getItem().then(async (item) => {
               await item
@@ -2574,7 +2597,9 @@ const handleFileChange = (e) => {
         await sp.web
           .getFolderByServerRelativePath(
             // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
+
 
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
@@ -2630,7 +2655,9 @@ const handleFileChange = (e) => {
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
 
               Department: Department,
               SubDepartment: Subdepartment,
@@ -2658,7 +2685,9 @@ const handleFileChange = (e) => {
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-               RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
 
 
               Department: Department,
@@ -2684,7 +2713,10 @@ const handleFileChange = (e) => {
         console.log(myfile.name);
         let fileexe:any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+
+        
 
         console.log(`${this.state.fileNameStruct}.${fileexe}`);
         // await sp.web
@@ -2693,7 +2725,9 @@ const handleFileChange = (e) => {
         //   )
           await sp.web
           .getFolderByServerRelativePath(
-            `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
+
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
@@ -2743,7 +2777,9 @@ const handleFileChange = (e) => {
 
         // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
 
-        const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        const folderPath:any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+
 
         const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
         
@@ -2783,7 +2819,9 @@ const handleFileChange = (e) => {
                 DocID: String(this.state.DocID + 1),
                 Status: "Pending",
                 // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-                RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
                 Department: Department,
                 SubDepartment: Subdepartment,
               })
@@ -2809,7 +2847,9 @@ const handleFileChange = (e) => {
               DocID: String(this.state.DocID + 1),
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
 
               Department: Department,
               SubDepartment: Subdepartment,
