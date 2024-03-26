@@ -50,15 +50,26 @@ export async function getName(mailID){
             .getAll()
             return a
 }
-export async function getUserDetails(Approver1, Approver2) {
+// export async function getUserDetails(Approver1, Approver2) {
+//   const sp:SPFI=getSp()
+//   const items: any[] = await sp.web.lists
+//     .getByTitle("UserDetails")
+//     .items.select(`${Approver1},${Approver2}`)
+//     .filter(`UserMailID eq '${await (await sp.web.currentUser()).Email}'`)
+//     .getAll();
+//   return [items, Approver1, Approver2];
+// }
+
+export async function getUserDetails() {
   const sp:SPFI=getSp()
   const items: any[] = await sp.web.lists
     .getByTitle("UserDetails")
-    .items.select(`${Approver1},${Approver2}`)
+    .items
     .filter(`UserMailID eq '${await (await sp.web.currentUser()).Email}'`)
     .getAll();
-  return [items, Approver1, Approver2];
+  return items;
 }
+
 
 export async function getInitialApprovers(Department, Level, SubDepartment) {
   const sp:SPFI=getSp()

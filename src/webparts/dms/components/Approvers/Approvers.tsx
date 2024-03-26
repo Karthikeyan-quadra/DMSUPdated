@@ -447,16 +447,20 @@ export default class header extends React.Component<{}, any> {
 
           if (exists === true) {
 
-            const folderPath = `${destinationUrl}/${value.Filename}`;
+            const folderPath: any = `${destinationUrl}/${value.Filename}`;
+            console.log(folderPath);
 
             // Upload the file content to the specified folder
             await sp.web
-              .getFolderByServerRelativePath(folderPath)
+              .getFolderByServerRelativePath(`${destinationUrl}`)
               .files
               .addChunked(value.Filename, blob, (chunk) => {
                 // Called for each chunk
-              })
+                console.log(`progress`);
+                console.log(chunk);
+              }, true)
               .then(async (file) => {
+                console.log(file);
                 console.log("File Uploaded");
                 console.log(`${folderPath}/${value.Filename}`);
 
@@ -505,8 +509,8 @@ export default class header extends React.Component<{}, any> {
                 await folderForLinkingUri
                   .files
                   .expand('Files/ListItemAllFields,DocID') // For Metadata extraction
-                  .select() // Fields to retrieve
-                  .get()
+                  .select()() // Fields to retrieve
+                  // .get()
                   .then(async (files) => {
                     await files.filter((file) => {
                       if (file.Name === value.Filename) {

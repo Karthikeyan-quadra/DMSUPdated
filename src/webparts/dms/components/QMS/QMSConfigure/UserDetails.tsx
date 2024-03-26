@@ -161,10 +161,13 @@ const sp:SPFI=getSp();
         items: await sp.web.lists.getByTitle("Userdetails").items(),
         overalllist: await sp.web.lists.getByTitle("Userdetails").items(),
       },
-      () => {
-        console.log(this.state.users);
-      }
+      // () => {
+      //   console.log(this.state.users);
+      // }
+
     );
+            console.log(this.state.users);
+
   }
   public toggleHideDialog = () => {
     console.log(this.state.hideDialog);
@@ -327,6 +330,8 @@ const sp:SPFI=getSp();
       this.setState({
         edit_UserName: value,
       });
+      console.log(value);
+
     };
     const handleedit_UserMailID = (event, value) => {
       this.setState({
@@ -435,6 +440,7 @@ const sp:SPFI=getSp();
         (res) =>
           res.EmailID.toLowerCase() == this.state.add_EmailID.toLowerCase()
       );
+
       console.log(status);
       if (status.length == 0) {
         if (this.state.add_UserName != "") {

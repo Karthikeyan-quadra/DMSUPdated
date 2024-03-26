@@ -47,6 +47,9 @@ import Logo from "../../../../Images/Illustration.png";
 import { getSp } from "../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
 
+import { getUserDetails } from "../Data/GetSiteList";
+
+
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
 var date = new Date();
@@ -415,11 +418,11 @@ export default class header extends React.Component<{}, any> {
           await SubDepartments1.push({
             SubFolders: nn.Subfolders,
             ParentFolders: nn.ParentFolder,
-          });0
+          });
           await SubdepartmentsParents.push(nn.ParentFolder);
         });
 
-        // await console.log(SubdepartmentsParents)
+        await console.log(SubdepartmentsParents);
         let uniqueArray = SubdepartmentsParents.filter(function (
           item,
           pos,
@@ -427,13 +430,13 @@ export default class header extends React.Component<{}, any> {
         ) {
           return self.indexOf(item) == pos;
         });
-        // await console.log(uniqueArray)
+        await console.log(uniqueArray);
 
         this.setState({
           SubfoldersParent: uniqueArray,
         });
       });
-    // console.log(SubDepartments);
+    console.log(SubDepartments);
     await sp.web.lists
       .getByTitle("Sub departments Main")
       .items.select("SubFolders,ParentFolders,Code")
@@ -453,7 +456,7 @@ export default class header extends React.Component<{}, any> {
           await SubdepartmentsMainParents.push(nn.ParentFolders);
           // await this.setState({
         });
-        // await console.log(SubdepartmentsMainParents)
+        await console.log(SubdepartmentsMainParents);
         let uniqueArray = SubdepartmentsMainParents.filter(function (
           item,
           pos,
@@ -585,6 +588,9 @@ export default class header extends React.Component<{}, any> {
       console.log(this.state);
     };
 
+    // const userDetails = await getUserDetails();
+
+    //original code
     const toggleHideDialogUpload = () => {
       this.setState({
         openDialogUpload: true,
@@ -592,6 +598,9 @@ export default class header extends React.Component<{}, any> {
       });
       // console.log(this.state.openDialog)
     };
+
+
+
     // valueFileType
     const changeValueFileType = async (e, value: any) => {
       this.setState({
@@ -1509,18 +1518,16 @@ export default class header extends React.Component<{}, any> {
 //   `/sites/DMS-Quadra/Original File/${fileUrl}`
 // );
 
-const folder:any = sp.web.getFolderByServerRelativePath(
-  `/sites/DMS-Quadra/Original File${fileUrl}`
-);
+
+const folder:any = await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Original File/${fileUrl}`).files.expand("Files/ListItemAllFields,DocID").select()()
+console.log(folder);
+        
 
 
+console.log(folder);
 
-const items:any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
-
-console.log(items);
-
-if (items.length > 0) {
-  items.forEach((file) => {
+if (folder.length > 0) {
+  folder.forEach((file) => {
     filesName.push({ key: file.Name, text: file.Name });
   });
 } else {
@@ -1533,14 +1540,14 @@ this.setState({
 });
 
 
-      this.setState({
-        fileUrl: somee.join("/"),
-        Filess: filesName,
-      });
+      // this.setState({
+      //   fileUrl: somee.join("/"),
+      //   Filess: filesName,
+      // });
     };
 
     const changeValue = async (e, value: any) => {
-      // console.log(value.text);
+      console.log(value.text);
       // { key: 'Work Instruction', text: 'Work Instruction' },
       // { key: 'MSOP', text: 'MSOP' },
       // { key: 'Forms', text: 'Forms' },
