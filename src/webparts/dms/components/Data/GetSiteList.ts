@@ -44,7 +44,7 @@ export async function getRequestlevellist() {
 
 export async function getName(mailID){
   const sp:SPFI=getSp()
- let a= await sp.web.lists
+ let a:any= await sp.web.lists
             .getByTitle("Approverlist")
             .items.filter(`EmailID eq '${mailID}'`)
             .getAll()
@@ -60,15 +60,31 @@ export async function getName(mailID){
 //   return [items, Approver1, Approver2];
 // }
 
+// export async function getUserDetails() {
+//   const sp:SPFI=getSp()
+//   const items: any[] = await sp.web.lists
+//     .getByTitle("UserDetails")
+//     .items
+//     .filter(`UserMailID eq '${await (await sp.web.currentUser()).Email}'`)
+//     .getAll();
+//   return items;
+// }
+
 export async function getUserDetails() {
-  const sp:SPFI=getSp()
-  const items: any[] = await sp.web.lists
-    .getByTitle("UserDetails")
+  const sp: SPFI = getSp();
+  // const currentUserEmail = (await sp.web.currentUser()).Email;
+  
+  const items: any[] = await sp.web.lists.getByTitle("UserDetails")
     .items
-    .filter(`UserMailID eq '${await (await sp.web.currentUser()).Email}'`)
+    .filter(`EmailID eq '${await (await sp.web.currentUser()).Email}'`)
+.select("QMS","Fileuploader", "Approver") 
     .getAll();
+
+  console.log(items); 
+
   return items;
 }
+
 
 
 export async function getInitialApprovers(Department, Level, SubDepartment) {

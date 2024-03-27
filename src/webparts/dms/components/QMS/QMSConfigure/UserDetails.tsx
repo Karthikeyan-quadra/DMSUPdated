@@ -549,6 +549,7 @@ const sp:SPFI=getSp();
           edit_EmailID_err: "EmailID already Exists",
         });
       }
+      window.location.reload()
     };
 
     const DeleteUser = async () => {

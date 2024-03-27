@@ -35,8 +35,8 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
         <body>
         <h3 style="text-align: center;">&nbsp;</h3>
         <h3 style="text-align: center;">Request for file upload</h3>
-        <p style="text-align: center;" aria-hidden="true">&nbsp;</p>        
-        <img src="https://cdn-icons-png.flaticon.com/512/2489/2489187.png" alt="success" width="189" height="190" />
+        <p style="text-align: center;" aria-hidden="true">&nbsp;</p>   
+        <p style="text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/2489/2489187.png" alt="Success" width="189" height="190" /></p> 
         <h4 style="text-align: center;">&nbsp;</h4>
         <h4 style="text-align: center;">Approval Info</h4>
         <p style="text-align: center;"><strong>Approver :</strong>&nbsp;  ${ApprovedBy}</p>
@@ -97,7 +97,7 @@ export async function UserApprovalmail(Content) {
   <h3 style="text-align: center;">&nbsp;</h3>
   <h3 style="text-align: center;">Your file approve request is approved.</h3>
   <p style="text-align: center;" aria-hidden="true">&nbsp;</p>
-  <p style="text-align: center;"><img src="./../../Images/Thumbsup.png" alt="Thumbs Up" width="189" height="190" /></p>
+  <p style="text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/2489/2489187.png" width="189" height="190" alt="Success" /></p>
   <h4 style="text-align: center;">&nbsp;</h4>
   <h4 style="text-align: center;">Approval Info</h4>
   <p style="text-align: center;"><strong>Approver Level :</strong>&nbsp; ${Content.ApprovalStatus}</p>
@@ -146,7 +146,7 @@ export async function Denymail(Sender, Content, Comment) {
         <h3 style="text-align: center;">&nbsp;</h3>
 <h3 style="text-align: center;">Your file approve request is Rejected.</h3>
 <p style="text-align: center;" aria-hidden="true">&nbsp;</p>
-<p style="text-align: center;"><img src="./../../Images/Thumbsdown.png" alt="Thumbs down" width="189" height="190" /></p>
+<p style="text-align: center;"><https://cdn-icons-png.flaticon.com/512/2489/2489190.png" alt="Deneid" width="189" height="190" /></p>
 <h4 style="text-align: center;">&nbsp;</h4>
 <h4 style="text-align: center;">Approval Info</h4>
 <p style="text-align: center;"><strong>Approver Level :</strong>&nbsp; ${Content.ApprovalStatus}</p>

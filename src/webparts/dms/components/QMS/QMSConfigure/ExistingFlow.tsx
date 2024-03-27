@@ -368,19 +368,25 @@ export default class QmsDashboard extends React.Component<{}, any> {
         async () => {
           this.setState({
             Approver_list: await Get_departmentusers(value.Department).then(
-              (res) =>
-                res.map((val) => ({
+              (res) =>{
+                console.log(res); 
+                return res.map((val) => ({
                   text: val.Name,
                   key: val.EmailID,
-                }))
+                }))}
             ),
             Reviewer_name: await getName(
               this.state.Selected_item.Approver2
-            ).then((res) => res[0].Name),
+            ).then((res) => { 
+              console.log(res);
+              return res[0].Name
+            }),
 
             Approver_name: await getName(
               this.state.Selected_item.Approver3
-            ).then((res) => res[0].Name),
+            ).then((res) =>{ 
+              console.log(res);
+              return res[0].Name}),
           });
         }
       );
