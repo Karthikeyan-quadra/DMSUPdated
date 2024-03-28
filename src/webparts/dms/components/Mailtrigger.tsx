@@ -56,16 +56,6 @@ export async function Approvalmail(Content, approverEmail, ApprovedBy) {
   const sp: SPFI = getSp();
 
   await sp.utility.sendEmail(emailProps);
-
-//   const sp: SPFI = getSp();
-// try {
-//   let some: any = await sp.utility.sendEmail(emailProps);
-//   console.log(some);
-// } catch (error) {
-//   console.error("Error sending email:", error);
-// }
-
-
 }
 
 export async function UserApprovalmail(Content) {
@@ -115,21 +105,9 @@ export async function UserApprovalmail(Content) {
   };
   const sp: SPFI = getSp();
   await sp.utility.sendEmail(emailProps);
-
-  // const sp: SPFI = getSp();
-  // try {
-  //   let some: any = await sp.utility.sendEmail(emailProps);
-  //   console.log(some);
-  // } catch (error) {
-  //   console.error("Error sending email:", error);
-  // }
-  
-
-
 }
 
 export async function Denymail(Sender, Content, Comment) {
-  // const sp:SPFI=getSp();
   console.log(Comment);
   const emailProps: IEmailProperties = {
     To: [Sender],
@@ -146,7 +124,7 @@ export async function Denymail(Sender, Content, Comment) {
         <h3 style="text-align: center;">&nbsp;</h3>
 <h3 style="text-align: center;">Your file approve request is Rejected.</h3>
 <p style="text-align: center;" aria-hidden="true">&nbsp;</p>
-<p style="text-align: center;"><https://cdn-icons-png.flaticon.com/512/2489/2489190.png" alt="Deneid" width="189" height="190" /></p>
+<p style="text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/2489/2489190.png" alt="Deneid" width="189" height="190" /></p>
 <h4 style="text-align: center;">&nbsp;</h4>
 <h4 style="text-align: center;">Approval Info</h4>
 <p style="text-align: center;"><strong>Approver Level :</strong>&nbsp; ${Content.ApprovalStatus}</p>
@@ -164,16 +142,6 @@ export async function Denymail(Sender, Content, Comment) {
   const sp:SPFI=getSp();
   let some:any = await sp.utility.sendEmail(emailProps);
   console.log(some);
-
-//   const sp: SPFI = getSp();
-// try {
-//   let some: any = await sp.utility.sendEmail(emailProps);
-//   console.log(some);
-// } catch (error) {
-//   console.error("Error sending email:", error);
-// }
-
-
 }
 
 

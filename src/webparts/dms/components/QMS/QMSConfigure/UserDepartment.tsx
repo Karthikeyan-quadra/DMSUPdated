@@ -168,12 +168,14 @@ import {
             sp.web.lists.getByTitle("Approverlist").items.getAll(),
             sp.web.lists.getByTitle("Department Names").items.getAll(),
           ]);
+          console.log([items, overalllist, departmentItems] );
       
           const Departments = departmentItems.map((val) => ({
             text: val.Departments,
-            key: val.code,
+            // key: val.code,
+            key: val.Code,
+
           }));
-      
           this.setState(
             {
               items,
@@ -322,6 +324,7 @@ import {
                     overalllist: await sp.web.lists
                       .getByTitle("Approverlist")
                       .items(),
+                  
                   })
                 );
             } else {

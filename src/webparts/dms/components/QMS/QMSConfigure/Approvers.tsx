@@ -473,6 +473,8 @@ const HandleLevel = async (e, value: any) => {
         getInitialApprovers(this.state.Department, this.state.Level, this.state.SubDepartment),
         getInitialApprovers(this.state.Department, this.state.Level, this.state.SubDepartment),
       ]);
+      console.log([approverAData, approverBData]);
+      
 
       // Process data for ApproverA
       const approverAList = approverAData.map((val) => ({
@@ -497,6 +499,8 @@ const HandleLevel = async (e, value: any) => {
         Department: val.Department,
         SubDepartment: val.SubDepartment,
       }));
+      console.log(approverBList);
+      
 
       if (approverBList.length === 0) {
         this.setState({
@@ -531,8 +535,12 @@ const HandleLevel = async (e, value: any) => {
       } else {
         if (this.state.Approver_A.EmailID != "Not Assigned") {
           let val = `Level eq '${this.state.Approver_A.Level}' and Department eq '${this.state.Approver_A.Department}' and ApproverLevel eq '${this.state.Approver_A.ApproverLevel}'`;
+          console.log(val);
+          
           if (this.state.Approver_A.SubDepartment != null)
             val = `Level eq '${this.state.Approver_A.Level}' and Department eq '${this.state.Approver_A.Department}' and ApproverLevel eq '${this.state.Approver_A.ApproverLevel}' and SubDepartment eq '${this.state.Approver_A.SubDepartment}'`;
+          console.log(val);
+          
           await sp.web.lists
             .getByTitle("Final Appover")
             .items.top(1)
@@ -573,8 +581,12 @@ const HandleLevel = async (e, value: any) => {
         }
         if (this.state.Approver_B.EmailID != "Not Assigned") {
           let val = `Level eq '${this.state.Approver_B.Level}' and Department eq '${this.state.Approver_B.Department}' and ApproverLevel eq '${this.state.Approver_B.ApproverLevel}'`;
+          console.log(val);
+          
           if (this.state.Approver_B.SubDepartment != null)
             val = `Level eq '${this.state.Approver_B.Level}' and Department eq '${this.state.Approver_B.Department}' and ApproverLevel eq '${this.state.Approver_B.ApproverLevel}' and SubDepartment eq '${this.state.Approver_B.SubDepartment}'`;
+            console.log(val);
+
           await sp.web.lists
             .getByTitle("Final Appover")
             .items.top(1)
@@ -764,7 +776,7 @@ const HandleLevel = async (e, value: any) => {
       this.setState({
         Approver_A: {
           Name: value.text,
-          EmailID: value.key,
+          EmailID: value.Key,
           //Authority: value.Authority,
           Level: value.Level,
           ApproverLevel: "APPROVER 2",
@@ -785,7 +797,7 @@ const HandleLevel = async (e, value: any) => {
       this.setState({
         Approver_B: {
           Name: value.text,
-          EmailID: value.key,
+          EmailID: value.Key,
           // Authority: value.Authority,
           Level: value.Level,
           ApproverLevel: "APPROVER 3",
@@ -805,6 +817,11 @@ const HandleLevel = async (e, value: any) => {
 
       console.log(this.state.hideDialog);
     };
+    console.log(this.state.ApproverA);
+    console.log(this.state.ApproverB);
+    console.log(this.state.Approver_A);
+    console.log(this.state.Approver_B);
+
 
     return (
       <div style={{ clear: "both" }}>
@@ -860,7 +877,9 @@ const HandleLevel = async (e, value: any) => {
                   placeholder="Select Approver"
                   label="Approver 3"
                   errorMessage={this.state.errmsgApproverB}
-                  options={this.state.ApproverB}
+                  // options={this.state.ApproverB}
+                  options={this.state.ApproverA}
+
                   onChange={HandleApproverB}
                   styles={dropdownStyles}
                 />

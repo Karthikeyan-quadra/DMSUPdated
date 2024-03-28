@@ -103,7 +103,7 @@ export async function Denymail(Content, Sender, Comment) {
       <h3 style="text-align: center;">Your file approve request Denied.</h3>
       <p style="text-align: center;" aria-hidden="true">&nbsp;</p>
       <p style="text-align: center;">
-        <img src="https://cdn-icons-png.flaticon.com/512/2489/2489190.png alt="Denied" width="189" height="190">
+        <img src="https://cdn-icons-png.flaticon.com/512/2489/2489190.png" alt="Denied" width="189" height="190">
       </p>
       <h4 style="text-align: center;">&nbsp;</h4>
       <h4 style="text-align: center;">Approval Info</h4>
