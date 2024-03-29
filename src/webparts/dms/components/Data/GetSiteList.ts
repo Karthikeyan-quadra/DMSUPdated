@@ -217,6 +217,8 @@ export async function getDepartmentlistedit() {
 export async function getSubDepartmentlist(Department) {
   const sp:SPFI=getSp()
   let list: any = [];
+  console.log("Department:", Department); // Log the department value
+
   const items: any[] = await sp.web.lists
     .getByTitle("Sub departments Main")
     .items.filter(`ParentFolders eq '${Department}'`)
@@ -225,7 +227,7 @@ export async function getSubDepartmentlist(Department) {
     items.map(async (val) => {
       await list.push({
         text: val.SubFolders,
-        key: val.Title,
+        key: val.Code,
       });
     });
   }
@@ -233,7 +235,7 @@ export async function getSubDepartmentlist(Department) {
   return list;
 }
 export async function getProjectlist(){
-  const sp:SPFI=getSp()
-  const items:any=await sp.web.lists.getByTitle("Project List").items().then(res=>res.map(val=>({"name":val.ProjectName,"code":val.ProjectID,"Id":val.ID})))
+const sp:SPFI=getSp()
+const items:any=await sp.web.lists.getByTitle("Project List").items().then(res=>res.map(val=>({"name":val.ProjectName,"code":val.ProjectID,"Id":val.ID})))
 return [{"name":"Projects",links:items}]
 }

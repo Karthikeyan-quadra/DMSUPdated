@@ -21,6 +21,7 @@ import {
   import { getSp } from "../../../../../helpers/PnPConfig";
   import { SPFI } from "@pnp/sp";
   import styles from "../QMSRequestPage/QmsDashboard.module.scss";
+import { getSubDepartmentlist } from "../../Data/GetSiteList";
   let columns = [
     {
       key: "User Name",
@@ -59,6 +60,33 @@ import {
       isIconOnly: false,
       isPadded: true,
     },
+
+    {
+      key: "Sub Department",
+      name: "Sub Department",
+      fieldName: "SubDepartment",
+      minWidth: 180,
+      maxWidth: 180,
+      isResizable: false,
+      isCollapsible: false,
+      data: "string",
+      isIconOnly: false,
+      isPadded: true,
+    },
+
+    {
+      key: "Level",
+      name: "Level",
+      fieldName: "Level",
+      minWidth: 100,
+      maxWidth: 100,
+      isResizable: false,
+      isCollapsible: false,
+      data: "string",
+      isIconOnly: false,
+      isPadded: true,
+    },
+    
     {
       key: "Manage",
       name: "Manage",
@@ -119,6 +147,16 @@ import {
         Departments: [],
         add_Department: "",
         add_Department_err: "",
+
+        Subdepartments: [],
+        add_Subdepartment: "",
+        add_Subdepartment_err: "",
+
+        Level: [],
+        add_Level: "",
+        add_Level_err: "",
+
+
         hideeditDialog: true,
         isEdited: true,
         edit_UserName: "",
@@ -127,9 +165,18 @@ import {
         edit_EmailID_err: "",
         edit_Department: "",
         edit_Department_err: "",
+
+        edit_Subdepartment: "",
+        edit_Subdepartment_err: "",
+
+        edit_Level: "",
+        edit_Level_err: "",
+
+
         selectedval: {},
         selecteditem: "",
         overalllist: [],
+        // subdepartmentItems:[]
       };
     }
     private _getKey(item: any, index?: number): string {
@@ -163,12 +210,13 @@ import {
         const sp: SPFI = getSp();
       
         try {
-          const [items, overalllist, departmentItems] = await Promise.all([
+          const [items, overalllist, departmentItems, levelItems] = await Promise.all([
             sp.web.lists.getByTitle("Approverlist").items.getAll(),
             sp.web.lists.getByTitle("Approverlist").items.getAll(),
             sp.web.lists.getByTitle("Department Names").items.getAll(),
+            sp.web.lists.getByTitle("Request Level").items.getAll(),
           ]);
-          console.log([items, overalllist, departmentItems] );
+          console.log([items, overalllist, departmentItems,levelItems] );
       
           const Departments = departmentItems.map((val) => ({
             text: val.Departments,
@@ -176,20 +224,35 @@ import {
             key: val.Code,
 
           }));
+
+          const Level = levelItems.map((val) => ({
+            text: val.Text,
+            // key: val.code,
+            key: val.Key,
+
+          }));
+
+         
           this.setState(
             {
               items,
               overalllist,
               Departments,
+              Level
             },
             () => {
               console.log(this.state.Departments);
+              // console.log(this.state.subdepartmentItems);
+              console.log(this.state.Level);
             }
           );
         } catch (error) {
           console.error('Error in componentDidMount:', error);
         }
       }
+
+
+      
       
     public toggleHideDialog = () => {
       console.log(this.state.hideDialog);
@@ -205,9 +268,13 @@ import {
           add_EmailID: "",
           add_Department: "",
           add_Department_err: "",
+          add_Subdepartment: "",
+          add_Subdepartment_err: "",
           add_Approver: "",
           add_UserName_err: "",
           add_EmailID_err: "",
+          add_Level: "",
+          add_Level_err: "",
           selecteditem: "",
         });
     };
@@ -226,10 +293,13 @@ import {
           edit_EmailID: "",
           selecteditem: "",
           edit_Department: "",
+          edit_Subdepartment:"",
+          edit_Level:"",
           selectedval: {},
           edit_Department_err: "",
           edit_UserName_err: "",
           edit_EmailID_err: "",
+          edit_Level_err: "",
         });
     };
     render() {
@@ -316,6 +386,8 @@ import {
                   Name: this.state.edit_UserName,
                   EmailID: this.state.edit_EmailID,
                   Department: this.state.edit_Department,
+                  SubDepartment: this.state.edit_Subdepartment,
+                  Level: this.state.edit_Level,
                 })
                 .then(async (res) =>
                   this.setState({
@@ -349,7 +421,8 @@ import {
           edit_EmailID: value.EmailID,
           hideeditDialog: false,
           edit_Department: value.Department,
-  
+          edit_Subdepartment:value.SubDepartment,
+          edit_Level:value.Level,
           isEdited: "false",
           selecteditem: value.ID,
           selectedval: value,
@@ -401,19 +474,111 @@ import {
           });
         }
       };
-      const addDepartmentChange = (event, value) => {
+      const addDepartmentChange = async(event, value) => {
         console.log(value);
+        
+       const subDept= await getSubDepartmentlist(value.text);
+       this.setState({
+        add_Department: value.text,
+        Subdepartments:subDept
+      });
+       
+      };
+      // console.log(this.state.add_Department);
+      // const editDepartmentChange = (event, value) => {
+      //   this.setState({
+      //     edit_Department: value.text,
+      //   });
+      // };
+      const editDepartmentChange = async(event, value) => {
+        console.log(value);
+        
+       const subDept= await getSubDepartmentlist(value.text);
+       this.setState({
+        edit_Department: value.text,
+        Subdepartments:subDept
+      });
+       
+      };
+
+
+
+      const addSubDepartmentChange = (event, value) => {
         this.setState({
-          add_Department: value.text,
+          add_Subdepartment: value.text,
         });
       };
-      const editDepartmentChange = (event, value) => {
+      console.log(this.state.add_Subdepartment);
+
+      const editSubDepartmentChange = (event, value) => {
         this.setState({
-          edit_Department: value.text,
+          edit_Subdepartment: value.text,
         });
       };
+      console.log(this.state.edit_Subdepartment);
+
+
+      const addLevelChange = (event, value) => {
+        this.setState({
+          add_Level: value.text,
+        });
+      };
+      console.log(this.state.add_Level);
+
+      const editLevelChange = (event, value) => {
+        this.setState({
+          edit_Level: value.text,
+        });
+      };
+      console.log(this.state.edit_Level);
+
+
+
+      // const handleAddUser = async () => {
+      //   const sp:SPFI=getSp()
+      //   if (this.state.add_Department != "") {
+      //     if (this.state.add_UserName != "") {
+      //       if (this.state.add_EmailID != "") {
+      //         await sp.web.lists
+      //           .getByTitle("Approverlist")
+      //           .items.add({
+      //             Name: this.state.add_UserName,
+      //             EmailID: this.state.add_EmailID,
+      //             Department: this.state.add_Department,
+      //             SubDepartment: this.state.add_Subdepartment
+      //           })
+      //           .then(async (res) =>
+      //             this.setState({
+      //               isAdded: false,
+      //               items: await sp.web.lists.getByTitle("Approverlist").items(),
+      //               overalllist: await sp.web.lists
+      //                 .getByTitle("Approverlist")
+      //                 .items(),
+      //             })
+      //           );
+      //       } else {
+      //         this.setState({
+      //           add_EmailID_err: "Please specify User MailID",
+      //         });
+      //       }
+      //     } else {
+      //       this.setState({
+      //         add_UserName_err: "Please specify UserName",
+      //       });
+      //     }
+      //   } else {
+      //     this.setState({
+      //       add_Department_err: "Please specify Department",
+      //     });
+      //   }
+        
+      // };
+
+
       const handleAddUser = async () => {
         const sp:SPFI=getSp()
+        if (this.state.add_Level != "") {
+        if (this.state.add_Subdepartment != "") {
         if (this.state.add_Department != "") {
           if (this.state.add_UserName != "") {
             if (this.state.add_EmailID != "") {
@@ -423,6 +588,8 @@ import {
                   Name: this.state.add_UserName,
                   EmailID: this.state.add_EmailID,
                   Department: this.state.add_Department,
+                  SubDepartment: this.state.add_Subdepartment,
+                  Level:this.state.add_Level
                 })
                 .then(async (res) =>
                   this.setState({
@@ -448,7 +615,19 @@ import {
             add_Department_err: "Please specify Department",
           });
         }
+      } 
+        else {
+          this.setState({
+            add_Subdepartment_err: "Please specify Sub Department",
+          });
+        }
+      }else {
+        this.setState({
+          add_Level_err: "Please specify Level",
+        });
+      }
       };
+
       return (
         <div>
           <div>
@@ -529,8 +708,38 @@ import {
                         onChange={addDepartmentChange}
                         errorMessage={this.state.add_Department_err}
                         options={this.state.Departments}
+                        // disabled ={this.state.SubDepartment.length===0 ? true:false}
                       />
                     </div>
+
+
+                    <div style={{ width: "350px", marginTop: "15px" }}>
+                      <Dropdown
+                        // placeholder={this.state.Reviewer_name}
+                        placeholder="Select Sub-Department"
+                        label="Sub Department"
+                        required
+                        onChange={addSubDepartmentChange}
+                        errorMessage={this.state.add_Subdepartment_err}
+                        options={this.state.Subdepartments}
+                        disabled={this.state.Subdepartments.length==0?true:false}
+                      />
+                    </div>
+
+                    <div style={{ width: "350px", marginTop: "15px" }}>
+                      <Dropdown
+                        // placeholder={this.state.Reviewer_name}
+                        required
+                        placeholder="Select Level"
+                        label="Level"
+                        onChange={addLevelChange}
+                        errorMessage={this.state.add_Level_err}
+                        options={this.state.Level}
+                        disabled={this.state.Level.length==0?true:false}
+                      />
+                    </div>
+
+
                   </div>
                   <DialogFooter>
                     <PrimaryButton
@@ -620,6 +829,29 @@ import {
                         options={this.state.Departments}
                       />
                     </div>
+
+                    <div style={{ width: "350px", marginTop: "15px" }}>
+                      <Dropdown
+                        placeholder={this.state.edit_Subdepartment}
+                        label="Sub Department"
+                        required
+                        onChange={editSubDepartmentChange}
+                        errorMessage={this.state.edit_Subdepartment_err}
+                        options={this.state.Subdepartments}
+                      />
+                    </div>
+                    <div style={{ width: "350px", marginTop: "15px" }}>
+                      <Dropdown
+                        // placeholder={this.state.edit_Level}
+                      placeholder={this.state.edit_Level}
+                        label="Level"
+                        required
+                        onChange={editLevelChange}
+                        errorMessage={this.state.edit_Level_err}
+                        options={this.state.Level}
+                      />
+                    </div>
+
                   </div>
                   <DialogFooter>
                     <PrimaryButton

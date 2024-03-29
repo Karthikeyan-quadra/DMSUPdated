@@ -339,7 +339,6 @@ export default class header extends React.Component<{}, any> {
       })
     })
   }
-
   private _onFilter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string): void => {
     let val = this.state.overalllist.filter(i => i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 || i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1)
     let condition = text.toLowerCase() ? val : this.state.overalllist
@@ -351,7 +350,9 @@ export default class header extends React.Component<{}, any> {
         value: condition
       })
     });
-    console.log(val)
+    console.log(val);
+    console.log(condition);
+    
   };
 
   public render() {
