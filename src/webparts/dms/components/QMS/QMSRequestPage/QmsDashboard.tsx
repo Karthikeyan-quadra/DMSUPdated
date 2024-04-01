@@ -175,8 +175,14 @@ export default class QmsDashboard extends React.Component<{}, any> {
     );
 
     console.log(this.state.items);
+    console.log(this.state.value);
+    console.log(this.state.overalllist);
+    console.log(this.state.count);
+
+    
   }
   private _getKey(item: any, index?: number): string {
+    console.log(item.key);
     return item.key;
   }
 
@@ -189,7 +195,11 @@ export default class QmsDashboard extends React.Component<{}, any> {
         i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
         i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
     );
+    console.log(val);
+    
     let condition = text.toLowerCase() ? val : this.state.overalllist;
+    console.log(condition);
+    
     this.setState(
       {
         items: text.toLowerCase()

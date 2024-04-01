@@ -291,14 +291,22 @@ export default class header extends React.Component<{}, any> {
       overalllist: [],
       items: [],
       fileess:[],
+
+      showFirstItem: false, // Define showFirstItem in the state
     };
   }
 
   public async componentDidMount() {
     const sp:SPFI=getSp();
     // let ssss = [];
+
+    const userDetails = await getUserDetails();
+    console.log(userDetails);
+    const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+    console.log(uploadValue);
+
     let user = await sp.web.currentUser();
-    console.log("109");
+    // console.log("109");
     console.log(user.Email);
     // let sss1 = await web.lists
     //   .getByTitle("User Files")
@@ -479,11 +487,15 @@ export default class header extends React.Component<{}, any> {
       Subdepartments2: SubDepartments1,
       ProjectName: ProjectName,
       CurrentUser: user.Email,
+      showFirstItem: uploadValue === "true", // Convert to boolean
+
     });
 
     console.log(this.state);
 
     console.log(this.state.items);
+
+    
   }
 
   //end componentDIdmount
@@ -578,6 +590,8 @@ export default class header extends React.Component<{}, any> {
     // var sss = [];
     var sss:any = [];
 
+    const {showFirstItem} = this.state; // Access showFirstItem from state
+    console.log(showFirstItem);
 
     const toggleHideDialog = () => {
       this.setState({
@@ -870,6 +884,10 @@ export default class header extends React.Component<{}, any> {
       console.log(this.state.downloadUrl.split("/")[4]);
       let fileName = this.state.downloadUrl.split("/")[4];
 
+
+      //  console.log(this.state.downloadUrl.split("/")[5]);
+      // let fileName = this.state.downloadUrl.split("/")[5];
+
       try {
         await sp.web
           .getFileByServerRelativePath(this.state.downloadUrl)
@@ -895,6 +913,9 @@ export default class header extends React.Component<{}, any> {
       }
     };
 
+
+
+    
 
 //ORIGINAL CODE
     // const clickGenerate = async () => {
@@ -1670,9 +1691,12 @@ this.setState({
       const sp:SPFI=getSp()
       let somss:any = await sp.web.lists.getByTitle("My Docs").items();
       console.log(somss);
-      await somss.filter((file) => {
+      await somss.filter((file:any) => {
         if (file.fileType === value.text) {
           ID = file.ID;
+          console.log(ID);
+          console.log(file);
+
         }
       });
       console.log(ID);
@@ -1685,7 +1709,7 @@ this.setState({
         .items.getById(ID)
         .select("ID,FileRef")()
         .then((items: any) => {
-          // console.log(items.FileRef);
+          console.log(items.FileRef);
           this.setState({
             downloadUrl: items.FileRef,
             DownloadURI: false,
@@ -1860,7 +1884,7 @@ const handleFileChange = (e) => {
             onClick={toggleHideDialog}
           />
 
-          <PrimaryButton
+{showFirstItem  && (<PrimaryButton
             text="Upload"
             style={{
               // borderStyle: 'dashed',
@@ -1870,7 +1894,7 @@ const handleFileChange = (e) => {
               backgroundColor: "#0078D4",
             }}
             onClick={toggleHideDialogUpload}
-          />
+          />)}
         </div>
 
         <Dialog
@@ -2102,7 +2126,7 @@ const handleFileChange = (e) => {
                         marginTop: "50px",
                       }}
                     >
-                      <input type="file" name="myFile" id="newfile" onChange={(e)=>handleFileChange(e)}></input>
+                      <input type="file" name="myFile" id="newfile" onChange={(e)=>handleFileChange(e)} required></input>
                     </div>
                     <div
                       style={{
@@ -2303,6 +2327,7 @@ const handleFileChange = (e) => {
                           // }}
                           defaultValue={this.state.fileNameStruct}
                           onChange={changeValueFileID}
+                          required
                         />
                       </div>
                       <div
@@ -2329,7 +2354,7 @@ const handleFileChange = (e) => {
                         marginTop: "100px",
                       }}
                     >
-                      <input type="file" name="myFile" id="newfile" onChange={(e)=>handleFileChange(e)}></input>
+                      <input type="file" required name="myFile" id="newfile"  onChange={(e)=>handleFileChange(e)}></input>
                     </div>
                     <div
                       style={{
@@ -2340,6 +2365,7 @@ const handleFileChange = (e) => {
                         label="File name"
                         defaultValue={this.state.filenames}
                         onChange={changeValueFilename}
+                        required
                       />
                       <TextField
                         label="File description"
@@ -2347,6 +2373,7 @@ const handleFileChange = (e) => {
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
+                        required
                       />
                     </div>
                   </div>
