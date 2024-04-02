@@ -2525,9 +2525,9 @@ export default class header extends React.Component<{}, any> {
     }
 
     else if (this.state.filenames.length <= 0) {
-      alert("Please give an file name");
+      alert("Please give file name");
     } else if (this.state.fileDes.length <= 0) {
-      alert("Please give an file Description");
+      alert("Please give file Description");
     } else {
       console.log(this.state.fileNameStruct);
       const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
