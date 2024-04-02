@@ -126,7 +126,7 @@ const options1: IDropdownOption[] = [
   { key: "Manual", text: "Manual" },
   { key: "Policy", text: "Policy" },
   { key: "SOP", text: "SOP" },
-  { key: "Work Instruction", text: "Work Instruction"},
+  { key: "Work Instruction", text: "Work Instruction" },
   { key: "MSOP", text: "MSOP" },
   { key: "Form", text: "Form" },
 ];
@@ -242,6 +242,8 @@ export default class header extends React.Component<{}, any> {
   constructor(props) {
     super(props);
     this.filesave = this.filesave.bind(this);
+    this.filesaveold = this.filesaveold.bind(this);
+
     // this.handleFileChange = this.handleFileChange.bind(this);
 
     this.state = {
@@ -290,14 +292,14 @@ export default class header extends React.Component<{}, any> {
       page: 0,
       overalllist: [],
       items: [],
-      fileess:[],
+      fileess: [],
 
       showFirstItem: false, // Define showFirstItem in the state
     };
   }
 
   public async componentDidMount() {
-    const sp:SPFI=getSp();
+    const sp: SPFI = getSp();
     // let ssss = [];
 
     const userDetails = await getUserDetails();
@@ -320,7 +322,7 @@ export default class header extends React.Component<{}, any> {
     //   return (toTimestamp(prev.y) > toTimestamp(current.y)) ? prev : current
     // })
     // console.log("max",max);
-    let sss:any = await sp.web.lists
+    let sss: any = await sp.web.lists
       .getByTitle("User Files")
       .items.select(
         "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
@@ -369,15 +371,15 @@ export default class header extends React.Component<{}, any> {
     // let SubdepartmentsMain1 = [];
     // let SubdepartmentsMainParents = [];
 
-    let DepartmentNames:any = [];
-    let DocumentType:any = [];
-    let ProjectName:any = [];
-    let SubDepartments:any = [];
-    let SubdepartmentsParents:any = [];
-    let SubDepartments1:any = [];
-    let SubdepartmentsMain:any = [];
-    let SubdepartmentsMain1:any = [];
-    let SubdepartmentsMainParents:any = [];
+    let DepartmentNames: any = [];
+    let DocumentType: any = [];
+    let ProjectName: any = [];
+    let SubDepartments: any = [];
+    let SubdepartmentsParents: any = [];
+    let SubDepartments1: any = [];
+    let SubdepartmentsMain: any = [];
+    let SubdepartmentsMain1: any = [];
+    let SubdepartmentsMainParents: any = [];
 
 
     await sp.web.lists
@@ -495,7 +497,7 @@ export default class header extends React.Component<{}, any> {
 
     console.log(this.state.items);
 
-    
+
   }
 
   //end componentDIdmount
@@ -519,13 +521,13 @@ export default class header extends React.Component<{}, any> {
       {
         items: text.toLowerCase()
           ? val.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            )
+            this.state.page * this.state.rowsPerPage,
+            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+          )
           : this.state.overalllist.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            ),
+            this.state.page * this.state.rowsPerPage,
+            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+          ),
       },
       () => {
         this.setState({
@@ -588,9 +590,9 @@ export default class header extends React.Component<{}, any> {
   // approverslist
   public render() {
     // var sss = [];
-    var sss:any = [];
+    var sss: any = [];
 
-    const {showFirstItem} = this.state; // Access showFirstItem from state
+    const { showFirstItem } = this.state; // Access showFirstItem from state
     console.log(showFirstItem);
 
     const toggleHideDialog = () => {
@@ -692,7 +694,7 @@ export default class header extends React.Component<{}, any> {
     const changeValuedepartmentName = async (e, value: any) => {
       console.log("changeValuedepartmentName function called.");
       console.log("Selected department value:", value);
-    
+
       try {
         const sp: SPFI = getSp();
         this.setState({
@@ -701,14 +703,14 @@ export default class header extends React.Component<{}, any> {
           params4: "",
           params5: "",
         });
-    
+
         const selectedDepartment = value.text;
         console.log("Selected department:", selectedDepartment);
-    
+
         // Check if the selected department has subfolders
         if (this.state.SubfoldersMainParent.includes(selectedDepartment)) {
           console.log("Selected department has subfolders.");
-    
+
           const subfolders = this.state.SubdepartmentsMain2
             .filter((subfolder) => subfolder.ParentFolders === selectedDepartment)
             .map((subfolder) => ({
@@ -716,9 +718,9 @@ export default class header extends React.Component<{}, any> {
               Key: subfolder.SubFolders,
               Code: subfolder.Code,
             }));
-    
+
           console.log("SubdepartmentsMain array:", subfolders);
-    
+
           this.setState({
             SubfolderState: true,
             SubdepartmentsMain: subfolders,
@@ -728,22 +730,22 @@ export default class header extends React.Component<{}, any> {
           });
         } else {
           console.log("Selected department does not have subfolders.");
-    
+
           this.setState({
             SubfolderState: false,
             params111: value.Key,
             params11: selectedDepartment,
           });
         }
-    
+
         console.log("Updated state:", this.state);
       } catch (error) {
         console.error("Error in changeValuedepartmentName:", error);
       }
     };
-    
-    
-    
+
+
+
 
     // const changeValuedepartmentName = (e, value) => {
     //   console.log(value);
@@ -754,10 +756,10 @@ export default class header extends React.Component<{}, any> {
     //     params4: "",
     //     params5: "",
     //   });
-    
+
     //   const sssCopy = [...this.state.sss]; // Assuming sss is an array in your state
     //   sssCopy.push(value.text);
-    
+
     //   if (this.state.SubfoldersMainParent.includes(value.text)) {
     //     const array1 = this.state.SubdepartmentsMain2
     //       .filter((names) => names.ParentFolders === value.text)
@@ -766,9 +768,9 @@ export default class header extends React.Component<{}, any> {
     //         Key: names.SubFolders,
     //         Code: names.Code,
     //       }));
-    
+
     //     console.log(array1);
-    
+
     //     this.setState({
     //       SubfolderState: true,
     //       SubdepartmentsMain: array1,
@@ -787,7 +789,7 @@ export default class header extends React.Component<{}, any> {
     //   // Update the state with the modified sssCopy array
     //   this.setState({ sss: sssCopy });
     // };
-    
+
 
     const changeValuedocumentType = async (e, value: any) => {
       console.log(value);
@@ -810,7 +812,7 @@ export default class header extends React.Component<{}, any> {
 
       if (this.state.SubfoldersParent.includes(value.text)) {
         // let array1 = [];
-        let array1:any = [];
+        let array1: any = [];
 
         console.log(this.state.Subdepartments2);
 
@@ -878,7 +880,7 @@ export default class header extends React.Component<{}, any> {
 
     const downloadFile = async () => {
       //download xl file
-      const sp:SPFI=getSp()
+      const sp: SPFI = getSp()
 
       console.log(this.state.downloadUrl);
       console.log(this.state.downloadUrl.split("/")[4]);
@@ -915,9 +917,9 @@ export default class header extends React.Component<{}, any> {
 
 
 
-    
 
-//ORIGINAL CODE
+
+    //ORIGINAL CODE
     // const clickGenerate = async () => {
     //   console.log(this.state);
     //   // let somee = [];
@@ -1073,335 +1075,335 @@ export default class header extends React.Component<{}, any> {
     // };
 
 
-  //  const clickGenerate = async () => {
-  //     console.log(this.state);
-  //     // let somee = [];
-  //     // let somee1 = [];
-  //     // let somee2 = [];
-  //     let somee:any = [];
-  //     let somee1:any = [];
-  //     let somee2:any = [];
+    //  const clickGenerate = async () => {
+    //     console.log(this.state);
+    //     // let somee = [];
+    //     // let somee1 = [];
+    //     // let somee2 = [];
+    //     let somee:any = [];
+    //     let somee1:any = [];
+    //     let somee2:any = [];
 
 
-  //     if (this.state.params111.length <= 0) {
-  //       alert("Please add Department Name before generating ID!");
-  //     } else if (this.state.params2.length <= 0) {
-  //       alert("Please add Document Name before generating ID!");
-  //     } else if (this.state.params5.length <= 0) {
-  //       alert("Please add Project Name before generating ID!");
-  //     } else if (
-  //       this.state.SubfolderState === true &&
-  //       this.state.params3.length <= 0
-  //     ) {
-  //       alert("Please add Sub Folders Main before generating ID!");
-  //     } else if (
-  //       this.state.SubfolderState1 === true &&
-  //       this.state.params4.length <= 0
-  //     ) {
-  //       alert("Please add Sub Folders before generating ID!");
-  //     } else {
-  //       // COMMON-TEPL-EHS-SOP-002.xlsx
-  //       // TEPL-COMMON-QL-QM-PR-0002.xlsx
-  //       if (this.state.params5.length > 0) {
-  //         console.log(this.state.params5);
-  //         await somee1.push("TEPL");
-  //         // await somee2.push("TEPL");
-  //         await somee1.push(this.state.params5);
-  //         // await somee2.push(this.state.params5);
-  //       }
-  //       if (this.state.params111.length > 0) {
-  //         console.log(this.state.params1);
-  //         await somee.push(this.state.params111);
-  //         await somee1.push(this.state.params111);
-  //         if (this.state.params1.length > 0) {
-  //           await somee1.push(this.state.params1);
-  //         }
-  //         await somee2.push(this.state.params11);
-  //       }
-  //       if (this.state.params3.length > 0) {
-  //         console.log(this.state.params3);
-  //         await somee.push(this.state.params3);
-  //         await somee2.push(this.state.params3);
-  //         // await somee1.push(this.state.params3);
-  //       }
-  //       if (this.state.params4.length > 0) {
-  //         console.log(this.state.params4);
-  //         await somee.push(this.state.params4);
-  //         await somee2.push(this.state.params4);
-  //         // await somee1.push(this.state.params4);
-  //       }
+    //     if (this.state.params111.length <= 0) {
+    //       alert("Please add Department Name before generating ID!");
+    //     } else if (this.state.params2.length <= 0) {
+    //       alert("Please add Document Name before generating ID!");
+    //     } else if (this.state.params5.length <= 0) {
+    //       alert("Please add Project Name before generating ID!");
+    //     } else if (
+    //       this.state.SubfolderState === true &&
+    //       this.state.params3.length <= 0
+    //     ) {
+    //       alert("Please add Sub Folders Main before generating ID!");
+    //     } else if (
+    //       this.state.SubfolderState1 === true &&
+    //       this.state.params4.length <= 0
+    //     ) {
+    //       alert("Please add Sub Folders before generating ID!");
+    //     } else {
+    //       // COMMON-TEPL-EHS-SOP-002.xlsx
+    //       // TEPL-COMMON-QL-QM-PR-0002.xlsx
+    //       if (this.state.params5.length > 0) {
+    //         console.log(this.state.params5);
+    //         await somee1.push("TEPL");
+    //         // await somee2.push("TEPL");
+    //         await somee1.push(this.state.params5);
+    //         // await somee2.push(this.state.params5);
+    //       }
+    //       if (this.state.params111.length > 0) {
+    //         console.log(this.state.params1);
+    //         await somee.push(this.state.params111);
+    //         await somee1.push(this.state.params111);
+    //         if (this.state.params1.length > 0) {
+    //           await somee1.push(this.state.params1);
+    //         }
+    //         await somee2.push(this.state.params11);
+    //       }
+    //       if (this.state.params3.length > 0) {
+    //         console.log(this.state.params3);
+    //         await somee.push(this.state.params3);
+    //         await somee2.push(this.state.params3);
+    //         // await somee1.push(this.state.params3);
+    //       }
+    //       if (this.state.params4.length > 0) {
+    //         console.log(this.state.params4);
+    //         await somee.push(this.state.params4);
+    //         await somee2.push(this.state.params4);
+    //         // await somee1.push(this.state.params4);
+    //       }
 
-  //       if (this.state.params2.length > 0) {
-  //         console.log(this.state.params2);
-  //         await somee.push(this.state.params2);
-  //         await somee1.push(this.state.params2);
-  //         await somee2.push(this.state.params22);
-  //       }
+    //       if (this.state.params2.length > 0) {
+    //         console.log(this.state.params2);
+    //         await somee.push(this.state.params2);
+    //         await somee1.push(this.state.params2);
+    //         await somee2.push(this.state.params22);
+    //       }
 
-  //       console.log(somee);
-  //       console.log(somee.join("/"));
-  //       console.log(somee1.join("-"));
-  //       console.log(somee2.join("/"));
-  //       // let lastDigit = "";
-  //       let lastDigit:any = "";
-  //       let params6;
-  //       // let digitArray = [];
-  //       let digitArray:any = [];
+    //       console.log(somee);
+    //       console.log(somee.join("/"));
+    //       console.log(somee1.join("-"));
+    //       console.log(somee2.join("/"));
+    //       // let lastDigit = "";
+    //       let lastDigit:any = "";
+    //       let params6;
+    //       // let digitArray = [];
+    //       let digitArray:any = [];
 
-  //       // console.log(
-  //       //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
-  //       // );
-  //       console.log(
-  //         `/sites/DMS-TATA/Shared Documents1/${somee2.join("/")}`
-  //       );
-  //       // const sp:SPFI=getSp();
-  //       // let somss:any = await sp.web
-  //       //   .getFolderByServerRelativePath(
-  //       //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
-  //       //   .files.getAll()
-  //       // const sp:SPFI=getSp();
-  //       // let folderPath:any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-  //       // let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
-  //       // console.log(folder);
-  //       // // Use getItemsByCAMLQuery to get all items (files) in the folder
-  //       // let somss: any = await folder.files.getAll();
-  //       // console.log(folder)
-  //       // // Process files
-  //       // somss.forEach(async (file: any) => {
-  //       //   let last = file.Name.split("-").pop();
-  //       //   console.log(last);
-        
-  //       //   let splitFileEx: any = last.split(".")[0];
-  //       //   digitArray.push(splitFileEx);
-  //       // });
-        
+    //       // console.log(
+    //       //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
+    //       // );
+    //       console.log(
+    //         `/sites/DMS-TATA/Shared Documents1/${somee2.join("/")}`
+    //       );
+    //       // const sp:SPFI=getSp();
+    //       // let somss:any = await sp.web
+    //       //   .getFolderByServerRelativePath(
+    //       //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
+    //       //   .files.getAll()
+    //       // const sp:SPFI=getSp();
+    //       // let folderPath:any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+    //       // let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
+    //       // console.log(folder);
+    //       // // Use getItemsByCAMLQuery to get all items (files) in the folder
+    //       // let somss: any = await folder.files.getAll();
+    //       // console.log(folder)
+    //       // // Process files
+    //       // somss.forEach(async (file: any) => {
+    //       //   let last = file.Name.split("-").pop();
+    //       //   console.log(last);
+
+    //       //   let splitFileEx: any = last.split(".")[0];
+    //       //   digitArray.push(splitFileEx);
+    //       // });
 
 
-  //       const sp: SPFI = getSp();
-  //       let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-        
-  //       const list = sp.web.lists.getByTitle("Documents"); // Replace "Documents" with your actual document library name
-        
-  //       // Fetch items from the folder using the CAML query
-  //       const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
-        
-  //       // Process files
-  //       items.forEach((item: any) => {
-  //         let last = item.FileLeafRef.split("-").pop();
-  //         console.log(last);
-        
-  //         let splitFileEx: any = last.split(".")[0];
-  //         digitArray.push(splitFileEx);
-  //       });
-        
-        
 
-        
-        
-  //       // Calculate lastDigit and update state
-  //       if (digitArray.length > 0) {
-  //         let sortNumbers = digitArray.sort();
-  //         let last = sortNumbers[sortNumbers.length - 1];
-  //         let returnNumber = String(Number(last) + 1);
-        
-  //         if (returnNumber.length === 1) {
-  //           lastDigit = "000" + returnNumber;
-  //         } else if (returnNumber.length === 2) {
-  //           lastDigit = "00" + returnNumber;
-  //         } else if (returnNumber.length === 3) {
-  //           lastDigit = "0" + returnNumber;
-  //         } else if (returnNumber.length === 4) {
-  //           lastDigit = returnNumber;
-  //         }
-  //       } else {
-  //         lastDigit = "0001";
-  //       }
-        
-  //       somee1.push(lastDigit);
-  //       console.log(lastDigit);
-  //       console.log(somee1);
-        
-  //       this.setState({
-  //         fileUrl: somee2.join("/"),
-  //         fileNameStruct: somee1.join("-"),
-  //       });
-        
-  //       console.log(this.state);
-  //     }
-  //   };
+    //       const sp: SPFI = getSp();
+    //       let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+
+    //       const list = sp.web.lists.getByTitle("Documents"); // Replace "Documents" with your actual document library name
+
+    //       // Fetch items from the folder using the CAML query
+    //       const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
+
+    //       // Process files
+    //       items.forEach((item: any) => {
+    //         let last = item.FileLeafRef.split("-").pop();
+    //         console.log(last);
+
+    //         let splitFileEx: any = last.split(".")[0];
+    //         digitArray.push(splitFileEx);
+    //       });
+
+
+
+
+
+    //       // Calculate lastDigit and update state
+    //       if (digitArray.length > 0) {
+    //         let sortNumbers = digitArray.sort();
+    //         let last = sortNumbers[sortNumbers.length - 1];
+    //         let returnNumber = String(Number(last) + 1);
+
+    //         if (returnNumber.length === 1) {
+    //           lastDigit = "000" + returnNumber;
+    //         } else if (returnNumber.length === 2) {
+    //           lastDigit = "00" + returnNumber;
+    //         } else if (returnNumber.length === 3) {
+    //           lastDigit = "0" + returnNumber;
+    //         } else if (returnNumber.length === 4) {
+    //           lastDigit = returnNumber;
+    //         }
+    //       } else {
+    //         lastDigit = "0001";
+    //       }
+
+    //       somee1.push(lastDigit);
+    //       console.log(lastDigit);
+    //       console.log(somee1);
+
+    //       this.setState({
+    //         fileUrl: somee2.join("/"),
+    //         fileNameStruct: somee1.join("-"),
+    //       });
+
+    //       console.log(this.state);
+    //     }
+    //   };
 
 
     //This code works
-  // const clickGenerate = async () => {
-  //   // Clear arrays and other relevant state variables
-  //   let somee:any = [];
-  //   let somee1:any = [];
-  //   let somee2:any = [];
-  //   let lastDigit:any = "";
-  //   let digitArray:any = [];
-  
-  //   if (this.state.params111.length <= 0) {
-  //     alert("Please add Department Name before generating ID!");
-  //   } else if (this.state.params2.length <= 0) {
-  //     alert("Please add Document Name before generating ID!");
-  //   } else if (this.state.params5.length <= 0) {
-  //     alert("Please add Project Name before generating ID!");
-  //   } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
-  //     alert("Please add Sub Folders Main before generating ID!");
-  //   } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
-  //     alert("Please add Sub Folders before generating ID!");
-  //   } else {
-  //     if (this.state.params5.length > 0) {
-  //       await somee1.push("TEPL");
-  //       await somee1.push(this.state.params5);
-  //     }
-  //     if (this.state.params111.length > 0) {
-  //       await somee.push(this.state.params111);
-  //       await somee1.push(this.state.params111);
-  //       if (this.state.params1.length > 0) {
-  //         await somee1.push(this.state.params1);
-  //       }
-  //       await somee2.push(this.state.params11);
-  //     }
-  //     if (this.state.params3.length > 0) {
-  //       await somee.push(this.state.params3);
-  //       await somee2.push(this.state.params3);
-  //     }
-  //     if (this.state.params4.length > 0) {
-  //       await somee.push(this.state.params4);
-  //       await somee2.push(this.state.params4);
-  //     }
-  //     if (this.state.params2.length > 0) {
-  //       await somee.push(this.state.params2);
-  //       await somee1.push(this.state.params2);
-  //       await somee2.push(this.state.params22);
-  //     }
-  
-  //     console.log(somee);
-  //     console.log(somee.join("/"));
-  //     console.log(somee1.join("-"));
-  //     console.log(somee2.join("/"));
-  
-  //     const sp: SPFI = getSp();
-  //     let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-  
-  //     const list = sp.web.lists.getByTitle("Documents");
-  //     const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
-  
-  //     items.forEach((item: any) => {
-  //       let last = item.FileLeafRef.split("-").pop();
-  //       console.log(last);
-  //       let splitFileEx: any = last.split(".")[0];
-  //       digitArray.push(splitFileEx);
-  //       console
-  //     });
-  
-  //     if (digitArray.length > 0) {
-  //       let sortNumbers = digitArray.sort();
-  //       let last = sortNumbers[sortNumbers.length - 1];
-  //       let returnNumber = String(Number(last) + 1);
-  
-  //       if (returnNumber.length === 1) {
-  //         lastDigit = "000" + returnNumber;
-  //       } else if (returnNumber.length === 2) {
-  //         lastDigit = "00" + returnNumber;
-  //       } else if (returnNumber.length === 3) {
-  //         lastDigit = "0" + returnNumber;
-  //       } else if (returnNumber.length === 4) {
-  //         lastDigit = returnNumber;
-  //       }
-  //     } else {
-  //       lastDigit = "0001";
-  //     }
-  
-  //     somee1.push(lastDigit);
-  //     console.log(lastDigit);
-  //     console.log(somee1);
-  
-  //     this.setState({
-  //       fileUrl: somee2.join("/"),
-  //       fileNameStruct: somee1.join("-"),
-  //     });
-  
-  //     console.log(this.state);
-  //   }
-  // };
-  
+    // const clickGenerate = async () => {
+    //   // Clear arrays and other relevant state variables
+    //   let somee:any = [];
+    //   let somee1:any = [];
+    //   let somee2:any = [];
+    //   let lastDigit:any = "";
+    //   let digitArray:any = [];
+
+    //   if (this.state.params111.length <= 0) {
+    //     alert("Please add Department Name before generating ID!");
+    //   } else if (this.state.params2.length <= 0) {
+    //     alert("Please add Document Name before generating ID!");
+    //   } else if (this.state.params5.length <= 0) {
+    //     alert("Please add Project Name before generating ID!");
+    //   } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
+    //     alert("Please add Sub Folders Main before generating ID!");
+    //   } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
+    //     alert("Please add Sub Folders before generating ID!");
+    //   } else {
+    //     if (this.state.params5.length > 0) {
+    //       await somee1.push("TEPL");
+    //       await somee1.push(this.state.params5);
+    //     }
+    //     if (this.state.params111.length > 0) {
+    //       await somee.push(this.state.params111);
+    //       await somee1.push(this.state.params111);
+    //       if (this.state.params1.length > 0) {
+    //         await somee1.push(this.state.params1);
+    //       }
+    //       await somee2.push(this.state.params11);
+    //     }
+    //     if (this.state.params3.length > 0) {
+    //       await somee.push(this.state.params3);
+    //       await somee2.push(this.state.params3);
+    //     }
+    //     if (this.state.params4.length > 0) {
+    //       await somee.push(this.state.params4);
+    //       await somee2.push(this.state.params4);
+    //     }
+    //     if (this.state.params2.length > 0) {
+    //       await somee.push(this.state.params2);
+    //       await somee1.push(this.state.params2);
+    //       await somee2.push(this.state.params22);
+    //     }
+
+    //     console.log(somee);
+    //     console.log(somee.join("/"));
+    //     console.log(somee1.join("-"));
+    //     console.log(somee2.join("/"));
+
+    //     const sp: SPFI = getSp();
+    //     let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+
+    //     const list = sp.web.lists.getByTitle("Documents");
+    //     const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
+
+    //     items.forEach((item: any) => {
+    //       let last = item.FileLeafRef.split("-").pop();
+    //       console.log(last);
+    //       let splitFileEx: any = last.split(".")[0];
+    //       digitArray.push(splitFileEx);
+    //       console
+    //     });
+
+    //     if (digitArray.length > 0) {
+    //       let sortNumbers = digitArray.sort();
+    //       let last = sortNumbers[sortNumbers.length - 1];
+    //       let returnNumber = String(Number(last) + 1);
+
+    //       if (returnNumber.length === 1) {
+    //         lastDigit = "000" + returnNumber;
+    //       } else if (returnNumber.length === 2) {
+    //         lastDigit = "00" + returnNumber;
+    //       } else if (returnNumber.length === 3) {
+    //         lastDigit = "0" + returnNumber;
+    //       } else if (returnNumber.length === 4) {
+    //         lastDigit = returnNumber;
+    //       }
+    //     } else {
+    //       lastDigit = "0001";
+    //     }
+
+    //     somee1.push(lastDigit);
+    //     console.log(lastDigit);
+    //     console.log(somee1);
+
+    //     this.setState({
+    //       fileUrl: somee2.join("/"),
+    //       fileNameStruct: somee1.join("-"),
+    //     });
+
+    //     console.log(this.state);
+    //   }
+    // };
 
 
-  const clickGenerate = async () => {
-    // Clear arrays and other relevant state variables
-    let somee:any = [];
-    let somee1:any = [];
-    let somee2:any = [];
-    let lastDigit:any = "";
-    let digitArray:any = [];
-  
-    if (this.state.params111.length <= 0) {
-      alert("Please add Department Name before generating ID!");
-    } else if (this.state.params2.length <= 0) {
-      alert("Please add Document Name before generating ID!");
-    } else if (this.state.params5.length <= 0) {
-      alert("Please add Project Name before generating ID!");
-    } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
-      alert("Please add Sub Folders Main before generating ID!");
-    } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
-      alert("Please add Sub Folders before generating ID!");
-    } else {
-      if (this.state.params5.length > 0) {
-        await somee1.push("TEPL");
-        await somee1.push(this.state.params5);
-      }
-      if (this.state.params111.length > 0) {
-        await somee.push(this.state.params111);
-        await somee1.push(this.state.params111);
-        if (this.state.params1.length > 0) {
-          await somee1.push(this.state.params1);
+
+    const clickGenerate = async () => {
+      // Clear arrays and other relevant state variables
+      let somee: any = [];
+      let somee1: any = [];
+      let somee2: any = [];
+      let lastDigit: any = "";
+      let digitArray: any = [];
+
+      if (this.state.params111.length <= 0) {
+        alert("Please add Department Name before generating ID!");
+      } else if (this.state.params2.length <= 0) {
+        alert("Please add Document Name before generating ID!");
+      } else if (this.state.params5.length <= 0) {
+        alert("Please add Project Name before generating ID!");
+      } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
+        alert("Please add Sub Folders Main before generating ID!");
+      } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
+        alert("Please add Sub Folders before generating ID!");
+      } else {
+        if (this.state.params5.length > 0) {
+          await somee1.push("TEPL");
+          await somee1.push(this.state.params5);
         }
-        await somee2.push(this.state.params11);
-      }
-      if (this.state.params3.length > 0) {
-        await somee.push(this.state.params3);
-        await somee2.push(this.state.params3);
-      }
-      if (this.state.params4.length > 0) {
-        await somee.push(this.state.params4);
-        await somee2.push(this.state.params4);
-      }
-      if (this.state.params2.length > 0) {
-        await somee.push(this.state.params2);
-        await somee1.push(this.state.params2);
-        await somee2.push(this.state.params22);
-      }
-  
-      console.log(somee);
-      console.log(somee.join("/"));
-      console.log(somee1.join("-"));
-      console.log(somee2.join("/"));
-  
-      const sp: SPFI = getSp();
-      // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-            // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-            let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join("/")}`;
+        if (this.state.params111.length > 0) {
+          await somee.push(this.state.params111);
+          await somee1.push(this.state.params111);
+          if (this.state.params1.length > 0) {
+            await somee1.push(this.state.params1);
+          }
+          await somee2.push(this.state.params11);
+        }
+        if (this.state.params3.length > 0) {
+          await somee.push(this.state.params3);
+          await somee2.push(this.state.params3);
+        }
+        if (this.state.params4.length > 0) {
+          await somee.push(this.state.params4);
+          await somee2.push(this.state.params4);
+        }
+        if (this.state.params2.length > 0) {
+          await somee.push(this.state.params2);
+          await somee1.push(this.state.params2);
+          await somee2.push(this.state.params22);
+        }
+
+        console.log(somee);
+        console.log(somee.join("/"));
+        console.log(somee1.join("-"));
+        console.log(somee2.join("/"));
+
+        const sp: SPFI = getSp();
+        // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+        // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+        let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join("/")}`;
 
 
-  
-      const list = sp.web.lists.getByTitle("Original File");
-      try {
+
+        const list = sp.web.lists.getByTitle("Original File");
+        try {
           const items = await list.items.select('Id,Title,FileRef,FileLeafRef,FileDirRef').filter(`FileDirRef eq '${folderPath}'`).getAll();
           console.log("Fetched items:", items);
 
-    
+
           if (items.length > 0) {
             console.log('HI')
             items.forEach((item: any) => {
               console.log(item)
               if (item && item.FileLeafRef) {
                 console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
-          
+
                 // Extract digits using a regular expression
                 let extractedDigits = item.FileLeafRef.match(/\d+/g);
-          
+
                 if (extractedDigits) {
                   console.log("Extracted Digits:", extractedDigits);
                   digitArray.push(...extractedDigits); // Use spread operator to push individual digits
@@ -1413,46 +1415,46 @@ export default class header extends React.Component<{}, any> {
           }
 
 
-}
-
- catch (error) {
-          console.error("Error fetching items:", error);
-      }
-      
-  
-      if (digitArray.length > 0) {
-        let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
-        let last = sortNumbers[sortNumbers.length - 1];
-        let returnNumber: string = (last + 1).toString().padStart(4, '0');
-  
-        if (returnNumber.length === 1) {
-          lastDigit = "000" + returnNumber;
-        } else if (returnNumber.length === 2) {
-          lastDigit = "00" + returnNumber;
-        } else if (returnNumber.length === 3) {
-          lastDigit = "0" + returnNumber;
-        } else if (returnNumber.length === 4) {
-          lastDigit = returnNumber;
         }
-      } else {
-        lastDigit = "0001";
+
+        catch (error) {
+          console.error("Error fetching items:", error);
+        }
+
+
+        if (digitArray.length > 0) {
+          let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
+          let last = sortNumbers[sortNumbers.length - 1];
+          let returnNumber: string = (last + 1).toString().padStart(4, '0');
+
+          if (returnNumber.length === 1) {
+            lastDigit = "000" + returnNumber;
+          } else if (returnNumber.length === 2) {
+            lastDigit = "00" + returnNumber;
+          } else if (returnNumber.length === 3) {
+            lastDigit = "0" + returnNumber;
+          } else if (returnNumber.length === 4) {
+            lastDigit = returnNumber;
+          }
+        } else {
+          lastDigit = "0001";
+        }
+
+        console.log("Digit Array:", digitArray);
+
+        somee1.push(lastDigit);
+        console.log(lastDigit);
+        console.log(somee1);
+
+        this.setState({
+          fileUrl: somee2.join("/"),
+          fileNameStruct: somee1.join("-"),
+        });
+
+        console.log(this.state);
       }
+    };
 
-      console.log("Digit Array:", digitArray);
-
-      somee1.push(lastDigit);
-      console.log(lastDigit);
-      console.log(somee1);
-  
-      this.setState({
-        fileUrl: somee2.join("/"),
-        fileNameStruct: somee1.join("-"),
-      });
-  
-      console.log(this.state);
-    }
-  };
-  
 
 
 
@@ -1468,13 +1470,17 @@ export default class header extends React.Component<{}, any> {
       console.log(this.state);
       // let somee = [];
       // let somee1 = [];
-      let somee:any = [];
-      let somee1:any = [];
+      let somee: any = [];
+      let somee1: any = [];
       console.log(this.state.params4);
       if (this.state.params111.length <= 0) {
-        alert("Please add Department Name before generating ID!");
+        // alert("Please add Department Name before generating ID!");
+        alert("Please select Department Name");
+
       } else if (this.state.params2.length <= 0) {
-        alert("Please add Document Name before generating ID!");
+        // alert("Please add Document Name before generating ID!");
+        alert("Please select Document Name");
+
       }
       // else if(this.state.params5.length <= 0) {
       //   alert("Please add Project Name before generating ID!")
@@ -1483,12 +1489,15 @@ export default class header extends React.Component<{}, any> {
         this.state.SubfolderState === true &&
         this.state.params3.length <= 0
       ) {
-        alert("Please add Sub Folders Main before generating ID!");
+        // alert("Please add Sub Folders Main before generating ID!");
+        alert("Please select Sub Folders Main");
+
       } else if (
         this.state.SubfolderState1 === true &&
         this.state.params4.length <= 0
       ) {
         alert("Please add Sub Folders before generating ID!");
+
       }
 
       if (this.state.params111.length > 0) {
@@ -1513,52 +1522,52 @@ export default class header extends React.Component<{}, any> {
 
       console.log(somee);
       console.log(somee.join("/"));
-      let fileUrl:any = somee.join("/");
+      let fileUrl: any = somee.join("/");
       // console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
 
       // console.log(`/sites/DMS-TATA/Shared Documents1/${fileUrl}`);
       console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
       console.log(`${fileUrl}`);
-      
-      
 
 
-      const sp:SPFI=getSp()
+
+
+      const sp: SPFI = getSp()
       // let filesName = [];
-      let filesName:any = [];
+      let filesName: any = [];
 
-//       const folder:any = sp.web.getFolderByServerRelativePath(
-//   `/sites/DMSportal/Original File/${fileUrl}`
-// );
+      //       const folder:any = sp.web.getFolderByServerRelativePath(
+      //   `/sites/DMSportal/Original File/${fileUrl}`
+      // );
 
-// const folder:any = sp.web.getFolderByServerRelativePath(
-//   `/sites/DMS-TATA/Original File/${fileUrl}`
-// );
+      // const folder:any = sp.web.getFolderByServerRelativePath(
+      //   `/sites/DMS-TATA/Original File/${fileUrl}`
+      // );
 
-// const folder:any = sp.web.getFolderByServerRelativePath(
-//   `/sites/DMS-Quadra/Original File/${fileUrl}`
-// );
-
-
-const folder:any = await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Original File/${fileUrl}`).files.expand("Files/ListItemAllFields,DocID").select()()
-console.log(folder);
-        
+      // const folder:any = sp.web.getFolderByServerRelativePath(
+      //   `/sites/DMS-Quadra/Original File/${fileUrl}`
+      // );
 
 
-console.log(folder);
+      const folder: any = await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Original File/${fileUrl}`).files.expand("Files/ListItemAllFields,DocID").select()()
+      console.log(folder);
 
-if (folder.length > 0) {
-  folder.forEach((file) => {
-    filesName.push({ key: file.Name, text: file.Name });
-  });
-} else {
-  alert("There is no file inside this folder, please create a new file!");
-}
 
-this.setState({
-  fileUrl: somee.join("/"),
-  Filess: filesName,
-});
+
+      console.log(folder);
+
+      if (folder.length > 0) {
+        folder.forEach((file) => {
+          filesName.push({ key: file.Name, text: file.Name });
+        });
+      } else {
+        alert("There is no file inside this folder, please create a new file!");
+      }
+
+      this.setState({
+        fileUrl: somee.join("/"),
+        Filess: filesName,
+      });
 
 
       // this.setState({
@@ -1653,8 +1662,8 @@ this.setState({
         this.setState({
           choose: false,
         });
-        const sp:SPFI=getSp()
-        let somss:any = await sp.web.lists.getByTitle("My Docs").items();
+        const sp: SPFI = getSp()
+        let somss: any = await sp.web.lists.getByTitle("My Docs").items();
         console.log(somss);
         await somss.filter((file) => {
           if (file.fileType === value.text) {
@@ -1688,10 +1697,10 @@ this.setState({
 
       let ID;
       let path;
-      const sp:SPFI=getSp()
-      let somss:any = await sp.web.lists.getByTitle("My Docs").items();
+      const sp: SPFI = getSp()
+      let somss: any = await sp.web.lists.getByTitle("My Docs").items();
       console.log(somss);
-      await somss.filter((file:any) => {
+      await somss.filter((file: any) => {
         if (file.fileType === value.text) {
           ID = file.ID;
           console.log(ID);
@@ -1717,21 +1726,22 @@ this.setState({
         });
     };
 
-// const handleFileChange=(e)=>{
-// console.log(e.target.files);
-// this.setState({
-//   // files:e.target.files
-//     fileess:e.target.files
+    // const handleFileChange=(e)=>{
+    // console.log(e.target.files);
+    // this.setState({
+    //   // files:e.target.files
+    //     fileess:e.target.files
 
-// })
-// }
+    // })
+    // }
 
-const handleFileChange = (e) => {
-  console.log(e.target.files);
-  this.setState({
-    fileess: e.target.files,
-  });
-};
+    const handleFileChange = (e) => {
+      console.log(e.target.files);
+      this.setState({
+        fileess: e.target.files,
+      });
+    };
+    console.log(this.state.fileess);
 
     const closeHideDialog = () => {
       this.setState({
@@ -1780,6 +1790,9 @@ const handleFileChange = (e) => {
 
     const _renderItemColumn = (item, index: number, column) => {
       const fieldContent = item[column.fieldName] as string;
+      console.log(fieldContent);
+      console.log(item);
+
 
       switch (column.key) {
         case "Upload status":
@@ -1884,7 +1897,7 @@ const handleFileChange = (e) => {
             onClick={toggleHideDialog}
           />
 
-{showFirstItem  && (<PrimaryButton
+          {showFirstItem && (<PrimaryButton
             text="Upload"
             style={{
               // borderStyle: 'dashed',
@@ -2126,7 +2139,7 @@ const handleFileChange = (e) => {
                         marginTop: "50px",
                       }}
                     >
-                      <input type="file" name="myFile" id="newfile" onChange={(e)=>handleFileChange(e)} required></input>
+                      <input type="file" name="myFile" id="newfile" onChange={(e) => handleFileChange(e)} required></input>
                     </div>
                     <div
                       style={{
@@ -2151,7 +2164,9 @@ const handleFileChange = (e) => {
                     <PrimaryButton
                       text="Upload"
                       style={{ backgroundColor: "#0078D4" }}
-                      onClick={this.filesave}
+                      // onClick={this.filesave}
+                      onClick={this.filesaveold}
+
                     />
                     <DefaultButton
                       onClick={closeHideDialogUpload}
@@ -2354,7 +2369,7 @@ const handleFileChange = (e) => {
                         marginTop: "100px",
                       }}
                     >
-                      <input type="file" required name="myFile" id="newfile"  onChange={(e)=>handleFileChange(e)}></input>
+                      <input type="file" required name="myFile" id="newfile" onChange={(e) => handleFileChange(e)}></input>
                     </div>
                     <div
                       style={{
@@ -2490,33 +2505,41 @@ const handleFileChange = (e) => {
       </div>
     );
   }
-
   private async filesave() {
     console.log(this.state.filenames.length);
     console.log(this.state.fileDes.length);
 
-      if (Array.isArray(this.state.fileess) && this.state.fileess.length > 0) {
 
-      const fileToUpload:any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
+    if (Array.isArray(this.state.fileess) && this.state.fileess.length > 0) {
+
+      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
 
       console.log(fileToUpload);
-}
-    else if(this.state.filenames.length <= 0) {
+    }
+    else if (this.state.fileNameStruct.length <= 0) {
+      alert("Please generate Id");
+    }
+
+    else if (this.state.fileess.length <= 0) {
+      alert("Please Choose File");
+    }
+
+    else if (this.state.filenames.length <= 0) {
       alert("Please give an file name");
     } else if (this.state.fileDes.length <= 0) {
       alert("Please give an file Description");
     } else {
       console.log(this.state.fileNameStruct);
-      const fileToUpload:any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
+      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
       // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
-            let myfile: any = fileToUpload;
+      let myfile: any = fileToUpload;
       console.log(myfile);
       this.setState({
         Uploading: true,
       });
 
-      let Department:any = "";
-      let Subdepartment:any = "";
+      let Department: any = "";
+      let Subdepartment: any = "";
 
       if (this.state.params11.length >= 0) {
         Department = this.state.params11;
@@ -2524,8 +2547,8 @@ const handleFileChange = (e) => {
         Department = "";
       }
       if (this.state.fileess.length <= 0) {
-          // alert("The file length is 0")
-          // this.setState({ fileess: e.target.files });
+        // alert("The file length is 0")
+        // this.setState({ fileess: e.target.files });
       }
 
       if (this.state.params3.length >= 0) {
@@ -2535,7 +2558,7 @@ const handleFileChange = (e) => {
       }
 
       if (myfile.size <= 10485760) {
-        const sp:SPFI=getSp();
+        const sp: SPFI = getSp();
 
         // create item in an sp list
         //       let somss = await web.lists.getByTitle("User Files").items();
@@ -2551,7 +2574,7 @@ const handleFileChange = (e) => {
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
 
         // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-  
+
         // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
         // .then(async (f) => {
         //     await f.file.getItem().then(async (item) => {
@@ -2564,28 +2587,26 @@ const handleFileChange = (e) => {
         //         .then(async (myupdate) => {
         //           console.log(myupdate);
         //         });
-  
+
         //       });
         //       });
-          //     await item.getAll().then(async (myupdate) => {
-          //       console.log(myupdate);
-          //       this.setState({
-          //         fileIDs: myupdate.ID,
-          //       });
-          //       // console.log("Metadata Updated");
-          //     });
-          //   });
-          // });
-
-       
-          //This code works
-            let fileexe:any = myfile.name.split(".").pop();
-            console.log(fileexe);
-          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-          console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+        //     await item.getAll().then(async (myupdate) => {
+        //       console.log(myupdate);
+        //       this.setState({
+        //         fileIDs: myupdate.ID,
+        //       });
+        //       // console.log("Metadata Updated");
+        //     });
+        //   });
+        // });
 
 
-            console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        //This code works
+        let fileexe: any = myfile.name.split(".").pop();
+        console.log(fileexe);
+        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+        console.log(`${this.state.fileNameStruct}.${fileexe}`);
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
 
@@ -2596,7 +2617,58 @@ const handleFileChange = (e) => {
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
 
-                await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+        // const documentLibraryName = "Shared Documents1";
+
+        const folderPath = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+        console.log(folderPath);
+        console.log(this.state.fileUrl);
+        // Getting the folder by server relative path
+        // const folder = await sp.web.getFolderByServerRelativePath(folderPath);
+        // console.log(folder);
+
+        // Checking if the folder exists
+        // if (!folder) {
+        //     // Folder doesn't exist, so create it
+        //     await sp.web.folders.addUsingPath(folderPath).catch(err => {
+        //         console.error("Error occurred while creating the folder:", err);
+        //     });
+        // }
+
+        const documentLibraryName = "Shared Documents1";
+
+// Split the fileUrl string into individual folder names
+const folders = this.state.fileUrl.split('/');
+
+// Initialize the base folder path
+let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
+
+// Iterate over each folder name and create folders
+for (const folderName of folders) {
+    try {
+        // Update the folder path
+        currentFolderPath += `/${folderName}`;
+
+        // Check if the folder already exists
+        const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
+        console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
+    } catch (error) {
+        // Handle the error if the folder doesn't exist
+        console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
+        console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
+        
+        // Attempt to create the folder
+        try {
+            await sp.web.folders.addUsingPath(currentFolderPath);
+            console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
+        } catch (error) {
+            console.error(`Error creating folder "${folderName}":`, error);
+            return;
+        }
+    }
+}
+
+        await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
 
           .then(async (f) => {
@@ -2610,7 +2682,7 @@ const handleFileChange = (e) => {
                 .then(async (myupdate) => {
                   console.log(myupdate);
                 });
-  
+
               // await item.get().then(async (myupdate) => {
               //   console.log(myupdate);
               //   this.setState({
@@ -2627,14 +2699,12 @@ const handleFileChange = (e) => {
 
 
         this.state.fileUrl;
-        let fileurl:any = "";
+        let fileurl: any = "";
         await sp.web
           .getFolderByServerRelativePath(
             // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
             // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
-
-
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
           .select() // Fields to retrieve
@@ -2720,7 +2790,7 @@ const handleFileChange = (e) => {
               Status: "Pending",
               // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
               //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
 
 
 
@@ -2743,21 +2813,21 @@ const handleFileChange = (e) => {
           Uploading: false,
         });
       } else {
-        const sp:SPFI=getSp()
+        const sp: SPFI = getSp()
         console.log(myfile.name);
-        let fileexe:any = myfile.name.split(".").pop();
+        let fileexe: any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
         // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
 
-        
+
 
         console.log(`${this.state.fileNameStruct}.${fileexe}`);
         // await sp.web
         //   .getFolderByServerRelativePath(
         //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
         //   )
-          await sp.web
+        await sp.web
           .getFolderByServerRelativePath(
             // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
@@ -2812,13 +2882,454 @@ const handleFileChange = (e) => {
         // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
 
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        const folderPath:any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+        const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+        console.log(folderPath);
+        console.log(this.state.fileUrl);
+
+        const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+
+        for (const item of items) {
+          console.log(item);
+          if (item.Name === `${this.state.fileNameStruct}.${fileexe}`) {
+            fileurl = item.LinkingUri;
+            break;
+          }
+        }
+
+        console.log(this.state.fileIDs);
+        let { Title } = await sp.web.currentUser();
+        if (this.state.valueFileType === "Old Files") {
+          // update item in an sp list
+          const items: any[] = await sp.web.lists
+            .getByTitle("User Files")
+            .items.top(1)
+            .filter(`Filename eq '${this.state.fileNameStruct}.${fileexe}'`)();
+
+          if (items.length > 0) {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.getById(items[0].Id)
+              .update({
+                Filename: `${this.state.fileNameStruct}.${fileexe}`,
+                FileTitle: this.state.filenames,
+                Filetype: this.state.params2,
+                Filedescription: this.state.fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                RequestorEmail: this.state.CurrentUser,
+                Requester: Title,
+                Fileurl: fileurl,
+                DocID: String(this.state.DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then((i) => {
+                console.log(i);
+              });
+          }
+
+          // alert("Updated Successfully");
+        } else if (this.state.valueFileType === "New Files") {
+          await sp.web.lists
+            .getByTitle("User Files")
+            .items.add({
+              Filename: `${this.state.fileNameStruct}.${fileexe}`,
+              FileTitle: this.state.filenames,
+              Filetype: this.state.params2,
+              Filedescription: this.state.fileDes,
+              FileUploadDate: formatDate(new Date()),
+              ApprovalStatus: "QMS",
+              RequestorEmail: this.state.CurrentUser,
+              Fileurl: fileurl,
+              Requester: Title,
+              DocID: String(this.state.DocID + 1),
+              Status: "Pending",
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
 
 
-        const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-        
-        const items:any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
-        
+              Department: Department,
+              SubDepartment: Subdepartment,
+            })
+            .then(async (i) => {
+              console.log(i);
+            });
+        }
+
+        alert("Created Successfully");
+        this.setState({
+          Uploading: false,
+        });
+      }
+
+      this.setState({
+        openDialogUpload: false,
+        hiddenDialogUpload: true,
+        SubfolderState: false,
+        SubfolderState1: false,
+        fileUrl: "",
+        filenames: "",
+        fileDes: "",
+        Filess: [],
+        params1: "",
+        params22: "",
+        params11: "",
+        params2: "",
+        params3: "",
+        params4: "",
+        params5: "",
+        fileNameStruct: "",
+        valueFileType: "Old Files",
+      });
+      console.log(this.state);
+    }
+  }
+
+
+
+  private async filesaveold() {
+    console.log(this.state.filenames.length);
+    console.log(this.state.fileDes.length);
+
+
+    if (Array.isArray(this.state.fileess) && this.state.fileess.length > 0) {
+
+      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
+
+      console.log(fileToUpload);
+    }
+    else if (this.state.fileNameStruct.length <= 0) {
+      alert("Please click search and select the file");
+    }
+
+    else if (this.state.fileess.length <= 0) {
+      alert("Please Choose File");
+    }
+
+    else if (this.state.filenames.length <= 0) {
+      alert("Please give an file name");
+    } else if (this.state.fileDes.length <= 0) {
+      alert("Please give an file Description");
+    } else {
+      console.log(this.state.fileNameStruct);
+      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
+      // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
+      let myfile: any = fileToUpload;
+      console.log(myfile);
+      this.setState({
+        Uploading: true,
+      });
+
+      let Department: any = "";
+      let Subdepartment: any = "";
+
+      if (this.state.params11.length >= 0) {
+        Department = this.state.params11;
+      } else {
+        Department = "";
+      }
+      if (this.state.fileess.length <= 0) {
+        // alert("The file length is 0")
+        // this.setState({ fileess: e.target.files });
+      }
+
+      if (this.state.params3.length >= 0) {
+        Subdepartment = this.state.params3;
+      } else {
+        Subdepartment = "";
+      }
+
+      if (myfile.size <= 10485760) {
+        const sp: SPFI = getSp();
+
+        // create item in an sp list
+        //       let somss = await web.lists.getByTitle("User Files").items();
+        // console.log(somss)
+        console.log(myfile.name);
+
+        // let fileexe:any = myfile.name.split(".").pop();
+        // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+        //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+
+        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+
+        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+        // .then(async (f) => {
+        //     await f.file.getItem().then(async (item) => {
+        //       await item
+        //         .update({
+        //           FileDescription: this.state.fileDes,
+        //           FileName: this.state.filenames,
+        //           DocID: String(this.state.DocID + 1),
+        //         })
+        //         .then(async (myupdate) => {
+        //           console.log(myupdate);
+        //         });
+
+        //       });
+        //       });
+        //     await item.getAll().then(async (myupdate) => {
+        //       console.log(myupdate);
+        //       this.setState({
+        //         fileIDs: myupdate.ID,
+        //       });
+        //       // console.log("Metadata Updated");
+        //     });
+        //   });
+        // });
+
+
+        //This code works
+        let fileexe: any = myfile.name.split(".").pop();
+        console.log(fileexe);
+        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+
+
+        console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
+
+
+        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+
+
+        await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+
+
+          .then(async (f) => {
+            await f.file.getItem().then(async (item) => {
+              await item
+                .update({
+                  FileDescription: this.state.fileDes,
+                  FileName: this.state.filenames,
+                  DocID: String(this.state.DocID + 1),
+                })
+                .then(async (myupdate) => {
+                  console.log(myupdate);
+                });
+
+              // await item.get().then(async (myupdate) => {
+              //   console.log(myupdate);
+              //   this.setState({
+              //     fileIDs: myupdate.ID,
+              //   });
+              //   console.log("Metadata Updated");
+              // });
+
+              console.log(item);
+            });
+          });
+
+
+
+
+        this.state.fileUrl;
+        let fileurl: any = "";
+        await sp.web
+          .getFolderByServerRelativePath(
+            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
+          ) // Here comes a folder/subfolder path
+          .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+          .select() // Fields to retrieve
+          ()
+          .then(async (item) => {
+            console.log(item);
+            item.filter((file) => {
+              console.log(file);
+              console.log(file.LinkingUri);
+              if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
+                fileurl = file.LinkingUri;
+              }
+            });
+          });
+
+        console.log(this.state.fileIDs);
+        date.setDate(date.getDate() + 5);
+        let { Title } = await sp.web.currentUser();
+        if (this.state.valueFileType === "Old Files") {
+          console.log(`${this.state.fileNameStruct}.${fileexe}`);
+          // update item in an sp list
+          const items: any[] = await sp.web.lists
+            .getByTitle("User Files")
+            .items.filter(
+              `Filename eq '${this.state.fileNameStruct}.${fileexe}'`
+            )();
+          console.log(items);
+          const max = items.reduce(function (prev, current) {
+            // var ts = new Date("2022-04-06T09:21:13Z");
+            // console.log(ts);
+
+            return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
+              ? prev
+              : current;
+          });
+          console.log(max);
+          // if (max.length > 0) {
+          await sp.web.lists
+            .getByTitle("User Files")
+            .items.getById(max.Id)
+            .update({
+              Filename: `${this.state.fileNameStruct}.${fileexe}`,
+              FileTitle: this.state.filenames,
+              Filetype: this.state.params2,
+              Filedescription: this.state.fileDes,
+              FileUploadDate: formatDate(new Date()),
+              ApprovalStatus: "QMS",
+              Requester: Title,
+              Remainder: formatDate(date),
+              RequestorEmail: this.state.CurrentUser,
+              Fileurl: fileurl,
+              DocID: String(this.state.DocID + 1),
+              Status: "Pending",
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
+
+              Department: Department,
+              SubDepartment: Subdepartment,
+            })
+            .then((i) => {
+              console.log(i);
+            });
+          //  }
+
+          // alert("Updated Successfully");
+        } else if (this.state.valueFileType === "New Files") {
+          await sp.web.lists
+            .getByTitle("User Files")
+            .items.add({
+              Filename: `${this.state.fileNameStruct}.${fileexe}`,
+              FileTitle: this.state.filenames,
+              Filetype: this.state.params2,
+              Filedescription: this.state.fileDes,
+              FileUploadDate: formatDate(new Date()),
+              ApprovalStatus: "QMS",
+              Requester: Title,
+              Remainder: formatDate(date),
+              RequestorEmail: this.state.CurrentUser,
+              Fileurl: fileurl,
+              DocID: String(this.state.DocID + 1),
+              Status: "Pending",
+              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
+
+
+
+              Department: Department,
+              SubDepartment: Subdepartment,
+            })
+            .then(async (i) => {
+              console.log(i);
+            });
+        }
+
+        //     console.log(this.state);
+        //     await web.lists.getById("380").rootFolder.files.get().then(t => {
+        // //add your code here if you want to do more after deleting the file
+        //     console.log(t);
+        //     });
+
+        alert("Created Successfully");
+        this.setState({
+          Uploading: false,
+        });
+      } else {
+        const sp: SPFI = getSp()
+        console.log(myfile.name);
+        let fileexe: any = myfile.name.split(".").pop();
+        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
+
+
+
+        console.log(`${this.state.fileNameStruct}.${fileexe}`);
+        // await sp.web
+        //   .getFolderByServerRelativePath(
+        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+        //   )
+        await sp.web
+          .getFolderByServerRelativePath(
+            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
+
+          )
+          .files.addChunked(myfile.name, myfile)
+          .then((f) => {
+            // console.log("File Uploaded");
+            f.file.getItem().then(async (item) => {
+              //get item from sp
+
+              await item
+                .update({
+                  FileDescription: this.state.fileDes,
+                  FileName: this.state.filenames,
+                  DocID: String(this.state.DocID + 1),
+                })
+                .then(async (myupdate) => {
+                  console.log(myupdate);
+                  // console.log("Metadata Updated");
+                });
+
+              await item().then(async (myupdate) => {
+                console.log(myupdate);
+                this.setState({
+                  fileIDs: myupdate.ID,
+                });
+                // console.log("Metadata Updated");
+              });
+            });
+          });
+        this.state.fileUrl;
+        // let fileurl:any = "";
+        // await sp.web
+        //   .getFolderByServerRelativePath(
+        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+        //   ) // Here comes a folder/subfolder path
+        //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+        //   .select() // Fields to retrieve
+        //   .getAll()
+        //   .then(async (item) => {
+        //     console.log(item);
+        //     await item.filter((file) => {
+        //       console.log(file.LinkingUri);
+        //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
+        //         fileurl = file.LinkingUri;
+        //       }
+        //     });
+        //   });
+        let fileurl: any = "";
+
+        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+
+        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+        const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
+
+
+        const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
+
+        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+
         for (const item of items) {
           console.log(item);
           if (item.Name === `${this.state.fileNameStruct}.${fileexe}`) {

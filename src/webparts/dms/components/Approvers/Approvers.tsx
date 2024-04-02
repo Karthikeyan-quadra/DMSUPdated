@@ -616,15 +616,12 @@ export default class header extends React.Component<{}, any> {
                 let fileurl: any = "";
 
                 try {
-                  const folder: any = sp.web.getFolderByServerRelativePath(destinationUrl);
-                  console.log(folder);
-
-                  await folder.files
-                    .expand('Files/ListItemAllFields,DocID')
-                    .select().get()
+                  const folder: any = await sp.web.getFolderByServerRelativePath(destinationUrl).files
+                    .expand('Files/ListItemAllFields,DocID').select() // Fields to retrieve
+                    ()
                     .then(async (item) => {
                       console.log(item);
-                      await item.filter((file) => {
+                       await item.filter((file) => {
                         if (file.Name === value.Filename) {
                           fileurl = file.LinkingUri;
                         }
@@ -645,7 +642,8 @@ export default class header extends React.Component<{}, any> {
                 //     console.log(i);
                 //   });
                 // }
-
+                  console.log(fileurl);
+                  
                 try {
                   const items: any[] = await sp.web.lists.getByTitle("User Files").items.top(1).filter(`Filename eq '${value.Filename}'`)();
                   console.log(items);
@@ -681,6 +679,7 @@ export default class header extends React.Component<{}, any> {
             ApprovalStatus: ApprovalStatuss,
             Status: Statuss,
             Remainder: Statuss === "Completed" ? "" : formatDate(date),
+            // FileUrl:
           })
           .then(async () => {
             // let RefreshData = this.state.overalllist;
