@@ -272,7 +272,8 @@ export default class header extends React.Component<{}, any> {
       SubfoldersMainParent: [],
       SubfoldersParent: [],
       fileUrl: "",
-      valueFileType: "Old Files",
+      // valueFileType: "Old Files",
+      valueFileType: "",
       textToCopy: "",
       DocID: "",
       fileNameStruct: "",
@@ -1338,7 +1339,7 @@ export default class header extends React.Component<{}, any> {
       let somee2: any = [];
       let lastDigit: any = "";
       let digitArray: any = [];
-
+      console.log(this.state.params111.length);
       if (this.state.params111.length <= 0) {
         alert("Please add Department Name before generating ID!");
       } else if (this.state.params2.length <= 0) {
@@ -1773,7 +1774,9 @@ export default class header extends React.Component<{}, any> {
         fileDes: "",
         Filess: [],
         fileNameStruct: "",
-        valueFileType: "Old Files",
+        // valueFileType: "Old Files",
+        valueFileType: "",
+
       });
       // console.log(this.state.openDialog)
     };
@@ -1964,10 +1967,11 @@ export default class header extends React.Component<{}, any> {
         >
           <div>
             <Dropdown
-              placeholder="Old Files"
+              placeholder="Select an option"
               label="File type"
+              // selectedKey={this.state.valueFileType}
               options={options}
-              onChange={changeValueFileType}
+              onChange={(e,value)=>changeValueFileType(e,value)}
               styles={dropdownStyles}
             />
           </div>
@@ -2003,6 +2007,7 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Department Name"
+                          disabled={this.state.valueFileType !== "Old Files"}
                           defaultSelectedKey={3}
                           options={this.state.departmentName}
                           onChange={changeValuedepartmentName}
@@ -2020,6 +2025,7 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Document Name"
+                          disabled={this.state.valueFileType !== "Old Files"}
                           options={this.state.documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
@@ -2054,6 +2060,7 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders Main"
+                            disabled={this.state.valueFileType !== "Old Files"}
                             options={this.state.SubdepartmentsMain}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
@@ -2098,6 +2105,8 @@ export default class header extends React.Component<{}, any> {
                             text="Search"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate1}
+                            disabled={this.state.valueFileType !== "Old Files"}
+
                           />
                         </div>
                       ) : (
@@ -2112,6 +2121,7 @@ export default class header extends React.Component<{}, any> {
                         >
                           <PrimaryButton
                             text="Search"
+                            disabled={this.state.valueFileType !== "Old Files"}
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate1}
                           />
@@ -2205,6 +2215,7 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Department Name"
+                          disabled={this.state.valueFileType !== "New Files"}
                           defaultValue={this.state.params11}
                           options={this.state.departmentName}
                           onChange={changeValuedepartmentName}
@@ -2222,6 +2233,7 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Document Name"
+                          disabled={this.state.valueFileType !== "New Files"}
                           options={this.state.documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
@@ -2238,6 +2250,7 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Project Name"
+                          disabled={this.state.valueFileType !== "New Files"}
                           options={this.state.ProjectName}
                           onChange={changeValueProjectName}
                           styles={dropdownStyles}
@@ -2256,6 +2269,7 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders Main"
+                            disabled={this.state.valueFileType !== "New Files"}
                             options={this.state.SubdepartmentsMain}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
@@ -2300,6 +2314,8 @@ export default class header extends React.Component<{}, any> {
                             text="Generate ID"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate}
+                            disabled={this.state.valueFileType !== "New Files"}
+
                           />
                         </div>
                       ) : (
@@ -2316,6 +2332,7 @@ export default class header extends React.Component<{}, any> {
                             text="Generate ID"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate}
+                            disabled={this.state.valueFileType !== "New Files"}
                           />
                         </div>
                       )}
@@ -2355,6 +2372,7 @@ export default class header extends React.Component<{}, any> {
                         <PrimaryButton
                           text="Copy"
                           style={{ backgroundColor: "#0078D4" }}
+                          disabled={this.state.fileNameStruct===""}
                           onClick={async () => {
                             navigator.clipboard.writeText(
                               this.state.fileNameStruct
@@ -2639,6 +2657,8 @@ export default class header extends React.Component<{}, any> {
 
 // Split the fileUrl string into individual folder names
 const folders = this.state.fileUrl.split('/');
+console.log(this.state.fileUrl);
+console.log(folders);
 
 // Initialize the base folder path
 let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;

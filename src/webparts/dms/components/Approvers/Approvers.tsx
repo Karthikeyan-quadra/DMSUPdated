@@ -189,10 +189,16 @@ export default class header extends React.Component<{}, any> {
     // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
     const sp:SPFI=getSp()
 
-    const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
+    // const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
+    const items: any[] = await sp.web.lists.getByTitle("Approverlist").items.getAll();
+
+    // const filesForApproval: any[] = await sp.web.lists
+    //   .getByTitle("User Files")
+    //   .items();
+
     const filesForApproval: any[] = await sp.web.lists
-      .getByTitle("User Files")
-      .items();
+    .getByTitle("User Files")
+    .items.getAll();
     console.log(filesForApproval);
     let user = await sp.web.currentUser();
     console.log(user.Email);
@@ -558,6 +564,54 @@ export default class header extends React.Component<{}, any> {
             //new file
             const fileRelativePath: any = `${destinationUrl}/${value.Filename}`;
             console.log(fileRelativePath);
+            console.log(destinationUrl);
+
+
+
+            const splited = destinationUrl.split('/');
+            console.log(splited);
+            const sliced = splited.slice(4,7);
+            console.log(sliced);
+
+            const documentLibraryName = "Original File";
+
+            // Split the fileUrl string into individual folder names
+            // const folders = this.state.fileUrl.split('/');
+            
+              const folders = sliced;
+
+            
+            // Initialize the base folder path
+            let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
+            
+            // Iterate over each folder name and create folders
+            for (const folderName of folders) {
+                try {
+                    // Update the folder path
+                    currentFolderPath += `/${folderName}`;
+                    console.log(currentFolderPath);
+                    // Check if the folder already exists
+                    const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
+                    console.log(folder);
+                    
+                    console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
+                } catch (error) {
+                    // Handle the error if the folder doesn't exist
+                    console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
+                    console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
+                    
+                    // Attempt to create the folder
+                    try {
+                        await sp.web.folders.addUsingPath(currentFolderPath);
+                        console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
+                    } catch (error) {
+                        console.error(`Error creating folder "${folderName}":`, error);
+                        return;
+                    }
+                }
+            }
+
+            
             // const fileExists:any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
             // const fileExists: any = await sp.web.getFileByServerRelativePath(fileRelativePath).exists();
             const fileExists: any = await sp.web.getFolderByServerRelativePath(`${destinationUrl}`).files.getByUrl(`${value.Filename}`).exists().then((res) => res
