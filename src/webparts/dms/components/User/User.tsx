@@ -279,6 +279,9 @@ export default class header extends React.Component<{}, any> {
       fileNameStruct: "",
       params1: "",
       params11: "",
+
+      params111:"",
+
       Uploading: false,
       DownloadURI: true,
       params22: "",
@@ -298,6 +301,50 @@ export default class header extends React.Component<{}, any> {
       showFirstItem: false, // Define showFirstItem in the state
     };
   }
+
+  async fetchData() {
+    const sp: SPFI = getSp();
+    
+    // Fetch user details
+    const userDetails = await getUserDetails();
+    const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+    console.log("User details:", userDetails);
+    console.log("Upload value:", uploadValue);
+    
+    // Fetch current user
+    let user = await sp.web.currentUser();
+    console.log("Current user email:", user.Email);
+    
+    // Fetch user files
+    const sss = await sp.web.lists.getByTitle("User Files")
+      .items.select(
+        "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+      )
+      .expand("File")
+      .getAll();
+    
+    console.log("User files:", sss);
+    
+    // Reverse the order of fetched files
+    const y = [...sss].reverse();
+    
+    // Set state with fetched data
+    this.setState({
+      value: y,
+      count: y.length,
+      items: y.slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage),
+      overalllist: y,
+    });
+    
+    // Fetch items count from "Project List"
+    const items = await sp.web.lists.getByTitle("Project List").items();
+    console.log("Project List items count:", items.length);
+    
+    this.setState({
+      DocID: items.length,
+    });
+  }
+
 
   public async componentDidMount() {
     const sp: SPFI = getSp();
@@ -323,39 +370,42 @@ export default class header extends React.Component<{}, any> {
     //   return (toTimestamp(prev.y) > toTimestamp(current.y)) ? prev : current
     // })
     // console.log("max",max);
-    let sss: any = await sp.web.lists
-      .getByTitle("User Files")
-      .items.select(
-        "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-      )
-      .expand("File")
-      .getAll()
-      .then(
-        async (sss) => {
-          console.log("sss", sss);
-          var y = [...sss].reverse();
-          // await console.log("reversed",y);
-          // await this.setState({
-          this.setState(
-            {
-              //items:await getSitelist(),
-              value: y,
-            },
-            () => {
-              this.setState({
-                count: this.state.value.length,
-                items: this.state.value.slice(
-                  this.state.page * this.state.rowsPerPage,
-                  this.state.page * this.state.rowsPerPage +
-                  this.state.rowsPerPage
-                ),
-                overalllist: this.state.value,
-              });
-            }
-          );
-        }
-        // })
-      );
+    // let sss: any = await sp.web.lists
+    //   .getByTitle("User Files")
+    //   .items.select(
+    //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+    //   )
+    //   .expand("File")
+    //   .getAll()
+    //   .then(
+    //     async (sss) => {
+    //       console.log("sss", sss);
+    //       var y = [...sss].reverse();
+    //       // await console.log("reversed",y);
+    //       // await this.setState({
+    //       this.setState(
+    //         {
+    //           //items:await getSitelist(),
+    //           value: y,
+    //         },
+    //         () => {
+    //           this.setState({
+    //             count: this.state.value.length,
+    //             items: this.state.value.slice(
+    //               this.state.page * this.state.rowsPerPage,
+    //               this.state.page * this.state.rowsPerPage +
+    //               this.state.rowsPerPage
+    //             ),
+    //             overalllist: this.state.value,
+                
+    //           });
+    //         }
+    //       );
+    //     }
+    //     // })
+    //   );
+
+    await this.fetchData();
     const items: any[] = await sp.web.lists.getByTitle("Project List").items();
     console.log(items.length);
     this.setState({
@@ -503,6 +553,9 @@ export default class header extends React.Component<{}, any> {
 
   //end componentDIdmount
 
+  
+
+
   private _onFilter = (
     event: React.ChangeEvent<HTMLInputElement>,
     text: string
@@ -617,7 +670,7 @@ export default class header extends React.Component<{}, any> {
     };
 
 
-
+    
     // valueFileType
     const changeValueFileType = async (e, value: any) => {
       this.setState({
@@ -634,6 +687,7 @@ export default class header extends React.Component<{}, any> {
         params5: "",
         params22: "",
         params11: "",
+        params111: "",
         Filess: [],
         fileNameStruct: "",
       });
@@ -697,7 +751,7 @@ export default class header extends React.Component<{}, any> {
       console.log("Selected department value:", value);
 
       try {
-        const sp: SPFI = getSp();
+        // const sp: SPFI = getSp();
         this.setState({
           params1: "",
           params3: "",
@@ -743,6 +797,7 @@ export default class header extends React.Component<{}, any> {
       } catch (error) {
         console.error("Error in changeValuedepartmentName:", error);
       }
+      
     };
 
 
@@ -1339,6 +1394,7 @@ export default class header extends React.Component<{}, any> {
       let somee2: any = [];
       let lastDigit: any = "";
       let digitArray: any = [];
+      console.log(this.state.params111);
       console.log(this.state.params111.length);
       if (this.state.params111.length <= 0) {
         alert("Please add Department Name before generating ID!");
@@ -1396,7 +1452,7 @@ export default class header extends React.Component<{}, any> {
 
 
           if (items.length > 0) {
-            console.log('HI')
+            // console.log('HI')
             items.forEach((item: any) => {
               console.log(item)
               if (item && item.FileLeafRef) {
@@ -1966,6 +2022,7 @@ export default class header extends React.Component<{}, any> {
           styles={getStyles}
         >
           <div>
+            {this.state.Uploading === false &&(
             <Dropdown
               placeholder="Select an option"
               label="File type"
@@ -1974,6 +2031,7 @@ export default class header extends React.Component<{}, any> {
               onChange={(e,value)=>changeValueFileType(e,value)}
               styles={dropdownStyles}
             />
+            )}
           </div>
           {this.state.Uploading === false ? (
             <div>
@@ -2149,7 +2207,8 @@ export default class header extends React.Component<{}, any> {
                         marginTop: "50px",
                       }}
                     >
-                      <input type="file" name="myFile" id="newfile" onChange={(e) => handleFileChange(e)} required></input>
+                      <input type="file" name="myFile" id="newfile" onChange={(e) => handleFileChange(e)}  
+                      disabled={this.state.valueFileType !== "Old Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2160,13 +2219,15 @@ export default class header extends React.Component<{}, any> {
                         label="File name"
                         defaultValue={this.state.filenames}
                         onChange={changeValueFilename}
-                      />
+                        disabled={this.state.valueFileType !== "Old Files"}
+                        />
                       <TextField
                         label="File description"
                         defaultValue={this.state.fileDes}
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
+                        disabled={this.state.valueFileType !== "Old Files"}
                       />
                     </div>
                   </div>
@@ -2176,7 +2237,7 @@ export default class header extends React.Component<{}, any> {
                       style={{ backgroundColor: "#0078D4" }}
                       // onClick={this.filesave}
                       onClick={this.filesaveold}
-
+                      disabled={this.state.valueFileType !== "Old Files"}
                     />
                     <DefaultButton
                       onClick={closeHideDialogUpload}
@@ -2216,7 +2277,7 @@ export default class header extends React.Component<{}, any> {
                           placeholder="Select an option"
                           label="Department Name"
                           disabled={this.state.valueFileType !== "New Files"}
-                          defaultValue={this.state.params11}
+                          // defaultValue={this.state.params11}
                           options={this.state.departmentName}
                           onChange={changeValuedepartmentName}
                           styles={dropdownStyles}
@@ -2359,7 +2420,7 @@ export default class header extends React.Component<{}, any> {
                           // }}
                           defaultValue={this.state.fileNameStruct}
                           onChange={changeValueFileID}
-                          required
+                          // required
                         />
                       </div>
                       <div
@@ -2387,7 +2448,8 @@ export default class header extends React.Component<{}, any> {
                         marginTop: "100px",
                       }}
                     >
-                      <input type="file" required name="myFile" id="newfile" onChange={(e) => handleFileChange(e)}></input>
+                      <input type="file"  name="myFile" id="newfile" onChange={(e) => handleFileChange(e)} 
+                      disabled={this.state.valueFileType !== "New Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2398,7 +2460,8 @@ export default class header extends React.Component<{}, any> {
                         label="File name"
                         defaultValue={this.state.filenames}
                         onChange={changeValueFilename}
-                        required
+                        disabled={this.state.valueFileType !== "New Files"}
+                        // required
                       />
                       <TextField
                         label="File description"
@@ -2406,7 +2469,8 @@ export default class header extends React.Component<{}, any> {
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
-                        required
+                        disabled={this.state.valueFileType !== "New Files"}
+                        // required
                       />
                     </div>
                   </div>
@@ -2415,6 +2479,7 @@ export default class header extends React.Component<{}, any> {
                       text="Upload"
                       style={{ backgroundColor: "#0078D4" }}
                       onClick={this.filesave}
+                      disabled={this.state.valueFileType !== "New Files"}
                     />
                     <DefaultButton
                       onClick={closeHideDialogUpload}
@@ -2827,11 +2892,12 @@ for (const folderName of folders) {
         // //add your code here if you want to do more after deleting the file
         //     console.log(t);
         //     });
-
+        await this.fetchData();
         alert("Created Successfully");
         this.setState({
           Uploading: false,
         });
+        
       } else {
         const sp: SPFI = getSp()
         console.log(myfile.name);
@@ -3011,6 +3077,7 @@ for (const folderName of folders) {
       });
       console.log(this.state);
     }
+
   }
 
 
@@ -3268,7 +3335,7 @@ for (const folderName of folders) {
         // //add your code here if you want to do more after deleting the file
         //     console.log(t);
         //     });
-
+        await this.fetchData();
         alert("Created Successfully");
         this.setState({
           Uploading: false,
