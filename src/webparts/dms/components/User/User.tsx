@@ -279,9 +279,11 @@ export default class header extends React.Component<{}, any> {
       fileNameStruct: "",
       params1: "",
       params11: "",
-
-      params111:"",
-
+      departmentKey: '',
+      projectKey:'',
+      subFoldersMainKey:'',
+      params111: "",
+      documentKey: '',
       Uploading: false,
       DownloadURI: true,
       params22: "",
@@ -304,17 +306,17 @@ export default class header extends React.Component<{}, any> {
 
   async fetchData() {
     const sp: SPFI = getSp();
-    
+
     // Fetch user details
     const userDetails = await getUserDetails();
     const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
     console.log("User details:", userDetails);
     console.log("Upload value:", uploadValue);
-    
+
     // Fetch current user
     let user = await sp.web.currentUser();
     console.log("Current user email:", user.Email);
-    
+
     // Fetch user files
     const sss = await sp.web.lists.getByTitle("User Files")
       .items.select(
@@ -322,12 +324,12 @@ export default class header extends React.Component<{}, any> {
       )
       .expand("File")
       .getAll();
-    
+
     console.log("User files:", sss);
-    
+
     // Reverse the order of fetched files
     const y = [...sss].reverse();
-    
+
     // Set state with fetched data
     this.setState({
       value: y,
@@ -335,11 +337,11 @@ export default class header extends React.Component<{}, any> {
       items: y.slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage),
       overalllist: y,
     });
-    
+
     // Fetch items count from "Project List"
     const items = await sp.web.lists.getByTitle("Project List").items();
     console.log("Project List items count:", items.length);
-    
+
     this.setState({
       DocID: items.length,
     });
@@ -397,7 +399,7 @@ export default class header extends React.Component<{}, any> {
     //               this.state.rowsPerPage
     //             ),
     //             overalllist: this.state.value,
-                
+
     //           });
     //         }
     //       );
@@ -422,7 +424,8 @@ export default class header extends React.Component<{}, any> {
     // let SubdepartmentsMain1 = [];
     // let SubdepartmentsMainParents = [];
 
-    let DepartmentNames: any = [];
+    let DepartmentNames: IDropdownOption[] = []
+
     let DocumentType: any = [];
     let ProjectName: any = [];
     let SubDepartments: any = [];
@@ -439,9 +442,11 @@ export default class header extends React.Component<{}, any> {
       .getAll()
       .then(async (item) => {
         item.map(async (nn) => {
-          await ProjectName.push({ Key: nn.ProjectName, text: nn.ProjectID });
+          await ProjectName.push({ key: nn.ProjectName, text: nn.ProjectID });
         });
       });
+
+
 
     await sp.web.lists
       .getByTitle("Department Names")
@@ -451,7 +456,7 @@ export default class header extends React.Component<{}, any> {
         console.log(item);
         item.map(async (nn) => {
           await DepartmentNames.push({
-            Key: nn.Code,
+            key: nn.Code,
             text: nn.Departments,
           });
         });
@@ -463,7 +468,7 @@ export default class header extends React.Component<{}, any> {
       .getAll()
       .then(async (item) => {
         item.map(async (nn) => {
-          await DocumentType.push({ Key: nn.Code, text: nn.Documents });
+          await DocumentType.push({ key: nn.Code, text: nn.Documents });
         });
       });
     // // console.log(DocumentType);
@@ -477,8 +482,8 @@ export default class header extends React.Component<{}, any> {
           // console.log(nn.ParentFolder)
           // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
           await SubDepartments1.push({
-            SubFolders: nn.Subfolders,
-            ParentFolders: nn.ParentFolder,
+            text: nn.Subfolders,
+            key: nn.ParentFolder,
           });
           await SubdepartmentsParents.push(nn.ParentFolder);
         });
@@ -553,7 +558,7 @@ export default class header extends React.Component<{}, any> {
 
   //end componentDIdmount
 
-  
+
 
 
   private _onFilter = (
@@ -670,7 +675,7 @@ export default class header extends React.Component<{}, any> {
     };
 
 
-    
+
     // valueFileType
     const changeValueFileType = async (e, value: any) => {
       this.setState({
@@ -685,6 +690,10 @@ export default class header extends React.Component<{}, any> {
         params3: "",
         params4: "",
         params5: "",
+        departmentKey: '',
+        documentKey: '',
+        projectKey:'',
+        subFoldersMainKey:'',
         params22: "",
         params11: "",
         params111: "",
@@ -746,9 +755,9 @@ export default class header extends React.Component<{}, any> {
     // };
 
 
-    const changeValuedepartmentName = async (e, value: any) => {
+    const changeValuedepartmentName = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
       console.log("changeValuedepartmentName function called.");
-      console.log("Selected department value:", value);
+      console.log("Selected department value:", option);
 
       try {
         // const sp: SPFI = getSp();
@@ -759,7 +768,8 @@ export default class header extends React.Component<{}, any> {
           params5: "",
         });
 
-        const selectedDepartment = value.text;
+        const selectedDepartment = option?.text;
+        const selectedDepartmentKey = option?.key;
         console.log("Selected department:", selectedDepartment);
 
         // Check if the selected department has subfolders
@@ -770,7 +780,7 @@ export default class header extends React.Component<{}, any> {
             .filter((subfolder) => subfolder.ParentFolders === selectedDepartment)
             .map((subfolder) => ({
               text: subfolder.SubFolders,
-              Key: subfolder.SubFolders,
+              key: subfolder.SubFolders,
               Code: subfolder.Code,
             }));
 
@@ -779,8 +789,9 @@ export default class header extends React.Component<{}, any> {
           this.setState({
             SubfolderState: true,
             SubdepartmentsMain: subfolders,
-            params111: value.Key,
+            params111: option?.key,
             params11: selectedDepartment,
+            departmentKey: selectedDepartmentKey,
             some: [selectedDepartment],
           });
         } else {
@@ -788,7 +799,7 @@ export default class header extends React.Component<{}, any> {
 
           this.setState({
             SubfolderState: false,
-            params111: value.Key,
+            params111: option?.key,
             params11: selectedDepartment,
           });
         }
@@ -797,7 +808,7 @@ export default class header extends React.Component<{}, any> {
       } catch (error) {
         console.error("Error in changeValuedepartmentName:", error);
       }
-      
+
     };
 
 
@@ -847,26 +858,39 @@ export default class header extends React.Component<{}, any> {
     // };
 
 
-    const changeValuedocumentType = async (e, value: any) => {
-      console.log(value);
+    const changeValuedocumentType = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+      console.log(option);
+      const selectedDocumentKey = option?.key;
+      console.log("Selected department:", selectedDocumentKey);
+
       this.setState({
-        params2: value.Key,
-        params22: value.text,
+        params2: option?.key,
+        params22: option?.text,
+        documentKey: selectedDocumentKey,
       });
     };
 
-    const changeValueProjectName = async (e, value: any) => {
+    const changeValueProjectName = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
       // console.log(value);
+      console.log(option);
+      const selectedProjectKey = option?.key;
+      console.log("Selected department:", selectedProjectKey);
       this.setState({
-        params5: value.text,
+        params5: option?.text,
+        projectKey:selectedProjectKey,
       });
     };
 
-    const changeValueSubdepartmentsMain = async (e, value: any) => {
-      console.log(value);
+    const changeValueSubdepartmentsMain = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+      console.log(option);
+      // subFoldersMainKey
       // Subfolders ,ParentFolder
+      const SubDepartmentmainkey = option?.key;
+      console.log(SubDepartmentmainkey);
+      console.log(option?.key);
+      
 
-      if (this.state.SubfoldersParent.includes(value.text)) {
+      if (this.state.SubfoldersParent.includes(option?.text)) {
         // let array1 = [];
         let array1: any = [];
 
@@ -875,25 +899,31 @@ export default class header extends React.Component<{}, any> {
         await this.state.Subdepartments2.filter((names) => {
           // console.log(names.ParentFolders)
           // console.log(names)
-          if (names.ParentFolders === value.text) {
+          if (names.ParentFolders === option?.text) {
             console.log(names.SubFolders);
-            array1.push({ text: names.SubFolders, Key: names.SubFolders });
+            array1.push({ text: names.SubFolders, key: names.SubFolders });
           }
         });
         console.log(array1);
-        console.log(value.text);
-        console.log(value);
+        console.log(option?.text);
+        console.log(option);
         this.setState({
           SubfolderState1: true,
           Subdepartments: array1,
-          params1: value.Code,
-          params3: value.text,
+          // params1: option?.Code,
+          params1: option?.key,
+          params3: option?.text,
+          // subFoldersMainKey: SubDepartmentmainkey
         });
       } else {
         this.setState({
           SubfolderState1: false,
-          params1: value.Code,
-          params3: value.text,
+          // params1: option?.Code,
+          params1: option?.key,
+
+          params3: option?.text,
+          subFoldersMainKey: SubDepartmentmainkey
+
         });
       }
 
@@ -1832,7 +1862,9 @@ export default class header extends React.Component<{}, any> {
         fileNameStruct: "",
         // valueFileType: "Old Files",
         valueFileType: "",
-
+        departmentKey: '',
+        documentKey: '',
+        projectKey:'',
       });
       // console.log(this.state.openDialog)
     };
@@ -2022,15 +2054,15 @@ export default class header extends React.Component<{}, any> {
           styles={getStyles}
         >
           <div>
-            {this.state.Uploading === false &&(
-            <Dropdown
-              placeholder="Select an option"
-              label="File type"
-              // selectedKey={this.state.valueFileType}
-              options={options}
-              onChange={(e,value)=>changeValueFileType(e,value)}
-              styles={dropdownStyles}
-            />
+            {this.state.Uploading === false && (
+              <Dropdown
+                placeholder="Select an option"
+                label="File type"
+                // selectedKey={this.state.valueFileType}
+                options={options}
+                onChange={(e, value) => changeValueFileType(e, value)}
+                styles={dropdownStyles}
+              />
             )}
           </div>
           {this.state.Uploading === false ? (
@@ -2066,7 +2098,7 @@ export default class header extends React.Component<{}, any> {
                           placeholder="Select an option"
                           label="Department Name"
                           disabled={this.state.valueFileType !== "Old Files"}
-                          defaultSelectedKey={3}
+                          selectedKey={this.state.departmentKey}
                           options={this.state.departmentName}
                           onChange={changeValuedepartmentName}
                           styles={dropdownStyles}
@@ -2084,6 +2116,7 @@ export default class header extends React.Component<{}, any> {
                           placeholder="Select an option"
                           label="Document Name"
                           disabled={this.state.valueFileType !== "Old Files"}
+                          selectedKey={this.state.documentKey}
                           options={this.state.documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
@@ -2119,6 +2152,7 @@ export default class header extends React.Component<{}, any> {
                             placeholder="Select an option"
                             label="Sub Folders Main"
                             disabled={this.state.valueFileType !== "Old Files"}
+                            selectedKey={this.state.subFoldersMainKey}
                             options={this.state.SubdepartmentsMain}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
@@ -2207,8 +2241,8 @@ export default class header extends React.Component<{}, any> {
                         marginTop: "50px",
                       }}
                     >
-                      <input type="file" name="myFile" id="newfile" onChange={(e) => handleFileChange(e)}  
-                      disabled={this.state.valueFileType !== "Old Files"}></input>
+                      <input type="file" name="myFile" id="newfile"  accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
+                        disabled={this.state.valueFileType !== "Old Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2217,13 +2251,13 @@ export default class header extends React.Component<{}, any> {
                     >
                       <TextField
                         label="File name"
-                        defaultValue={this.state.filenames}
+                        value={this.state.filenames}
                         onChange={changeValueFilename}
                         disabled={this.state.valueFileType !== "Old Files"}
-                        />
+                      />
                       <TextField
                         label="File description"
-                        defaultValue={this.state.fileDes}
+                        value={this.state.fileDes}
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
@@ -2278,6 +2312,7 @@ export default class header extends React.Component<{}, any> {
                           label="Department Name"
                           disabled={this.state.valueFileType !== "New Files"}
                           // defaultValue={this.state.params11}
+                          selectedKey={this.state.departmentKey}
                           options={this.state.departmentName}
                           onChange={changeValuedepartmentName}
                           styles={dropdownStyles}
@@ -2295,6 +2330,7 @@ export default class header extends React.Component<{}, any> {
                           placeholder="Select an option"
                           label="Document Name"
                           disabled={this.state.valueFileType !== "New Files"}
+                          selectedKey={this.state.documentKey}
                           options={this.state.documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
@@ -2313,6 +2349,7 @@ export default class header extends React.Component<{}, any> {
                           label="Project Name"
                           disabled={this.state.valueFileType !== "New Files"}
                           options={this.state.ProjectName}
+                          selectedKey={this.state.projectKey}
                           onChange={changeValueProjectName}
                           styles={dropdownStyles}
                         />
@@ -2332,6 +2369,7 @@ export default class header extends React.Component<{}, any> {
                             label="Sub Folders Main"
                             disabled={this.state.valueFileType !== "New Files"}
                             options={this.state.SubdepartmentsMain}
+                            selectedKey={this.state.subFoldersMainKey}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
                           />
@@ -2420,7 +2458,7 @@ export default class header extends React.Component<{}, any> {
                           // }}
                           defaultValue={this.state.fileNameStruct}
                           onChange={changeValueFileID}
-                          // required
+                        // required
                         />
                       </div>
                       <div
@@ -2433,7 +2471,7 @@ export default class header extends React.Component<{}, any> {
                         <PrimaryButton
                           text="Copy"
                           style={{ backgroundColor: "#0078D4" }}
-                          disabled={this.state.fileNameStruct===""}
+                          disabled={this.state.fileNameStruct === ""}
                           onClick={async () => {
                             navigator.clipboard.writeText(
                               this.state.fileNameStruct
@@ -2448,8 +2486,8 @@ export default class header extends React.Component<{}, any> {
                         marginTop: "100px",
                       }}
                     >
-                      <input type="file"  name="myFile" id="newfile" onChange={(e) => handleFileChange(e)} 
-                      disabled={this.state.valueFileType !== "New Files"}></input>
+                      <input type="file" name="myFile" id="newfile"  accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
+                        disabled={this.state.valueFileType !== "New Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2458,19 +2496,19 @@ export default class header extends React.Component<{}, any> {
                     >
                       <TextField
                         label="File name"
-                        defaultValue={this.state.filenames}
+                        value={this.state.filenames}
                         onChange={changeValueFilename}
                         disabled={this.state.valueFileType !== "New Files"}
-                        // required
+                      // required
                       />
                       <TextField
                         label="File description"
-                        defaultValue={this.state.fileDes}
+                        value={this.state.fileDes}
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
                         disabled={this.state.valueFileType !== "New Files"}
-                        // required
+                      // required
                       />
                     </div>
                   </div>
@@ -2720,38 +2758,38 @@ export default class header extends React.Component<{}, any> {
 
         const documentLibraryName = "Shared Documents1";
 
-// Split the fileUrl string into individual folder names
-const folders = this.state.fileUrl.split('/');
-console.log(this.state.fileUrl);
-console.log(folders);
+        // Split the fileUrl string into individual folder names
+        const folders = this.state.fileUrl.split('/');
+        console.log(this.state.fileUrl);
+        console.log(folders);
 
-// Initialize the base folder path
-let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
+        // Initialize the base folder path
+        let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
 
-// Iterate over each folder name and create folders
-for (const folderName of folders) {
-    try {
-        // Update the folder path
-        currentFolderPath += `/${folderName}`;
+        // Iterate over each folder name and create folders
+        for (const folderName of folders) {
+          try {
+            // Update the folder path
+            currentFolderPath += `/${folderName}`;
 
-        // Check if the folder already exists
-        const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
-        console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
-    } catch (error) {
-        // Handle the error if the folder doesn't exist
-        console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
-        console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
-        
-        // Attempt to create the folder
-        try {
-            await sp.web.folders.addUsingPath(currentFolderPath);
-            console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
-        } catch (error) {
-            console.error(`Error creating folder "${folderName}":`, error);
-            return;
+            // Check if the folder already exists
+            const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
+            console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
+          } catch (error) {
+            // Handle the error if the folder doesn't exist
+            console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
+            console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
+
+            // Attempt to create the folder
+            try {
+              await sp.web.folders.addUsingPath(currentFolderPath);
+              console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
+            } catch (error) {
+              console.error(`Error creating folder "${folderName}":`, error);
+              return;
+            }
+          }
         }
-    }
-}
 
         await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
@@ -2897,7 +2935,7 @@ for (const folderName of folders) {
         this.setState({
           Uploading: false,
         });
-        
+
       } else {
         const sp: SPFI = getSp()
         console.log(myfile.name);
@@ -3074,6 +3112,12 @@ for (const folderName of folders) {
         params5: "",
         fileNameStruct: "",
         valueFileType: "Old Files",
+        fileess:[],
+
+        departmentKey: '',
+        documentKey: '',
+        projectKey:'',
+
       });
       console.log(this.state);
     }
@@ -3515,6 +3559,10 @@ for (const folderName of folders) {
         params5: "",
         fileNameStruct: "",
         valueFileType: "Old Files",
+        departmentKey: '',
+        documentKey: '',
+        projectKey:'',
+        fileess:[]
       });
       console.log(this.state);
     }
