@@ -48,6 +48,7 @@ import { getSp } from "../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
 
 import { getUserDetails } from "../Data/GetSiteList";
+import { useEffect, useState } from "react";
 
 
 // import styles from "../DmsWebPart.module.scss";
@@ -238,191 +239,184 @@ let columns = [
   },
 ];
 
-export default class header extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.filesave = this.filesave.bind(this);
-    this.filesaveold = this.filesaveold.bind(this);
+export default function User(props) {
+  // constructor(props) {
+  //   super(props);
+  //   this.filesave = this.filesave.bind(this);
+  //   this.filesaveold = this.filesaveold.bind(this);
 
-    // this.handleFileChange = this.handleFileChange.bind(this);
+  //   // this.handleFileChange = this.handleFileChange.bind(this);
 
-    this.state = {
-      openDialog: false,
-      openDialogUpload: false,
-      fileIDs: "",
-      hiddenDialogUpload: true,
-      hiddenDialog: true,
-      downloadUrl: "",
-      filenames: "",
-      fileDes: "",
-      fileArray: [],
-      departmentName: [],
-      Documetntype: "",
-      documentType: [],
-      ProjectName: [],
-      searchValue: "",
-      SubdepartmentsMain: [],
-      Filess: [],
-      SubdepartmentsMain1: [],
-      SubdepartmentsMain2: [],
-      choose: false,
-      Subdepartments: [],
-      SubfolderState: false,
-      SubfolderState1: false,
-      SubfoldersMainParent: [],
-      SubfoldersParent: [],
-      fileUrl: "",
-      // valueFileType: "Old Files",
-      valueFileType: "",
-      textToCopy: "",
-      DocID: "",
-      fileNameStruct: "",
-      params1: "",
-      params11: "",
-      departmentKey: '',
-      projectKey:'',
-      subFoldersMainKey:'',
-      params111: "",
-      documentKey: '',
-      Uploading: false,
-      DownloadURI: true,
-      params22: "",
-      params2: "",
-      params3: "",
-      params4: "",
-      params5: "",
-      some: [],
-      CurrentUser: "",
-      filenames1: "",
-      rowsPerPage: 5,
-      page: 0,
-      overalllist: [],
-      items: [],
-      fileess: [],
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogUpload, setOpenDialogUpload] = useState(false);
+  const [fileIDs, setFileIDs] = useState("");
+  const [hiddenDialogUpload, setHiddenDialogUpload] = useState(true);
+  const [hiddenDialog, setHiddenDialog] = useState(true);
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [filenames, setFilenames] = useState("");
+  const [fileDes, setFileDes] = useState("");
+  const [fileArray, setFileArray] = useState([]);
+  const [departmentName, setDepartmentName] = useState<any>([]);
+  const [documentType, setDocumentType] = useState([]);
+  const [ProjectName, setProjectName] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [SubdepartmentsMain, setSubdepartmentsMain] = useState([]);
+  const [Filess, setFiless] = useState([]);
+  const [SubdepartmentsMain1, setSubdepartmentsMain1] = useState([]);
+  const [SubdepartmentsMain2, setSubdepartmentsMain2] = useState([]);
+  const [Subdepartments2, setSubdepartments2] =useState<any>([])
+  const [choose, setChoose] = useState<any>(false);
+  const [Subdepartments, setSubdepartments] = useState([]);
+  const [SubfolderState, setSubfolderState] = useState(false);
+  const [SubfolderState1, setSubfolderState1] = useState(false);
+  const [SubfoldersMainParent, setSubfoldersMainParent] = useState<any>([]);
+  const [SubfoldersParent, setSubfoldersParent] = useState<any>([]);
+  const [fileUrl, setFileUrl] = useState("");
+  const [valueFileType, setValueFileType] = useState("");
+  const [textToCopy, setTextToCopy] = useState("");
+  const [DocID, setDocID] = useState("");
+  const [fileNameStruct, setFileNameStruct] = useState("");
+  const [params1, setParams1] = useState<any>("");
+  const [params11, setParams11] = useState("");
+  const [departmentKey, setDepartmentKey] = useState('');
+  const [projectKey, setProjectKey] = useState<any>('');
+  const [subFoldersMainKey, setSubFoldersMainKey] = useState('');
+  const [params111, setParams111] = useState<any>("");
+  const [documentKey, setDocumentKey] = useState<any>('');
+  const [Uploading, setUploading] = useState(false);
+  const [DownloadURI, setDownloadURI] = useState(true);
+  const [params22, setParams22] = useState<any>("");
+  const [params2, setParams2] = useState<any>("");
+  const [params3, setParams3] = useState<any>("");
+  const [params4, setParams4] = useState<any>("");
+  const [params5, setParams5] = useState<any>("");
+  const [some, setSome] = useState<any>([]);
+  const [CurrentUser, setCurrentUser] = useState("");
+  const [filenames1, setFilenames1] = useState("");
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [overalllist, setOveralllist] = useState([]);
+  const [items, setItems] = useState([]);
+  const [fileess, setFileess] = useState<any>([]);
+  const [showFirstItem, setShowFirstItem] = useState(false);
+  const [count,setCount] = useState<any>();
+  const [value,setValue] = useState<any>();
 
-      showFirstItem: false, // Define showFirstItem in the state
-    };
+  
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const sp = getSp();
+
+  //       // Fetch user details
+  //       const userDetails = await getUserDetails();
+  //       const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+  //       console.log("User details:", userDetails);
+  //       console.log("Upload value:", uploadValue);
+
+  //       // Fetch current user
+  //       let user = await sp.web.currentUser();
+  //       console.log("Current user email:", user.Email);
+
+  //       // Fetch user files
+  //       const sss = await sp.web.lists.getByTitle("User Files")
+  //         .items.select(
+  //           "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+  //         )
+  //         .expand("File")
+  //         .getAll();
+
+  //       console.log("User files:", sss);
+
+  //       // Reverse the order of fetched files
+  //       const y:any = [...sss].reverse();
+
+
+
+  //       // Set state with fetched data
+  //       setValue(y);
+  //       setCount(y.length);
+  //       setItems(y.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+  //       setOveralllist(y);
+
+  //       // setShowFirstItem(uploadValue === "true");
+  //       // setCount(y.length);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, [page, rowsPerPage]);
+
+
+  const fetchData = async () => {
+    try {
+      const sp = getSp();
+
+      // Fetch user details
+      const userDetails = await getUserDetails();
+      const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+      console.log("User details:", userDetails);
+      console.log("Upload value:", uploadValue);
+
+      // Fetch current user
+      let user = await sp.web.currentUser();
+      console.log("Current user email:", user.Email);
+
+      // Fetch user files
+      const sss = await sp.web.lists.getByTitle("User Files")
+        .items.select(
+          "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+        )
+        .expand("File")
+        .getAll();
+
+      console.log("User files:", sss);
+
+      // Reverse the order of fetched files
+      const y:any = [...sss].reverse();
+
+
+
+      // Set state with fetched data
+      setValue(y);
+      setCount(y.length);
+      setItems(y.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+      setOveralllist(y);
+
+      // setShowFirstItem(uploadValue === "true");
+      // setCount(y.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }
-
-  async fetchData() {
-    const sp: SPFI = getSp();
-
-    // Fetch user details
-    const userDetails = await getUserDetails();
-    const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
-    console.log("User details:", userDetails);
-    console.log("Upload value:", uploadValue);
-
-    // Fetch current user
-    let user = await sp.web.currentUser();
-    console.log("Current user email:", user.Email);
-
-    // Fetch user files
-    const sss = await sp.web.lists.getByTitle("User Files")
-      .items.select(
-        "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-      )
-      .expand("File")
-      .getAll();
-
-    console.log("User files:", sss);
-
-    // Reverse the order of fetched files
-    const y = [...sss].reverse();
-
-    // Set state with fetched data
-    this.setState({
-      value: y,
-      count: y.length,
-      items: y.slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage),
-      overalllist: y,
-    });
-
-    // Fetch items count from "Project List"
-    const items = await sp.web.lists.getByTitle("Project List").items();
-    console.log("Project List items count:", items.length);
-
-    this.setState({
-      DocID: items.length,
-    });
-  }
+  useEffect(() => {
+    fetchData();
+  }, [page, rowsPerPage]);
 
 
-  public async componentDidMount() {
-    const sp: SPFI = getSp();
-    // let ssss = [];
+  useEffect(() => {
+    const fetchAdditionalData = async () => {
 
-    const userDetails = await getUserDetails();
-    console.log(userDetails);
-    const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
-    console.log(uploadValue);
+      try {
+        const sp = getSp();
 
-    let user = await sp.web.currentUser();
-    // console.log("109");
-    console.log(user.Email);
-    // let sss1 = await web.lists
-    //   .getByTitle("User Files")
-    //   .items()
-    //   console.log(sss1);
-    // const max = sss1.reduce(function(prev, current) {
+        const userDetails = await getUserDetails();
+        console.log(userDetails);
+        const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+        console.log(uploadValue);
 
-    // // var ts = new Date("2022-04-06T09:21:13Z");
-    // // console.log(ts);
+        let user = await sp.web.currentUser();
+        console.log(user.Email);
 
-    //   return (toTimestamp(prev.y) > toTimestamp(current.y)) ? prev : current
-    // })
-    // console.log("max",max);
-    // let sss: any = await sp.web.lists
-    //   .getByTitle("User Files")
-    //   .items.select(
-    //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-    //   )
-    //   .expand("File")
-    //   .getAll()
-    //   .then(
-    //     async (sss) => {
-    //       console.log("sss", sss);
-    //       var y = [...sss].reverse();
-    //       // await console.log("reversed",y);
-    //       // await this.setState({
-    //       this.setState(
-    //         {
-    //           //items:await getSitelist(),
-    //           value: y,
-    //         },
-    //         () => {
-    //           this.setState({
-    //             count: this.state.value.length,
-    //             items: this.state.value.slice(
-    //               this.state.page * this.state.rowsPerPage,
-    //               this.state.page * this.state.rowsPerPage +
-    //               this.state.rowsPerPage
-    //             ),
-    //             overalllist: this.state.value,
-
-    //           });
-    //         }
-    //       );
-    //     }
-    //     // })
-    //   );
-
-    await this.fetchData();
-    const items: any[] = await sp.web.lists.getByTitle("Project List").items();
+        await fetchData();
+        const items: any[] = await sp.web.lists.getByTitle("Project List").items();
     console.log(items.length);
     this.setState({
       DocID: items.length,
     });
-
-    // let DepartmentNames = [];
-    // let DocumentType = [];
-    // let ProjectName = [];
-    // let SubDepartments = [];
-    // let SubdepartmentsParents = [];
-    // let SubDepartments1 = [];
-    // let SubdepartmentsMain = [];
-    // let SubdepartmentsMain1 = [];
-    // let SubdepartmentsMainParents = [];
 
     let DepartmentNames: IDropdownOption[] = []
 
@@ -435,169 +429,257 @@ export default class header extends React.Component<{}, any> {
     let SubdepartmentsMain1: any = [];
     let SubdepartmentsMainParents: any = [];
 
-
     await sp.web.lists
-      .getByTitle("Project List")
-      .items.select("ProjectName,ProjectID")
-      .getAll()
-      .then(async (item) => {
-        item.map(async (nn) => {
-          await ProjectName.push({ key: nn.ProjectName, text: nn.ProjectID });
-        });
+    .getByTitle("Project List")
+    .items.select("ProjectName,ProjectID")
+    .getAll()
+    .then(async (item) => {
+      item.map(async (nn) => {
+        await ProjectName.push({ key: nn.ProjectName, text: nn.ProjectID });
       });
-
-
-
-    await sp.web.lists
-      .getByTitle("Department Names")
-      .items.select("Departments,Code")
-      .getAll()
-      .then(async (item) => {
-        console.log(item);
-        item.map(async (nn) => {
-          await DepartmentNames.push({
-            key: nn.Code,
-            text: nn.Departments,
-          });
-        });
-      });
-    // console.log(DepartmentNames);
-    await sp.web.lists
-      .getByTitle("Document Type")
-      .items.select("Documents,Code")
-      .getAll()
-      .then(async (item) => {
-        item.map(async (nn) => {
-          await DocumentType.push({ key: nn.Code, text: nn.Documents });
-        });
-      });
-    // // console.log(DocumentType);
-    await sp.web.lists
-      .getByTitle("Sub departments")
-      .items.select("Subfolders,ParentFolder")
-      .getAll()
-      .then(async (item) => {
-        item.map(async (nn) => {
-          // console.log(nn)
-          // console.log(nn.ParentFolder)
-          // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
-          await SubDepartments1.push({
-            text: nn.Subfolders,
-            key: nn.ParentFolder,
-          });
-          await SubdepartmentsParents.push(nn.ParentFolder);
-        });
-
-        await console.log(SubdepartmentsParents);
-        let uniqueArray = SubdepartmentsParents.filter(function (
-          item,
-          pos,
-          self
-        ) {
-          return self.indexOf(item) == pos;
-        });
-        await console.log(uniqueArray);
-
-        this.setState({
-          SubfoldersParent: uniqueArray,
-        });
-      });
-    console.log(SubDepartments);
-    await sp.web.lists
-      .getByTitle("Sub departments Main")
-      .items.select("SubFolders,ParentFolders,Code")
-      .getAll()
-      .then(async (item) => {
-        item.map(async (nn) => {
-          // await SubdepartmentsMain.push({"text":nn.SubFolders,"Key":nn.SubFolders});
-          await SubdepartmentsMain1.push({
-            SubFolders: nn.SubFolders,
-            ParentFolders: nn.ParentFolders,
-            Code: nn.Code,
-          });
-
-          // console.log()
-          //   SubfoldersMainParent: Pare
-          // })
-          await SubdepartmentsMainParents.push(nn.ParentFolders);
-          // await this.setState({
-        });
-        await console.log(SubdepartmentsMainParents);
-        let uniqueArray = SubdepartmentsMainParents.filter(function (
-          item,
-          pos,
-          self
-        ) {
-          return self.indexOf(item) == pos;
-        });
-
-        this.setState({
-          SubfoldersMainParent: uniqueArray,
-        });
-      });
-
-    this.setState({
-      departmentName: DepartmentNames,
-      documentType: DocumentType,
-      SubdepartmentsMain: SubdepartmentsMain,
-      SubdepartmentsMain2: SubdepartmentsMain1,
-      Subdepartments: SubDepartments,
-      Subdepartments2: SubDepartments1,
-      ProjectName: ProjectName,
-      CurrentUser: user.Email,
-      showFirstItem: uploadValue === "true", // Convert to boolean
-
     });
 
-    console.log(this.state);
+    await sp.web.lists
+    .getByTitle("Department Names")
+    .items.select("Departments,Code")
+    .getAll()
+    .then(async (item) => {
+      console.log(item);
+      item.map(async (nn) => {
+        await DepartmentNames.push({
+          key: nn.Code,
+          text: nn.Departments,
+        });
+      });
+    });
 
-    console.log(this.state.items);
+    await sp.web.lists
+    .getByTitle("Document Type")
+    .items.select("Documents,Code")
+    .getAll()
+    .then(async (item) => {
+      item.map(async (nn) => {
+        await DocumentType.push({ key: nn.Code, text: nn.Documents });
+      });
+    });
+
+    await sp.web.lists
+    .getByTitle("Sub departments")
+    .items.select("Subfolders,ParentFolder")
+    .getAll()
+    .then(async (item) => {
+      item.map(async (nn) => {
+        // console.log(nn)
+        // console.log(nn.ParentFolder)
+        // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
+        await SubDepartments1.push({
+          text: nn.Subfolders,
+          key: nn.ParentFolder,
+        });
+        await SubdepartmentsParents.push(nn.ParentFolder);
+      });
+
+      await console.log(SubdepartmentsParents);
+      let uniqueArray = SubdepartmentsParents.filter(function (
+        item,
+        pos,
+        self
+      ) {
+        return self.indexOf(item) == pos;
+      });
+      await console.log(uniqueArray);
+
+      this.setState({
+        SubfoldersParent: uniqueArray,
+      });
+    });
+
+    await sp.web.lists
+    .getByTitle("Sub departments Main")
+    .items.select("SubFolders,ParentFolders,Code")
+    .getAll()
+    .then(async (item) => {
+      item.map(async (nn) => {
+        // await SubdepartmentsMain.push({"text":nn.SubFolders,"Key":nn.SubFolders});
+        await SubdepartmentsMain1.push({
+          SubFolders: nn.SubFolders,
+          ParentFolders: nn.ParentFolders,
+          Code: nn.Code,
+        });
+
+        // console.log()
+        //   SubfoldersMainParent: Pare
+        // })
+        await SubdepartmentsMainParents.push(nn.ParentFolders);
+        // await this.setState({
+      });
+
+      await console.log(SubdepartmentsMainParents);
+      let uniqueArray = SubdepartmentsMainParents.filter(function (
+        item,
+        pos,
+        self
+      ) {
+        return self.indexOf(item) == pos;
+      });
+
+      // this.setState({
+      //   SubfoldersMainParent: uniqueArray,
+      // });
+      setSubfoldersMainParent(uniqueArray);
+    });
+
+    setDepartmentName(DepartmentNames);
+    setDocumentType(DocumentType);
+    setSubdepartmentsMain(SubdepartmentsMain);
+    setSubdepartmentsMain2(SubdepartmentsMain1);
+    setSubdepartments(SubDepartments);
+    setSubdepartments2(SubDepartments1);
+    setProjectName(ProjectName);
+    setCurrentUser(user.Email);
+    setShowFirstItem(uploadValue === 'true');
 
 
-  }
-
-  //end componentDIdmount
 
 
 
+    //        const sss = await sp.web.lists.getByTitle("User Files")
+    //   .items.select(
+    //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+    //   )
+    //   .expand("File")
+    //   .getAll();
 
-  private _onFilter = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    text: string
-  ): void => {
-    // console.log(event.target.value);
-    // this.setState({
-    //   searchValue: event.target.value
-    // })
-    let val = this.state.overalllist.filter(
-      (i) =>
+    // console.log("User files:", sss);
+
+    //     // Fetch Project Name
+    //     const projectNameItems:any = await sp.web.lists.getByTitle("Project List")
+    //       .items.select("ProjectName,ProjectID").getAll();
+    //     const projectNames:any = projectNameItems.map(nn => ({ key: nn.ProjectName, text: nn.ProjectID }));
+    //     // useState(prevState => ({ ...prevState, ProjectName: projectNames }));
+    //     // setState(prevState => ({ ...prevState, ProjectName: projectNames }))
+    //     setProjectName(projectNames);
+
+    //     // Fetch Department Names
+    //     const departmentNameItems:any = await sp.web.lists.getByTitle("Department Names")
+    //       .items.select("Departments,Code").getAll();
+    //     const departmentNames:any = departmentNameItems.map(nn => ({ key: nn.Code, text: nn.Departments }));
+    //     // useState(prevState => ({ ...prevState, departmentName: departmentNames }));
+    //     setDepartmentName(departmentNames);
+
+    //     // Fetch Document Type
+    //     const documentTypeItems:any = await sp.web.lists.getByTitle("Document Type")
+    //       .items.select("Documents,Code").getAll();
+    //     const documentTypes:any = documentTypeItems.map(nn => ({ key: nn.Code, text: nn.Documents }));
+    //     // useState(prevState => ({ ...prevState, documentType: documentTypes }));
+    //     setDocumentType(documentTypes);
+
+    //     // Fetch Sub departments
+    //     const subDepartmentsItems = await sp.web.lists.getByTitle("Sub departments")
+    //     .items.select("Subfolders,ParentFolder").getAll();
+    //   const subDepartments:any = subDepartmentsItems.map(nn => ({ text: nn.Subfolders, key: nn.ParentFolder }));
+    //   const subDepartmentsParents:any = subDepartmentsItems.map(nn => nn.ParentFolder);
+    //   const uniqueSubDepartmentsParents:any = Array.from(new Set(subDepartmentsParents)); // Convert Set to array
+    //   // useState(prevState => ({ ...prevState, SubdepartmentsMain: subDepartments, SubfoldersParent: uniqueSubDepartmentsParents }));
+    //   setSubdepartmentsMain(subDepartments);
+    //   setSubfoldersParent(uniqueSubDepartmentsParents);
+
+    //     // Fetch Sub departments Main
+    //     const subDepartmentsMainItems:any = await sp.web.lists.getByTitle("Sub departments Main")
+    //     .items.select("SubFolders,ParentFolders,Code").getAll();
+    //   const subDepartmentsMain:any = subDepartmentsMainItems.map(nn => ({
+    //     SubFolders: nn.SubFolders,
+    //     ParentFolders: nn.ParentFolders,
+    //     Code: nn.Code,
+    //   }));
+
+    //     // useState(prevState => ({ ...prevState, CurrentUser: user.Email, showFirstItem: uploadValue === "true" }));
+    //     setCurrentUser(user.Email);
+        
+      } catch (error) {
+        console.error('Error in fetchAdditionalData:', error);
+      }
+    }
+
+    fetchAdditionalData();
+  }, []);
+
+
+  
+
+
+  // private _onFilter = (
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  //   text: string
+  // ): void => {
+  //   // console.log(event.target.value);
+  //   // this.setState({
+  //   //   searchValue: event.target.value
+  //   // })
+  //   let val = this.state.overalllist.filter(
+  //     (i) =>
+  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
+  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
+  //   );
+  //   console.log(val);
+  //   let condition = text.toLowerCase() ? val : this.state.overalllist;
+  //   this.setState(
+  //     {
+  //       items: text.toLowerCase()
+  //         ? val.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         )
+  //         : this.state.overalllist.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //     },
+  //     () => {
+  //       this.setState({
+  //         count: condition.length,
+  //         value: condition,
+  //       });
+  //     }
+  //   );
+  //   console.log(val);
+  // };
+
+
+  
+  const _onFilter = (event: any, text: string) => {
+    let val:any = overalllist.filter(
+      (i:any) =>
         i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
         i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
     );
-    console.log(val);
-    let condition = text.toLowerCase() ? val : this.state.overalllist;
-    this.setState(
-      {
-        items: text.toLowerCase()
-          ? val.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          )
-          : this.state.overalllist.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-      },
-      () => {
-        this.setState({
-          count: condition.length,
-          value: condition,
-        });
-      }
-    );
-    console.log(val);
-  };
+    let condition = text.toLowerCase() ? val : overalllist;
+    // useState((prevState) => ({
+    //   ...prevState,
+    //   items: text.toLowerCase()
+    //     ? val.slice(
+    //         page * rowsPerPage,
+    //         page * rowsPerPage + rowsPerPage
+    //       )
+    //     : overalllist.slice(
+    //         page * rowsPerPage,
+    //         page * rowsPerPage + rowsPerPage
+    //       ),
+    //   count: condition.length,
+    //   value: condition,
+    // }));
 
+    setItems(text.toLowerCase()
+    ? val.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      )
+    : overalllist.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ),)
+  
+  };
   // private _onFilters = (): void => {
   //   console.log("button pressed");
   //   console.log(this.state.searchValue);
@@ -620,90 +702,104 @@ export default class header extends React.Component<{}, any> {
   //   console.log(val)
   // };
 
-  private _getKey(item: any, index?: number): string {
+  // private _getKey(item: any, index?: number): string {
+  //   return item.key;
+  // }
+  const _getKey = (item:any, index:any) => {
     return item.key;
+  };
+
+  // public setRowsPerPage = (value) => {
+  //   this.setState({
+  //     rowsPerPage: value,
+  //   });
+  // };
+  const RowsPerPage = (value:any) => {
+    setRowsPerPage(value);
+  };
+
+  // public setPage = (value) => {
+  //   this.setState(
+  //     {
+  //       page: value,
+  //     },
+  //     () => {
+  //       this.setState({
+  //         items: this.state.value.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //       });
+  //     }
+  //   );
+  // };
+  
+
+  const Page = (value) => {
+    // ((prevState) => ({
+    //   ...prevState,
+    //   page: value,
+    //   items: prevState.overalllist.slice(
+    //     value * prevState.rowsPerPage,
+    //     value * prevState.rowsPerPage + prevState.rowsPerPage
+    //   ),
+    // }));
+    setPage(value);
+    setItems(value.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage)
+    )
   }
 
-  public setRowsPerPage = (value) => {
-    this.setState({
-      rowsPerPage: value,
-    });
-  };
-
-  public setPage = (value) => {
-    this.setState(
-      {
-        page: value,
-      },
-      () => {
-        this.setState({
-          items: this.state.value.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-        });
-      }
-    );
-  };
 
   // approverslist
-  public render() {
+  
     // var sss = [];
     var sss: any = [];
 
-    const { showFirstItem } = this.state; // Access showFirstItem from state
-    console.log(showFirstItem);
-
+  
     const toggleHideDialog = () => {
-      this.setState({
-        openDialog: true,
-        hiddenDialog: false,
-        DownloadURI: true,
-      });
-      console.log(this.state);
+      setOpenDialog(true);
+      setHiddenDialog(false);
+      setDownloadURI(true);
+      console.log({ openDialog, hiddenDialog, DownloadURI });
     };
-
-    // const userDetails = await getUserDetails();
-
-    //original code
+  
     const toggleHideDialogUpload = () => {
-      this.setState({
-        openDialogUpload: true,
-        hiddenDialogUpload: false,
-      });
-      // console.log(this.state.openDialog)
+      setOpenDialogUpload(true);
+      setHiddenDialogUpload(false);
     };
-
 
 
     // valueFileType
     const changeValueFileType = async (e, value: any) => {
-      this.setState({
-        valueFileType: value.text,
-        SubfolderState: false,
-        SubfolderState1: false,
-        fileDes: "",
-        filenames: "",
-        fileUrl: "",
-        params1: "",
-        params2: "",
-        params3: "",
-        params4: "",
-        params5: "",
-        departmentKey: '',
-        documentKey: '',
-        projectKey:'',
-        subFoldersMainKey:'',
-        params22: "",
-        params11: "",
-        params111: "",
-        Filess: [],
-        fileNameStruct: "",
-      });
-
-      console.log(this.state);
-      console.log(this.context);
+      setValueFileType(value.text);
+      setSubfolderState(false);
+      setSubfolderState1(false);
+      setFileDes("");
+      setFilenames("");
+      setFileUrl("");
+      setParams1("");
+      setParams2("");
+      setParams3("");
+      setParams4("");
+      setParams5("");
+      setDepartmentKey('');
+      setDocumentKey('');
+      setProjectKey('');
+      setSubFoldersMainKey('');
+      setParams22("");
+      setParams11("");
+      setParams111("");
+      setFiless([]);
+      setFileNameStruct("");
+  
+      console.log(valueFileType);
     };
+  
+      // console.log(this.state);
+      // console.log(this.context);
+    
 
     //original code
     // const changeValuedepartmentName = async (e, value: any) => {
@@ -761,24 +857,28 @@ export default class header extends React.Component<{}, any> {
 
       try {
         // const sp: SPFI = getSp();
-        this.setState({
-          params1: "",
-          params3: "",
-          params4: "",
-          params5: "",
-        });
+        // this.setState({
+        //   params1: "",
+        //   params3: "",
+        //   params4: "",
+        //   params5: "",
+        // });
+        setParams1("");
+        setParams3("");
+        setParams4("");
+        setParams5("");
 
-        const selectedDepartment = option?.text;
-        const selectedDepartmentKey = option?.key;
+        const selectedDepartment:any = option?.text;
+        const selectedDepartmentKey:any = option?.key;
         console.log("Selected department:", selectedDepartment);
 
         // Check if the selected department has subfolders
-        if (this.state.SubfoldersMainParent.includes(selectedDepartment)) {
+        if (SubfoldersMainParent.includes(selectedDepartment)) {
           console.log("Selected department has subfolders.");
 
-          const subfolders = this.state.SubdepartmentsMain2
-            .filter((subfolder) => subfolder.ParentFolders === selectedDepartment)
-            .map((subfolder) => ({
+          const subfolders:any = SubdepartmentsMain2
+            .filter((subfolder:any) => subfolder.ParentFolders === selectedDepartment)
+            .map((subfolder:any) => ({
               text: subfolder.SubFolders,
               key: subfolder.SubFolders,
               Code: subfolder.Code,
@@ -786,25 +886,31 @@ export default class header extends React.Component<{}, any> {
 
           console.log("SubdepartmentsMain array:", subfolders);
 
-          this.setState({
-            SubfolderState: true,
-            SubdepartmentsMain: subfolders,
-            params111: option?.key,
-            params11: selectedDepartment,
-            departmentKey: selectedDepartmentKey,
-            some: [selectedDepartment],
-          });
+          // this.setState({
+          //   SubfolderState: true,
+          //   SubdepartmentsMain: subfolders,
+          //   params111: option?.key,
+          //   params11: selectedDepartment,
+          //   departmentKey: selectedDepartmentKey,
+          //   some: [selectedDepartment],
+          // });
+          setSubfolderState(true);
+          setSubdepartmentsMain(subfolders);
+          setParams111(option?.key);
+          setParams11(selectedDepartment);
+          setDepartmentKey(selectedDepartmentKey);
+          setSome([selectedDepartment]);
         } else {
           console.log("Selected department does not have subfolders.");
 
-          this.setState({
-            SubfolderState: false,
-            params111: option?.key,
-            params11: selectedDepartment,
-          });
+          // this.setState({
+          //   SubfolderState: false,
+          //   params111: option?.key,
+          //   params11: selectedDepartment,
+          // });
         }
 
-        console.log("Updated state:", this.state);
+        // console.log("Updated state:", this.state);
       } catch (error) {
         console.error("Error in changeValuedepartmentName:", error);
       }
@@ -860,43 +966,49 @@ export default class header extends React.Component<{}, any> {
 
     const changeValuedocumentType = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
       console.log(option);
-      const selectedDocumentKey = option?.key;
+      const selectedDocumentKey:any = option?.key;
       console.log("Selected department:", selectedDocumentKey);
 
-      this.setState({
-        params2: option?.key,
-        params22: option?.text,
-        documentKey: selectedDocumentKey,
-      });
+      // this.setState({
+      //   params2: option?.key,
+      //   params22: option?.text,
+      //   documentKey: selectedDocumentKey,
+      // });
+      setParams2(option?.key);
+      setParams22(option?.text);
+      setDocumentKey(selectedDocumentKey);
     };
 
     const changeValueProjectName = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
       // console.log(value);
       console.log(option);
-      const selectedProjectKey = option?.key;
+      const selectedProjectKey:any = option?.key;
       console.log("Selected department:", selectedProjectKey);
-      this.setState({
-        params5: option?.text,
-        projectKey:selectedProjectKey,
-      });
+      // this.setState({
+      //   params5: option?.text,
+      //   projectKey:selectedProjectKey,
+      // });
+
+      setParams5(option?.text);
+      setProjectKey(selectedProjectKey);
     };
 
     const changeValueSubdepartmentsMain = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
       console.log(option);
       // subFoldersMainKey
       // Subfolders ,ParentFolder
-      const SubDepartmentmainkey = option?.key;
+      const SubDepartmentmainkey:any = option?.key;
       console.log(SubDepartmentmainkey);
       console.log(option?.key);
       
 
-      if (this.state.SubfoldersParent.includes(option?.text)) {
+      if (SubfoldersParent.includes(option?.text)) {
         // let array1 = [];
         let array1: any = [];
 
-        console.log(this.state.Subdepartments2);
+        // console.log(Subdepartments2);
 
-        await this.state.Subdepartments2.filter((names) => {
+        await Subdepartments2.filter((names) => {
           // console.log(names.ParentFolders)
           // console.log(names)
           if (names.ParentFolders === option?.text) {
@@ -907,24 +1019,34 @@ export default class header extends React.Component<{}, any> {
         console.log(array1);
         console.log(option?.text);
         console.log(option);
-        this.setState({
-          SubfolderState1: true,
-          Subdepartments: array1,
-          // params1: option?.Code,
-          params1: option?.key,
-          params3: option?.text,
-          // subFoldersMainKey: SubDepartmentmainkey
-        });
+        // this.setState({
+        //   SubfolderState1: true,
+        //   Subdepartments: array1,
+        //   // params1: option?.Code,
+        //   params1: option?.key,
+        //   params3: option?.text,
+        //   // subFoldersMainKey: SubDepartmentmainkey
+        // });
+        setSubfolderState1(true);
+setSubdepartments(array1);
+setParams1(option?.key);
+setParams3(option?.text);
+
       } else {
-        this.setState({
-          SubfolderState1: false,
-          // params1: option?.Code,
-          params1: option?.key,
+        // this.setState({
+        //   SubfolderState1: false,
+        //   // params1: option?.Code,
+        //   params1: option?.key,
 
-          params3: option?.text,
-          subFoldersMainKey: SubDepartmentmainkey
+        //   params3: option?.text,
+        //   subFoldersMainKey: SubDepartmentmainkey
 
-        });
+        // });
+        setSubfolderState1(false);
+setParams1(option?.key);
+setParams3(option?.text);
+setSubFoldersMainKey(SubDepartmentmainkey);
+
       }
 
       // await console.log(this.state.some)
@@ -932,45 +1054,51 @@ export default class header extends React.Component<{}, any> {
 
     const changeValueSubdepartments = async (e, value: any) => {
       // console.log(value);
-      if (this.state.SubfolderState1 === true) {
+      if (SubfolderState1 === true) {
         await sss.push(...sss, value.text);
       }
-      this.setState({
-        params4: value.text,
-        some: [value.text],
-      });
+      // this.setState({
+      //   params4: value.text,
+      //   some: [value.text],
+      // });
+      setParams4(value.text);
+      setSome([value.text]);
     };
 
     const changeSalectFilename = async (e, value: any) => {
       console.log(value);
       let testFile = value.text.split(".")[0];
 
-      this.setState({
-        fileNameStruct: testFile,
-      });
+      // this.setState({
+      //   fileNameStruct: testFile,
+      // });
+      setFileNameStruct(testFile);
     };
 
     const changeValueFilename = async (e, value: any) => {
       // console.log(value);
-      this.setState({
-        filenames: value,
-      });
+      // this.setState({
+      //   filenames: value,
+      // });
+      setFilenames(value);
     };
 
     const changeValueFileDescription = async (e, value: any) => {
       // console.log(value);
-      this.setState({
-        fileDes: value,
-      });
+      // this.setState({
+      //   fileDes: value,
+      // });
+      setFileDes(value);
+
     };
 
     const downloadFile = async () => {
       //download xl file
       const sp: SPFI = getSp()
 
-      console.log(this.state.downloadUrl);
-      console.log(this.state.downloadUrl.split("/")[4]);
-      let fileName = this.state.downloadUrl.split("/")[4];
+      console.log(downloadUrl);
+      console.log(downloadUrl.split("/")[4]);
+      let fileName = downloadUrl.split("/")[4];
 
 
       //  console.log(this.state.downloadUrl.split("/")[5]);
@@ -978,7 +1106,7 @@ export default class header extends React.Component<{}, any> {
 
       try {
         await sp.web
-          .getFileByServerRelativePath(this.state.downloadUrl)
+          .getFileByServerRelativePath(downloadUrl)
           .getBuffer()
           .then((buffer: ArrayBuffer) => {
             const blob = new Blob([buffer]);
@@ -989,13 +1117,18 @@ export default class header extends React.Component<{}, any> {
             choose.length = 0;
           });
 
-        this.setState({
-          openDialog: false,
-          hiddenDialog: true,
-          downloadUrl: "",
-          choose: false,
-          DownloadURI: true,
-        });
+        // this.setState({
+        //   openDialog: false,
+        //   hiddenDialog: true,
+        //   downloadUrl: "",
+        //   choose: false,
+        //   DownloadURI: true,
+        // });
+        setOpenDialog(false);
+        setHiddenDialog(true);
+        setDownloadUrl("");
+        setChoose(false);
+        setDownloadURI(true);
       } catch (e) {
         alert("Something went wrong, Try again later !");
       }
@@ -1424,43 +1557,43 @@ export default class header extends React.Component<{}, any> {
       let somee2: any = [];
       let lastDigit: any = "";
       let digitArray: any = [];
-      console.log(this.state.params111);
-      console.log(this.state.params111.length);
-      if (this.state.params111.length <= 0) {
+      console.log(params111);
+      console.log(params111.length);
+      if (params111.length <= 0) {
         alert("Please add Department Name before generating ID!");
-      } else if (this.state.params2.length <= 0) {
+      } else if (params2.length <= 0) {
         alert("Please add Document Name before generating ID!");
-      } else if (this.state.params5.length <= 0) {
+      } else if (params5.length <= 0) {
         alert("Please add Project Name before generating ID!");
-      } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
+      } else if (SubfolderState === true && params3.length <= 0) {
         alert("Please add Sub Folders Main before generating ID!");
-      } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
+      } else if (SubfolderState1 === true && params4.length <= 0) {
         alert("Please add Sub Folders before generating ID!");
       } else {
-        if (this.state.params5.length > 0) {
+        if (params5.length > 0) {
           await somee1.push("TEPL");
-          await somee1.push(this.state.params5);
+          await somee1.push(params5);
         }
-        if (this.state.params111.length > 0) {
-          await somee.push(this.state.params111);
-          await somee1.push(this.state.params111);
-          if (this.state.params1.length > 0) {
-            await somee1.push(this.state.params1);
+        if (params111.length > 0) {
+          await somee.push(params111);
+          await somee1.push(params111);
+          if (params1.length > 0) {
+            await somee1.push(params1);
           }
-          await somee2.push(this.state.params11);
+          await somee2.push(params11);
         }
-        if (this.state.params3.length > 0) {
-          await somee.push(this.state.params3);
-          await somee2.push(this.state.params3);
+        if (params3.length > 0) {
+          await somee.push(params3);
+          await somee2.push(params3);
         }
-        if (this.state.params4.length > 0) {
-          await somee.push(this.state.params4);
-          await somee2.push(this.state.params4);
+        if (params4.length > 0) {
+          await somee.push(params4);
+          await somee2.push(params4);
         }
-        if (this.state.params2.length > 0) {
-          await somee.push(this.state.params2);
-          await somee1.push(this.state.params2);
-          await somee2.push(this.state.params22);
+        if (params2.length > 0) {
+          await somee.push(params2);
+          await somee1.push(params2);
+          await somee2.push(params22);
         }
 
         console.log(somee);
@@ -1538,7 +1671,7 @@ export default class header extends React.Component<{}, any> {
           fileNameStruct: somee1.join("-"),
         });
 
-        console.log(this.state);
+        // console.log(this.state);
       }
     };
 
@@ -1548,63 +1681,64 @@ export default class header extends React.Component<{}, any> {
 
     const changeValueFileID = async (e, value: any) => {
       // console.log(value);
-      this.setState({
-        fileNameStruct: this.state.fileNameStruct,
-      });
+      // this.setState({
+      //   fileNameStruct: this.state.fileNameStruct,
+      // });
+      setFileNameStruct(fileNameStruct);
     };
 
     const clickGenerate1 = async () => {
-      console.log(this.state);
+      // console.log(this.state);
       // let somee = [];
       // let somee1 = [];
       let somee: any = [];
       let somee1: any = [];
-      console.log(this.state.params4);
-      if (this.state.params111.length <= 0) {
+      console.log(params4);
+      if (params111.length <= 0) {
         // alert("Please add Department Name before generating ID!");
         alert("Please select Department Name");
 
-      } else if (this.state.params2.length <= 0) {
+      } else if (params2.length <= 0) {
         // alert("Please add Document Name before generating ID!");
         alert("Please select Document Name");
 
       }
-      // else if(this.state.params5.length <= 0) {
+      // else if(params5.length <= 0) {
       //   alert("Please add Project Name before generating ID!")
       // }
       else if (
-        this.state.SubfolderState === true &&
-        this.state.params3.length <= 0
+        SubfolderState === true &&
+        params3.length <= 0
       ) {
         // alert("Please add Sub Folders Main before generating ID!");
         alert("Please select Sub Folders Main");
 
       } else if (
-        this.state.SubfolderState1 === true &&
-        this.state.params4.length <= 0
+        SubfolderState1 === true &&
+        params4.length <= 0
       ) {
         alert("Please add Sub Folders before generating ID!");
 
       }
 
-      if (this.state.params111.length > 0) {
-        console.log(this.state.params1);
-        // await somee.push(this.state.params1);
-        await somee.push(this.state.params11);
+      if (params111.length > 0) {
+        console.log(params1);
+        // await somee.push(params1);
+        await somee.push(params11);
       }
-      if (this.state.params3.length > 0) {
-        console.log(this.state.params3);
-        await somee.push(this.state.params3);
-        // await somee1.push(this.state.params3);
+      if (params3.length > 0) {
+        console.log(params3);
+        await somee.push(params3);
+        // await somee1.push(params3);
       }
-      if (this.state.params4.length > 0) {
-        console.log(this.state.params4);
-        await somee.push(this.state.params4);
+      if (params4.length > 0) {
+        console.log(params4);
+        await somee.push(params4);
       }
 
-      if (this.state.params2.length > 0) {
-        console.log(this.state.params2);
-        await somee.push(this.state.params22);
+      if (params2.length > 0) {
+        console.log(params2);
+        await somee.push(params22);
       }
 
       console.log(somee);
@@ -1773,7 +1907,7 @@ export default class header extends React.Component<{}, any> {
           });
       }
 
-      console.log(this.state);
+      // console.log(this.state);
     };
 
     const changeValue1 = async (e, value: any) => {
@@ -1824,59 +1958,87 @@ export default class header extends React.Component<{}, any> {
 
     const handleFileChange = (e) => {
       console.log(e.target.files);
-      this.setState({
-        fileess: e.target.files,
-      });
+      // this.setState({
+      //   fileess: e.target.files,
+      // });
+      setFileess(e.target.files);
     };
-    console.log(this.state.fileess);
+    console.log(fileess);
 
     const closeHideDialog = () => {
-      this.setState({
-        openDialog: false,
-        choose: false,
-        hiddenDialog: true,
-        downloadUrl: "",
-        DownloadURI: true,
-      });
+      // this.setState({
+      //   openDialog: false,
+      //   choose: false,
+      //   hiddenDialog: true,
+      //   downloadUrl: "",
+      //   DownloadURI: true,
+      // });
+      setOpenDialog(false);
+setChoose(false);
+setHiddenDialog(true);
+setDownloadUrl("");
+setDownloadURI(true);
+
 
       choose.length = 0;
     };
 
     const closeHideDialogUpload = () => {
-      this.setState({
-        openDialogUpload: false,
-        hiddenDialogUpload: true,
-        SubfolderState: false,
-        SubfolderState1: false,
-        fileUrl: "",
-        params1: "",
-        params22: "",
-        params11: "",
-        params2: "",
-        params3: "",
-        params4: "",
-        params5: "",
-        filenames: "",
-        fileDes: "",
-        Filess: [],
-        fileNameStruct: "",
-        // valueFileType: "Old Files",
-        valueFileType: "",
-        departmentKey: '',
-        documentKey: '',
-        projectKey:'',
-      });
+      // this.setState({
+      //   openDialogUpload: false,
+      //   hiddenDialogUpload: true,
+      //   SubfolderState: false,
+      //   SubfolderState1: false,
+      //   fileUrl: "",
+      //   params1: "",
+      //   params22: "",
+      //   params11: "",
+      //   params2: "",
+      //   params3: "",
+      //   params4: "",
+      //   params5: "",
+      //   filenames: "",
+      //   fileDes: "",
+      //   Filess: [],
+      //   fileNameStruct: "",
+      //   // valueFileType: "Old Files",
+      //   valueFileType: "",
+      //   departmentKey: '',
+      //   documentKey: '',
+      //   projectKey:'',
+      // });
+      setOpenDialogUpload(false);
+setHiddenDialogUpload(true);
+setSubfolderState(false);
+setSubfolderState1(false);
+setFileUrl("");
+setParams1("");
+setParams22("");
+setParams11("");
+setParams2("");
+setParams3("");
+setParams4("");
+setParams5("");
+setFilenames("");
+setFileDes("");
+setFiless([]);
+setFileNameStruct("");
+setValueFileType("");
+setDepartmentKey('');
+setDocumentKey('');
+setProjectKey('');
+
       // console.log(this.state.openDialog)
     };
 
     const handleChangePage = (event, newPage) => {
-      this.setPage(newPage);
+      setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
       console.log(event.target.value);
-      this.setRowsPerPage(parseInt(event.target.value, 10));
-      this.setPage(0);
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
     };
 
     const _renderItemColumn = (item, index: number, column) => {
@@ -1967,6 +2129,992 @@ export default class header extends React.Component<{}, any> {
       }
     };
 
+    const filesave = async () => {
+      console.log(filenames.length);
+      console.log(fileDes.length);
+  
+  
+      if (Array.isArray(fileess) && fileess.length > 0) {
+  
+        const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
+  
+        console.log(fileToUpload);
+      }
+      else if (fileNameStruct.length <= 0) {
+        alert("Please generate Id");
+      }
+  
+      else if (fileess.length <= 0) {
+        alert("Please Choose File");
+      }
+  
+      else if (filenames.length <= 0) {
+        alert("Please give file name");
+      } else if (fileDes.length <= 0) {
+        alert("Please give file Description");
+      } else {
+        console.log(fileNameStruct);
+        const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
+        // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
+        let myfile: any = fileToUpload;
+        console.log(myfile);
+        // this.setState({
+        //   Uploading: true,
+        // });
+        setUploading(true)
+  
+        let Department: any = "";
+        let Subdepartment: any = "";
+  
+        if (params11.length >= 0) {
+          Department = params11;
+        } else {
+          Department = "";
+        }
+        if (fileess.length <= 0) {
+          // alert("The file length is 0")
+          // this.setState({ fileess: e.target.files });
+        }
+  
+        if (params3.length >= 0) {
+          Subdepartment = params3;
+        } else {
+          Subdepartment = "";
+        }
+  
+        if (myfile.size <= 10485760) {
+          const sp: SPFI = getSp();
+  
+          // create item in an sp list
+          //       let somss = await web.lists.getByTitle("User Files").items();
+          // console.log(somss)
+          console.log(myfile.name);
+  
+          // let fileexe:any = myfile.name.split(".").pop();
+          // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+          //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+  
+          // console.log(`${this.state.fileNameStruct}.${fileexe}`);
+          // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+  
+          // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+          // .then(async (f) => {
+          //     await f.file.getItem().then(async (item) => {
+          //       await item
+          //         .update({
+          //           FileDescription: this.state.fileDes,
+          //           FileName: this.state.filenames,
+          //           DocID: String(this.state.DocID + 1),
+          //         })
+          //         .then(async (myupdate) => {
+          //           console.log(myupdate);
+          //         });
+  
+          //       });
+          //       });
+          //     await item.getAll().then(async (myupdate) => {
+          //       console.log(myupdate);
+          //       this.setState({
+          //         fileIDs: myupdate.ID,
+          //       });
+          //       // console.log("Metadata Updated");
+          //     });
+          //   });
+          // });
+  
+  
+          //This code works
+          let fileexe: any = myfile.name.split(".").pop();
+          console.log(fileexe);
+          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
+          console.log(`${fileNameStruct}.${fileexe}`);
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+          // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+          // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
+  
+  
+          // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+  
+  
+          // await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+          // const documentLibraryName = "Shared Documents1";
+  
+          const folderPath = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+          console.log(folderPath);
+          console.log(fileUrl);
+          // Getting the folder by server relative path
+          // const folder = await sp.web.getFolderByServerRelativePath(folderPath);
+          // console.log(folder);
+  
+          // Checking if the folder exists
+          // if (!folder) {
+          //     // Folder doesn't exist, so create it
+          //     await sp.web.folders.addUsingPath(folderPath).catch(err => {
+          //         console.error("Error occurred while creating the folder:", err);
+          //     });
+          // }
+  
+          const documentLibraryName = "Shared Documents1";
+  
+          // Split the fileUrl string into individual folder names
+          const folders = fileUrl.split('/');
+          console.log(fileUrl);
+          console.log(folders);
+  
+          // Initialize the base folder path
+          let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
+  
+          // Iterate over each folder name and create folders
+          for (const folderName of folders) {
+            try {
+              // Update the folder path
+              currentFolderPath += `/${folderName}`;
+  
+              // Check if the folder already exists
+              const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
+              console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
+            } catch (error) {
+              // Handle the error if the folder doesn't exist
+              console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
+              console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
+  
+              // Attempt to create the folder
+              try {
+                await sp.web.folders.addUsingPath(currentFolderPath);
+                console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
+              } catch (error) {
+                console.error(`Error creating folder "${folderName}":`, error);
+                return;
+              }
+            }
+          }
+  
+          await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+  
+  
+            .then(async (f) => {
+              await f.file.getItem().then(async (item) => {
+                await item
+                  .update({
+                    FileDescription: fileDes,
+                    FileName: filenames,
+                    DocID: String(DocID + 1),
+                  })
+                  .then(async (myupdate) => {
+                    console.log(myupdate);
+                  });
+  
+                // await item.get().then(async (myupdate) => {
+                //   console.log(myupdate);
+                //   this.setState({
+                //     fileIDs: myupdate.ID,
+                //   });
+                //   console.log("Metadata Updated");
+                // });
+  
+                console.log(item);
+              });
+            });
+  
+  
+  
+  
+          fileUrl;
+          let fileurl: any = "";
+          await sp.web
+            .getFolderByServerRelativePath(
+              // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+              // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+              `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
+            ) // Here comes a folder/subfolder path
+            .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+            .select() // Fields to retrieve
+            ()
+            .then(async (item) => {
+              console.log(item);
+              item.filter((file) => {
+                console.log(file);
+                console.log(file.LinkingUri);
+                if (file.Name === `${fileNameStruct}.${fileexe}`) {
+                  fileurl = file.LinkingUri;
+                }
+              });
+            });
+  
+          console.log(fileIDs);
+          date.setDate(date.getDate() + 5);
+          let { Title } = await sp.web.currentUser();
+          if (valueFileType === "Old Files") {
+            console.log(`${fileNameStruct}.${fileexe}`);
+            // update item in an sp list
+            const items: any[] = await sp.web.lists
+              .getByTitle("User Files")
+              .items.filter(
+                `Filename eq '${fileNameStruct}.${fileexe}'`
+              )();
+            console.log(items);
+            const max = items.reduce(function (prev, current) {
+              // var ts = new Date("2022-04-06T09:21:13Z");
+              // console.log(ts);
+  
+              return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
+                ? prev
+                : current;
+            });
+            console.log(max);
+            // if (max.length > 0) {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.getById(max.Id)
+              .update({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                Requester: Title,
+                Remainder: formatDate(date),
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then((i) => {
+                console.log(i);
+              });
+            //  }
+  
+            // alert("Updated Successfully");
+          } else if (valueFileType === "New Files") {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.add({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                Requester: Title,
+                Remainder: formatDate(date),
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
+                //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then(async (i) => {
+                console.log(i);
+              });
+          }
+  
+          //     console.log(this.state);
+          //     await web.lists.getById("380").rootFolder.files.get().then(t => {
+          // //add your code here if you want to do more after deleting the file
+          //     console.log(t);
+          //     });
+          await this.fetchData();
+          alert("Created Successfully");
+          // this.setState({
+          //   Uploading: false,
+          // });
+          setUploading(false)
+  
+        } else {
+          const sp: SPFI = getSp()
+          console.log(myfile.name);
+          let fileexe: any = myfile.name.split(".").pop();
+          // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
+  
+  
+  
+          console.log(`${fileNameStruct}.${fileexe}`);
+          // await sp.web
+          //   .getFolderByServerRelativePath(
+          //     `/sites/DMSportal/Shared Documents/${fileUrl}`
+          //   )
+          await sp.web
+            .getFolderByServerRelativePath(
+              // `/sites/DMS-TATA/Shared Documents1/${fileUrl}`
+              `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
+  
+            )
+            .files.addChunked(myfile.name, myfile)
+            .then((f) => {
+              // console.log("File Uploaded");
+              f.file.getItem().then(async (item) => {
+                //get item from sp
+  
+                await item
+                  .update({
+                    FileDescription: fileDes,
+                    FileName: filenames,
+                    DocID: String(DocID + 1),
+                  })
+                  .then(async (myupdate) => {
+                    console.log(myupdate);
+                    // console.log("Metadata Updated");
+                  });
+  
+                await item().then(async (myupdate) => {
+                  console.log(myupdate);
+                  this.setState({
+                    fileIDs: myupdate.ID,
+                  });
+                  // console.log("Metadata Updated");
+                });
+              });
+            });
+          fileUrl;
+          // let fileurl:any = "";
+          // await sp.web
+          //   .getFolderByServerRelativePath(
+          //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+          //   ) // Here comes a folder/subfolder path
+          //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+          //   .select() // Fields to retrieve
+          //   .getAll()
+          //   .then(async (item) => {
+          //     console.log(item);
+          //     await item.filter((file) => {
+          //       console.log(file.LinkingUri);
+          //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
+          //         fileurl = file.LinkingUri;
+          //       }
+          //     });
+          //   });
+          let fileurl: any = "";
+  
+          // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+  
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+          const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+          console.log(folderPath);
+          console.log(fileUrl);
+  
+          const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+  
+          for (const item of items) {
+            console.log(item);
+            if (item.Name === `${fileNameStruct}.${fileexe}`) {
+              fileurl = item.LinkingUri;
+              break;
+            }
+          }
+  
+          console.log(fileIDs);
+          let { Title } = await sp.web.currentUser();
+          if (valueFileType === "Old Files") {
+            // update item in an sp list
+            const items: any[] = await sp.web.lists
+              .getByTitle("User Files")
+              .items.top(1)
+              .filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
+  
+            if (items.length > 0) {
+              await sp.web.lists
+                .getByTitle("User Files")
+                .items.getById(items[0].Id)
+                .update({
+                  Filename: `${fileNameStruct}.${fileexe}`,
+                  FileTitle: filenames,
+                  Filetype: params2,
+                  Filedescription: fileDes,
+                  FileUploadDate: formatDate(new Date()),
+                  ApprovalStatus: "QMS",
+                  RequestorEmail: CurrentUser,
+                  Requester: Title,
+                  Fileurl: fileurl,
+                  DocID: String(DocID + 1),
+                  Status: "Pending",
+                  // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
+                  // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+                  RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+                  Department: Department,
+                  SubDepartment: Subdepartment,
+                })
+                .then((i) => {
+                  console.log(i);
+                });
+            }
+  
+            // alert("Updated Successfully");
+          } else if (valueFileType === "New Files") {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.add({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                Requester: Title,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then(async (i) => {
+                console.log(i);
+              });
+          }
+  
+          alert("Created Successfully");
+          this.setState({
+            Uploading: false,
+          });
+        }
+  
+        // this.setState({
+        //   openDialogUpload: false,
+        //   hiddenDialogUpload: true,
+        //   SubfolderState: false,
+        //   SubfolderState1: false,
+        //   fileUrl: "",
+        //   filenames: "",
+        //   fileDes: "",
+        //   Filess: [],
+        //   params1: "",
+        //   params22: "",
+        //   params11: "",
+        //   params2: "",
+        //   params3: "",
+        //   params4: "",
+        //   params5: "",
+        //   fileNameStruct: "",
+        //   valueFileType: "Old Files",
+        //   fileess:[],
+  
+        //   departmentKey: '',
+        //   documentKey: '',
+        //   projectKey:'',
+  
+        // });
+        setOpenDialogUpload(false);
+    setHiddenDialogUpload(true);
+    setSubfolderState(false);
+    setSubfolderState1(false);
+    setFileUrl('');
+    setFilenames('');
+    setFileDes('');
+    setFiless([]);
+    setParams1('');
+    setParams22('');
+    setParams11('');
+    setParams2('');
+    setParams3('');
+    setParams4('');
+    setParams5('');
+    setFileNameStruct('');
+    setValueFileType('Old Files');
+    setFileess([]);
+    setDepartmentKey('');
+    setDocumentKey('');
+    setProjectKey('');
+        // console.log(this.state);
+      }
+  
+    }
+
+
+    const filesaveold = async () => {
+      console.log(filenames.length);
+      console.log(fileDes.length);
+  
+  
+      if (Array.isArray(fileess) && fileess.length > 0) {
+  
+        const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
+  
+        console.log(fileToUpload);
+      }
+      else if (fileNameStruct.length <= 0) {
+        alert("Please click search and select the file");
+      }
+  
+      else if (fileess.length <= 0) {
+        alert("Please Choose File");
+      }
+  
+      else if (filenames.length <= 0) {
+        alert("Please give an file name");
+      } else if (fileDes.length <= 0) {
+        alert("Please give an file Description");
+      } else {
+        console.log(fileNameStruct);
+        const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
+        // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
+        let myfile: any = fileToUpload;
+        console.log(myfile);
+        this.setState({
+          Uploading: true,
+        });
+  
+        let Department: any = "";
+        let Subdepartment: any = "";
+  
+        if (params11.length >= 0) {
+          Department = params11;
+        } else {
+          Department = "";
+        }
+        if (fileess.length <= 0) {
+          // alert("The file length is 0")
+          // this.setState({ fileess: e.target.files });
+        }
+  
+        if (params3.length >= 0) {
+          Subdepartment = params3;
+        } else {
+          Subdepartment = "";
+        }
+  
+        if (myfile.size <= 10485760) {
+          const sp: SPFI = getSp();
+  
+          // create item in an sp list
+          //       let somss = await web.lists.getByTitle("User Files").items();
+          // console.log(somss)
+          console.log(myfile.name);
+  
+          // let fileexe:any = myfile.name.split(".").pop();
+          // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+          //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+  
+          // console.log(`${this.state.fileNameStruct}.${fileexe}`);
+          // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+  
+          // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+          // .then(async (f) => {
+          //     await f.file.getItem().then(async (item) => {
+          //       await item
+          //         .update({
+          //           FileDescription: this.state.fileDes,
+          //           FileName: this.state.filenames,
+          //           DocID: String(this.state.DocID + 1),
+          //         })
+          //         .then(async (myupdate) => {
+          //           console.log(myupdate);
+          //         });
+  
+          //       });
+          //       });
+          //     await item.getAll().then(async (myupdate) => {
+          //       console.log(myupdate);
+          //       this.setState({
+          //         fileIDs: myupdate.ID,
+          //       });
+          //       // console.log("Metadata Updated");
+          //     });
+          //   });
+          // });
+  
+  
+          //This code works
+          let fileexe: any = myfile.name.split(".").pop();
+          console.log(fileexe);
+          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
+  
+  
+          console.log(`${fileNameStruct}.${fileexe}`);
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+          // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
+          // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
+  
+  
+          // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+  
+  
+          await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`).files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
+  
+  
+            .then(async (f) => {
+              await f.file.getItem().then(async (item) => {
+                await item
+                  .update({
+                    FileDescription: fileDes,
+                    FileName: filenames,
+                    DocID: String(DocID + 1),
+                  })
+                  .then(async (myupdate) => {
+                    console.log(myupdate);
+                  });
+  
+                // await item.get().then(async (myupdate) => {
+                //   console.log(myupdate);
+                //   this.setState({
+                //     fileIDs: myupdate.ID,
+                //   });
+                //   console.log("Metadata Updated");
+                // });
+  
+                console.log(item);
+              });
+            });
+  
+  
+  
+  
+          fileUrl;
+          let fileurl: any = "";
+          await sp.web
+            .getFolderByServerRelativePath(
+              // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+              // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+              `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
+            ) // Here comes a folder/subfolder path
+            .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+            .select() // Fields to retrieve
+            ()
+            .then(async (item) => {
+              console.log(item);
+              item.filter((file) => {
+                console.log(file);
+                console.log(file.LinkingUri);
+                if (file.Name === `${fileNameStruct}.${fileexe}`) {
+                  fileurl = file.LinkingUri;
+                }
+              });
+            });
+  
+          console.log(fileIDs);
+          date.setDate(date.getDate() + 5);
+          let { Title } = await sp.web.currentUser();
+          if (valueFileType === "Old Files") {
+            console.log(`${fileNameStruct}.${fileexe}`);
+            // update item in an sp list
+            const items: any[] = await sp.web.lists
+              .getByTitle("User Files")
+              .items.filter(
+                `Filename eq '${fileNameStruct}.${fileexe}'`
+              )();
+            console.log(items);
+            const max = items.reduce(function (prev, current) {
+              // var ts = new Date("2022-04-06T09:21:13Z");
+              // console.log(ts);
+  
+              return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
+                ? prev
+                : current;
+            });
+            console.log(max);
+            // if (max.length > 0) {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.getById(max.Id)
+              .update({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                Requester: Title,
+                Remainder: formatDate(date),
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then((i) => {
+                console.log(i);
+              });
+            //  }
+  
+            // alert("Updated Successfully");
+          } else if (valueFileType === "New Files") {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.add({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                Requester: Title,
+                Remainder: formatDate(date),
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then(async (i) => {
+                console.log(i);
+              });
+          }
+  
+          //     console.log(this.state);
+          //     await web.lists.getById("380").rootFolder.files.get().then(t => {
+          // //add your code here if you want to do more after deleting the file
+          //     console.log(t);
+          //     });
+          await fetchData();
+          alert("Created Successfully");
+          this.setState({
+            Uploading: false,
+          });
+        } else {
+          const sp: SPFI = getSp()
+          console.log(myfile.name);
+          let fileexe: any = myfile.name.split(".").pop();
+          // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
+          // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+          console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
+  
+  
+  
+          console.log(`${fileNameStruct}.${fileexe}`);
+          // await sp.web
+          //   .getFolderByServerRelativePath(
+          //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+          //   )
+          await sp.web
+            .getFolderByServerRelativePath(
+              // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
+              `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
+  
+            )
+            .files.addChunked(myfile.name, myfile)
+            .then((f) => {
+              // console.log("File Uploaded");
+              f.file.getItem().then(async (item) => {
+                //get item from sp
+  
+                await item
+                  .update({
+                    FileDescription: fileDes,
+                    FileName: filenames,
+                    DocID: String(DocID + 1),
+                  })
+                  .then(async (myupdate) => {
+                    console.log(myupdate);
+                    // console.log("Metadata Updated");
+                  });
+  
+                await item().then(async (myupdate) => {
+                  console.log(myupdate);
+                  // this.setState({
+                  //   fileIDs: myupdate.ID,
+                  // });
+                  setFileIDs(myupdate.ID)
+                  // console.log("Metadata Updated");
+                });
+              });
+            });
+          fileUrl;
+          // let fileurl:any = "";
+          // await sp.web
+          //   .getFolderByServerRelativePath(
+          //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
+          //   ) // Here comes a folder/subfolder path
+          //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
+          //   .select() // Fields to retrieve
+          //   .getAll()
+          //   .then(async (item) => {
+          //     console.log(item);
+          //     await item.filter((file) => {
+          //       console.log(file.LinkingUri);
+          //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
+          //         fileurl = file.LinkingUri;
+          //       }
+          //     });
+          //   });
+          let fileurl: any = "";
+  
+          // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
+  
+          // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
+          const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+  
+  
+          const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
+  
+          const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+  
+          for (const item of items) {
+            console.log(item);
+            if (item.Name === `${fileNameStruct}.${fileexe}`) {
+              fileurl = item.LinkingUri;
+              break;
+            }
+          }
+  
+          console.log(fileIDs);
+          let { Title } = await sp.web.currentUser();
+          if (valueFileType === "Old Files") {
+            // update item in an sp list
+            const items: any[] = await sp.web.lists
+              .getByTitle("User Files")
+              .items.top(1)
+              .filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
+  
+            if (items.length > 0) {
+              await sp.web.lists
+                .getByTitle("User Files")
+                .items.getById(items[0].Id)
+                .update({
+                  Filename: `${fileNameStruct}.${fileexe}`,
+                  FileTitle: filenames,
+                  Filetype: params2,
+                  Filedescription: fileDes,
+                  FileUploadDate: formatDate(new Date()),
+                  ApprovalStatus: "QMS",
+                  RequestorEmail: CurrentUser,
+                  Requester: Title,
+                  Fileurl: fileurl,
+                  DocID: String(DocID + 1),
+                  Status: "Pending",
+                  // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                  // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                  RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+                  Department: Department,
+                  SubDepartment: Subdepartment,
+                })
+                .then((i) => {
+                  console.log(i);
+                });
+            }
+  
+            // alert("Updated Successfully");
+          } else if (valueFileType === "New Files") {
+            await sp.web.lists
+              .getByTitle("User Files")
+              .items.add({
+                Filename: `${fileNameStruct}.${fileexe}`,
+                FileTitle: filenames,
+                Filetype: params2,
+                Filedescription: fileDes,
+                FileUploadDate: formatDate(new Date()),
+                ApprovalStatus: "QMS",
+                RequestorEmail: CurrentUser,
+                Fileurl: fileurl,
+                Requester: Title,
+                DocID: String(DocID + 1),
+                Status: "Pending",
+                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
+                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
+  
+  
+                Department: Department,
+                SubDepartment: Subdepartment,
+              })
+              .then(async (i) => {
+                console.log(i);
+              });
+          }
+  
+          alert("Created Successfully");
+          this.setState({
+            Uploading: false,
+          });
+        }
+  
+        // this.setState({
+        //   openDialogUpload: false,
+        //   hiddenDialogUpload: true,
+        //   SubfolderState: false,
+        //   SubfolderState1: false,
+        //   fileUrl: "",
+        //   filenames: "",
+        //   fileDes: "",
+        //   Filess: [],
+        //   params1: "",
+        //   params22: "",
+        //   params11: "",
+        //   params2: "",
+        //   params3: "",
+        //   params4: "",
+        //   params5: "",
+        //   fileNameStruct: "",
+        //   valueFileType: "Old Files",
+        //   departmentKey: '',
+        //   documentKey: '',
+        //   projectKey:'',
+        //   fileess:[]
+        // });
+        setOpenDialogUpload(false);
+  setHiddenDialogUpload(true);
+  setSubfolderState(false);
+  setSubfolderState1(false);
+  setFileUrl('');
+  setFilenames('');
+  setFileDes('');
+  setFiless([]);
+  setParams1('');
+  setParams22('');
+  setParams11('');
+  setParams2('');
+  setParams3('');
+  setParams4('');
+  setParams5('');
+  setFileNameStruct('');
+  setValueFileType('Old Files');
+  setDepartmentKey('');
+  setDocumentKey('');
+  setProjectKey('');
+  setFileess([]);
+       
+      }
+    }
+
     return (
       <div className="container" style={{ marginTop: "10px" }}>
         <div
@@ -2002,7 +3150,7 @@ export default class header extends React.Component<{}, any> {
         </div>
 
         <Dialog
-          hidden={this.state.hiddenDialog}
+          hidden={hiddenDialog}
           // containerClassName={ 'ms-dialogMainOverride ' + styles.textDialog}
           dialogContentProps={dialogContentProps}
           isBlocking={false}
@@ -2015,7 +3163,7 @@ export default class header extends React.Component<{}, any> {
             onChange={changeValue}
             styles={dropdownStyles}
           />
-          {this.state.choose ? (
+          {choose ? (
             <Dropdown
               placeholder="Select an option"
               label="Sub Section"
@@ -2027,16 +3175,16 @@ export default class header extends React.Component<{}, any> {
             <div></div>
           )}
           <DialogFooter>
-            {this.state.DownloadURI === true ? (
+            {DownloadURI === true ? (
               <PrimaryButton
-                disabled={this.state.DownloadURI}
+                disabled={DownloadURI}
                 style={{ backgroundColor: "#989898" }}
                 onClick={downloadFile}
                 text="Download"
               />
             ) : (
               <PrimaryButton
-                disabled={this.state.DownloadURI}
+                disabled={DownloadURI}
                 style={{ backgroundColor: "#0078D4" }}
                 onClick={downloadFile}
                 text="Download"
@@ -2047,14 +3195,14 @@ export default class header extends React.Component<{}, any> {
         </Dialog>
 
         <Dialog
-          hidden={this.state.hiddenDialogUpload}
+          hidden={hiddenDialogUpload}
           containerClassName={"ms-dialogMainOverride " + styles.textDialog}
           dialogContentProps={dialogContentPropsUpload}
           modalProps={modelProps}
           styles={getStyles}
         >
           <div>
-            {this.state.Uploading === false && (
+            {Uploading === false && (
               <Dropdown
                 placeholder="Select an option"
                 label="File type"
@@ -2065,9 +3213,9 @@ export default class header extends React.Component<{}, any> {
               />
             )}
           </div>
-          {this.state.Uploading === false ? (
+          {Uploading === false ? (
             <div>
-              {this.state.valueFileType === "Old Files" ? (
+              {valueFileType === "Old Files" ? (
                 <div
                   style={{
                     marginTop: "30px",
@@ -2097,9 +3245,9 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Department Name"
-                          disabled={this.state.valueFileType !== "Old Files"}
-                          selectedKey={this.state.departmentKey}
-                          options={this.state.departmentName}
+                          disabled={valueFileType !== "Old Files"}
+                          selectedKey={departmentKey}
+                          options={departmentName}
                           onChange={changeValuedepartmentName}
                           styles={dropdownStyles}
                         />
@@ -2115,9 +3263,9 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Document Name"
-                          disabled={this.state.valueFileType !== "Old Files"}
-                          selectedKey={this.state.documentKey}
-                          options={this.state.documentType}
+                          disabled={valueFileType !== "Old Files"}
+                          selectedKey={documentKey}
+                          options={documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
                         />
@@ -2138,7 +3286,7 @@ export default class header extends React.Component<{}, any> {
                     styles={dropdownStyles}
                   />
                 </div> */}
-                      {this.state.SubfolderState === true ? (
+                      {SubfolderState === true ? (
                         <div
                           style={{
                             left: "0%",
@@ -2151,9 +3299,9 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders Main"
-                            disabled={this.state.valueFileType !== "Old Files"}
-                            selectedKey={this.state.subFoldersMainKey}
-                            options={this.state.SubdepartmentsMain}
+                            disabled={valueFileType !== "Old Files"}
+                            selectedKey={subFoldersMainKey}
+                            options={SubdepartmentsMain}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
                           />
@@ -2161,7 +3309,7 @@ export default class header extends React.Component<{}, any> {
                       ) : (
                         <div></div>
                       )}
-                      {this.state.SubfolderState1 === true ? (
+                      {SubfolderState1 === true ? (
                         <div
                           style={{
                             marginTop: "100px",
@@ -2174,7 +3322,7 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders"
-                            options={this.state.Subdepartments}
+                            options={Subdepartments}
                             onChange={changeValueSubdepartments}
                             styles={dropdownStyles}
                           />
@@ -2183,7 +3331,7 @@ export default class header extends React.Component<{}, any> {
                         <div></div>
                       )}
 
-                      {this.state.SubfolderState1 === false ? (
+                      {SubfolderState1 === false ? (
                         <div
                           style={{
                             marginTop: "130px",
@@ -2197,7 +3345,7 @@ export default class header extends React.Component<{}, any> {
                             text="Search"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate1}
-                            disabled={this.state.valueFileType !== "Old Files"}
+                            disabled={valueFileType !== "Old Files"}
 
                           />
                         </div>
@@ -2213,7 +3361,7 @@ export default class header extends React.Component<{}, any> {
                         >
                           <PrimaryButton
                             text="Search"
-                            disabled={this.state.valueFileType !== "Old Files"}
+                            disabled={valueFileType !== "Old Files"}
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate1}
                           />
@@ -2229,7 +3377,7 @@ export default class header extends React.Component<{}, any> {
                       <Dropdown
                         placeholder="Select File"
                         label="Select File"
-                        options={this.state.Filess}
+                        options={Filess}
                         onChange={changeSalectFilename}
                         style={{
                           width: "50%",
@@ -2242,7 +3390,7 @@ export default class header extends React.Component<{}, any> {
                       }}
                     >
                       <input type="file" name="myFile" id="newfile"  accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
-                        disabled={this.state.valueFileType !== "Old Files"}></input>
+                        disabled={valueFileType !== "Old Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2251,17 +3399,17 @@ export default class header extends React.Component<{}, any> {
                     >
                       <TextField
                         label="File name"
-                        value={this.state.filenames}
+                        value={filenames}
                         onChange={changeValueFilename}
-                        disabled={this.state.valueFileType !== "Old Files"}
+                        disabled={valueFileType !== "Old Files"}
                       />
                       <TextField
                         label="File description"
-                        value={this.state.fileDes}
+                        value={fileDes}
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
-                        disabled={this.state.valueFileType !== "Old Files"}
+                        disabled={valueFileType !== "Old Files"}
                       />
                     </div>
                   </div>
@@ -2270,8 +3418,8 @@ export default class header extends React.Component<{}, any> {
                       text="Upload"
                       style={{ backgroundColor: "#0078D4" }}
                       // onClick={this.filesave}
-                      onClick={this.filesaveold}
-                      disabled={this.state.valueFileType !== "Old Files"}
+                      onClick={filesaveold}
+                      disabled={valueFileType !== "Old Files"}
                     />
                     <DefaultButton
                       onClick={closeHideDialogUpload}
@@ -2310,10 +3458,10 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Department Name"
-                          disabled={this.state.valueFileType !== "New Files"}
-                          // defaultValue={this.state.params11}
-                          selectedKey={this.state.departmentKey}
-                          options={this.state.departmentName}
+                          disabled={valueFileType !== "New Files"}
+                          // defaultValue={params11}
+                          selectedKey={departmentKey}
+                          options={departmentName}
                           onChange={changeValuedepartmentName}
                           styles={dropdownStyles}
                         />
@@ -2329,9 +3477,9 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Document Name"
-                          disabled={this.state.valueFileType !== "New Files"}
-                          selectedKey={this.state.documentKey}
-                          options={this.state.documentType}
+                          disabled={valueFileType !== "New Files"}
+                          selectedKey={documentKey}
+                          options={documentType}
                           onChange={changeValuedocumentType}
                           styles={dropdownStyles}
                         />
@@ -2347,14 +3495,14 @@ export default class header extends React.Component<{}, any> {
                         <Dropdown
                           placeholder="Select an option"
                           label="Project Name"
-                          disabled={this.state.valueFileType !== "New Files"}
-                          options={this.state.ProjectName}
-                          selectedKey={this.state.projectKey}
+                          disabled={valueFileType !== "New Files"}
+                          options={ProjectName}
+                          selectedKey={projectKey}
                           onChange={changeValueProjectName}
                           styles={dropdownStyles}
                         />
                       </div>
-                      {this.state.SubfolderState === true ? (
+                      {SubfolderState === true ? (
                         <div
                           style={{
                             left: "0%",
@@ -2367,9 +3515,9 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders Main"
-                            disabled={this.state.valueFileType !== "New Files"}
-                            options={this.state.SubdepartmentsMain}
-                            selectedKey={this.state.subFoldersMainKey}
+                            disabled={valueFileType !== "New Files"}
+                            options={SubdepartmentsMain}
+                            selectedKey={subFoldersMainKey}
                             onChange={changeValueSubdepartmentsMain}
                             styles={dropdownStyles}
                           />
@@ -2377,7 +3525,7 @@ export default class header extends React.Component<{}, any> {
                       ) : (
                         <div></div>
                       )}
-                      {this.state.SubfolderState1 === true ? (
+                      {SubfolderState1 === true ? (
                         <div
                           style={{
                             marginTop: "100px",
@@ -2390,7 +3538,7 @@ export default class header extends React.Component<{}, any> {
                           <Dropdown
                             placeholder="Select an option"
                             label="Sub Folders"
-                            options={this.state.Subdepartments}
+                            options={Subdepartments}
                             onChange={changeValueSubdepartments}
                             styles={dropdownStyles}
                           />
@@ -2399,7 +3547,7 @@ export default class header extends React.Component<{}, any> {
                         <div></div>
                       )}
 
-                      {this.state.SubfolderState1 === false ? (
+                      {SubfolderState1 === false ? (
                         <div
                           style={{
                             marginTop: "130px",
@@ -2413,7 +3561,7 @@ export default class header extends React.Component<{}, any> {
                             text="Generate ID"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate}
-                            disabled={this.state.valueFileType !== "New Files"}
+                            disabled={valueFileType !== "New Files"}
 
                           />
                         </div>
@@ -2431,7 +3579,7 @@ export default class header extends React.Component<{}, any> {
                             text="Generate ID"
                             style={{ backgroundColor: "#0078D4" }}
                             onClick={clickGenerate}
-                            disabled={this.state.valueFileType !== "New Files"}
+                            disabled={valueFileType !== "New Files"}
                           />
                         </div>
                       )}
@@ -2452,11 +3600,11 @@ export default class header extends React.Component<{}, any> {
                         <TextField
                           label="ID (Please copy the generated ID before uploading)"
                           disabled
-                          value={this.state.fileNameStruct}
+                          value={fileNameStruct}
                           // style={{
                           //   width:"50%",
                           // }}
-                          defaultValue={this.state.fileNameStruct}
+                          defaultValue={fileNameStruct}
                           onChange={changeValueFileID}
                         // required
                         />
@@ -2471,10 +3619,10 @@ export default class header extends React.Component<{}, any> {
                         <PrimaryButton
                           text="Copy"
                           style={{ backgroundColor: "#0078D4" }}
-                          disabled={this.state.fileNameStruct === ""}
+                          disabled={fileNameStruct === ""}
                           onClick={async () => {
                             navigator.clipboard.writeText(
-                              this.state.fileNameStruct
+                              fileNameStruct
                             );
                             alert("ID copied successfully!");
                           }}
@@ -2487,7 +3635,7 @@ export default class header extends React.Component<{}, any> {
                       }}
                     >
                       <input type="file" name="myFile" id="newfile"  accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
-                        disabled={this.state.valueFileType !== "New Files"}></input>
+                        disabled={valueFileType !== "New Files"}></input>
                     </div>
                     <div
                       style={{
@@ -2496,18 +3644,18 @@ export default class header extends React.Component<{}, any> {
                     >
                       <TextField
                         label="File name"
-                        value={this.state.filenames}
+                        value={filenames}
                         onChange={changeValueFilename}
-                        disabled={this.state.valueFileType !== "New Files"}
+                        disabled={valueFileType !== "New Files"}
                       // required
                       />
                       <TextField
                         label="File description"
-                        value={this.state.fileDes}
+                        value={fileDes}
                         multiline
                         rows={3}
                         onChange={changeValueFileDescription}
-                        disabled={this.state.valueFileType !== "New Files"}
+                        disabled={valueFileType !== "New Files"}
                       // required
                       />
                     </div>
@@ -2516,8 +3664,8 @@ export default class header extends React.Component<{}, any> {
                     <PrimaryButton
                       text="Upload"
                       style={{ backgroundColor: "#0078D4" }}
-                      onClick={this.filesave}
-                      disabled={this.state.valueFileType !== "New Files"}
+                      onClick={filesave}
+                      disabled={valueFileType !== "New Files"}
                     />
                     <DefaultButton
                       onClick={closeHideDialogUpload}
@@ -2563,7 +3711,7 @@ export default class header extends React.Component<{}, any> {
           <TextField
             underlined
             placeholder="Search"
-            onChange={this._onFilter}
+            onChange={_onFilter}
             styles={textFieldStyles}
           />
           {/* <PrimaryButton
@@ -2577,17 +3725,17 @@ export default class header extends React.Component<{}, any> {
         <div style={{ margin: "35px" }}></div>
         <DetailsList
           className={styles.list}
-          items={this.state.items}
+          items={items}
           compact={false}
           columns={columns}
           onRenderItemColumn={_renderItemColumn}
           selectionMode={SelectionMode.none}
-          getKey={this._getKey}
+          getKey={_getKey}
           setKey="none"
           layoutMode={DetailsListLayoutMode.justified}
           isHeaderVisible={true}
         />
-        {this.state.overalllist.length == 0 ? (
+        {overalllist.length == 0 ? (
           <div
             style={{
               // borderStyle:'dashed',
@@ -2617,954 +3765,17 @@ export default class header extends React.Component<{}, any> {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.count}
-          page={this.state.page}
+          count={count}
+          page={page}
           onPageChange={handleChangePage}
-          rowsPerPage={this.state.rowsPerPage}
+          rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     );
   }
-  private async filesave() {
-    console.log(this.state.filenames.length);
-    console.log(this.state.fileDes.length);
 
 
-    if (Array.isArray(this.state.fileess) && this.state.fileess.length > 0) {
 
-      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
 
-      console.log(fileToUpload);
-    }
-    else if (this.state.fileNameStruct.length <= 0) {
-      alert("Please generate Id");
-    }
 
-    else if (this.state.fileess.length <= 0) {
-      alert("Please Choose File");
-    }
-
-    else if (this.state.filenames.length <= 0) {
-      alert("Please give file name");
-    } else if (this.state.fileDes.length <= 0) {
-      alert("Please give file Description");
-    } else {
-      console.log(this.state.fileNameStruct);
-      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
-      // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
-      let myfile: any = fileToUpload;
-      console.log(myfile);
-      this.setState({
-        Uploading: true,
-      });
-
-      let Department: any = "";
-      let Subdepartment: any = "";
-
-      if (this.state.params11.length >= 0) {
-        Department = this.state.params11;
-      } else {
-        Department = "";
-      }
-      if (this.state.fileess.length <= 0) {
-        // alert("The file length is 0")
-        // this.setState({ fileess: e.target.files });
-      }
-
-      if (this.state.params3.length >= 0) {
-        Subdepartment = this.state.params3;
-      } else {
-        Subdepartment = "";
-      }
-
-      if (myfile.size <= 10485760) {
-        const sp: SPFI = getSp();
-
-        // create item in an sp list
-        //       let somss = await web.lists.getByTitle("User Files").items();
-        // console.log(somss)
-        console.log(myfile.name);
-
-        // let fileexe:any = myfile.name.split(".").pop();
-        // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-
-        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // .then(async (f) => {
-        //     await f.file.getItem().then(async (item) => {
-        //       await item
-        //         .update({
-        //           FileDescription: this.state.fileDes,
-        //           FileName: this.state.filenames,
-        //           DocID: String(this.state.DocID + 1),
-        //         })
-        //         .then(async (myupdate) => {
-        //           console.log(myupdate);
-        //         });
-
-        //       });
-        //       });
-        //     await item.getAll().then(async (myupdate) => {
-        //       console.log(myupdate);
-        //       this.setState({
-        //         fileIDs: myupdate.ID,
-        //       });
-        //       // console.log("Metadata Updated");
-        //     });
-        //   });
-        // });
-
-
-        //This code works
-        let fileexe: any = myfile.name.split(".").pop();
-        console.log(fileexe);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
-
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-        // const documentLibraryName = "Shared Documents1";
-
-        const folderPath = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
-        console.log(folderPath);
-        console.log(this.state.fileUrl);
-        // Getting the folder by server relative path
-        // const folder = await sp.web.getFolderByServerRelativePath(folderPath);
-        // console.log(folder);
-
-        // Checking if the folder exists
-        // if (!folder) {
-        //     // Folder doesn't exist, so create it
-        //     await sp.web.folders.addUsingPath(folderPath).catch(err => {
-        //         console.error("Error occurred while creating the folder:", err);
-        //     });
-        // }
-
-        const documentLibraryName = "Shared Documents1";
-
-        // Split the fileUrl string into individual folder names
-        const folders = this.state.fileUrl.split('/');
-        console.log(this.state.fileUrl);
-        console.log(folders);
-
-        // Initialize the base folder path
-        let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
-
-        // Iterate over each folder name and create folders
-        for (const folderName of folders) {
-          try {
-            // Update the folder path
-            currentFolderPath += `/${folderName}`;
-
-            // Check if the folder already exists
-            const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
-            console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
-          } catch (error) {
-            // Handle the error if the folder doesn't exist
-            console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
-            console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
-
-            // Attempt to create the folder
-            try {
-              await sp.web.folders.addUsingPath(currentFolderPath);
-              console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
-            } catch (error) {
-              console.error(`Error creating folder "${folderName}":`, error);
-              return;
-            }
-          }
-        }
-
-        await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
-
-          .then(async (f) => {
-            await f.file.getItem().then(async (item) => {
-              await item
-                .update({
-                  FileDescription: this.state.fileDes,
-                  FileName: this.state.filenames,
-                  DocID: String(this.state.DocID + 1),
-                })
-                .then(async (myupdate) => {
-                  console.log(myupdate);
-                });
-
-              // await item.get().then(async (myupdate) => {
-              //   console.log(myupdate);
-              //   this.setState({
-              //     fileIDs: myupdate.ID,
-              //   });
-              //   console.log("Metadata Updated");
-              // });
-
-              console.log(item);
-            });
-          });
-
-
-
-
-        this.state.fileUrl;
-        let fileurl: any = "";
-        await sp.web
-          .getFolderByServerRelativePath(
-            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
-            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
-          ) // Here comes a folder/subfolder path
-          .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-          .select() // Fields to retrieve
-          ()
-          .then(async (item) => {
-            console.log(item);
-            item.filter((file) => {
-              console.log(file);
-              console.log(file.LinkingUri);
-              if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-                fileurl = file.LinkingUri;
-              }
-            });
-          });
-
-        console.log(this.state.fileIDs);
-        date.setDate(date.getDate() + 5);
-        let { Title } = await sp.web.currentUser();
-        if (this.state.valueFileType === "Old Files") {
-          console.log(`${this.state.fileNameStruct}.${fileexe}`);
-          // update item in an sp list
-          const items: any[] = await sp.web.lists
-            .getByTitle("User Files")
-            .items.filter(
-              `Filename eq '${this.state.fileNameStruct}.${fileexe}'`
-            )();
-          console.log(items);
-          const max = items.reduce(function (prev, current) {
-            // var ts = new Date("2022-04-06T09:21:13Z");
-            // console.log(ts);
-
-            return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
-              ? prev
-              : current;
-          });
-          console.log(max);
-          // if (max.length > 0) {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.getById(max.Id)
-            .update({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              Requester: Title,
-              Remainder: formatDate(date),
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then((i) => {
-              console.log(i);
-            });
-          //  }
-
-          // alert("Updated Successfully");
-        } else if (this.state.valueFileType === "New Files") {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.add({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              Requester: Title,
-              Remainder: formatDate(date),
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then(async (i) => {
-              console.log(i);
-            });
-        }
-
-        //     console.log(this.state);
-        //     await web.lists.getById("380").rootFolder.files.get().then(t => {
-        // //add your code here if you want to do more after deleting the file
-        //     console.log(t);
-        //     });
-        await this.fetchData();
-        alert("Created Successfully");
-        this.setState({
-          Uploading: false,
-        });
-
-      } else {
-        const sp: SPFI = getSp()
-        console.log(myfile.name);
-        let fileexe: any = myfile.name.split(".").pop();
-        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
-
-
-
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   )
-        await sp.web
-          .getFolderByServerRelativePath(
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
-            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
-
-          )
-          .files.addChunked(myfile.name, myfile)
-          .then((f) => {
-            // console.log("File Uploaded");
-            f.file.getItem().then(async (item) => {
-              //get item from sp
-
-              await item
-                .update({
-                  FileDescription: this.state.fileDes,
-                  FileName: this.state.filenames,
-                  DocID: String(this.state.DocID + 1),
-                })
-                .then(async (myupdate) => {
-                  console.log(myupdate);
-                  // console.log("Metadata Updated");
-                });
-
-              await item().then(async (myupdate) => {
-                console.log(myupdate);
-                this.setState({
-                  fileIDs: myupdate.ID,
-                });
-                // console.log("Metadata Updated");
-              });
-            });
-          });
-        this.state.fileUrl;
-        // let fileurl:any = "";
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   ) // Here comes a folder/subfolder path
-        //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-        //   .select() // Fields to retrieve
-        //   .getAll()
-        //   .then(async (item) => {
-        //     console.log(item);
-        //     await item.filter((file) => {
-        //       console.log(file.LinkingUri);
-        //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-        //         fileurl = file.LinkingUri;
-        //       }
-        //     });
-        //   });
-        let fileurl: any = "";
-
-        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
-        console.log(folderPath);
-        console.log(this.state.fileUrl);
-
-        const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
-
-        for (const item of items) {
-          console.log(item);
-          if (item.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-            fileurl = item.LinkingUri;
-            break;
-          }
-        }
-
-        console.log(this.state.fileIDs);
-        let { Title } = await sp.web.currentUser();
-        if (this.state.valueFileType === "Old Files") {
-          // update item in an sp list
-          const items: any[] = await sp.web.lists
-            .getByTitle("User Files")
-            .items.top(1)
-            .filter(`Filename eq '${this.state.fileNameStruct}.${fileexe}'`)();
-
-          if (items.length > 0) {
-            await sp.web.lists
-              .getByTitle("User Files")
-              .items.getById(items[0].Id)
-              .update({
-                Filename: `${this.state.fileNameStruct}.${fileexe}`,
-                FileTitle: this.state.filenames,
-                Filetype: this.state.params2,
-                Filedescription: this.state.fileDes,
-                FileUploadDate: formatDate(new Date()),
-                ApprovalStatus: "QMS",
-                RequestorEmail: this.state.CurrentUser,
-                Requester: Title,
-                Fileurl: fileurl,
-                DocID: String(this.state.DocID + 1),
-                Status: "Pending",
-                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-                Department: Department,
-                SubDepartment: Subdepartment,
-              })
-              .then((i) => {
-                console.log(i);
-              });
-          }
-
-          // alert("Updated Successfully");
-        } else if (this.state.valueFileType === "New Files") {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.add({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              Requester: Title,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then(async (i) => {
-              console.log(i);
-            });
-        }
-
-        alert("Created Successfully");
-        this.setState({
-          Uploading: false,
-        });
-      }
-
-      this.setState({
-        openDialogUpload: false,
-        hiddenDialogUpload: true,
-        SubfolderState: false,
-        SubfolderState1: false,
-        fileUrl: "",
-        filenames: "",
-        fileDes: "",
-        Filess: [],
-        params1: "",
-        params22: "",
-        params11: "",
-        params2: "",
-        params3: "",
-        params4: "",
-        params5: "",
-        fileNameStruct: "",
-        valueFileType: "Old Files",
-        fileess:[],
-
-        departmentKey: '',
-        documentKey: '',
-        projectKey:'',
-
-      });
-      console.log(this.state);
-    }
-
-  }
-
-
-
-  private async filesaveold() {
-    console.log(this.state.filenames.length);
-    console.log(this.state.fileDes.length);
-
-
-    if (Array.isArray(this.state.fileess) && this.state.fileess.length > 0) {
-
-      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
-
-      console.log(fileToUpload);
-    }
-    else if (this.state.fileNameStruct.length <= 0) {
-      alert("Please click search and select the file");
-    }
-
-    else if (this.state.fileess.length <= 0) {
-      alert("Please Choose File");
-    }
-
-    else if (this.state.filenames.length <= 0) {
-      alert("Please give an file name");
-    } else if (this.state.fileDes.length <= 0) {
-      alert("Please give an file Description");
-    } else {
-      console.log(this.state.fileNameStruct);
-      const fileToUpload: any = this.state.fileess[0]; // Assuming you want to upload the first file in the array
-      // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
-      let myfile: any = fileToUpload;
-      console.log(myfile);
-      this.setState({
-        Uploading: true,
-      });
-
-      let Department: any = "";
-      let Subdepartment: any = "";
-
-      if (this.state.params11.length >= 0) {
-        Department = this.state.params11;
-      } else {
-        Department = "";
-      }
-      if (this.state.fileess.length <= 0) {
-        // alert("The file length is 0")
-        // this.setState({ fileess: e.target.files });
-      }
-
-      if (this.state.params3.length >= 0) {
-        Subdepartment = this.state.params3;
-      } else {
-        Subdepartment = "";
-      }
-
-      if (myfile.size <= 10485760) {
-        const sp: SPFI = getSp();
-
-        // create item in an sp list
-        //       let somss = await web.lists.getByTitle("User Files").items();
-        // console.log(somss)
-        console.log(myfile.name);
-
-        // let fileexe:any = myfile.name.split(".").pop();
-        // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-
-        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // .then(async (f) => {
-        //     await f.file.getItem().then(async (item) => {
-        //       await item
-        //         .update({
-        //           FileDescription: this.state.fileDes,
-        //           FileName: this.state.filenames,
-        //           DocID: String(this.state.DocID + 1),
-        //         })
-        //         .then(async (myupdate) => {
-        //           console.log(myupdate);
-        //         });
-
-        //       });
-        //       });
-        //     await item.getAll().then(async (myupdate) => {
-        //       console.log(myupdate);
-        //       this.setState({
-        //         fileIDs: myupdate.ID,
-        //       });
-        //       // console.log("Metadata Updated");
-        //     });
-        //   });
-        // });
-
-
-        //This code works
-        let fileexe: any = myfile.name.split(".").pop();
-        console.log(fileexe);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
-
-
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
-
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
-
-        await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
-
-          .then(async (f) => {
-            await f.file.getItem().then(async (item) => {
-              await item
-                .update({
-                  FileDescription: this.state.fileDes,
-                  FileName: this.state.filenames,
-                  DocID: String(this.state.DocID + 1),
-                })
-                .then(async (myupdate) => {
-                  console.log(myupdate);
-                });
-
-              // await item.get().then(async (myupdate) => {
-              //   console.log(myupdate);
-              //   this.setState({
-              //     fileIDs: myupdate.ID,
-              //   });
-              //   console.log("Metadata Updated");
-              // });
-
-              console.log(item);
-            });
-          });
-
-
-
-
-        this.state.fileUrl;
-        let fileurl: any = "";
-        await sp.web
-          .getFolderByServerRelativePath(
-            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
-            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
-          ) // Here comes a folder/subfolder path
-          .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-          .select() // Fields to retrieve
-          ()
-          .then(async (item) => {
-            console.log(item);
-            item.filter((file) => {
-              console.log(file);
-              console.log(file.LinkingUri);
-              if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-                fileurl = file.LinkingUri;
-              }
-            });
-          });
-
-        console.log(this.state.fileIDs);
-        date.setDate(date.getDate() + 5);
-        let { Title } = await sp.web.currentUser();
-        if (this.state.valueFileType === "Old Files") {
-          console.log(`${this.state.fileNameStruct}.${fileexe}`);
-          // update item in an sp list
-          const items: any[] = await sp.web.lists
-            .getByTitle("User Files")
-            .items.filter(
-              `Filename eq '${this.state.fileNameStruct}.${fileexe}'`
-            )();
-          console.log(items);
-          const max = items.reduce(function (prev, current) {
-            // var ts = new Date("2022-04-06T09:21:13Z");
-            // console.log(ts);
-
-            return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
-              ? prev
-              : current;
-          });
-          console.log(max);
-          // if (max.length > 0) {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.getById(max.Id)
-            .update({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              Requester: Title,
-              Remainder: formatDate(date),
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then((i) => {
-              console.log(i);
-            });
-          //  }
-
-          // alert("Updated Successfully");
-        } else if (this.state.valueFileType === "New Files") {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.add({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              Requester: Title,
-              Remainder: formatDate(date),
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then(async (i) => {
-              console.log(i);
-            });
-        }
-
-        //     console.log(this.state);
-        //     await web.lists.getById("380").rootFolder.files.get().then(t => {
-        // //add your code here if you want to do more after deleting the file
-        //     console.log(t);
-        //     });
-        await this.fetchData();
-        alert("Created Successfully");
-        this.setState({
-          Uploading: false,
-        });
-      } else {
-        const sp: SPFI = getSp()
-        console.log(myfile.name);
-        let fileexe: any = myfile.name.split(".").pop();
-        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-        console.log(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`);
-
-
-
-        console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   )
-        await sp.web
-          .getFolderByServerRelativePath(
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
-            `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`
-
-          )
-          .files.addChunked(myfile.name, myfile)
-          .then((f) => {
-            // console.log("File Uploaded");
-            f.file.getItem().then(async (item) => {
-              //get item from sp
-
-              await item
-                .update({
-                  FileDescription: this.state.fileDes,
-                  FileName: this.state.filenames,
-                  DocID: String(this.state.DocID + 1),
-                })
-                .then(async (myupdate) => {
-                  console.log(myupdate);
-                  // console.log("Metadata Updated");
-                });
-
-              await item().then(async (myupdate) => {
-                console.log(myupdate);
-                this.setState({
-                  fileIDs: myupdate.ID,
-                });
-                // console.log("Metadata Updated");
-              });
-            });
-          });
-        this.state.fileUrl;
-        // let fileurl:any = "";
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   ) // Here comes a folder/subfolder path
-        //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-        //   .select() // Fields to retrieve
-        //   .getAll()
-        //   .then(async (item) => {
-        //     console.log(item);
-        //     await item.filter((file) => {
-        //       console.log(file.LinkingUri);
-        //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-        //         fileurl = file.LinkingUri;
-        //       }
-        //     });
-        //   });
-        let fileurl: any = "";
-
-        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`;
-
-
-        const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
-
-        for (const item of items) {
-          console.log(item);
-          if (item.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-            fileurl = item.LinkingUri;
-            break;
-          }
-        }
-
-        console.log(this.state.fileIDs);
-        let { Title } = await sp.web.currentUser();
-        if (this.state.valueFileType === "Old Files") {
-          // update item in an sp list
-          const items: any[] = await sp.web.lists
-            .getByTitle("User Files")
-            .items.top(1)
-            .filter(`Filename eq '${this.state.fileNameStruct}.${fileexe}'`)();
-
-          if (items.length > 0) {
-            await sp.web.lists
-              .getByTitle("User Files")
-              .items.getById(items[0].Id)
-              .update({
-                Filename: `${this.state.fileNameStruct}.${fileexe}`,
-                FileTitle: this.state.filenames,
-                Filetype: this.state.params2,
-                Filedescription: this.state.fileDes,
-                FileUploadDate: formatDate(new Date()),
-                ApprovalStatus: "QMS",
-                RequestorEmail: this.state.CurrentUser,
-                Requester: Title,
-                Fileurl: fileurl,
-                DocID: String(this.state.DocID + 1),
-                Status: "Pending",
-                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-                RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-                Department: Department,
-                SubDepartment: Subdepartment,
-              })
-              .then((i) => {
-                console.log(i);
-              });
-          }
-
-          // alert("Updated Successfully");
-        } else if (this.state.valueFileType === "New Files") {
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.add({
-              Filename: `${this.state.fileNameStruct}.${fileexe}`,
-              FileTitle: this.state.filenames,
-              Filetype: this.state.params2,
-              Filedescription: this.state.fileDes,
-              FileUploadDate: formatDate(new Date()),
-              ApprovalStatus: "QMS",
-              RequestorEmail: this.state.CurrentUser,
-              Fileurl: fileurl,
-              Requester: Title,
-              DocID: String(this.state.DocID + 1),
-              Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
-              RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`,
-
-
-              Department: Department,
-              SubDepartment: Subdepartment,
-            })
-            .then(async (i) => {
-              console.log(i);
-            });
-        }
-
-        alert("Created Successfully");
-        this.setState({
-          Uploading: false,
-        });
-      }
-
-      this.setState({
-        openDialogUpload: false,
-        hiddenDialogUpload: true,
-        SubfolderState: false,
-        SubfolderState1: false,
-        fileUrl: "",
-        filenames: "",
-        fileDes: "",
-        Filess: [],
-        params1: "",
-        params22: "",
-        params11: "",
-        params2: "",
-        params3: "",
-        params4: "",
-        params5: "",
-        fileNameStruct: "",
-        valueFileType: "Old Files",
-        departmentKey: '',
-        documentKey: '',
-        projectKey:'',
-        fileess:[]
-      });
-      console.log(this.state);
-    }
-  }
-}
