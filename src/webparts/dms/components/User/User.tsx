@@ -260,7 +260,7 @@ export default function User(props) {
   const [documentType, setDocumentType] = useState([]);
   const [ProjectName, setProjectName] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [SubdepartmentsMain, setSubdepartmentsMain] = useState([]);
+  const [SubdepartmentsMain, setSubdepartmentsMain] = useState<any>([]);
   const [Filess, setFiless] = useState([]);
   const [SubdepartmentsMain1, setSubdepartmentsMain1] = useState([]);
   const [SubdepartmentsMain2, setSubdepartmentsMain2] = useState([]);
@@ -274,11 +274,11 @@ export default function User(props) {
   const [fileUrl, setFileUrl] = useState("");
   const [valueFileType, setValueFileType] = useState("");
   const [textToCopy, setTextToCopy] = useState("");
-  const [DocID, setDocID] = useState("");
+  const [DocID, setDocID] = useState<any>("");
   const [fileNameStruct, setFileNameStruct] = useState("");
   const [params1, setParams1] = useState<any>("");
-  const [params11, setParams11] = useState("");
-  const [departmentKey, setDepartmentKey] = useState('');
+  const [params11, setParams11] = useState<any>("");
+  const [departmentKey, setDepartmentKey] = useState<any>('');
   const [projectKey, setProjectKey] = useState<any>('');
   const [subFoldersMainKey, setSubFoldersMainKey] = useState('');
   const [params111, setParams111] = useState<any>("");
@@ -353,10 +353,11 @@ export default function User(props) {
 
   const fetchData = async () => {
     try {
-      const sp = getSp();
+      const sp: SPFI = getSp();
 
       // Fetch user details
       const userDetails = await getUserDetails();
+      console.log(userDetails);
       const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
       console.log("User details:", userDetails);
       console.log("Upload value:", uploadValue);
@@ -364,7 +365,7 @@ export default function User(props) {
       // Fetch current user
       let user = await sp.web.currentUser();
       console.log("Current user email:", user.Email);
-
+      
       // Fetch user files
       const sss = await sp.web.lists.getByTitle("User Files")
         .items.select(
@@ -386,8 +387,8 @@ export default function User(props) {
       setItems(y.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
       setOveralllist(y);
 
-      // setShowFirstItem(uploadValue === "true");
-      // setCount(y.length);
+      setShowFirstItem(uploadValue === "true");
+      setCount(y.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -397,210 +398,214 @@ export default function User(props) {
   }, [page, rowsPerPage]);
 
 
-  useEffect(() => {
-    const fetchAdditionalData = async () => {
+  const fetchAdditionalData = async () => {
 
-      try {
-        const sp = getSp();
+    try {
+      const sp: SPFI = getSp();
 
-        const userDetails = await getUserDetails();
-        console.log(userDetails);
-        const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
-        console.log(uploadValue);
+      const userDetails = await getUserDetails();
+      console.log(userDetails);
+      const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
+      console.log(uploadValue);
 
-        let user = await sp.web.currentUser();
-        console.log(user.Email);
+      let user = await sp.web.currentUser();
+      console.log(user.Email);
 
-        await fetchData();
-        const items: any[] = await sp.web.lists.getByTitle("Project List").items();
-    console.log(items.length);
-    this.setState({
-      DocID: items.length,
+      await fetchData();
+      const items: any[] = await sp.web.lists.getByTitle("Project List").items();
+  console.log(items.length);
+  // this.setState({
+  //   DocID: items.length,
+  // });
+  setDocID(items.length);
+
+  let DepartmentNames: IDropdownOption[] = []
+
+  let DocumentType: any = [];
+  let ProjectName: any = [];
+  let SubDepartments: any = [];
+  let SubdepartmentsParents: any = [];
+  let SubDepartments1: any = [];
+  let SubdepartmentsMain: any = [];
+  let SubdepartmentsMain1: any = [];
+  let SubdepartmentsMainParents: any = [];
+
+  await sp.web.lists
+  .getByTitle("Project List")
+  .items.select("ProjectName,ProjectID")
+  .getAll()
+  .then(async (item) => {
+    item.map(async (nn) => {
+      await ProjectName.push({ key: nn.ProjectName, text: nn.ProjectID });
     });
+  });
 
-    let DepartmentNames: IDropdownOption[] = []
-
-    let DocumentType: any = [];
-    let ProjectName: any = [];
-    let SubDepartments: any = [];
-    let SubdepartmentsParents: any = [];
-    let SubDepartments1: any = [];
-    let SubdepartmentsMain: any = [];
-    let SubdepartmentsMain1: any = [];
-    let SubdepartmentsMainParents: any = [];
-
-    await sp.web.lists
-    .getByTitle("Project List")
-    .items.select("ProjectName,ProjectID")
-    .getAll()
-    .then(async (item) => {
-      item.map(async (nn) => {
-        await ProjectName.push({ key: nn.ProjectName, text: nn.ProjectID });
-      });
-    });
-
-    await sp.web.lists
-    .getByTitle("Department Names")
-    .items.select("Departments,Code")
-    .getAll()
-    .then(async (item) => {
-      console.log(item);
-      item.map(async (nn) => {
-        await DepartmentNames.push({
-          key: nn.Code,
-          text: nn.Departments,
-        });
-      });
-    });
-
-    await sp.web.lists
-    .getByTitle("Document Type")
-    .items.select("Documents,Code")
-    .getAll()
-    .then(async (item) => {
-      item.map(async (nn) => {
-        await DocumentType.push({ key: nn.Code, text: nn.Documents });
+  await sp.web.lists
+  .getByTitle("Department Names")
+  .items.select("Departments,Code")
+  .getAll()
+  .then(async (item) => {
+    console.log(item);
+    item.map(async (nn) => {
+      await DepartmentNames.push({
+        key: nn.Code,
+        text: nn.Departments,
       });
     });
+  });
 
-    await sp.web.lists
-    .getByTitle("Sub departments")
-    .items.select("Subfolders,ParentFolder")
-    .getAll()
-    .then(async (item) => {
-      item.map(async (nn) => {
-        // console.log(nn)
-        // console.log(nn.ParentFolder)
-        // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
-        await SubDepartments1.push({
-          text: nn.Subfolders,
-          key: nn.ParentFolder,
-        });
-        await SubdepartmentsParents.push(nn.ParentFolder);
-      });
+  await sp.web.lists
+  .getByTitle("Document Type")
+  .items.select("Documents,Code")
+  .getAll()
+  .then(async (item) => {
+    item.map(async (nn) => {
+      await DocumentType.push({ key: nn.Code, text: nn.Documents });
+    });
+  });
 
-      await console.log(SubdepartmentsParents);
-      let uniqueArray = SubdepartmentsParents.filter(function (
-        item,
-        pos,
-        self
-      ) {
-        return self.indexOf(item) == pos;
+  await sp.web.lists
+  .getByTitle("Sub departments")
+  .items.select("Subfolders,ParentFolder")
+  .getAll()
+  .then(async (item) => {
+    item.map(async (nn) => {
+      // console.log(nn)
+      // console.log(nn.ParentFolder)
+      // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
+      await SubDepartments1.push({
+        text: nn.Subfolders,
+        key: nn.ParentFolder,
       });
-      await console.log(uniqueArray);
-
-      this.setState({
-        SubfoldersParent: uniqueArray,
-      });
+      await SubdepartmentsParents.push(nn.ParentFolder);
     });
 
-    await sp.web.lists
-    .getByTitle("Sub departments Main")
-    .items.select("SubFolders,ParentFolders,Code")
-    .getAll()
-    .then(async (item) => {
-      item.map(async (nn) => {
-        // await SubdepartmentsMain.push({"text":nn.SubFolders,"Key":nn.SubFolders});
-        await SubdepartmentsMain1.push({
-          SubFolders: nn.SubFolders,
-          ParentFolders: nn.ParentFolders,
-          Code: nn.Code,
-        });
+    await console.log(SubdepartmentsParents);
+    let uniqueArray = SubdepartmentsParents.filter(function (
+      item,
+      pos,
+      self
+    ) {
+      return self.indexOf(item) == pos;
+    });
+    await console.log(uniqueArray);
 
-        // console.log()
-        //   SubfoldersMainParent: Pare
-        // })
-        await SubdepartmentsMainParents.push(nn.ParentFolders);
-        // await this.setState({
+    // this.setState({
+    //   SubfoldersParent: uniqueArray,
+    // });
+    setSubfoldersParent(uniqueArray)
+
+  });
+
+
+  await sp.web.lists
+  .getByTitle("Sub departments Main")
+  .items.select("SubFolders,ParentFolders,Code")
+  .getAll()
+  .then(async (item) => {
+    item.map(async (nn) => {
+      // await SubdepartmentsMain.push({"text":nn.SubFolders,"Key":nn.SubFolders});
+      await SubdepartmentsMain1.push({
+        SubFolders: nn.SubFolders,
+        ParentFolders: nn.ParentFolders,
+        Code: nn.Code,
       });
 
-      await console.log(SubdepartmentsMainParents);
-      let uniqueArray = SubdepartmentsMainParents.filter(function (
-        item,
-        pos,
-        self
-      ) {
-        return self.indexOf(item) == pos;
-      });
-
-      // this.setState({
-      //   SubfoldersMainParent: uniqueArray,
-      // });
-      setSubfoldersMainParent(uniqueArray);
+      // console.log()
+      //   SubfoldersMainParent: Pare
+      // })
+      await SubdepartmentsMainParents.push(nn.ParentFolders);
+      // await this.setState({
     });
 
-    setDepartmentName(DepartmentNames);
-    setDocumentType(DocumentType);
-    setSubdepartmentsMain(SubdepartmentsMain);
-    setSubdepartmentsMain2(SubdepartmentsMain1);
-    setSubdepartments(SubDepartments);
-    setSubdepartments2(SubDepartments1);
-    setProjectName(ProjectName);
-    setCurrentUser(user.Email);
-    setShowFirstItem(uploadValue === 'true');
+    await console.log(SubdepartmentsMainParents);
+    let uniqueArray = SubdepartmentsMainParents.filter(function (
+      item,
+      pos,
+      self
+    ) {
+      return self.indexOf(item) == pos;
+    });
+
+    // this.setState({
+    //   SubfoldersMainParent: uniqueArray,
+    // });
+    setSubfoldersMainParent(uniqueArray);
+  });
+
+  setDepartmentName(DepartmentNames);
+  setDocumentType(DocumentType);
+  setSubdepartmentsMain(SubdepartmentsMain);
+  setSubdepartmentsMain2(SubdepartmentsMain1);
+  setSubdepartments(SubDepartments);
+  setSubdepartments2(SubDepartments1);
+  setProjectName(ProjectName);
+  setCurrentUser(user.Email);
+  setShowFirstItem(uploadValue === 'true');
 
 
 
 
 
-    //        const sss = await sp.web.lists.getByTitle("User Files")
-    //   .items.select(
-    //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-    //   )
-    //   .expand("File")
-    //   .getAll();
+  //        const sss = await sp.web.lists.getByTitle("User Files")
+  //   .items.select(
+  //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
+  //   )
+  //   .expand("File")
+  //   .getAll();
 
-    // console.log("User files:", sss);
+  // console.log("User files:", sss);
 
-    //     // Fetch Project Name
-    //     const projectNameItems:any = await sp.web.lists.getByTitle("Project List")
-    //       .items.select("ProjectName,ProjectID").getAll();
-    //     const projectNames:any = projectNameItems.map(nn => ({ key: nn.ProjectName, text: nn.ProjectID }));
-    //     // useState(prevState => ({ ...prevState, ProjectName: projectNames }));
-    //     // setState(prevState => ({ ...prevState, ProjectName: projectNames }))
-    //     setProjectName(projectNames);
+  //     // Fetch Project Name
+  //     const projectNameItems:any = await sp.web.lists.getByTitle("Project List")
+  //       .items.select("ProjectName,ProjectID").getAll();
+  //     const projectNames:any = projectNameItems.map(nn => ({ key: nn.ProjectName, text: nn.ProjectID }));
+  //     // useState(prevState => ({ ...prevState, ProjectName: projectNames }));
+  //     // setState(prevState => ({ ...prevState, ProjectName: projectNames }))
+  //     setProjectName(projectNames);
 
-    //     // Fetch Department Names
-    //     const departmentNameItems:any = await sp.web.lists.getByTitle("Department Names")
-    //       .items.select("Departments,Code").getAll();
-    //     const departmentNames:any = departmentNameItems.map(nn => ({ key: nn.Code, text: nn.Departments }));
-    //     // useState(prevState => ({ ...prevState, departmentName: departmentNames }));
-    //     setDepartmentName(departmentNames);
+  //     // Fetch Department Names
+  //     const departmentNameItems:any = await sp.web.lists.getByTitle("Department Names")
+  //       .items.select("Departments,Code").getAll();
+  //     const departmentNames:any = departmentNameItems.map(nn => ({ key: nn.Code, text: nn.Departments }));
+  //     // useState(prevState => ({ ...prevState, departmentName: departmentNames }));
+  //     setDepartmentName(departmentNames);
 
-    //     // Fetch Document Type
-    //     const documentTypeItems:any = await sp.web.lists.getByTitle("Document Type")
-    //       .items.select("Documents,Code").getAll();
-    //     const documentTypes:any = documentTypeItems.map(nn => ({ key: nn.Code, text: nn.Documents }));
-    //     // useState(prevState => ({ ...prevState, documentType: documentTypes }));
-    //     setDocumentType(documentTypes);
+  //     // Fetch Document Type
+  //     const documentTypeItems:any = await sp.web.lists.getByTitle("Document Type")
+  //       .items.select("Documents,Code").getAll();
+  //     const documentTypes:any = documentTypeItems.map(nn => ({ key: nn.Code, text: nn.Documents }));
+  //     // useState(prevState => ({ ...prevState, documentType: documentTypes }));
+  //     setDocumentType(documentTypes);
 
-    //     // Fetch Sub departments
-    //     const subDepartmentsItems = await sp.web.lists.getByTitle("Sub departments")
-    //     .items.select("Subfolders,ParentFolder").getAll();
-    //   const subDepartments:any = subDepartmentsItems.map(nn => ({ text: nn.Subfolders, key: nn.ParentFolder }));
-    //   const subDepartmentsParents:any = subDepartmentsItems.map(nn => nn.ParentFolder);
-    //   const uniqueSubDepartmentsParents:any = Array.from(new Set(subDepartmentsParents)); // Convert Set to array
-    //   // useState(prevState => ({ ...prevState, SubdepartmentsMain: subDepartments, SubfoldersParent: uniqueSubDepartmentsParents }));
-    //   setSubdepartmentsMain(subDepartments);
-    //   setSubfoldersParent(uniqueSubDepartmentsParents);
+  //     // Fetch Sub departments
+  //     const subDepartmentsItems = await sp.web.lists.getByTitle("Sub departments")
+  //     .items.select("Subfolders,ParentFolder").getAll();
+  //   const subDepartments:any = subDepartmentsItems.map(nn => ({ text: nn.Subfolders, key: nn.ParentFolder }));
+  //   const subDepartmentsParents:any = subDepartmentsItems.map(nn => nn.ParentFolder);
+  //   const uniqueSubDepartmentsParents:any = Array.from(new Set(subDepartmentsParents)); // Convert Set to array
+  //   // useState(prevState => ({ ...prevState, SubdepartmentsMain: subDepartments, SubfoldersParent: uniqueSubDepartmentsParents }));
+  //   setSubdepartmentsMain(subDepartments);
+  //   setSubfoldersParent(uniqueSubDepartmentsParents);
 
-    //     // Fetch Sub departments Main
-    //     const subDepartmentsMainItems:any = await sp.web.lists.getByTitle("Sub departments Main")
-    //     .items.select("SubFolders,ParentFolders,Code").getAll();
-    //   const subDepartmentsMain:any = subDepartmentsMainItems.map(nn => ({
-    //     SubFolders: nn.SubFolders,
-    //     ParentFolders: nn.ParentFolders,
-    //     Code: nn.Code,
-    //   }));
+  //     // Fetch Sub departments Main
+  //     const subDepartmentsMainItems:any = await sp.web.lists.getByTitle("Sub departments Main")
+  //     .items.select("SubFolders,ParentFolders,Code").getAll();
+  //   const subDepartmentsMain:any = subDepartmentsMainItems.map(nn => ({
+  //     SubFolders: nn.SubFolders,
+  //     ParentFolders: nn.ParentFolders,
+  //     Code: nn.Code,
+  //   }));
 
-    //     // useState(prevState => ({ ...prevState, CurrentUser: user.Email, showFirstItem: uploadValue === "true" }));
-    //     setCurrentUser(user.Email);
-        
-      } catch (error) {
-        console.error('Error in fetchAdditionalData:', error);
-      }
+  //     // useState(prevState => ({ ...prevState, CurrentUser: user.Email, showFirstItem: uploadValue === "true" }));
+  //     setCurrentUser(user.Email);
+  //     setShowFirstItem(uploadValue==="true");
+      
+    } catch (error) {
+      console.error('Error in fetchAdditionalData:', error);
     }
-
+  }
+  useEffect(() => {
     fetchAdditionalData();
   }, []);
 
@@ -756,6 +761,7 @@ export default function User(props) {
   
     // var sss = [];
     var sss: any = [];
+    // const { showFirstItem } = this.state; // Access showFirstItem from state
 
   
     const toggleHideDialog = () => {
@@ -868,15 +874,15 @@ export default function User(props) {
         setParams4("");
         setParams5("");
 
-        const selectedDepartment:any = option?.text;
-        const selectedDepartmentKey:any = option?.key;
+        const selectedDepartment = option?.text;
+        const selectedDepartmentKey = option?.key;
         console.log("Selected department:", selectedDepartment);
 
         // Check if the selected department has subfolders
         if (SubfoldersMainParent.includes(selectedDepartment)) {
           console.log("Selected department has subfolders.");
 
-          const subfolders:any = SubdepartmentsMain2
+          const subfolders = SubdepartmentsMain2
             .filter((subfolder:any) => subfolder.ParentFolders === selectedDepartment)
             .map((subfolder:any) => ({
               text: subfolder.SubFolders,
@@ -1666,10 +1672,12 @@ setSubFoldersMainKey(SubDepartmentmainkey);
         console.log(lastDigit);
         console.log(somee1);
 
-        this.setState({
-          fileUrl: somee2.join("/"),
-          fileNameStruct: somee1.join("-"),
-        });
+        // this.setState({
+        //   fileUrl: somee2.join("/"),
+        //   fileNameStruct: somee1.join("-"),
+        // });
+        setFileUrl(somee2.join("/"))
+        setFileNameStruct(somee1.join("-"))
 
         // console.log(this.state);
       }
@@ -1785,10 +1793,12 @@ setSubFoldersMainKey(SubDepartmentmainkey);
         alert("There is no file inside this folder, please create a new file!");
       }
 
-      this.setState({
-        fileUrl: somee.join("/"),
-        Filess: filesName,
-      });
+      // this.setState({
+      //   fileUrl: somee.join("/"),
+      //   Filess: filesName,
+      // });
+      setFileUrl(somee.join("/"));
+      setFiless(filesName);
 
 
       // this.setState({
@@ -1805,10 +1815,12 @@ setSubFoldersMainKey(SubDepartmentmainkey);
       choose.length = 0;
       if (value.text === "Work Instruction") {
         console.log("entyered in WI");
-        this.setState({
-          choose: true,
-          Documetntype: value.text,
-        });
+        // this.setState({
+        //   choose: true,
+        //   Documetntype: value.text,
+        // });
+        setChoose(true);
+        setDocumentKey(value.text);
 
         let array = [
           { key: "Work Instruction", text: "Assy Eng" },
@@ -1829,10 +1841,15 @@ setSubFoldersMainKey(SubDepartmentmainkey);
       } else if (value.text === "MSOP") {
         console.log("entyered in MSOP");
 
-        this.setState({
-          choose: true,
-          Documetntype: value.text,
-        });
+        // this.setState({
+        //   choose: true,
+        //   Documetntype: value.text,
+        // });
+        setChoose(true);
+        console.log(choose);
+        
+        setDocumentKey(value.text);
+
 
         let array = [
           { key: "Work Instruction", text: "Assy Eng" },
@@ -1854,10 +1871,13 @@ setSubFoldersMainKey(SubDepartmentmainkey);
       } else if (value.text === "Form") {
         console.log("entyered in Form");
 
-        this.setState({
-          choose: true,
-          Documetntype: value.text,
-        });
+        // this.setState({
+        //   choose: true,
+        //   Documetntype: value.text,
+        // });
+        setChoose(true);
+        setDocumentKey(value.text);
+
 
         let array = [
           { key: "Work Instruction", text: "Assy Eng" },
@@ -1880,9 +1900,11 @@ setSubFoldersMainKey(SubDepartmentmainkey);
         let ID;
         let path;
         console.log("entyered in else");
-        this.setState({
-          choose: false,
-        });
+        // this.setState({
+        //   choose: false,
+        // });
+        setChoose(false);
+
         const sp: SPFI = getSp()
         let somss: any = await sp.web.lists.getByTitle("My Docs").items();
         console.log(somss);
@@ -1900,10 +1922,12 @@ setSubFoldersMainKey(SubDepartmentmainkey);
           .select("ID,FileRef")()
           .then(async (items: any) => {
             console.log(items.FileRef);
-            this.setState({
-              downloadUrl: items.FileRef,
-              DownloadURI: false,
-            });
+            // this.setState({
+            //   downloadUrl: items.FileRef,
+            //   DownloadURI: false,
+            // });
+            setDownloadUrl(items.FileRef);
+            setDownloadURI(false);
           });
       }
 
@@ -1940,10 +1964,12 @@ setSubFoldersMainKey(SubDepartmentmainkey);
         .select("ID,FileRef")()
         .then((items: any) => {
           console.log(items.FileRef);
-          this.setState({
-            downloadUrl: items.FileRef,
-            DownloadURI: false,
-          });
+          // this.setState({
+          //   downloadUrl: items.FileRef,
+          //   DownloadURI: false,
+          // });
+          setDownloadUrl(items.FileRef);
+          setDownloadURI(false);
         });
     };
 
@@ -2594,9 +2620,10 @@ setProjectKey('');
           }
   
           alert("Created Successfully");
-          this.setState({
-            Uploading: false,
-          });
+          // this.setState({
+          //   Uploading: false,
+          // });
+          setUploading(false)
         }
   
         // this.setState({
@@ -2680,9 +2707,10 @@ setProjectKey('');
         // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
         let myfile: any = fileToUpload;
         console.log(myfile);
-        this.setState({
-          Uploading: true,
-        });
+        // this.setState({
+        //   Uploading: true,
+        // });
+        setUploading(true)
   
         let Department: any = "";
         let Subdepartment: any = "";
@@ -2906,9 +2934,10 @@ setProjectKey('');
           //     });
           await fetchData();
           alert("Created Successfully");
-          this.setState({
-            Uploading: false,
-          });
+          // this.setState({
+          //   Uploading: false,
+          // });
+          setUploading(false)
         } else {
           const sp: SPFI = getSp()
           console.log(myfile.name);
@@ -3062,9 +3091,10 @@ setProjectKey('');
           }
   
           alert("Created Successfully");
-          this.setState({
-            Uploading: false,
-          });
+          // this.setState({
+          //   Uploading: false,
+          // });
+          setUploading(false);
         }
   
         // this.setState({
