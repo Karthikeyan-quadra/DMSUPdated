@@ -32,6 +32,7 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import { getDepartmentlistedit } from "../../Data/GetSiteList";
+import { useEffect, useState } from "react";
 const sp:SPFI=getSp()
 const dialogContentProps = {
   type: DialogType.normal,
@@ -51,191 +52,246 @@ const dialogContentProps_edit = {
   type: DialogType.normal,
   title: "Edit Department",
 };
-export default class Department extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      hideDeptDialog: true,
-      isDeptAdded: true,
-      add_Dept_Title_err: "",
-      add_Dept_Title: "",
-      add_Dept_Code_err: "",
-      add_Dept_Code: "",
+// export default class Department extends React.Component<{}, any> {
+  export default function Department(props){
 
-      hideDepteditDialog: true,
-      isDeptEdited: true,
-      edit_Dept_Title_err: "",
-      edit_Dept_Title: "",
-      edit_Dept_Code_err: "",
-      edit_Dept_Code: "",
-      edit_DeptID: "",
-      temp_Deptname: "",
 
-      hideSectionDialog: true,
-      isSectionAdded: true,
-      add_Section_Title_err: "",
-      add_Section_Title: "",
-      add_Section_Code_err: "",
-      add_Section_Code: "",
-      sectionDept: "",
+    const [items, setItems] = useState<any>([]);
+  const [hideDeptDialog, setHideDeptDialog] = useState(true);
+  const [isDeptAdded, setIsDeptAdded] = useState(true);
+  const [add_Dept_Title_err, setAddDeptTitleErr] = useState("");
+  const [add_Dept_Title, setAddDeptTitle] = useState("");
+  const [add_Dept_Code_err, setAddDeptCodeErr] = useState("");
+  const [add_Dept_Code, setAddDeptCode] = useState("");
 
-      hideSectioneditDialog: true,
-      isSectionEdited: true,
-      edit_Section_Title_err: "",
-      edit_Section_Title: "",
-      edit_Section_Code_err: "",
-      edit_Section_Code: "",
-      edit_SectionID: "",
-    };
-  }
+  const [hideDepteditDialog, setHideDeptEditDialog] = useState(true);
+  const [isDeptEdited, setIsDeptEdited] = useState(true);
+  const [edit_Dept_Title_err, setEditDeptTitleErr] = useState("");
+  const [edit_Dept_Title, setEditDeptTitle] = useState("");
+  const [edit_Dept_Code_err, setEditDeptCodeErr] = useState("");
+  const [edit_Dept_Code, setEditDeptCode] = useState("");
+  const [edit_DeptID, setEditDeptID] = useState<any>("");
+  const [temp_Deptname, setTempDeptName] = useState("");
 
-  public toggleDepteditHideDialog = () => {
-    console.log(this.state.hideDepteditDialog);
-    if (this.state.hideDepteditDialog)
-      this.setState({
-        hideDepteditDialog: false,
-      });
-    else
-      this.setState({
-        hideDepteditDialog: true,
-        isDeptEdited: true,
-        edit_Dept_Title_err: "",
-        edit_Dept_Title: "",
-        edit_Dept_Code_err: "",
-        edit_Dept_Code: "",
-        edit_DeptID: "",
-        temp_Deptname: "",
-      });
+  const [hideSectionDialog, setHideSectionDialog] = useState(true);
+  const [isSectionAdded, setIsSectionAdded] = useState(true);
+  const [add_Section_Title_err, setAddSectionTitleErr] = useState("");
+  const [add_Section_Title, setAddSectionTitle] = useState("");
+  const [add_Section_Code_err, setAddSectionCodeErr] = useState("");
+  const [add_Section_Code, setAddSectionCode] = useState("");
+  const [sectionDept, setSectionDept] = useState("");
+
+  const [hideSectioneditDialog, setHideSectionEditDialog] = useState(true);
+  const [isSectionEdited, setIsSectionEdited] = useState(true);
+  const [edit_Section_Title_err, setEditSectionTitleErr] = useState("");
+  const [edit_Section_Title, setEditSectionTitle] = useState("");
+  const [edit_Section_Code_err, setEditSectionCodeErr] = useState("");
+  const [edit_Section_Code, setEditSectionCode] = useState("");
+  const [edit_SectionID, setEditSectionID] = useState<any>("");
+  const [value, setValue]=useState<any>();
+
+  
+
+  // public toggleDepteditHideDialog = () => {
+  //   console.log(this.state.hideDepteditDialog);
+  //   if (this.state.hideDepteditDialog)
+  //     this.setState({
+  //       hideDepteditDialog: false,
+  //     });
+  //   else
+  //     this.setState({
+  //       hideDepteditDialog: true,
+  //       isDeptEdited: true,
+  //       edit_Dept_Title_err: "",
+  //       edit_Dept_Title: "",
+  //       edit_Dept_Code_err: "",
+  //       edit_Dept_Code: "",
+  //       edit_DeptID: "",
+  //       temp_Deptname: "",
+  //     });
+  // };
+
+  const toggleDepteditHideDialog = () => {
+    console.log(hideDepteditDialog);
+    if (hideDepteditDialog) {
+      setHideDeptEditDialog(false);
+    } else {
+      setHideDeptEditDialog(true);
+      setIsDeptEdited(true);
+      setEditDeptTitleErr("");
+      setEditDeptTitle("");
+      setEditDeptCodeErr("");
+      setEditDeptCode("");
+      setEditDeptID("");
+      setTempDeptName("");
+    }
   };
 
-  public toggleSectioneditHideDialog = () => {
-    console.log(this.state.hideSectioneditDialog);
-    if (this.state.hideSectioneditDialog)
-      this.setState({
-        hideSectioneditDialog: false,
-      });
+  const toggleSectioneditHideDialog = () => {
+    console.log(hideSectioneditDialog);
+    if (hideSectioneditDialog)
+      // this.setState({
+      //   hideSectioneditDialog: false,
+      // });
+      setHideSectionEditDialog(false)
     else
-      this.setState({
-        hideSectioneditDialog: true,
-        isSectionEdited: true,
-        edit_Section_Title_err: "",
-        edit_Section_Title: "",
-        edit_Section_Code_err: "",
-        edit_Section_Code: "",
-        edit_SectionID: "",
-      });
+      // this.setState({
+      //   hideSectioneditDialog: true,
+      //   isSectionEdited: true,
+      //   edit_Section_Title_err: "",
+      //   edit_Section_Title: "",
+      //   edit_Section_Code_err: "",
+      //   edit_Section_Code: "",
+      //   edit_SectionID: "",
+      // });
+      setHideSectionEditDialog(true);
+      setIsSectionEdited(true);
+      setEditSectionTitleErr("");
+      setEditSectionTitle("");
+      setEditSectionCodeErr("");
+      setEditSectionCode("");
+      setEditSectionID("");
   };
 
-  public Deleteitem = async () => {
+  const Deleteitem = async () => {
     const sp:SPFI=getSp()
 
     const list = sp.web.lists.getByTitle("Department Names");
     await list.items
-      .getById(this.state.edit_DeptID)
+      .getById(edit_DeptID)
       .delete()
-      .then(async (res) =>
-        this.setState({
-          isDeptEdited: false,
-          value: await getDepartmentlistedit().then((val) =>
-            this.setState({
-              items: val,
-            })
-          ),
-        })
+      .then(async () =>{
+        // this.setState({
+        //   isDeptEdited: false,
+        //   value: await getDepartmentlistedit().then((val) =>
+        //     this.setState({
+        //       items: val,
+        //     })
+        //   ),
+        // })
+        setIsDeptEdited(false);
+        setValue(await getDepartmentlistedit().then((val)=>setItems(val)))
+      }
       );
   };
 
-  public DeleteSection = async () => {
+  const DeleteSection = async () => {
     const sp:SPFI=getSp()
     const list = sp.web.lists.getByTitle("Sub departments Main");
     await list.items
-      .getById(this.state.edit_SectionID)
+      .getById(edit_SectionID)
       .delete()
-      .then(async (res) =>
-        this.setState({
-          isSectionEdited: false,
-          value: await getDepartmentlistedit().then((val) =>
-            this.setState({
-              items: val,
-            })
-          ),
-        })
+      .then(async (res) =>{
+        // this.setState({
+        //   isSectionEdited: false,
+        //   value: await getDepartmentlistedit().then((val) =>
+        //     this.setState({
+        //       items: val,
+        //     })
+        //   ),
+        // })
+        setIsSectionEdited(false);
+        setValue(await getDepartmentlistedit().then((val)=>setItems(val)))
+      }
       );
   };
 
-  public async componentDidMount() {
-    this.setState(
-      {
-        value: await getDepartmentlistedit().then((val) =>
-          this.setState({
-            items: val,
-          })
-        ),
-      },
-      () => {
-        console.log(this.state.items);
-      }
-    );
+  // public async componentDidMount() {
+  //   this.setState(
+  //     {
+  //       value: await getDepartmentlistedit().then((val) =>
+  //         this.setState({
+  //           items: val,
+  //         })
+  //       ),
+  //     },
+  //     () => {
+  //       console.log(this.state.items);
+  //     }
+  //   );
+  // }
+
+  const fetchData = async()=>{
+    setValue(await getDepartmentlistedit().then((val) =>setItems(val)))
   }
-  public toggleDeptHideDialog = () => {
-    console.log(this.state.hideDeptDialog);
-    if (this.state.hideDeptDialog)
-      this.setState({
-        hideDeptDialog: false,
-      });
-    else
-      this.setState({
-        hideDeptDialog: true,
+  useEffect(()=>{
+    fetchData()
+  }, [])
 
-        isDeptAdded: true,
-        add_Dept_Title_err: "",
-        add_Dept_Title: "",
-        add_Dept_Code_err: "",
-        add_Dept_Code: "",
-      });
+  const toggleDeptHideDialog = () => {
+    console.log(hideDeptDialog);
+    if (hideDeptDialog)
+      // this.setState({
+      //   hideDeptDialog: false,
+      // });
+      setHideDeptDialog(false);
+    else
+      // this.setState({
+      //   hideDeptDialog: true,
+
+      //   isDeptAdded: true,
+      //   add_Dept_Title_err: "",
+      //   add_Dept_Title: "",
+      //   add_Dept_Code_err: "",
+      //   add_Dept_Code: "",
+      // });
+      setHideDeptDialog(true);
+      setIsDeptAdded(true);
+      setAddDeptTitleErr("");
+      setAddDeptTitle("");
+      setAddDeptCodeErr("");
+      setAddDeptCode("");
   };
 
-  public toggleSectionHideDialog = () => {
-    console.log(this.state.hideSectionDialog);
-    if (this.state.hideSectionDialog)
-      this.setState({
-        hideSectionDialog: false,
-      });
+  const toggleSectionHideDialog = () => {
+    console.log(hideSectionDialog);
+    if (hideSectionDialog)
+      // this.setState({
+      //   hideSectionDialog: false,
+      // });
+      setHideSectionDialog(false);
     else
-      this.setState({
-        hideSectionDialog: true,
-        sectionDept: "",
-        isSectionAdded: true,
-        add_Section_Title_err: "",
-        add_Section_Title: "",
-        add_Section_Code_err: "",
-        add_Section_Code: "",
-      });
+      // this.setState({
+      //   hideSectionDialog: true,
+      //   sectionDept: "",
+      //   isSectionAdded: true,
+      //   add_Section_Title_err: "",
+      //   add_Section_Title: "",
+      //   add_Section_Code_err: "",
+      //   add_Section_Code: "",
+      // });
+
+      setHideSectionDialog(true);
+      setSectionDept("");
+      setIsSectionAdded(true);
+      setAddSectionTitleErr("");
+      setAddSectionTitle("");
+      setAddSectionCodeErr("");
+      setAddSectionCode("");
   };
 
-  render(): React.ReactNode {
+ 
     const navStyles: Partial<INavStyles> = {
       root: { width: 530 },
     };
     const handleeditDept = async () => {
       const sp:SPFI=getSp()
 
-      if (this.state.edit_Dept_Title != "") {
-        if (this.state.edit_Dept_Code != "") {
+      if (edit_Dept_Title != "") {
+        if (edit_Dept_Code != "") {
           const list = sp.web.lists.getByTitle("Department Names");
 
           await list.items
-            .getById(this.state.edit_DeptID)
+            .getById(edit_DeptID)
             .update({
-              Departments: this.state.edit_Dept_Title,
-              Code: this.state.edit_Dept_Code,
+              Departments: edit_Dept_Title,
+              Code: edit_Dept_Code,
             })
             .then(async (res) => {
               const items: any[] = await sp.web.lists
                 .getByTitle("Sub departments Main")
                 .items.top(1)
-                .filter(`ParentFolders eq '${this.state.temp_Deptname}'`)();
+                .filter(`ParentFolders eq '${temp_Deptname}'`)();
 
               // see if we got something
               if (items.length > 0) {
@@ -243,109 +299,134 @@ export default class Department extends React.Component<{}, any> {
                   .getByTitle("Sub departments Main")
                   .items.getById(items[0].Id)
                   .update({
-                    ParentFolders: this.state.edit_Dept_Title,
+                    ParentFolders: edit_Dept_Title,
                   });
 
                 console.log(JSON.stringify(updatedItem));
               }
-              this.setState({
-                isDeptEdited: false,
-                value: await getDepartmentlistedit().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              });
+              // this.setState({
+              //   isDeptEdited: false,
+              //   value: await getDepartmentlistedit().then((val) =>
+              //     this.setState({
+              //       items: val,
+              //     })
+              //   ),
+              // });
+
+              setIsDeptEdited(false);
+              setValue(await getDepartmentlistedit().then((val) =>setItems(val)))
             });
         } else {
-          this.setState({
-            edit_Dept_Code_err: "Please specify Code",
-          });
+          // this.setState({
+          //   edit_Dept_Code_err: "Please specify Code",
+          // });
+          setEditDeptCodeErr("Please specify Code")
         }
       } else {
-        this.setState({
-          edit_Dept_Title_err: "Please specify Department name",
-        });
+        // this.setState({
+        //   edit_Dept_Title_err: "Please specify Department name",
+        // });
+        setEditDeptTitleErr("Please specify Department name")
       }
     };
 
     const handleeditSection = async () => {
       const sp:SPFI=getSp()
 
-      if (this.state.edit_Section_Title != "") {
-        if (this.state.edit_Section_Code != "") {
+      if (edit_Section_Title != "") {
+        if (edit_Section_Code != "") {
           const list = sp.web.lists.getByTitle("Sub departments Main");
 
           await list.items
-            .getById(this.state.edit_SectionID)
+            .getById(edit_SectionID)
             .update({
-              SubFolders: this.state.edit_Section_Title,
-              Code: this.state.edit_Section_Code,
+              SubFolders: edit_Section_Title,
+              Code: edit_Section_Code,
             })
             .then(async (res) => {
-              this.setState({
-                isSectionEdited: false,
-                value: await getDepartmentlistedit().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              });
+              // this.setState({
+              //   isSectionEdited: false,
+              //   value: await getDepartmentlistedit().then((val) =>
+              //     this.setState({
+              //       items: val,
+              //     })
+              //   ),
+              // });
+              setIsSectionEdited(false);
+              setValue( await getDepartmentlistedit().then((val)=>setItems(val)))
             });
         } else {
-          this.setState({
-            edit_Section_Code_err: "Please specify Code",
-          });
+          // this.setState({
+          //   edit_Section_Code_err: "Please specify Code",
+          // });
+          setEditSectionCodeErr("Please specify Code")
         }
       } else {
-        this.setState({
-          edit_Section_Title_err: "Please specify Sub-Section name",
-        });
+        // this.setState({
+        //   edit_Section_Title_err: "Please specify Sub-Section name",
+        // });
+        setEditSectionTitleErr("Please specify Sub-Section name")
       }
     };
     const editSection = (value) => {
       console.log(value);
-      this.setState({
-        hideSectioneditDialog: false,
-        isSectionEdited: true,
-        edit_Section_Title: value.name,
-        edit_SectionID: value.Id,
+      // this.setState({
+      //   hideSectioneditDialog: false,
+      //   isSectionEdited: true,
+      //   edit_Section_Title: value.name,
+      //   edit_SectionID: value.Id,
 
-        edit_Section_Code: value.code,
-      });
+      //   edit_Section_Code: value.code,
+      // });
+
+      setHideSectionEditDialog(false);
+    setIsSectionEdited(true);
+    setEditSectionTitle(value.name);
+    setEditSectionID(value.Id);
+    setEditSectionCode(value.code);
     };
 
     const editDept = (value) => {
       console.log(value);
-      this.setState({
-        hideDepteditDialog: false,
-        isDeptEdited: true,
-        edit_Dept_Title: value.name,
-        edit_DeptID: value.Id,
-        temp_Deptname: value.name,
-        edit_Dept_Code: value.code,
-      });
+      // this.setState({
+      //   hideDepteditDialog: false,
+      //   isDeptEdited: true,
+      //   edit_Dept_Title: value.name,
+      //   edit_DeptID: value.Id,
+      //   temp_Deptname: value.name,
+      //   edit_Dept_Code: value.code,
+      // });
+      setHideDeptEditDialog(false);
+      setIsDeptEdited(true);
+      setEditDeptTitle(value.name);
+      setEditDeptID(value.Id);
+      setTempDeptName(value.name);
+      setEditDeptCode(value.code);
     };
 
     const handleedit_Dept_Title = (event, value) => {
-      this.setState({
-        edit_Dept_Title: value,
-      });
+      // this.setState({
+      //   edit_Dept_Title: value,
+      // });
+      setEditDeptTitle(value);
     };
     const handleedit_Dept_Code = (event, value) => {
-      this.setState({
-        edit_Dept_Code: value,
-      });
+      // this.setState({
+      //   edit_Dept_Code: value,
+      // });
+      setEditDeptCode(value);
     };
     const handleedit_Section_Title = (event, value) => {
-      this.setState({
-        edit_Section_Title: value,
-      });
+      // this.setState({
+      //   edit_Section_Title: value,
+      // });
+      setEditSectionTitle(value);
     };
     const handleedit_Section_Code = (event, value) => {
-      this.setState({
-        edit_Section_Code: value,
-      });
+      // this.setState({
+      //   edit_Section_Code: value,
+      // });
+      setEditSectionCode(value);
     };
     const _onRenderLink = (group: INavLink) => {
       return (
@@ -420,101 +501,120 @@ export default class Department extends React.Component<{}, any> {
     const handleaddDept = async () => {
       const sp:SPFI=getSp()
 
-      if (this.state.add_Dept_Title != "") {
-        if (this.state.add_Dept_Code != "") {
+      if (add_Dept_Title != "") {
+        if (add_Dept_Code != "") {
           await sp.web.lists
             .getByTitle("Department Names")
             .items.add({
-              Departments: this.state.add_Dept_Title,
-              Code: this.state.add_Dept_Code,
+              Departments: add_Dept_Title,
+              Code: add_Dept_Code,
             })
-            .then(async (res) =>
-              this.setState({
-                isDeptAdded: false,
-                value: await getDepartmentlistedit().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              })
+            .then(async () =>{
+              // this.setState({
+              //   isDeptAdded: false,
+              //   value: await getDepartmentlistedit().then((val) =>
+              //     this.setState({
+              //       items: val,
+              //     })
+              //   ),
+              // })
+              setIsDeptAdded(false);
+              setValue(await getDepartmentlistedit().then((val) =>setItems(val)))
+            }
+            
             );
         } else {
-          this.setState({
-            add_Dept_Code_err: "Please specify Code",
-          });
+          // this.setState({
+          //   add_Dept_Code_err: "Please specify Code",
+          // });
+          setAddDeptCodeErr("Please specify Code")
         }
       } else {
-        this.setState({
-          add_Dept_Title_err: "Please specify Department name",
-        });
+        // this.setState({
+        //   add_Dept_Title_err: "Please specify Department name",
+        // });
+        setAddDeptTitleErr("Please specify Department name")
       }
     };
 
     const handleaddSection = async () => {
       const sp:SPFI=getSp()
 
-      if (this.state.add_Section_Title != "") {
-        if (this.state.add_Section_Code != "") {
+      if (add_Section_Title != "") {
+        if (add_Section_Code != "") {
           await sp.web.lists
             .getByTitle("Sub departments Main")
             .items.add({
-              ParentFolders: this.state.sectionDept,
-              SubFolders: this.state.add_Section_Title,
-              Code: this.state.add_Section_Code,
+              ParentFolders: sectionDept,
+              SubFolders: add_Section_Title,
+              Code: add_Section_Code,
             })
-            .then(async (res) =>
-              this.setState({
-                isSectionAdded: false,
-                value: await getDepartmentlistedit().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              })
+            .then(async () =>{
+              // this.setState({
+              //   isSectionAdded: false,
+              //   value: await getDepartmentlistedit().then((val) =>
+              //     this.setState({
+              //       items: val,
+              //     })
+              //   ),
+              // })
+              setIsSectionAdded(false);
+              setValue(await getDepartmentlistedit().then((val) =>setItems(val)))}
             );
         } else {
-          this.setState({
-            add_Section_Code_err: "Please specify Code",
-          });
+          // this.setState({
+          //   add_Section_Code_err: "Please specify Code",
+          // });
+          setAddSectionCodeErr("Please specify Code")
         }
       } else {
-        this.setState({
-          add_Section_Title_err: "Please specify Department name",
-        });
+        // this.setState({
+        //   add_Section_Title_err: "Please specify Department name",
+        // });
+        setAddSectionTitleErr("Please specify Department name")
       }
     };
     const handleadd_Dept_Title = (event, value) => {
-      this.setState({
-        add_Dept_Title: value,
-      });
+      // this.setState({
+      //   add_Dept_Title: value,
+      // });
+      setAddDeptTitle(value);
     };
     const handleadd_Section_Title = (event, value) => {
-      this.setState({
-        add_Section_Title: value,
-      });
+      // this.setState({
+      //   add_Section_Title: value,
+      // });
+      setAddSectionTitle(value);
     };
     const addDepartment = () => {
-      this.setState({
-        hideDeptDialog: false,
-        isDeptAdded: true,
-      });
+      // this.setState({
+      //   hideDeptDialog: false,
+      //   isDeptAdded: true,
+      // });
+      setHideDeptDialog(false);
+      setIsDeptAdded(true);
     };
     const addSection = (group) => {
-      this.setState({
-        hideSectionDialog: false,
-        isSectionAdded: true,
-        sectionDept: group.name,
-      });
+      // this.setState({
+      //   hideSectionDialog: false,
+      //   isSectionAdded: true,
+      //   sectionDept: group.name,
+      // });
+      setHideSectionDialog(false);
+      setIsSectionAdded(true);
+      setSectionDept(group.name);
     };
     const handleadd_Dept_Code = (event, value) => {
-      this.setState({
-        add_Dept_Code: value,
-      });
+      // this.setState({
+      //   add_Dept_Code: value,
+      // });
+      setAddDeptCode(value);
     };
     const handleadd_Section_Code = (event, value) => {
-      this.setState({
-        add_Section_Code: value,
-      });
+      // this.setState({
+      //   add_Section_Code: value,
+      // });
+      setAddSectionCode(value);
     };
     return (
       <>
@@ -543,18 +643,18 @@ export default class Department extends React.Component<{}, any> {
           onRenderLink={_onRenderLink}
           onRenderGroupHeader={_onRenderGroupHeader}
           ariaLabel="Nav example similar to one found in this demo page"
-          groups={this.state.items}
+          groups={items}
         />
         <Dialog
           containerClassName={
             "ms-dialogMainOverride " + styles.addProjectDialog
           }
-          hidden={this.state.hideDeptDialog}
+          hidden={hideDeptDialog}
           dialogContentProps={dialogContentProps}
           isBlocking={false}
-          onDismiss={this.toggleDeptHideDialog}
+          onDismiss={toggleDeptHideDialog}
         >
-          {this.state.isDeptAdded ? (
+          {isDeptAdded ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <div
@@ -568,7 +668,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Department Name"
                     resizable={false}
                     onChange={handleadd_Dept_Title}
-                    errorMessage={this.state.add_Dept_Title_err}
+                    errorMessage={add_Dept_Title_err}
                   />
                 </div>
 
@@ -579,7 +679,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Department Unique ID"
                     onChange={handleadd_Dept_Code}
                     resizable={false}
-                    errorMessage={this.state.add_Dept_Code_err}
+                    errorMessage={add_Dept_Code_err}
                   />
                 </div>
               </div>
@@ -592,7 +692,7 @@ export default class Department extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleDeptHideDialog}
+                  onClick={toggleDeptHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -616,7 +716,7 @@ export default class Department extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleDeptHideDialog}
+                  onClick={toggleDeptHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -629,12 +729,12 @@ export default class Department extends React.Component<{}, any> {
           containerClassName={
             "ms-dialogMainOverride " + styles.addProjectDialog
           }
-          hidden={this.state.hideDepteditDialog}
+          hidden={hideDepteditDialog}
           dialogContentProps={dialogContentProps_edit}
           isBlocking={false}
-          onDismiss={this.toggleDepteditHideDialog}
+          onDismiss={toggleDepteditHideDialog}
         >
-          {this.state.isDeptEdited ? (
+          {isDeptEdited ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <div
@@ -647,9 +747,9 @@ export default class Department extends React.Component<{}, any> {
                     label="Department Title"
                     placeholder="Specify Department Name"
                     resizable={false}
-                    value={this.state.edit_Dept_Title}
+                    value={edit_Dept_Title}
                     onChange={handleedit_Dept_Title}
-                    errorMessage={this.state.edit_Dept_Title_err}
+                    errorMessage={edit_Dept_Title_err}
                   />
                 </div>
 
@@ -660,13 +760,13 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Department Unique ID"
                     onChange={handleedit_Dept_Code}
                     resizable={false}
-                    value={this.state.edit_Dept_Code}
-                    errorMessage={this.state.edit_Dept_Code_err}
+                    value={edit_Dept_Code}
+                    errorMessage={edit_Dept_Code_err}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <DefaultButton onClick={this.Deleteitem} text="Delete" />
+                <DefaultButton onClick={Deleteitem} text="Delete" />
                 <PrimaryButton
                   style={{
                     backgroundColor: "#0078D4",
@@ -675,7 +775,7 @@ export default class Department extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleDepteditHideDialog}
+                  onClick={toggleDepteditHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -699,7 +799,7 @@ export default class Department extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleDepteditHideDialog}
+                  onClick={toggleDepteditHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -712,12 +812,12 @@ export default class Department extends React.Component<{}, any> {
           containerClassName={
             "ms-dialogMainOverride " + styles.addSectionDialog
           }
-          hidden={this.state.hideSectionDialog}
+          hidden={hideSectionDialog}
           dialogContentProps={dialogContentPropsSection}
           isBlocking={false}
-          onDismiss={this.toggleSectionHideDialog}
+          onDismiss={toggleSectionHideDialog}
         >
-          {this.state.isSectionAdded ? (
+          {isSectionAdded ? (
             <div>
               <div style={{ margin: "10px" }}>
                 <div
@@ -728,7 +828,7 @@ export default class Department extends React.Component<{}, any> {
                   <TextField
                     required
                     label="Department Title"
-                    value={this.state.sectionDept}
+                    value={sectionDept}
                     resizable={false}
                     disabled
                   />
@@ -745,7 +845,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Sub-Section Name"
                     resizable={false}
                     onChange={handleadd_Section_Title}
-                    errorMessage={this.state.add_Section_Title_err}
+                    errorMessage={add_Section_Title_err}
                   />
                 </div>
 
@@ -756,7 +856,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Sub-Section Unique ID"
                     onChange={handleadd_Section_Code}
                     resizable={false}
-                    errorMessage={this.state.add_Section_Code_err}
+                    errorMessage={add_Section_Code_err}
                   />
                 </div>
               </div>
@@ -769,7 +869,7 @@ export default class Department extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleSectionHideDialog}
+                  onClick={toggleSectionHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -793,7 +893,7 @@ export default class Department extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleSectionHideDialog}
+                  onClick={toggleSectionHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -807,12 +907,12 @@ export default class Department extends React.Component<{}, any> {
           containerClassName={
             "ms-dialogMainOverride " + styles.addProjectDialog
           }
-          hidden={this.state.hideSectioneditDialog}
+          hidden={hideSectioneditDialog}
           dialogContentProps={dialogContentProps_edit}
           isBlocking={false}
-          onDismiss={this.toggleSectioneditHideDialog}
+          onDismiss={toggleSectioneditHideDialog}
         >
-          {this.state.isSectionEdited ? (
+          {isSectionEdited ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <div
@@ -825,9 +925,9 @@ export default class Department extends React.Component<{}, any> {
                     label="Sub-Section Title"
                     placeholder="Specify Sub-Section Name"
                     resizable={false}
-                    value={this.state.edit_Section_Title}
+                    value={edit_Section_Title}
                     onChange={handleedit_Section_Title}
-                    errorMessage={this.state.edit_Section_Title_err}
+                    errorMessage={edit_Section_Title_err}
                   />
                 </div>
 
@@ -838,13 +938,13 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Specify Sub-Section Unique ID"
                     onChange={handleedit_Section_Code}
                     resizable={false}
-                    value={this.state.edit_Section_Code}
-                    errorMessage={this.state.edit_Section_Code_err}
+                    value={edit_Section_Code}
+                    errorMessage={edit_Section_Code_err}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <DefaultButton onClick={this.DeleteSection} text="Delete" />
+                <DefaultButton onClick={DeleteSection} text="Delete" />
                 <PrimaryButton
                   style={{
                     backgroundColor: "#0078D4",
@@ -853,7 +953,7 @@ export default class Department extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleSectioneditHideDialog}
+                  onClick={toggleSectioneditHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -877,7 +977,7 @@ export default class Department extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleSectioneditHideDialog}
+                  onClick={toggleSectioneditHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -887,4 +987,4 @@ export default class Department extends React.Component<{}, any> {
       </>
     );
   }
-}
+
