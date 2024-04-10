@@ -692,60 +692,100 @@ export default function Approvers(props) {
     }
   };
 
-  const HandleDepartment = async (e, value: any) => {
+  // const HandleDepartment = async (e, value: any) => {
+  //   console.log(value);
+  //   setIsChanged(true);
+  //   setApproveShow(true);
+  //   setErrmsgApproverA("");
+  //   setErrmsgApproverB("");
+  //   setErrmsgApprover("");
+  //   setSubDepartment("");
+  //   setDepartment(value.text);
+  //   setSubDepartmentlist(await getSubDepartmentlist(value.text));
+  //   setSub_Status(SubDepartmentlist.length == 0 ? true : false);
+  //     if (SubDepartmentlist.length == 0) {
+
+  //       setApproverA(await getInitialApprovers(Department, Level, "").then(async (item) => {
+  //         let list: any = [];
+
+
+  //         await item.map(async (val) => {
+  //           await list.push({
+  //             text: val.Name,
+  //             key: val.EmailID,
+  //             //Authority: val.Authority,
+  //             Level: val.Level,
+
+  //             Department: val.Department,
+  //             SubDepartment: val.SubDepartment,
+  //           });
+  //         });
+
+  //         if (list.length == 0) {
+           
+  //           setErrmsgApproverA("No Data found")
+  //         }
+  //         console.log(list);
+  //         return list;
+  //       }),
+
+  //       )
+
+
+
+  //       setApprover_A(await getApprover1(
+  //         Department,
+  //         Level,
+  //         ""
+  //       ))
+  //       setApprover_B(await getApprover2(
+  //         Department,
+  //         Level,
+  //         ""
+  //       ))
+  //     }
+
+  // };
+
+  const HandleDepartment = async (e, value) => {
     console.log(value);
     setIsChanged(true);
     setApproveShow(true);
-    setErrmsgApproverA("");
-    setErrmsgApproverB("");
-    setErrmsgApprover("");
-    setSubDepartment("");
+    setErrmsgApproverA('');
+    setErrmsgApproverB('');
+    setErrmsgApprover('');
+    setSubDepartment('');
     setDepartment(value.text);
-    setSubDepartmentlist(await getSubDepartmentlist(value.text));
-    setSub_Status(SubDepartmentlist.length == 0 ? true : false);
-      if (SubDepartmentlist.length == 0) {
+    const departmentList = await getSubDepartmentlist(value.text);
+    setSubDepartmentlist(departmentList);
+    setSub_Status(departmentList.length === 0 ? true : false);
 
-        setApproverA(await getInitialApprovers(Department, Level, "").then(async (item) => {
-          let list: any = [];
+    if (departmentList.length === 0) {
+      const item:any = await getInitialApprovers(Department, Level, '');
+      let list:any = [];
 
+      item.forEach((val:any) => {
+        list.push({
+                      text: val.Name,
+                      key: val.EmailID,
+                      //Authority: val.Authority,
+                      Level: val.Level,
+                      Department: val.Department,
+                      SubDepartment: val.SubDepartment,
+                    });
+      });
 
-          await item.map(async (val) => {
-            await list.push({
-              text: val.Name,
-              key: val.EmailID,
-              //Authority: val.Authority,
-              Level: val.Level,
-
-              Department: val.Department,
-              SubDepartment: val.SubDepartment,
-            });
-          });
-
-          if (list.length == 0) {
-           
-            setErrmsgApproverA("No Data found")
-          }
-          console.log(list);
-          return list;
-        }),
-
-        )
-
-
-
-        setApprover_A(await getApprover1(
-          Department,
-          Level,
-          ""
-        ))
-        setApprover_B(await getApprover2(
-          Department,
-          Level,
-          ""
-        ))
+      if (list.length === 0) {
+        setErrmsgApproverA('No Data found');
       }
 
+      setApproverA(list);
+      setApprover_A(await getApprover1(Department, Level, ''));
+      setApprover_B(await getApprover2(Department, Level, ''));
+    }
   };
+
+
 
   const HandleSubDepartment = async (e, value: any) => {
     setSubDepartment(value.text);

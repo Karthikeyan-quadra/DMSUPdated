@@ -22,6 +22,7 @@ import {
   import { SPFI } from "@pnp/sp";
   import styles from "../QMSRequestPage/QmsDashboard.module.scss";
 import { getSubDepartmentlist } from "../../Data/GetSiteList";
+import { useEffect, useState } from "react";
   let columns = [
     {
       key: "User Name",
@@ -112,7 +113,6 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
       isPadded: true,
     },
   ];
-  const sp:SPFI=getSp()
 
   const textFieldStyles: Partial<ITextFieldStyles> = {
     root: { maxWidth: "250px", float: "right" },
@@ -132,56 +132,101 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
     type: DialogType.normal,
     title: "Manage User",
   };
-  export class UserDepartment extends React.Component<{}, any> {
-    constructor(props) {
-      super(props);
-      this.state = {
-        items: [],
-        users: [],
-        hideDialog: true,
-        isAdded: true,
-        add_UserName: "",
-        add_UserName_err: "",
-        add_EmailID: "",
-        add_EmailID_err: "",
-        Departments: [],
-        add_Department: "",
-        add_Department_err: "",
+    export default function UserDepartment (Props) {
+    
+      
+      // this.state = {
+      //   items: [],
+      //   users: [],
+      //   hideDialog: true,
+      //   isAdded: true,
+      //   add_UserName: "",
+      //   add_UserName_err: "",
+      //   add_EmailID: "",
+      //   add_EmailID_err: "",
+      //   Departments: [],
+      //   add_Department: "",
+      //   add_Department_err: "",
 
-        Subdepartments: [],
-        add_Subdepartment: "",
-        add_Subdepartment_err: "",
+      //   Subdepartments: [],
+      //   add_Subdepartment: "",
+      //   add_Subdepartment_err: "",
 
-        Level: [],
-        add_Level: "",
-        add_Level_err: "",
-
-
-        hideeditDialog: true,
-        isEdited: true,
-        edit_UserName: "",
-        edit_UserName_err: "",
-        edit_EmailID: "",
-        edit_EmailID_err: "",
-        edit_Department: "",
-        edit_Department_err: "",
-
-        edit_Subdepartment: "",
-        edit_Subdepartment_err: "",
-
-        edit_Level: "",
-        edit_Level_err: "",
+      //   Level: [],
+      //   add_Level: "",
+      //   add_Level_err: "",
 
 
-        selectedval: {},
-        selecteditem: "",
-        overalllist: [],
-        // subdepartmentItems:[]
-      };
-    }
-    private _getKey(item: any, index?: number): string {
+      //   hideeditDialog: true,
+      //   isEdited: true,
+      //   edit_UserName: "",
+      //   edit_UserName_err: "",
+      //   edit_EmailID: "",
+      //   edit_EmailID_err: "",
+      //   edit_Department: "",
+      //   edit_Department_err: "",
+
+      //   edit_Subdepartment: "",
+      //   edit_Subdepartment_err: "",
+
+      //   edit_Level: "",
+      //   edit_Level_err: "",
+
+
+      //   selectedval: {},
+      //   selecteditem: "",
+      //   overalllist: [],
+      //   // subdepartmentItems:[]
+      // };
+
+      const [items, setItems] = useState([]);
+      const [users, setUsers] = useState([]);
+      const [hideDialog, setHideDialog] = useState(true);
+      const [isAdded, setIsAdded] = useState(true);
+      const [add_UserName, setAddUserName] = useState("");
+      const [add_UserName_err, setAddUserNameErr] = useState("");
+      const [add_EmailID, setAddEmailID] = useState("");
+      const [add_EmailID_err, setAddEmailIDErr] = useState("");
+      const [Departments, setDepartments] = useState([]);
+      const [add_Department, setAddDepartment] = useState("");
+      const [add_Department_err, setAddDepartmentErr] = useState("");
+      const [Subdepartments, setSubdepartments] = useState([]);
+      const [add_Subdepartment, setAddSubdepartment] = useState("");
+      const [add_Subdepartment_err, setAddSubdepartmentErr] = useState("");
+      const [Level, setLevel] = useState([]);
+      const [add_Level, setAddLevel] = useState("");
+      const [add_Level_err, setAddLevelErr] = useState("");
+      const [hideeditDialog, setHideEditDialog] = useState(true);
+      const [isEdited, setIsEdited] = useState(true);
+      const [edit_UserName, setEditUserName] = useState("");
+      const [edit_UserName_err, setEditUserNameErr] = useState("");
+      const [edit_EmailID, setEditEmailID] = useState("");
+      const [edit_EmailID_err, setEditEmailIDErr] = useState("");
+      const [edit_Department, setEditDepartment] = useState("");
+      const [edit_Department_err, setEditDepartmentErr] = useState("");
+      const [edit_Subdepartment, setEditSubdepartment] = useState("");
+      const [edit_Subdepartment_err, setEditSubdepartmentErr] = useState("");
+      const [edit_Level, setEditLevel] = useState("");
+      const [edit_Level_err, setEditLevelErr] = useState("");
+      const [selectedval, setSelectedVal] = useState({});
+      const [selecteditem, setSelectedItem] = useState<any>("");
+      const [overalllist, setOverallList] = useState([]);
+      const [add_Approver, setAddApprover] = useState<any>();
+      const [Reviewer_name, setReviewerName] = useState<any>();
+
+
+
+
+    
+    // private _getKey(item: any, index?: number): string {
+    //   return item.key;
+    // }
+
+    function _getKey(item:any, index:number): string {
       return item.key;
     }
+    
+
     // public async componentDidMount() {
       // this.setState(
 
@@ -206,103 +251,187 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
       // );
 
 
-      public async componentDidMount() {
-        const sp: SPFI = getSp();
+      // public async componentDidMount() {
+      //   const sp: SPFI = getSp();
       
+      //   try {
+      //     const [items, overalllist, departmentItems, levelItems] = await Promise.all([
+      //       sp.web.lists.getByTitle("Approverlist").items.getAll(),
+      //       sp.web.lists.getByTitle("Approverlist").items.getAll(),
+      //       sp.web.lists.getByTitle("Department Names").items.getAll(),
+      //       sp.web.lists.getByTitle("Request Level").items.getAll(),
+      //     ]);
+      //     console.log([items, overalllist, departmentItems,levelItems] );
+      
+      //     const Departments = departmentItems.map((val) => ({
+      //       text: val.Departments,
+      //       // key: val.code,
+      //       key: val.Code,
+
+      //     }));
+
+      //     const Level = levelItems.map((val) => ({
+      //       text: val.Text,
+      //       // key: val.code,
+      //       key: val.Key,
+
+      //     }));
+
+         
+      //     this.setState(
+      //       {
+      //         items,
+      //         overalllist,
+      //         Departments,
+      //         Level
+      //       },
+      //       () => {
+      //         console.log(this.state.Departments);
+      //         // console.log(this.state.subdepartmentItems);
+      //         console.log(this.state.Level);
+      //       }
+      //     );
+      //   } catch (error) {
+      //     console.error('Error in componentDidMount:', error);
+      //   }
+      // }
+
+
+      const fetchData = async () => {
+        const sp = getSp();
         try {
-          const [items, overalllist, departmentItems, levelItems] = await Promise.all([
+          const [itemsData, overalllistData, departmentItemsData, levelItemsData]:any = await Promise.all([
             sp.web.lists.getByTitle("Approverlist").items.getAll(),
             sp.web.lists.getByTitle("Approverlist").items.getAll(),
             sp.web.lists.getByTitle("Department Names").items.getAll(),
             sp.web.lists.getByTitle("Request Level").items.getAll(),
           ]);
-          console.log([items, overalllist, departmentItems,levelItems] );
-      
-          const Departments = departmentItems.map((val) => ({
+  
+          console.log([itemsData, overalllistData, departmentItemsData, levelItemsData]);
+  
+          const DepartmentsData:any = departmentItemsData.map((val:any) => ({
             text: val.Departments,
-            // key: val.code,
             key: val.Code,
-
           }));
-
-          const Level = levelItems.map((val) => ({
+  
+          const LevelData:any = levelItemsData.map((val:any) => ({
             text: val.Text,
-            // key: val.code,
             key: val.Key,
-
           }));
-
-         
-          this.setState(
-            {
-              items,
-              overalllist,
-              Departments,
-              Level
-            },
-            () => {
-              console.log(this.state.Departments);
-              // console.log(this.state.subdepartmentItems);
-              console.log(this.state.Level);
-            }
-          );
+  
+          setItems(itemsData);
+          setOverallList(overalllistData);
+          setDepartments(DepartmentsData);
+          setLevel(LevelData);
+  
+          console.log(DepartmentsData);
+          console.log(LevelData);
         } catch (error) {
-          console.error('Error in componentDidMount:', error);
+          console.error('Error in fetchData:', error);
         }
+      };
+  
+      useEffect(()=>{
+        fetchData()
+      }, [])
+
+      
+      
+    // public toggleHideDialog = () => {
+    //   console.log(this.state.hideDialog);
+    //   if (this.state.hideDialog)
+    //     this.setState({
+    //       hideDialog: false,
+    //     });
+    //   else
+    //     this.setState({
+    //       hideDialog: true,
+    //       isAdded: true,
+    //       add_UserName: "",
+    //       add_EmailID: "",
+    //       add_Department: "",
+    //       add_Department_err: "",
+    //       add_Subdepartment: "",
+    //       add_Subdepartment_err: "",
+    //       add_Approver: "",
+    //       add_UserName_err: "",
+    //       add_EmailID_err: "",
+    //       add_Level: "",
+    //       add_Level_err: "",
+    //       selecteditem: "",
+    //     });
+    // };
+
+
+    const toggleHideDialog = () => {
+      console.log(hideDialog);
+      if (hideDialog) {
+        setHideDialog(false);
+      } else {
+        setHideDialog(true);
+        setIsAdded(true);
+        setAddUserName("");
+        setAddEmailID("");
+        setAddDepartment("");
+        setAddDepartmentErr("");
+        setAddSubdepartment("");
+        setAddSubdepartmentErr("");
+        setAddApprover("");
+        setAddUserNameErr("");
+        setAddEmailIDErr("");
+        setAddLevel("");
+        setAddLevelErr("");
+        setSelectedItem("");
       }
-
-
-      
-      
-    public toggleHideDialog = () => {
-      console.log(this.state.hideDialog);
-      if (this.state.hideDialog)
-        this.setState({
-          hideDialog: false,
-        });
-      else
-        this.setState({
-          hideDialog: true,
-          isAdded: true,
-          add_UserName: "",
-          add_EmailID: "",
-          add_Department: "",
-          add_Department_err: "",
-          add_Subdepartment: "",
-          add_Subdepartment_err: "",
-          add_Approver: "",
-          add_UserName_err: "",
-          add_EmailID_err: "",
-          add_Level: "",
-          add_Level_err: "",
-          selecteditem: "",
-        });
     };
   
-    public toggleeditHideDialog = () => {
-      console.log(this.state.hideeditDialog);
-      if (this.state.hideeditDialog)
-        this.setState({
-          hideeditDialog: false,
-        });
-      else
-        this.setState({
-          hideeditDialog: true,
-          isEdited: true,
-          edit_UserName: "",
-          edit_EmailID: "",
-          selecteditem: "",
-          edit_Department: "",
-          edit_Subdepartment:"",
-          edit_Level:"",
-          selectedval: {},
-          edit_Department_err: "",
-          edit_UserName_err: "",
-          edit_EmailID_err: "",
-          edit_Level_err: "",
-        });
+    // public toggleeditHideDialog = () => {
+    //   console.log(this.state.hideeditDialog);
+    //   if (this.state.hideeditDialog)
+    //     this.setState({
+    //       hideeditDialog: false,
+    //     });
+    //   else
+    //     this.setState({
+    //       hideeditDialog: true,
+    //       isEdited: true,
+    //       edit_UserName: "",
+    //       edit_EmailID: "",
+    //       selecteditem: "",
+    //       edit_Department: "",
+    //       edit_Subdepartment:"",
+    //       edit_Level:"",
+    //       selectedval: {},
+    //       edit_Department_err: "",
+    //       edit_UserName_err: "",
+    //       edit_EmailID_err: "",
+    //       edit_Level_err: "",
+    //     });
+    // };
+
+    const toggleeditHideDialog = () => {
+      console.log(hideeditDialog);
+      if (hideeditDialog) {
+        setHideEditDialog(false);
+      } else {
+        setHideEditDialog(true);
+        setIsEdited(true);
+        setEditUserName("");
+        setEditEmailID("");
+        setSelectedItem("");
+        setEditDepartment("");
+        setEditSubdepartment("");
+        setEditLevel("");
+        setSelectedVal({});
+        setEditDepartmentErr("");
+        setEditUserNameErr("");
+        setEditEmailIDErr("");
+        setEditLevelErr("");
+      }
     };
-    render() {
+  
+
+    
       const _renderItemColumn = (item, index: number, column) => {
         const fieldContent = item[column.fieldName] as string;
   
@@ -336,33 +465,59 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
         }
       };
   
+      // const AddUser = () => {
+      //   this.setState({
+      //     hideDialog: false,
+      //     isAdded: true,
+      //   });
+      // };
+
       const AddUser = () => {
-        this.setState({
-          hideDialog: false,
-          isAdded: true,
-        });
-      };
-      const handledit_Username = (event, value) => {
-        this.setState({
-          edit_UserName: value,
-        });
-      };
-      const handleedit_UserMailID = (event, value) => {
-        this.setState({
-          edit_EmailID: value,
-        });
-      };
-  
-      const handleadd_Username = (event, value) => {
-        this.setState({
-          add_UserName: value,
-        });
+        setHideDialog(false);
+        setIsAdded(true);
       };
       
+
+      // const handledit_Username = (event, value) => {
+      //   this.setState({
+      //     edit_UserName: value,
+      //   });
+      // };
+
+      const handledit_Username = (event, value) => {
+        setEditUserName(value);
+      };
+
+
+
+      // const handleedit_UserMailID = (event, value) => {
+      //   this.setState({
+      //     edit_EmailID: value,
+      //   });
+      // };
+
+      const handleedit_UserMailID = (event, value) => {
+        setEditEmailID(value);
+      };
+  
+      // const handleadd_Username = (event, value) => {
+      //   this.setState({
+      //     add_UserName: value,
+      //   });
+      // };
+
+      const handleadd_Username = (event, value) => {
+        setAddUserName(value);
+      };
+      
+      // const handleadd_UserMailID = (event, value) => {
+      //   this.setState({
+      //     add_EmailID: value,
+      //   });
+      // };
+
       const handleadd_UserMailID = (event, value) => {
-        this.setState({
-          add_EmailID: value,
-        });
+        setAddEmailID(value);
       };
 
 //       const handleadd_UserMailID = (event, value) => {
@@ -373,115 +528,218 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
 //     add_EmailID: fullEmailID,
 //   });
 // };
-      const handleeditUser = async () => {
-        if (this.state.edit_Department != "") {
-          if (this.state.edit_UserName != "") {
-            if (this.state.edit_EmailID != "") {
-              const sp:SPFI=getSp()
-              const list = sp.web.lists.getByTitle("Approverlist");
+
+// const handleadd_UserMailID = (event, value) => {
+//   const suffix = "@quadrasystems.net"; // Specify your desired email suffix
+//   const fullEmailID = value + suffix;
+//   setAddEmailID(fullEmailID);
+// };
+
+      // const handleeditUser = async () => {
+      //   if (edit_Department != "") {
+      //     if (edit_UserName != "") {
+      //       if (edit_EmailID != "") {
+      //         const sp:SPFI=getSp()
+      //         const list = sp.web.lists.getByTitle("Approverlist");
   
-              await list.items
-                .getById(this.state.selecteditem)
-                .update({
-                  Name: this.state.edit_UserName,
-                  EmailID: this.state.edit_EmailID,
-                  Department: this.state.edit_Department,
-                  SubDepartment: this.state.edit_Subdepartment,
-                  Level: this.state.edit_Level,
-                })
-                .then(async (res) =>
-                  this.setState({
-                    isEdited: false,
-                    items: await sp.web.lists.getByTitle("Approverlist").items(),
-                    overalllist: await sp.web.lists
-                      .getByTitle("Approverlist")
-                      .items(),
+      //         await list.items
+      //           .getById(selecteditem)
+      //           .update({
+      //             Name: edit_UserName,
+      //             EmailID: edit_EmailID,
+      //             Department: edit_Department,
+      //             SubDepartment: edit_Subdepartment,
+      //             Level: edit_Level,
+      //           })
+      //           .then(async (res) =>
+      //             this.setState({
+      //               isEdited: false,
+      //               items: await sp.web.lists.getByTitle("Approverlist").items(),
+      //               overalllist: await sp.web.lists
+      //                 .getByTitle("Approverlist")
+      //                 .items(),
                   
+      //             })
+      //           );
+      //       } else {
+      //         this.setState({
+      //           edit_EmailID_err: "Please specify User MailID",
+      //         });
+      //       }
+      //     } else {
+      //       this.setState({
+      //         edit_UserName_err: "Please specify UserName",
+      //       });
+      //     }
+      //   } else {
+      //     this.setState({
+      //       edit_Department_err: "Please specify Department",
+      //     });
+      //   }
+      // };
+      
+    
+      const handleeditUser = async () => {
+        if (edit_Department !== "") {
+          if (edit_UserName !== "") {
+            if (edit_EmailID !== "") {
+              try {
+                        const sp: SPFI = getSp();
+
+                const list = sp.web.lists.getByTitle("Approverlist");
+    
+                await list.items
+                  .getById(selecteditem)
+                  .update({
+                    Name: edit_UserName,
+                    EmailID: edit_EmailID,
+                    Department: edit_Department,
+                    SubDepartment: edit_Subdepartment,
+                    Level: edit_Level,
                   })
-                );
+                  .then(async (res) => {
+                    setIsEdited(false);
+                    setItems(await sp.web.lists.getByTitle("Approverlist").items());
+                    setOverallList(await sp.web.lists.getByTitle("Approverlist").items());
+                  });
+              } catch (error) {
+                console.error("Error updating user:", error);
+              }
             } else {
-              this.setState({
-                edit_EmailID_err: "Please specify User MailID",
-              });
+              setEditEmailIDErr("Please specify User MailID");
             }
           } else {
-            this.setState({
-              edit_UserName_err: "Please specify UserName",
-            });
+            setEditUserNameErr("Please specify UserName");
           }
         } else {
-          this.setState({
-            edit_Department_err: "Please specify Department",
-          });
+          setEditDepartmentErr("Please specify Department");
         }
       };
+
+
+      // const editUser = (value) => {
+      //   this.setState({
+      //     edit_UserName: value.Name,
+      //     edit_EmailID: value.EmailID,
+      //     hideeditDialog: false,
+      //     edit_Department: value.Department,
+      //     edit_Subdepartment:value.SubDepartment,
+      //     edit_Level:value.Level,
+      //     isEdited: "false",
+      //     selecteditem: value.ID,
+      //     selectedval: value,
+      //   });
+      // };
+
+
+
+
+
+
+
+
+
       const editUser = (value) => {
-        this.setState({
-          edit_UserName: value.Name,
-          edit_EmailID: value.EmailID,
-          hideeditDialog: false,
-          edit_Department: value.Department,
-          edit_Subdepartment:value.SubDepartment,
-          edit_Level:value.Level,
-          isEdited: "false",
-          selecteditem: value.ID,
-          selectedval: value,
-        });
+        setEditUserName(value.Name);
+        setEditEmailID(value.EmailID);
+        setEditDepartment(value.Department);
+        setEditSubdepartment(value.SubDepartment);
+        setEditLevel(value.Level);
+        setHideEditDialog(false);
+        setIsEdited(false);
+        setSelectedItem(value.ID);
+        setSelectedVal(value);
       };
+
+
+      // const DeleteUser = async (value) => {
+      //   this.setState(
+      //     {
+      //       selecteditem: value.ID,
+      //       selectedval: value,
+      //     },
+      //     async () => {
+      //       const sp:SPFI=getSp()
+      //       const list = await sp.web.lists.getByTitle("Approverlist");
+      //       console.log(this.state.selecteditem);
+      //       await list.items
+      //         .getById(this.state.selecteditem)
+      //         .delete()
+      //         .then(async (res) =>
+      //           this.setState({
+      //             hideeditDialog: false,
+      //             isEdited: false,
+      //             items: await sp.web.lists.getByTitle("Approverlist").items(),
+      //             overalllist: await sp.web.lists
+      //               .getByTitle("Approverlist")
+      //               .items(),
+      //           })
+      //         );
+      //     }
+      //   );
+      // };
+
       const DeleteUser = async (value) => {
-        this.setState(
-          {
-            selecteditem: value.ID,
-            selectedval: value,
-          },
-          async () => {
-            const sp:SPFI=getSp()
-            const list = await sp.web.lists.getByTitle("Approverlist");
-            console.log(this.state.selecteditem);
-            await list.items
-              .getById(this.state.selecteditem)
-              .delete()
-              .then(async (res) =>
-                this.setState({
-                  hideeditDialog: false,
-                  isEdited: false,
-                  items: await sp.web.lists.getByTitle("Approverlist").items(),
-                  overalllist: await sp.web.lists
-                    .getByTitle("Approverlist")
-                    .items(),
-                })
-              );
-          }
-        );
-      };
+        const selectedId = value.ID
+        setSelectedItem(selectedId);
+        setSelectedVal(value);
+    
+        try {
+        const sp:SPFI=getSp();
+        const list = await sp.web.lists.getByTitle("Approverlist");
+        console.log(selectedId);
+
+        await list.items
+          .getById(selectedId)
+          .delete()
+          .then(async (res) => {
+            setHideEditDialog(false);
+            setIsEdited(false);
+            const updatedItems:any = await sp.web.lists.getByTitle("Approverlist").items();
+            const updatedOverallList:any = await sp.web.lists.getByTitle("Approverlist").items();
+            setItems(updatedItems);
+            setOverallList(updatedOverallList);
+          });
+        }
+        catch (error) {
+          console.error('Error deleting user:', error);
+        }
+      }
+
       const _filter = (event, text) => {
         console.log(text);
         if (text != "") {
-          let val = this.state.overalllist.filter(
-            (i) =>
+          let val = overalllist.filter(
+            (i:any) =>
               i.Name.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
               i.Department.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
               i.EmailID.toLowerCase().indexOf(text.toLowerCase()) > -1
           );
-          let condition = text.toLowerCase() ? val : this.state.overalllist;
+          let condition = text.toLowerCase() ? val : overalllist;
           console.log(val);
-          this.setState({
-            items: val,
-          });
+          // this.setState({
+          //   items: val,
+          // });
+          setItems(val);
         } else {
-          this.setState({
-            items: this.state.overalllist,
-          });
+          // this.setState({
+          //   items: this.state.overalllist,
+          // });
+          setItems(overalllist);
         }
       };
+
+
       const addDepartmentChange = async(event, value) => {
         console.log(value);
         
        const subDept= await getSubDepartmentlist(value.text);
-       this.setState({
-        add_Department: value.text,
-        Subdepartments:subDept
-      });
+      //  this.setState({
+      //   add_Department: value.text,
+      //   Subdepartments:subDept
+      // });
+      setAddDepartment(value.text);
+      setSubdepartments(subDept);
        
       };
       // console.log(this.state.add_Department);
@@ -494,43 +752,63 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
         console.log(value);
         
        const subDept= await getSubDepartmentlist(value.text);
-       this.setState({
-        edit_Department: value.text,
-        Subdepartments:subDept
-      });
-       
+      //  this.setState({
+      //   edit_Department: value.text,
+      //   Subdepartments:subDept
+      // });
+      setEditDepartment(value.text);
+       setSubdepartments(subDept);
       };
 
 
+
+      // const addSubDepartmentChange = (event, value) => {
+      //   this.setState({
+      //     add_Subdepartment: value.text,
+      //   });
+      // };
 
       const addSubDepartmentChange = (event, value) => {
-        this.setState({
-          add_Subdepartment: value.text,
-        });
+        setAddSubdepartment(value.text);
       };
-      console.log(this.state.add_Subdepartment);
+
+      console.log(add_Subdepartment);
+
+      // const editSubDepartmentChange = (event, value) => {
+      //   this.setState({
+      //     edit_Subdepartment: value.text,
+      //   });
+      // };
 
       const editSubDepartmentChange = (event, value) => {
-        this.setState({
-          edit_Subdepartment: value.text,
-        });
+        setEditSubdepartment(value.text);
       };
-      console.log(this.state.edit_Subdepartment);
 
+      console.log(edit_Subdepartment);
+
+
+      // const addLevelChange = (event, value) => {
+      //   this.setState({
+      //     add_Level: value.text,
+      //   });
+      // };
 
       const addLevelChange = (event, value) => {
-        this.setState({
-          add_Level: value.text,
-        });
+        setAddLevel(value.text);
       };
-      console.log(this.state.add_Level);
 
+      console.log(add_Level);
+
+      // const editLevelChange = (event, value) => {
+      //   this.setState({
+      //     edit_Level: value.text,
+      //   });
+      // };
       const editLevelChange = (event, value) => {
-        this.setState({
-          edit_Level: value.text,
-        });
+        setEditLevel(value.text);
       };
-      console.log(this.state.edit_Level);
+      
+      console.log(edit_Level);
 
 
 
@@ -575,56 +853,68 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
       // };
 
 
+
       const handleAddUser = async () => {
         const sp:SPFI=getSp()
-        if (this.state.add_Level != "") {
-        if (this.state.add_Subdepartment != "") {
-        if (this.state.add_Department != "") {
-          if (this.state.add_UserName != "") {
-            if (this.state.add_EmailID != "") {
+        if (add_Level != "") {
+        if (add_Subdepartment != "") {
+        if (add_Department != "") {
+          if (add_UserName != "") {
+            if (add_EmailID != "") {
               await sp.web.lists
                 .getByTitle("Approverlist")
                 .items.add({
-                  Name: this.state.add_UserName,
-                  EmailID: this.state.add_EmailID,
-                  Department: this.state.add_Department,
-                  SubDepartment: this.state.add_Subdepartment,
-                  Level:this.state.add_Level
+                  Name: add_UserName,
+                  EmailID: add_EmailID,
+                  Department: add_Department,
+                  SubDepartment: add_Subdepartment,
+                  Level:add_Level
                 })
                 .then(async (res) =>
-                  this.setState({
-                    isAdded: false,
-                    items: await sp.web.lists.getByTitle("Approverlist").items(),
-                    overalllist: await sp.web.lists
-                      .getByTitle("Approverlist")
-                      .items(),
-                  })
+                  // this.setState({
+                  //   isAdded: false,
+                  //   items: await sp.web.lists.getByTitle("Approverlist").items(),
+                  //   overalllist: await sp.web.lists
+                  //     .getByTitle("Approverlist")
+                  //     .items(),
+                  // })
+                  {
+                   
+                      setIsAdded(false);
+                      setItems(await sp.web.lists.getByTitle("Approverlist").items());
+                      setOverallList(await sp.web.lists.getByTitle("Approverlist").items());
+                  }
                 );
             } else {
-              this.setState({
-                add_EmailID_err: "Please specify User MailID",
-              });
+              // this.setState({
+              //   add_EmailID_err: "Please specify User MailID",
+              // });
+              setAddEmailID("Please specify User MailID");
             }
           } else {
-            this.setState({
-              add_UserName_err: "Please specify UserName",
-            });
+            // this.setState({
+            //   add_UserName_err: "Please specify UserName",
+            // });
+            setAddUserNameErr("Please specify UserName");
           }
         } else {
-          this.setState({
-            add_Department_err: "Please specify Department",
-          });
+          // this.setState({
+          //   add_Department_err: "Please specify Department",
+          // });
+          setAddDepartmentErr("Please specify Department");
         }
       } 
         else {
-          this.setState({
-            add_Subdepartment_err: "Please specify Sub Department",
-          });
+          // this.setState({
+          //   add_Subdepartment_err: "Please specify Sub Department",
+          // });
+          setAddSubdepartmentErr("Please specify Sub Department");
         }
       }else {
-        this.setState({
-          add_Level_err: "Please specify Level",
-        });
+        // this.setState({
+        //   add_Level_err: "Please specify Level",
+        // });
+        setAddLevelErr("Please specify Level");
       }
       };
 
@@ -649,12 +939,12 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
           <div style={{ width: "100%", height: "450px", overflowY: "auto" }}>
             <DetailsList
               className={styles.list}
-              items={this.state.items}
+              items={items}
               compact={false}
               columns={columns}
               onRenderItemColumn={_renderItemColumn}
               selectionMode={SelectionMode.none}
-              getKey={this._getKey}
+              getKey={_getKey}
               setKey="none"
               layoutMode={DetailsListLayoutMode.justified}
               isHeaderVisible={true}
@@ -666,12 +956,12 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
               containerClassName={
                 "ms-dialogMainOverride " + styles.addProjectDialog
               }
-              hidden={this.state.hideDialog}
+              hidden={hideDialog}
               dialogContentProps={dialogContentProps}
               isBlocking={false}
-              onDismiss={this.toggleHideDialog}
+              onDismiss={toggleHideDialog}
             >
-              {this.state.isAdded ? (
+              {isAdded ? (
                 <div>
                   <div style={{ margin: "5px" }}>
                     <div
@@ -685,7 +975,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                         placeholder="Specify User Name"
                         resizable={false}
                         onChange={handleadd_Username}
-                        errorMessage={this.state.add_UserName_err}
+                        errorMessage={add_UserName_err}
                       />
                     </div>
   
@@ -697,17 +987,17 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                         placeholder="Specify User MailID"
                         onChange={handleadd_UserMailID}
                         resizable={false}
-                        errorMessage={this.state.add_EmailID_err}
+                        errorMessage={add_EmailID_err}
                       />
                     </div>
                     <div style={{ width: "350px", marginTop: "15px" }}>
                       <Dropdown
-                        placeholder={this.state.Reviewer_name}
+                        placeholder={Reviewer_name}
                         label="Department"
                         required
                         onChange={addDepartmentChange}
-                        errorMessage={this.state.add_Department_err}
-                        options={this.state.Departments}
+                        errorMessage={add_Department_err}
+                        options={Departments}
                         // disabled ={this.state.SubDepartment.length===0 ? true:false}
                       />
                     </div>
@@ -720,9 +1010,9 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                         label="Sub Department"
                         required
                         onChange={addSubDepartmentChange}
-                        errorMessage={this.state.add_Subdepartment_err}
-                        options={this.state.Subdepartments}
-                        disabled={this.state.Subdepartments.length==0?true:false}
+                        errorMessage={add_Subdepartment_err}
+                        options={Subdepartments}
+                        disabled={Subdepartments.length==0?true:false}
                       />
                     </div>
 
@@ -733,9 +1023,9 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                         placeholder="Select Level"
                         label="Level"
                         onChange={addLevelChange}
-                        errorMessage={this.state.add_Level_err}
-                        options={this.state.Level}
-                        disabled={this.state.Level.length==0?true:false}
+                        errorMessage={add_Level_err}
+                        options={Level}
+                        disabled={Level.length==0?true:false}
                       />
                     </div>
 
@@ -750,7 +1040,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                       onClick={handleAddUser}
                     />
                     <DefaultButton
-                      onClick={this.toggleHideDialog}
+                      onClick={toggleHideDialog}
                       text="Cancel"
                     />
                   </DialogFooter>
@@ -773,7 +1063,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                   </Label>
   
                   <DialogFooter>
-                    <DefaultButton onClick={this.toggleHideDialog} text="Close" />
+                    <DefaultButton onClick={toggleHideDialog} text="Close" />
                   </DialogFooter>
                 </div>
               )}
@@ -784,12 +1074,12 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
               containerClassName={
                 "ms-dialogMainOverride " + styles.addProjectDialog
               }
-              hidden={this.state.hideeditDialog}
+              hidden={hideeditDialog}
               dialogContentProps={dialogContentProps_edit}
               isBlocking={false}
-              onDismiss={this.toggleeditHideDialog}
+              onDismiss={toggleeditHideDialog}
             >
-              {this.state.isEdited ? (
+              {isEdited ? (
                 <div>
                   <div style={{ margin: "15px" }}>
                     <div
@@ -802,9 +1092,9 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                         label="User Name"
                         placeholder="Specify User Name"
                         resizable={false}
-                        value={this.state.edit_UserName}
+                        value={edit_UserName}
                         onChange={handledit_Username}
-                        errorMessage={this.state.edit_UserName_err}
+                        errorMessage={edit_UserName_err}
                       />
                     </div>
   
@@ -812,43 +1102,43 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                       <TextField
                         required
                         label="User MailID"
-                        value={this.state.edit_EmailID}
+                        value={edit_EmailID}
                         placeholder="Specify User MailID"
                         onChange={handleedit_UserMailID}
                         resizable={false}
-                        errorMessage={this.state.edit_EmailID_err}
+                        errorMessage={edit_EmailID_err}
                       />
                     </div>
                     <div style={{ width: "350px", marginTop: "15px" }}>
                       <Dropdown
-                        placeholder={this.state.edit_Department}
+                        placeholder={edit_Department}
                         label="Department"
                         required
                         onChange={editDepartmentChange}
-                        errorMessage={this.state.edit_Department_err}
-                        options={this.state.Departments}
+                        errorMessage={edit_Department_err}
+                        options={Departments}
                       />
                     </div>
 
                     <div style={{ width: "350px", marginTop: "15px" }}>
                       <Dropdown
-                        placeholder={this.state.edit_Subdepartment}
+                        placeholder={edit_Subdepartment}
                         label="Sub Department"
                         required
                         onChange={editSubDepartmentChange}
-                        errorMessage={this.state.edit_Subdepartment_err}
-                        options={this.state.Subdepartments}
+                        errorMessage={edit_Subdepartment_err}
+                        options={Subdepartments}
                       />
                     </div>
                     <div style={{ width: "350px", marginTop: "15px" }}>
                       <Dropdown
                         // placeholder={this.state.edit_Level}
-                      placeholder={this.state.edit_Level}
+                      placeholder={edit_Level}
                         label="Level"
                         required
                         onChange={editLevelChange}
-                        errorMessage={this.state.edit_Level_err}
-                        options={this.state.Level}
+                        errorMessage={edit_Level_err}
+                        options={Level}
                       />
                     </div>
 
@@ -862,7 +1152,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
                       text="Submit"
                     />
                     <DefaultButton
-                      onClick={this.toggleeditHideDialog}
+                      onClick={toggleeditHideDialog}
                       text="Cancel"
                     />
                   </DialogFooter>
@@ -886,7 +1176,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
   
                   <DialogFooter>
                     <DefaultButton
-                      onClick={this.toggleeditHideDialog}
+                      onClick={toggleeditHideDialog}
                       text="Close"
                     />
                   </DialogFooter>
@@ -896,8 +1186,7 @@ import { getSubDepartmentlist } from "../../Data/GetSiteList";
           </div>
         </div>
       );
-    }
+    
   }
   
-  export default UserDepartment;
   

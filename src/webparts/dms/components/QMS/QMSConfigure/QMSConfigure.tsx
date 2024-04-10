@@ -24,7 +24,7 @@ import Project from "./Project"
 import UserDetails from "./UserDetails"
 import ExistingFlow from "./ExistingFlow"
 import UserDepartment from "./UserDepartment"
-const sp:SPFI=getSp()
+import { useState } from "react"
 
 
 const navLinkGroups: INavLinkGroup[] = [
@@ -84,116 +84,195 @@ const navStyles: Partial<INavStyles> = {
   },
 }
 
-export default class QMSConfigure extends React.Component<{}, any> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      nav: true,
-      SelectedKey: "0",
-      Approversconfig: false,
-    }
-  }
+// export default class QMSConfigure extends React.Component<{}, any> {
+  export default function QMSConfigure(props) {
 
-  public async componentDidMount() {}
+    const [nav, setNav] = useState(true);
+    const [SelectedKey, setSelectedKey] = useState("0");
+    const [Approversconfig, setApproversConfig] = useState(false);
+    const [Flowconfig, setFlowConfig] = useState<any>();
+    const [Deptconfig, setDeptConfig] = useState<any>();
+    const [ Userconfig,  setUserConfig] = useState<any>();
+    const [ DMconfig,  setDMConfig] = useState<any>();
+  
+    // const AssignApproverConfig = () => {
+    //   this.setState({
+    //     Approversconfig: true,
+    //     nav: false,
+    //     SelectedKey: "1",
+    //   })
+    // }
 
-  render() {
     const AssignApproverConfig = () => {
-      this.setState({
-        Approversconfig: true,
-        nav: false,
-        SelectedKey: "1",
-      })
-    }
+      setApproversConfig(true);
+      setNav(false);
+      setSelectedKey("1");
+    };
+
+    // const AssignFlowConfig = () => {
+    //   this.setState({
+    //     Flowconfig: true,
+    //     nav: false,
+    //     SelectedKey: "2",
+    //   })
+    // }
+
     const AssignFlowConfig = () => {
-      this.setState({
-        Flowconfig: true,
-        nav: false,
-        SelectedKey: "2",
-      })
-    }
+      setFlowConfig(true);
+      setNav(false);
+      setSelectedKey("2");
+    };
+
+
+    // const AssignDeptConfig = () => {
+    //   this.setState({
+    //     Deptconfig: true,
+    //     nav: false,
+    //     SelectedKey: "3",
+    //   })
+    // }
     const AssignDeptConfig = () => {
-      this.setState({
-        Deptconfig: true,
-        nav: false,
-        SelectedKey: "3",
-      })
-    }
+      setDeptConfig(true);
+      setNav(false);
+      setSelectedKey("3");
+    };
+
+
+    // const AssignUserConfig = () => {
+    //   this.setState({
+    //     Userconfig: true,
+    //     nav: false,
+    //     SelectedKey: "4",
+    //   })
+    // }
+
     const AssignUserConfig = () => {
-      this.setState({
-        Userconfig: true,
-        nav: false,
-        SelectedKey: "4",
-      })
-    }
+      setUserConfig(true);
+      setNav(false);
+      setSelectedKey("4");
+    };
+
+    // const DepartmentUserConfig = () => {
+    //   this.setState({
+    //     DMconfig: true,
+    //     nav: false,
+    //     SelectedKey: "5",
+    //   })
+    // }
 
     const DepartmentUserConfig = () => {
-      this.setState({
-        DMconfig: true,
-        nav: false,
-        SelectedKey: "5",
-      })
-    }
+      setDMConfig(true);
+      setNav(false);
+      setSelectedKey("5");
+    };
+
+    // const onclicked = (ev, value) => {
+    //   switch (value.key) {
+    //     case "1":
+    //       this.setState({
+    //         SelectedKey: value.key,
+    //         Approversconfig: true,
+    //         Flowconfig: false,
+    //         Deptconfig: false,
+    //         Userconfig: false,
+    //         DMconfig: false,
+    //       })
+    //       break
+    //     case "2":
+    //       this.setState({
+    //         SelectedKey: value.key,
+    //         Approversconfig: false,
+    //         Flowconfig: true,
+    //         Deptconfig: false,
+    //         Userconfig: false,
+    //         DMconfig: false,
+    //       })
+    //       break
+    //     case "3":
+    //       this.setState({
+    //         Approversconfig: false,
+    //         Flowconfig: false,
+    //         Deptconfig: true,
+    //         Userconfig: false,
+    //         DMconfig: false,
+    //         SelectedKey: value.key,
+    //       })
+    //       break
+    //     case "4":
+    //       this.setState({
+    //         Approversconfig: false,
+    //         Flowconfig: false,
+    //         Deptconfig: false,
+    //         Userconfig: true,
+    //         DMconfig: false,
+    //         SelectedKey: value.key,
+    //       })
+    //       break
+    //     case "5":
+    //       this.setState({
+    //         Approversconfig: false,
+    //         Flowconfig: false,
+    //         Deptconfig: false,
+    //         Userconfig: false,
+    //         DMconfig: true,
+    //         SelectedKey: value.key,
+    //       })
+    //       break
+    //     default:
+    //       this.setState({})
+    //   }
+    // }
 
     const onclicked = (ev, value) => {
       switch (value.key) {
         case "1":
-          this.setState({
-            SelectedKey: value.key,
-            Approversconfig: true,
-            Flowconfig: false,
-            Deptconfig: false,
-            Userconfig: false,
-            DMconfig: false,
-          })
-          break
+          setApproversConfig(true);
+          setFlowConfig(false);
+          setDeptConfig(false);
+          setUserConfig(false);
+          setDMConfig(false);
+          setSelectedKey(value.key);
+          break;
         case "2":
-          this.setState({
-            SelectedKey: value.key,
-            Approversconfig: false,
-            Flowconfig: true,
-            Deptconfig: false,
-            Userconfig: false,
-            DMconfig: false,
-          })
-          break
+          setApproversConfig(false);
+          setFlowConfig(true);
+          setDeptConfig(false);
+          setUserConfig(false);
+          setDMConfig(false);
+          setSelectedKey(value.key);
+          break;
         case "3":
-          this.setState({
-            Approversconfig: false,
-            Flowconfig: false,
-            Deptconfig: true,
-            Userconfig: false,
-            DMconfig: false,
-            SelectedKey: value.key,
-          })
-          break
+          setApproversConfig(false);
+          setFlowConfig(false);
+          setDeptConfig(true);
+          setUserConfig(false);
+          setDMConfig(false);
+          setSelectedKey(value.key);
+          break;
         case "4":
-          this.setState({
-            Approversconfig: false,
-            Flowconfig: false,
-            Deptconfig: false,
-            Userconfig: true,
-            DMconfig: false,
-            SelectedKey: value.key,
-          })
-          break
+          setApproversConfig(false);
+          setFlowConfig(false);
+          setDeptConfig(false);
+          setUserConfig(true);
+          setDMConfig(false);
+          setSelectedKey(value.key);
+          break;
         case "5":
-          this.setState({
-            Approversconfig: false,
-            Flowconfig: false,
-            Deptconfig: false,
-            Userconfig: false,
-            DMconfig: true,
-            SelectedKey: value.key,
-          })
-          break
+          setApproversConfig(false);
+          setFlowConfig(false);
+          setDeptConfig(false);
+          setUserConfig(false);
+          setDMConfig(true);
+          setSelectedKey(value.key);
+          break;
         default:
-          this.setState({})
+          break;
       }
-    }
+    };
 
     return (
       <div>
-        {this.state.nav == true ? (
+        {nav == true ? (
           <div>
             <div className={styles.gridx} onClick={AssignApproverConfig}>
               <img
@@ -254,7 +333,7 @@ export default class QMSConfigure extends React.Component<{}, any> {
                 >
                   <Nav
                     onLinkClick={onclicked}
-                    selectedKey={this.state.SelectedKey}
+                    selectedKey={SelectedKey}
                     ariaLabel='Nav example with wrapped link text'
                     styles={navStyles}
                     groups={navLinkGroups}
@@ -267,13 +346,13 @@ export default class QMSConfigure extends React.Component<{}, any> {
                     verticalAlign: "baseline",
                   }}
                 >
-                  {this.state.Approversconfig == true ? <Approvers /> : <></>}
-                  {this.state.Flowconfig == true ? <ExistingFlow /> : <></>}
-                  {this.state.Deptconfig == true ? <Department /> : <></>}
-                  {this.state.Userconfig == true ? <UserDetails /> : <></>}
-                  {this.state.DMconfig == true ? <UserDepartment /> : <></>}
+                  {Approversconfig == true ? <Approvers /> : <></>}
+                  {Flowconfig == true ? <ExistingFlow /> : <></>}
+                  {Deptconfig == true ? <Department /> : <></>}
+                  {Userconfig == true ? <UserDetails /> : <></>}
+                  {DMconfig == true ? <UserDepartment /> : <></>}
                 </td>
-                {this.state.Deptconfig == true ? (
+                {Deptconfig == true ? (
                   <td
                     style={{ verticalAlign: "baseline", paddingLeft: "20px" }}
                   >
@@ -288,5 +367,5 @@ export default class QMSConfigure extends React.Component<{}, any> {
         )}
       </div>
     )
-  }
+  
 }

@@ -30,6 +30,7 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import { getDepartmentlistedit, getProjectlist } from "../../Data/GetSiteList";
+import { useEffect, useState } from "react";
 const sp:SPFI=getSp()
 const dialogContentProps = {
   type: DialogType.normal,
@@ -45,96 +46,176 @@ const iconClass = mergeStyles({
   color: "green",
   textAlign: "center",
 });
-export default class Department extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      hideDialog: true,
-      addProjectStatus: true,
-      isAdded: true,
-      add_Project_Title_err: "",
-      add_Project_Title: "",
-      add_Project_Code_err: "",
-      add_Project_Code: "",
-      hideeditDialog: true,
-      isEdited: true,
-      edit_Project_Title_err: "",
-      edit_Project_Title: "",
-      edit_Project_Code_err: "",
-      edit_Project_Code: "",
-      edit_ID: "",
-    };
-  }
+// export default class Department extends React.Component<{}, any> {
+  export default function Department(){
+    // this.state = {
+    //   items: [],
+    //   hideDialog: true,
+    //   addProjectStatus: true,
+    //   isAdded: true,
+    //   add_Project_Title_err: "",
+    //   add_Project_Title: "",
+    //   add_Project_Code_err: "",
+    //   add_Project_Code: "",
+    //   hideeditDialog: true,
+    //   isEdited: true,
+    //   edit_Project_Title_err: "",
+    //   edit_Project_Title: "",
+    //   edit_Project_Code_err: "",
+    //   edit_Project_Code: "",
+    //   edit_ID: "",
+    // };
 
-  public async componentDidMount() {
-    this.setState(
-      {
-        value: await getProjectlist().then((val) =>
-          this.setState({
-            items: val,
-          })
-        ),
-      },
-      () => {
-        console.log(this.state.items);
-      }
-    );
-  }
-  public toggleHideDialog = () => {
-    console.log(this.state.hideDialog);
-    if (this.state.hideDialog)
-      this.setState({
-        hideDialog: false,
-      });
-    else
-      this.setState({
-        hideDialog: true,
-        isAdded: true,
-        add_Project_Title_err: "",
-        add_Project_Title: "",
-        add_Project_Code_err: "",
-        add_Project_Code: "",
-      });
+  const [items, setItems] = useState([]);
+  const [hideDialog, setHideDialog] = useState(true);
+  const [addProjectStatus, setAddProjectStatus] = useState(true);
+  const [isAdded, setIsAdded] = useState(true);
+  const [add_Project_Title_err, setAddProjectTitleErr] = useState("");
+  const [add_Project_Title, setAddProjectTitle] = useState("");
+  const [add_Project_Code_err, setAddProjectCodeErr] = useState("");
+  const [add_Project_Code, setAddProjectCode] = useState("");
+  const [hideeditDialog, setHideEditDialog] = useState(true);
+  const [isEdited, setIsEdited] = useState(true);
+  const [edit_Project_Title_err, setEditProjectTitleErr] = useState("");
+  const [edit_Project_Title, setEditProjectTitle] = useState("");
+  const [edit_Project_Code_err, setEditProjectCodeErr] = useState("");
+  const [edit_Project_Code, setEditProjectCode] = useState("");
+  const [edit_ID, setEditID] = useState("");
+  const [value, setValue] = useState<any>();
+  
+
+  // public async componentDidMount() {
+  //   this.setState(
+  //     {
+  //       value: await getProjectlist().then((val) =>
+  //         this.setState({
+  //           items: val,
+  //         })
+  //       ),
+  //     },
+  //     () => {
+  //       console.log(this.state.items);
+  //     }
+  //   );
+  // }
+
+  const fetchData = async () => {
+    try {
+      const projectList:any = await getProjectlist();
+      setItems(projectList);
+    } catch (error) {
+      console.error('Error fetching project list:', error);
+    }
   };
 
-  public toggleeditHideDialog = () => {
-    console.log(this.state.hideeditDialog);
-    if (this.state.hideeditDialog)
-      this.setState({
-        hideeditDialog: false,
-      });
-    else
-      this.setState({
-        hideeditDialog: true,
-        isEdited: true,
-        edit_Project_Title_err: "",
-        edit_Project_Title: "",
-        edit_Project_Code_err: "",
-        edit_Project_Code: "",
-        edit_ID: "",
-      });
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
+  // public toggleHideDialog = () => {
+  //   console.log(this.state.hideDialog);
+  //   if (this.state.hideDialog)
+  //     this.setState({
+  //       hideDialog: false,
+  //     });
+  //   else
+  //     this.setState({
+  //       hideDialog: true,
+  //       isAdded: true,
+  //       add_Project_Title_err: "",
+  //       add_Project_Title: "",
+  //       add_Project_Code_err: "",
+  //       add_Project_Code: "",
+  //     });
+  // };
+
+  const toggleHideDialog = () => {
+    console.log(hideDialog);
+    if (hideDialog) {
+      setHideDialog(false);
+    } else {
+      setHideDialog(true);
+      setIsAdded(true);
+      setAddProjectTitleErr("");
+      setAddProjectTitle("");
+      setAddProjectCodeErr("");
+      setAddProjectCode("");
+    }
   };
 
-  public Deleteitem = async () => {
+
+  // public toggleeditHideDialog = () => {
+  //   console.log(this.state.hideeditDialog);
+  //   if (this.state.hideeditDialog)
+  //     this.setState({
+  //       hideeditDialog: false,
+  //     });
+  //   else
+  //     this.setState({
+  //       hideeditDialog: true,
+  //       isEdited: true,
+  //       edit_Project_Title_err: "",
+  //       edit_Project_Title: "",
+  //       edit_Project_Code_err: "",
+  //       edit_Project_Code: "",
+  //       edit_ID: "",
+  //     });
+  // };
+
+  const toggleeditHideDialog = () => {
+    console.log(hideeditDialog);
+    if (hideeditDialog) {
+      setHideEditDialog(false);
+    } else {
+      setHideEditDialog(true);
+      setIsEdited(true);
+      setEditProjectTitleErr("");
+      setEditProjectTitle("");
+      setEditProjectCodeErr("");
+      setEditProjectCode("");
+      setEditID("");
+    }
+  };
+
+  // public Deleteitem = async () => {
+  //   const sp:SPFI=getSp()
+
+  //   const list = sp.web.lists.getByTitle("Project List");
+  //   await list.items
+  //     .getById(this.state.edit_ID)
+  //     .delete()
+  //     .then(async (res) =>
+  //       this.setState({
+  //         isEdited: false,
+  //         value: await getProjectlist().then((val) =>
+  //           this.setState({
+  //             items: val,
+  //           })
+  //         ),
+  //       })
+  //     );
+  // };
+
+
+  const Deleteitem = async () => {
     const sp:SPFI=getSp()
 
-    const list = sp.web.lists.getByTitle("Project List");
-    await list.items
-      .getById(this.state.edit_ID)
-      .delete()
-      .then(async (res) =>
-        this.setState({
-          isEdited: false,
-          value: await getProjectlist().then((val) =>
-            this.setState({
-              items: val,
-            })
-          ),
-        })
-      );
+    const list:any = sp.web.lists.getByTitle("Project List");
+    try {
+      await list.items.getById(edit_ID).delete();
+      setIsEdited(false);
+      const projectList = await getProjectlist();
+      setValue(projectList);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+    fetchData();
+
   };
-  render(): React.ReactNode {
+
+ 
     const navStyles: Partial<INavStyles> = {
       root: { width: 530 },
     };
@@ -163,73 +244,131 @@ export default class Department extends React.Component<{}, any> {
         </table>
       );
     };
+    // const handleaddProject = async () => {
+    //   const sp:SPFI=getSp()
+
+    //   if (this.state.add_Project_Title != "") {
+    //     if (this.state.add_Project_Code != "") {
+
+    //       await sp.web.lists
+    //         .getByTitle("Project List")
+    //         .items.add({
+    //           ProjectName: this.state.add_Project_Title,
+    //           ProjectID: this.state.add_Project_Code,
+    //         })
+    //         .then(async (res) =>
+    //           this.setState({
+    //             isAdded: false,
+    //             value: await getProjectlist().then((val) =>
+    //               this.setState({
+    //                 items: val,
+    //               })
+    //             ),
+    //           })
+    //         );
+    //     } else {
+    //       this.setState({
+    //         add_Project_Code_err: "Please specify Code",
+    //       });
+    //     }
+    //   } else {
+    //     this.setState({
+    //       add_Project_Title_err: "Please specify project name",
+    //     });
+    //   }
+    // };
+
+
     const handleaddProject = async () => {
       const sp:SPFI=getSp()
-
-      if (this.state.add_Project_Title != "") {
-        if (this.state.add_Project_Code != "") {
-
-          await sp.web.lists
-            .getByTitle("Project List")
-            .items.add({
-              ProjectName: this.state.add_Project_Title,
-              ProjectID: this.state.add_Project_Code,
-            })
-            .then(async (res) =>
-              this.setState({
-                isAdded: false,
-                value: await getProjectlist().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              })
-            );
+  
+      if (add_Project_Title !== "") {
+        if (add_Project_Code !== "") {
+          try {
+            await sp.web.lists.getByTitle("Project List").items.add({
+              ProjectName: add_Project_Title,
+              ProjectID: add_Project_Code
+            });
+            setIsAdded(false);
+            const projectList = await getProjectlist();
+            setValue(projectList);
+          } catch (error) {
+            console.error('Error adding project:', error);
+          }
         } else {
-          this.setState({
-            add_Project_Code_err: "Please specify Code",
-          });
+          setAddProjectCodeErr("Please specify Code");
         }
       } else {
-        this.setState({
-          add_Project_Title_err: "Please specify project name",
-        });
+        setAddProjectTitleErr("Please specify project name");
       }
+      fetchData();
     };
+  
+
+
+    // const handleeditProject = async () => {
+    //   const sp:SPFI=getSp()
+
+    //   if (this.state.edit_Project_Title != "") {
+    //     if (this.state.edit_Project_Code != "") {
+    //       const list = sp.web.lists.getByTitle("Project List");
+
+    //       await list.items
+    //         .getById(this.state.edit_ID)
+    //         .update({
+    //           ProjectName: this.state.edit_Project_Title,
+    //           ProjectID: this.state.edit_Project_Code,
+    //         })
+    //         .then(async (res) =>
+    //           this.setState({
+    //             isEdited: false,
+    //             value: await getProjectlist().then((val) =>
+    //               this.setState({
+    //                 items: val,
+    //               })
+    //             ),
+    //           })
+    //         );
+    //     } else {
+    //       this.setState({
+    //         edit_Project_Code_err: "Please specify Code",
+    //       });
+    //     }
+    //   } else {
+    //     this.setState({
+    //       edit_Project_Title_err: "Please specify project name",
+    //     });
+    //   }
+    // };
+
     const handleeditProject = async () => {
       const sp:SPFI=getSp()
-
-      if (this.state.edit_Project_Title != "") {
-        if (this.state.edit_Project_Code != "") {
-          const list = sp.web.lists.getByTitle("Project List");
-
-          await list.items
-            .getById(this.state.edit_ID)
-            .update({
-              ProjectName: this.state.edit_Project_Title,
-              ProjectID: this.state.edit_Project_Code,
-            })
-            .then(async (res) =>
-              this.setState({
-                isEdited: false,
-                value: await getProjectlist().then((val) =>
-                  this.setState({
-                    items: val,
-                  })
-                ),
-              })
-            );
+  
+      if (edit_Project_Title !== "") {
+        if (edit_Project_Code !== "") {
+          try {
+            const list:any = sp.web.lists.getByTitle("Project List");
+            await list.items.getById(edit_ID).update({
+              ProjectName: edit_Project_Title,
+              ProjectID: edit_Project_Code
+            });
+            setIsEdited(false);
+            const projectList = await getProjectlist();
+            setValue(projectList); // Update items state with the new project list
+          } catch (error) {
+            console.error('Error editing project:', error);
+          }
         } else {
-          this.setState({
-            edit_Project_Code_err: "Please specify Code",
-          });
+          setEditProjectCodeErr("Please specify Code");
         }
       } else {
-        this.setState({
-          edit_Project_Title_err: "Please specify project name",
-        });
+        setEditProjectTitleErr("Please specify project name");
       }
+      fetchData();
+
     };
+
+
     const _onRenderGroupHeader = (group: INavLinkGroup) => {
       return (
         <>
@@ -242,41 +381,88 @@ export default class Department extends React.Component<{}, any> {
         </>
       );
     };
+    // const editProject = (value) => {
+    //   console.log(value);
+    //   this.setState({
+    //     hideeditDialog: false,
+    //     isEdited: true,
+    //     edit_Project_Title: value.name,
+    //     edit_ID: value.Id,
+    //     edit_Project_Code: value.code,
+    //   });
+    // };
     const editProject = (value) => {
       console.log(value);
-      this.setState({
-        hideeditDialog: false,
-        isEdited: true,
-        edit_Project_Title: value.name,
-        edit_ID: value.Id,
-        edit_Project_Code: value.code,
-      });
+      setHideEditDialog(false);
+      setIsEdited(true);
+      setEditProjectTitle(value.name);
+      setEditID(value.Id);
+      setEditProjectCode(value.code);
     };
+
+
+    // const addProject = () => {
+    //   this.setState({
+    //     hideDialog: false,
+    //     isAdded: true,
+    //   });
+    // };
+
     const addProject = () => {
-      this.setState({
-        hideDialog: false,
-        isAdded: true,
-      });
+      setHideDialog(false);
+      setIsAdded(true);
     };
+
+    // const handleadd_Project_Title = (event, value) => {
+    //   this.setState({
+    //     add_Project_Title: value,
+    //   });
+    // };
+
     const handleadd_Project_Title = (event, value) => {
-      this.setState({
-        add_Project_Title: value,
-      });
+      // this.setState({
+      //   add_Project_Title: value,
+      // });
+      setAddProjectTitle(value);
     };
+
+    // const handleadd_Project_Code = (event, value) => {
+    //   this.setState({
+    //     add_Project_Code: value,
+    //   });
+    // };
+
     const handleadd_Project_Code = (event, value) => {
-      this.setState({
-        add_Project_Code: value,
-      });
+      // this.setState({
+      //   add_Project_Code: value,
+      // });
+      setAddProjectCode(value);
     };
+
+    // const handleedit_Project_Title = (event, value) => {
+    //   this.setState({
+    //     edit_Project_Title: value,
+    //   });
+    // };
     const handleedit_Project_Title = (event, value) => {
-      this.setState({
-        edit_Project_Title: value,
-      });
+      // this.setState({
+      //   edit_Project_Title: value,
+      // });
+      setEditProjectTitle(value);
     };
+
+
+    // const handleedit_Project_Code = (event, value) => {
+    //   this.setState({
+    //     edit_Project_Code: value,
+    //   });
+    // };
+
     const handleedit_Project_Code = (event, value) => {
-      this.setState({
-        edit_Project_Code: value,
-      });
+      // this.setState({
+      //   edit_Project_Code: value,
+      // });
+      setEditProjectCode(value);
     };
     return (
       <>
@@ -304,18 +490,18 @@ export default class Department extends React.Component<{}, any> {
           onRenderLink={_onRenderLink}
           onRenderGroupHeader={_onRenderGroupHeader}
           ariaLabel="Nav example similar to one found in this demo page"
-          groups={this.state.items}
+          groups={items}
         />
         <Dialog
           containerClassName={
             "ms-dialogMainOverride " + styles.addProjectDialog
           }
-          hidden={this.state.hideDialog}
+          hidden={hideDialog}
           dialogContentProps={dialogContentProps}
           isBlocking={false}
-          onDismiss={this.toggleHideDialog}
+          onDismiss={toggleHideDialog}
         >
-          {this.state.isAdded ? (
+          {isAdded ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <div
@@ -329,7 +515,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Type Project Name"
                     resizable={false}
                     onChange={handleadd_Project_Title}
-                    errorMessage={this.state.add_Project_Title_err}
+                    errorMessage={add_Project_Title_err}
                   />
                 </div>
 
@@ -340,7 +526,7 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Type Project Unique ID"
                     onChange={handleadd_Project_Code}
                     resizable={false}
-                    errorMessage={this.state.add_Project_Code_err}
+                    errorMessage={add_Project_Code_err}
                   />
                 </div>
               </div>
@@ -352,7 +538,7 @@ export default class Department extends React.Component<{}, any> {
                   onClick={handleaddProject}
                   text="Submit"
                 />
-                <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
+                <DefaultButton onClick={toggleHideDialog} text="Cancel" />
               </DialogFooter>
             </div>
           ) : (
@@ -373,7 +559,7 @@ export default class Department extends React.Component<{}, any> {
               </Label>
 
               <DialogFooter>
-                <DefaultButton onClick={this.toggleHideDialog} text="Close" />
+                <DefaultButton onClick={toggleHideDialog} text="Close" />
               </DialogFooter>
             </div>
           )}
@@ -384,12 +570,12 @@ export default class Department extends React.Component<{}, any> {
           containerClassName={
             "ms-dialogMainOverride " + styles.addProjectDialog
           }
-          hidden={this.state.hideeditDialog}
+          hidden={hideeditDialog}
           dialogContentProps={dialogContentProps_edit}
           isBlocking={false}
-          onDismiss={this.toggleeditHideDialog}
+          onDismiss={toggleeditHideDialog}
         >
-          {this.state.isEdited ? (
+          {isEdited ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <div
@@ -402,9 +588,9 @@ export default class Department extends React.Component<{}, any> {
                     label="Project Title"
                     placeholder="Type Project Name"
                     resizable={false}
-                    value={this.state.edit_Project_Title}
+                    value={edit_Project_Title}
                     onChange={handleedit_Project_Title}
-                    errorMessage={this.state.edit_Project_Title_err}
+                    errorMessage={edit_Project_Title_err}
                   />
                 </div>
 
@@ -415,13 +601,13 @@ export default class Department extends React.Component<{}, any> {
                     placeholder="Type Project Unique ID"
                     onChange={handleedit_Project_Code}
                     resizable={false}
-                    value={this.state.edit_Project_Code}
-                    errorMessage={this.state.edit_Project_Code_err}
+                    value={edit_Project_Code}
+                    errorMessage={edit_Project_Code_err}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <DefaultButton onClick={this.Deleteitem} text="Delete" />
+                <DefaultButton onClick={Deleteitem} text="Delete" />
                 <PrimaryButton
                   style={{
                     backgroundColor: "#0078D4",
@@ -430,7 +616,7 @@ export default class Department extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleeditHideDialog}
+                  onClick={toggleeditHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -454,7 +640,7 @@ export default class Department extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleeditHideDialog}
+                  onClick={toggleeditHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -463,5 +649,5 @@ export default class Department extends React.Component<{}, any> {
         </Dialog>
       </>
     );
-  }
+  
 }

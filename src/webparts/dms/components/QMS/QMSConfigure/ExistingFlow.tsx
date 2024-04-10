@@ -46,6 +46,7 @@ import {
 import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 
 import { TablePagination } from "@material-ui/core";
+import { useEffect, useState } from "react";
 
 // import { getSp } from "../../../../../helpers/PnPConfig"
 // import { SPFI } from "@pnp/sp";
@@ -65,7 +66,7 @@ const iconClass = mergeStyles({
   color: "green",
   textAlign: "center",
 });
-const sp:SPFI=getSp();
+// const sp:SPFI=getSp();
 let columns = [
   {
     key: "Document No",
@@ -155,242 +156,425 @@ let columns = [
   },
 ];
 
-export default class QmsDashboard extends React.Component<{}, any> {
-  //sendApproval: any;
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      hideDialog: true,
-      opendialog: false,
-      Selecteditem: "",
-      uploadfile: false,
-      rowsPerPage: 5,
-      page: 0,
-      hideeditDialog: true,
-      isEdited: true,
-      Selected_item: {},
-      overalllist: [],
-      Approver_list: [],
-      err_Approvermsg: "",
-      err_Reviewermsg: "",
-      Reviewer_name: "",
-      Approver_name: "",
-    };
+// export default class QmsDashboard extends React.Component<{}, any> {
+  export default function QmsDashboard(props){
+  
+ 
+    // this.state = {
+    //   items: [],
+    //   hideDialog: true,
+    //   opendialog: false,
+    //   Selecteditem: "",
+    //   uploadfile: false,
+    //   rowsPerPage: 5,
+    //   page: 0,
+    //   hideeditDialog: true,
+    //   isEdited: true,
+    //   Selected_item: {},
+    //   overalllist: [],
+    //   Approver_list: [],
+    //   err_Approvermsg: "",
+    //   err_Reviewermsg: "",
+    //   Reviewer_name: "",
+    //   Approver_name: "",
+    // };
     //this.sendApproval= this.sendApproval.bind(this);
-  }
 
-  public async componentDidMount() {
+    const [items, setItems] = useState([]);
+  const [hideDialog, setHideDialog] = useState(true);
+  const [opendialog, setOpenDialog] = useState(false); 
+  const [selectedItem, setSelectedItem] = useState<any>("");
+  const [uploadfile, setUploadFile] = useState(false); 
+  const [page, setpage] = useState(0);
+  const [hideeditDialog, setHideEditDialog] = useState(true); 
+  const [isEdited, setIsEdited] = useState(true);
+  const [Selected_item, setSelected_item] = useState<any>({}); 
+  const [overalllist, setOverallList] = useState([]);
+  const [Approver_list, setApproverList] = useState([]);
+  const [err_Approvermsg, setErrApproverMsg] = useState(""); 
+  const [err_Reviewermsg, setErrReviewerMsg] = useState(""); 
+  const [Reviewer_name, setReviewerName] = useState(""); 
+  const [Approver_name, setApproverName] = useState("");
+  const [value, setValue] = useState<any>([]);
+  const [count, setCount] = useState(0);
+  const [rowsPerPage, setrowsPerPage] = useState(5);
+
+
+  
+
+  // public async componentDidMount() {
+  //   const sp:SPFI=getSp();
+  //   console.log(await sp.web.currentUser());
+  //   console.log(await (await sp.web.currentUser()).Email);
+  //   this.setState(
+  //     {
+  //       //items:await getEditSitelist(),
+  //       value: await getEditSitelist(),
+  //     },
+  //     () => {
+  //       this.setState({
+  //         count: this.state.value.length,
+  //         items: this.state.value.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //         overalllist: this.state.value,
+  //       });
+  //     }
+  //   );
+
+  //   console.log(this.state.items);
+  // }
+
+  const fetchData = async () => {
     const sp:SPFI=getSp();
-    console.log(await sp.web.currentUser());
-    console.log(await (await sp.web.currentUser()).Email);
-    this.setState(
-      {
-        //items:await getEditSitelist(),
-        value: await getEditSitelist(),
-      },
-      () => {
-        this.setState({
-          count: this.state.value.length,
-          items: this.state.value.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-          overalllist: this.state.value,
-        });
-      }
-    );
-
-    console.log(this.state.items);
+    const currentUser = await sp.web.currentUser();
+    console.log(currentUser);
+    console.log(await currentUser.Email);
+    const sitelist:any = await getEditSitelist();
+    
+    setValue(sitelist);
+    setCount(sitelist.length);
+    setItems(sitelist.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+    setOverallList(sitelist);
   }
-  private _getKey(item: any, index?: number): string {
+
+  useEffect(()=>{
+    fetchData()
+  },[page, rowsPerPage])
+
+
+
+  // private _getKey(item: any, index?: number): string {
+  //   return item.key;
+  // }
+
+  function _getKey(item: any, index?: number): string {
     return item.key;
-  }
+}
 
-  private _onFilter = (
-    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    text: string
-  ): void => {
-    let val = this.state.overalllist.filter(
-      (i) =>
+
+  // private _onFilter = (
+  //   ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+  //   text: string
+  // ): void => {
+  //   let val = this.state.overalllist.filter(
+  //     (i) =>
+  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
+  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
+  //   );
+  //   let condition = text.toLowerCase() ? val : this.state.overalllist;
+  //   this.setState(
+  //     {
+  //       items: text.toLowerCase()
+  //         ? val.slice(
+  //             this.state.page * this.state.rowsPerPage,
+  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //           )
+  //         : this.state.overalllist.slice(
+  //             this.state.page * this.state.rowsPerPage,
+  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //           ),
+  //     },
+  //     () => {
+  //       this.setState({
+  //         count: condition.length,
+  //         value: condition,
+  //       });
+  //     }
+  //   );
+  //   console.log(val);
+  // };
+
+
+  const _onFilter = (ev, text) => {
+    let val:any = overalllist.filter(
+      (i:any) =>
         i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
         i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
     );
-    let condition = text.toLowerCase() ? val : this.state.overalllist;
-    this.setState(
-      {
-        items: text.toLowerCase()
-          ? val.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            )
-          : this.state.overalllist.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            ),
-      },
-      () => {
-        this.setState({
-          count: condition.length,
-          value: condition,
-        });
-      }
+    let condition = text.toLowerCase() ? val : overalllist;
+    setItems(
+      text.toLowerCase()
+        ? val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        : overalllist.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     );
+    setCount(condition.length);
+    setValue(condition);
     console.log(val);
   };
 
-  public updated = async (isupdated) => {
+  // public updated = async (isupdated) => {
+  //   if (isupdated) {
+  //     this.setState(
+  //       {
+  //         value: await getEditSitelist(),
+  //       },
+  //       () => {
+  //         this.setState({
+  //           count: this.state.value.length,
+  //           items: this.state.value.slice(
+  //             this.state.page * this.state.rowsPerPage,
+  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //           ),
+  //           overalllist: this.state.value,
+  //         });
+  //       }
+  //     );
+  //   }
+  // };
+
+  const updated = async (isupdated) => {
     if (isupdated) {
-      this.setState(
-        {
-          value: await getEditSitelist(),
-        },
-        () => {
-          this.setState({
-            count: this.state.value.length,
-            items: this.state.value.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            ),
-            overalllist: this.state.value,
-          });
-        }
-      );
+      const updatedValue:any = await getEditSitelist();
+      setValue(updatedValue);
+      setCount(updatedValue.length);
+      setItems(updatedValue.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+      setOverallList(updatedValue);
     }
   };
 
-  public toggleHideDialog = () => {
-    this.setState((prevstate) => {
-      hideDialog: prevstate.hideDialog ? false : true;
-    });
-    console.log(this.state.hideDialog);
+  // public toggleHideDialog = () => {
+  //   this.setState((prevstate) => {
+  //     hideDialog: prevstate.hideDialog ? false : true;
+  //   });
+  //   console.log(this.state.hideDialog);
+  // };
+
+
+
+  const toggleHideDialog = () => {
+    setHideDialog(prevHideDialog => !prevHideDialog);
+    console.log(hideDialog); // This will log the previous state, not the updated state due to the asynchronous nature of state updates with useState
+  };
+  
+
+  // public setRowsPerPage = (value) => {
+  //   this.setState({
+  //     rowsPerPage: value,
+  //   });
+  // };
+
+
+
+  const setRowsPerPage = (value)=>{
+  setrowsPerPage(value);
+  }
+
+  // public setPage = (value) => {
+  //   this.setState(
+  //     {
+  //       page: value,
+  //     },
+  //     () => {
+  //       this.setState({
+  //         items: this.state.value.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //       });
+  //     }
+  //   );
+  // };
+
+
+  const setPage = (value) => {
+    setPage(value);
+    setItems(value => value.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    ));
   };
 
-  public setRowsPerPage = (value) => {
-    this.setState({
-      rowsPerPage: value,
-    });
+
+
+
+  // public toggleeditHideDialog = () => {
+  //   console.log(this.state.hideeditDialog);
+  //   if (this.state.hideeditDialog)
+  //     this.setState({
+  //       hideeditDialog: false,
+  //     });
+  //   else
+  //     this.setState({
+  //       hideeditDialog: true,
+  //       isEdited: true,
+  //       Selected_item: {},
+  //       err_Approvermsg: "",
+  //       err_Reviewermsg: "",
+  //       Reviewer_name: "",
+  //       Approver_name: "",
+  //     });
+  // };
+
+
+  const toggleeditHideDialog = () => {
+    console.log(hideeditDialog);
+    if (hideeditDialog) {
+      setHideEditDialog(false);
+    } else {
+      setHideEditDialog(true);
+      setIsEdited(true);
+      setSelected_item({});
+      setErrApproverMsg("");
+      setErrReviewerMsg("");
+      setReviewerName("");
+      setApproverName("");
+    }
   };
 
-  public setPage = (value) => {
-    this.setState(
-      {
-        page: value,
-      },
-      () => {
-        this.setState({
-          items: this.state.value.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-        });
-      }
-    );
-  };
-  public toggleeditHideDialog = () => {
-    console.log(this.state.hideeditDialog);
-    if (this.state.hideeditDialog)
-      this.setState({
-        hideeditDialog: false,
-      });
-    else
-      this.setState({
-        hideeditDialog: true,
-        isEdited: true,
-        Selected_item: {},
-        err_Approvermsg: "",
-        err_Reviewermsg: "",
-        Reviewer_name: "",
-        Approver_name: "",
-      });
-  };
-  render() {
+
+  
     const handleChangePage = (event, newPage) => {
-      this.setPage(newPage);
+      setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
       console.log(event.target.value);
-      this.setRowsPerPage(parseInt(event.target.value, 10));
-      this.setPage(0);
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
     };
+
+    // const SubmitFlow = async () => {
+    //   const sp:SPFI=getSp();
+    //   if (Selected_item.Approver2 != "") {
+    //     if (Selected_item.Approver3 != "") {
+    //       const sp:SPFI=getSp();
+    //       await sp.web.lists
+    //         .getByTitle("User Files")
+    //         .items.getById(Selected_item.ID)
+    //         .update({
+    //           Approver2: Selected_item.Approver2,
+    //           Approver3: Selected_item.Approver3,
+    //         })
+    //         .then(async (res) =>
+    //           this.setState(
+    //             {
+    //               isEdited: false,
+    //               value: await getEditSitelist(),
+    //             },
+    //             () => {
+    //               this.setState({
+    //                 count: value.length,
+    //                 items: value.slice(
+    //                   page * rowsPerPage,
+    //                   page * rowsPerPage +
+    //                     rowsPerPage
+    //                 ),
+    //                 overalllist: value,
+    //               });
+    //             }
+    //           )
+    //         );
+    //     } else {
+    //       // this.setState({
+    //       //   err_Reviewermsg: "Please specify Reviewer",
+    //       // });
+    //       setErrReviewerMsg("Please specify Reviewer");
+    //     }
+    //   } else {
+    //     // this.setState({
+    //     //   err_Approvermsg: "Please specify Approver",
+    //     // });
+    //     setErrApproverMsg("Please specify Approver")
+    //   }
+    // };
 
     const SubmitFlow = async () => {
       const sp:SPFI=getSp();
-      if (this.state.Selected_item.Approver2 != "") {
-        if (this.state.Selected_item.Approver3 != "") {
-          const sp:SPFI=getSp();
-          await sp.web.lists
-            .getByTitle("User Files")
-            .items.getById(this.state.Selected_item.ID)
-            .update({
-              Approver2: this.state.Selected_item.Approver2,
-              Approver3: this.state.Selected_item.Approver3,
-            })
-            .then(async (res) =>
-              this.setState(
-                {
-                  isEdited: false,
-                  value: await getEditSitelist(),
-                },
-                () => {
-                  this.setState({
-                    count: this.state.value.length,
-                    items: this.state.value.slice(
-                      this.state.page * this.state.rowsPerPage,
-                      this.state.page * this.state.rowsPerPage +
-                        this.state.rowsPerPage
-                    ),
-                    overalllist: this.state.value,
-                  });
-                }
-              )
-            );
+            if (Selected_item.Approver2 !== "") {
+        if (Selected_item.Approver3 !== "") {
+          try {
+            await sp.web.lists.getByTitle("User Files").items.getById(Selected_item.ID).update({
+              Approver2: Selected_item.Approver2,
+              Approver3: Selected_item.Approver3
+            });
+            setIsEdited(false);
+            setValue(await getEditSitelist());
+            setCount(value.length);
+            setItems(value.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+            setOverallList(value);
+          } catch (error) {
+            console.error("Error updating item:", error);
+          }
         } else {
-          this.setState({
-            err_Reviewermsg: "Please specify Reviewer",
-          });
+          setErrReviewerMsg("Please specify Reviewer");
         }
       } else {
-        this.setState({
-          err_Approvermsg: "Please specify Approver",
-        });
+        setErrApproverMsg("Please specify Approver");
       }
     };
-    const editFlow = async (value) => {
-      console.log(value);
-      this.setState(
-        {
-          hideeditDialog: false,
-          isEdited: true,
-          Selected_item: value,
-        },
-        async () => {
-          this.setState({
-            Approver_list: await Get_departmentusers(value.Department).then(
-              (res) =>{
-                console.log(res); 
-                return res.map((val) => ({
-                  text: val.Name,
-                  key: val.EmailID,
-                }))}
-            ),
-            Reviewer_name: await getName(
-              this.state.Selected_item.Approver2
-            ).then((res) => { 
-              console.log(res);
-              return res[0].Name
-            }),
 
-            Approver_name: await getName(
-              this.state.Selected_item.Approver3
-            ).then((res) =>{ 
-              console.log(res);
-              return res[0].Name}),
-          });
-        }
-      );
+
+    // const editFlow = async (value) => {
+    //   console.log(value);
+    //   this.setState(
+    //     {
+    //       hideeditDialog: false,
+    //       isEdited: true,
+    //       Selected_item: value,
+    //     },
+    //     async () => {
+    //       this.setState({
+    //         Approver_list: await Get_departmentusers(value.Department).then(
+    //           (res) =>{
+    //             console.log(res); 
+    //             return res.map((val) => ({
+    //               text: val.Name,
+    //               key: val.EmailID,
+    //             }))}
+    //         ),
+    //         Reviewer_name: await getName(
+    //           Selected_item.Approver2
+    //         ).then((res) => { 
+    //           console.log(res);
+    //           return res[0].Name
+    //         }),
+
+    //         Approver_name: await getName(
+    //           Selected_item.Approver3
+    //         ).then((res) =>{ 
+    //           console.log(res);
+    //           return res[0].Name}),
+    //       });
+    //     }
+    //   );
+    // };
+
+
+    const editFlow = async (value) => {
+
+      
+      console.log(value);
+      setHideEditDialog(false);
+      setIsEdited(true);
+      setSelected_item(value);
+      const sp:SPFI=getSp();
+
+      const approverListResult:any = await Get_departmentusers(value.Department);
+      console.log(approverListResult);
+      const mappedApproverList:any = approverListResult.map((val:any) => ({
+        text: val.Name,
+        key: val.EmailID,
+      }));
+      console.log(mappedApproverList);
+      setApproverList(mappedApproverList);
+  
+      const reviewerNameResult:any = await getName(value.Approver2);
+      console.log(reviewerNameResult);
+      setReviewerName(reviewerNameResult[0].Name);
+  
+      const approverNameResult:any = await getName(value.Approver3);
+      console.log(approverNameResult);
+      setApproverName(approverNameResult[0].Name);
     };
+  
+
+
+
+
+
+
     const previewOutlookUsingIcon: IDocumentCardPreviewProps = {
       previewImages: [
         {
@@ -403,16 +587,31 @@ export default class QmsDashboard extends React.Component<{}, any> {
         },
       ],
     };
-    const ReviewerChange = (event, value) => {
-      this.setState((prevstate) => ({
-        Selected_item: { ...prevstate.Selected_item, Approver2: value.key },
-      }));
-    };
+    // const ReviewerChange = (event, value) => {
+    //   this.setState((prevstate) => ({
+    //     Selected_item: { ...prevstate.Selected_item, Approver2: value.key },
+    //   }));
+    // };
+
+     const ReviewerChange = (event, value) => {
+      setSelected_item(prevState => ({
+      ...prevState,
+      Approver2: value.key
+    }));
+  }
+    // const ApproverChange = (event, value) => {
+    //   this.setState((prevstate) => ({
+    //     Selected_item: { ...prevstate.Selected_item, Approver3: value.key },
+    //   }));
+    // };
+
     const ApproverChange = (event, value) => {
-      this.setState((prevstate) => ({
-        Selected_item: { ...prevstate.Selected_item, Approver3: value.key },
+      setSelected_item(prevState => ({
+        ...prevState,
+        Approver3: value.key
       }));
     };
+
     const _renderItemColumn = (item, index: number, column) => {
       const fieldContent = item[column.fieldName] as string;
 
@@ -442,23 +641,23 @@ export default class QmsDashboard extends React.Component<{}, any> {
           <TextField
             underlined
             placeholder="Search"
-            onChange={this._onFilter}
+            onChange={_onFilter}
             styles={textFieldStyles}
           />
         </Stack>
         <DetailsList
           className={styles.list}
-          items={this.state.items}
+          items={items}
           compact={false}
           columns={columns}
           onRenderItemColumn={_renderItemColumn}
           selectionMode={SelectionMode.none}
-          getKey={this._getKey}
+          getKey={_getKey}
           setKey="none"
           layoutMode={DetailsListLayoutMode.justified}
           isHeaderVisible={true}
         />
-        {this.state.overalllist.length == 0 ? (
+        {overalllist.length == 0 ? (
           <div
             style={{
               // borderStyle:'dashed',
@@ -488,10 +687,10 @@ export default class QmsDashboard extends React.Component<{}, any> {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.count}
-          page={this.state.page}
+          count={count}
+          page={page}
           onPageChange={handleChangePage}
-          rowsPerPage={this.state.rowsPerPage}
+          rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
 
@@ -499,12 +698,12 @@ export default class QmsDashboard extends React.Component<{}, any> {
           containerClassName={
             "ms-dialogMainOverride " + styles.flowSectionDialog
           }
-          hidden={this.state.hideeditDialog}
+          hidden={hideeditDialog}
           dialogContentProps={dialogContentProps}
           isBlocking={false}
-          onDismiss={this.toggleeditHideDialog}
+          onDismiss={toggleeditHideDialog}
         >
-          {this.state.isEdited ? (
+          {isEdited ? (
             <div>
               <div style={{ margin: "15px" }}>
                 <table>
@@ -514,7 +713,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
                         Document Number
                       </Label>
                       <Label style={{ fontSize: "18px" }}>
-                        {this.state.Selected_item.Filename}
+                        {Selected_item.Filename}
                       </Label>
                     </td>
                     <td style={{ width: "200px" }}>
@@ -522,31 +721,31 @@ export default class QmsDashboard extends React.Component<{}, any> {
                         Document Title
                       </Label>
                       <Label style={{ fontSize: "18px" }}>
-                        {this.state.Selected_item.FileTitle}
+                        {Selected_item.FileTitle}
                       </Label>
                     </td>
                     <td>
                       <DocumentCard
                         type={DocumentCardType.compact}
-                        onClickHref={this.state.Selected_item.Fileurl}
+                        onClickHref={Selected_item.Fileurl}
                         onClickTarget="_blank"
                       >
                         <DocumentCardPreview {...previewOutlookUsingIcon} />
                         <div className="ms-DocumentCard-details">
                           <DocumentCardTitle
-                            title={this.state.Selected_item.Filename}
+                            title={Selected_item.Filename}
                             shouldTruncate={true}
                           />
                           <DocumentCardActivity
                             activity={
                               "Uploaded Date:" +
-                              this.state.Selected_item.FileUploadDate
+                              Selected_item.FileUploadDate
                             }
                             people={[
                               {
-                                name: this.state.Selected_item.Requester,
+                                name: Selected_item.Requester,
                                 profileImageSrc: "",
-                                initials: this.state.Selected_item.Requester,
+                                initials: Selected_item.Requester,
                               },
                             ]}
                           />
@@ -557,22 +756,22 @@ export default class QmsDashboard extends React.Component<{}, any> {
                   <tr>
                     <td style={{ paddingTop: "40px" }}>
                       <Persona
-                        text={this.state.Selected_item.Requester}
-                        secondaryText={this.state.Selected_item.RequestorEmail}
+                        text={Selected_item.Requester}
+                        secondaryText={Selected_item.RequestorEmail}
                         size={PersonaSize.size56}
-                        imageAlt={this.state.Selected_item.Requester}
+                        imageAlt={Selected_item.Requester}
                       />
                     </td>
                     <td style={{ paddingTop: "40px" }}>
                       <Label style={{ color: "darkgrey" }}>Department</Label>
                       <Label style={{ fontSize: "18px" }}>
-                        {this.state.Selected_item.Department}
+                        {Selected_item.Department}
                       </Label>
                     </td>
                     <td style={{ paddingTop: "40px" }}>
                       <Label style={{ color: "darkgrey" }}>Section</Label>
                       <Label style={{ fontSize: "18px" }}>
-                        {this.state.Selected_item.SubDepartment}
+                        {Selected_item.SubDepartment}
                       </Label>
                     </td>
                   </tr>
@@ -580,12 +779,12 @@ export default class QmsDashboard extends React.Component<{}, any> {
                     <td style={{ paddingTop: "40px" }}>
                       <div style={{ width: "300px" }}>
                         <Dropdown
-                          placeholder={this.state.Reviewer_name}
+                          placeholder={Reviewer_name}
                           label="Document Reviewer"
                           required
                           onChange={ReviewerChange}
-                          errorMessage={this.state.err_Reviewermsg}
-                          options={this.state.Approver_list}
+                          errorMessage={err_Reviewermsg}
+                          options={Approver_list}
                         />
                       </div>
                     </td>
@@ -594,18 +793,18 @@ export default class QmsDashboard extends React.Component<{}, any> {
                         Approval Status
                       </Label>
                       <Label style={{ fontSize: "18px" }}>
-                        {this.state.Selected_item.ApprovalStatus}
+                        {Selected_item.ApprovalStatus}
                       </Label>
                     </td>
                     <td style={{ paddingTop: "40px" }}>
                       <div style={{ width: "300px" }}>
                         <Dropdown
-                          placeholder={this.state.Approver_name}
+                          placeholder={Approver_name}
                           label="Document Approver"
                           required
                           onChange={ApproverChange}
-                          errorMessage={this.state.err_Approvermsg}
-                          options={this.state.Approver_list}
+                          errorMessage={err_Approvermsg}
+                          options={Approver_list}
                         />
                       </div>
                     </td>
@@ -621,7 +820,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
                   text="Submit"
                 />
                 <DefaultButton
-                  onClick={this.toggleeditHideDialog}
+                  onClick={toggleeditHideDialog}
                   text="Cancel"
                 />
               </DialogFooter>
@@ -645,7 +844,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
 
               <DialogFooter>
                 <DefaultButton
-                  onClick={this.toggleeditHideDialog}
+                  onClick={toggleeditHideDialog}
                   text="Close"
                 />
               </DialogFooter>
@@ -654,5 +853,5 @@ export default class QmsDashboard extends React.Component<{}, any> {
         </Dialog>
       </div>
     );
-  }
+  
 }
