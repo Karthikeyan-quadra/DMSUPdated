@@ -580,13 +580,15 @@ import { useEffect, useState } from "react";
       
     
       const handleeditUser = async () => {
-        if (edit_Department !== "") {
-          if (edit_UserName !== "") {
-            if (edit_EmailID !== "") {
+        console.log("handleedituse function called");
+        
+        if (edit_Department !="") {
+          if (edit_UserName != "") {
+            if (edit_EmailID != "") {
               try {
                         const sp: SPFI = getSp();
 
-                const list = sp.web.lists.getByTitle("Approverlist");
+                const list:any = sp.web.lists.getByTitle("Approverlist");
     
                 await list.items
                   .getById(selecteditem)
@@ -639,14 +641,14 @@ import { useEffect, useState } from "react";
 
 
 
-      const editUser = (value) => {
+      const editUser = (value:any) => {
         setEditUserName(value.Name);
         setEditEmailID(value.EmailID);
         setEditDepartment(value.Department);
         setEditSubdepartment(value.SubDepartment);
         setEditLevel(value.Level);
         setHideEditDialog(false);
-        setIsEdited(false);
+        setIsEdited(true);
         setSelectedItem(value.ID);
         setSelectedVal(value);
       };
