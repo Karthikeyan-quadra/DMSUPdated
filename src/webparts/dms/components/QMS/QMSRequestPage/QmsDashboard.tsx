@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./QmsDashboard.module.scss";
 import { escape } from "@microsoft/sp-lodash-subset";
-import { Web, IWeb } from "@pnp/sp/presets/all";
+import { Web, IWeb, Items } from "@pnp/sp/presets/all";
 import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/lists";
@@ -382,11 +382,12 @@ export default class QmsDashboard extends React.Component<{}, any> {
             case "Pending":
               return (
                 <ApprovalPopup
-                  {...item}
-                  toCallBack={async (isupdated) => {
-                    console.log(this.state);
-                    await this.updated(isupdated);
-                  }}
+                props={item}
+                  // {...item}
+                  // toCallBack={async (isupdated) => {
+                  //   console.log(this.state);
+                  //   await this.updated(isupdated);
+                  // }}
                 ></ApprovalPopup>
               );
 
