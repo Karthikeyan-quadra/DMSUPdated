@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./QmsDashboard.module.scss";
 
-import { escape } from "@microsoft/sp-lodash-subset";
+import { escape, set } from "@microsoft/sp-lodash-subset";
 import { Web, IWeb } from "@pnp/sp/presets/all";
 import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
@@ -32,107 +32,181 @@ import {
 } from "office-ui-fabric-react";
 import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 import { Denymail } from "./MailTrigger";
+import { useEffect, useState } from "react";
 
-const sp:SPFI=getSp();
 
 const dialogContentProps = {
   type: DialogType.normal,
   title: "Deny Request",
 };
 
-export default class DenyPopup extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      hideDialog: true,
-      Denystatus: true,
-      Commentmsg: "",
-    };
-  }
+  export default function DenyPopup (props) {
 
-  public async componentDidMount() {
+
+
+    // this.state = {
+    //   items: [],
+    //   hideDialog: true,
+    //   Denystatus: true,
+    //   Commentmsg: "",
+    // };
+  const[items, setItems] = useState([]);
+  const[hideDialog, setHideDialog] = useState(true);
+  const[Denystatus, setDenyStatus] = useState(true);
+  const[Commentmsg, setCommentmsg] = useState("");
+  const[comment, setComment] = useState("");
+  const[UniqueItem, setUniqueItem] = useState<any>();
+  const[opendialog, setOpendialog] = useState(false);
+
+
+
+
+
+  // public async componentDidMount() {
+  //   console.log("hello popup");
+  //   console.log(this.props);
+  // }
+
+  useEffect(()=>{
     console.log("hello popup");
-    console.log(this.props);
+    console.log(props);
+  })
+
+
+  // public toggleHideDialog = () => {
+  //   console.log(this.state.hideDialog);
+  //   if (this.state.hideDialog)
+  //     this.setState({
+  //       hideDialog: false,
+  //     });
+  //   else
+  //     this.setState({
+  //       hideDialog: true,
+  //       Denystatus: true,
+  //       comment: "",
+  //     });
+
+  //   console.log(this.state.hideDialog);
+  // };
+
+  const toggleHideDialog = ()=>{
+    console.log(hideDialog);
+    if(hideDialog){
+      setHideDialog(false);
+    }
+    else{
+      setHideDialog(true);
+      setDenyStatus(true);
+      setComment("");
+    }
   }
-  public toggleHideDialog = () => {
-    console.log(this.state.hideDialog);
-    if (this.state.hideDialog)
-      this.setState({
-        hideDialog: false,
-      });
-    else
-      this.setState({
-        hideDialog: true,
-        Denystatus: true,
-        comment: "",
-      });
 
-    console.log(this.state.hideDialog);
-  };
 
-  public HandleDenystatus = async () => {
+
+  // public HandleDenystatus = async () => {
+  //   const sp:SPFI=getSp();
+  //   console.log(this.state.comment);
+  //   if (this.state.comment == undefined || this.state.comment == "") {
+  //     this.setState({
+  //       Commentmsg: "please provide comments",
+  //     });
+  //   } else {
+  //     await sp.web.lists
+  //       .getByTitle("User Files")
+  //       .items.getById(this.state.UniqueItem.ID)
+  //       .update({
+  //         Status: "Rejected",
+  //       });
+  //     this.setState({
+  //       Denystatus: false,
+  //     });
+
+  //     Denymail(
+  //       this.props,
+  //       await (
+  //         await sp.web.currentUser()
+  //       ).Email,
+  //       this.state.comment
+  //     );
+
+  //     this.state.UniqueItem.toCallBack(true);
+  //   }
+  // };
+
+
+  const HandleDenystatus = async () => {
     const sp:SPFI=getSp();
-    console.log(this.state.comment);
-    if (this.state.comment == undefined || this.state.comment == "") {
-      this.setState({
-        Commentmsg: "please provide comments",
-      });
+    console.log(comment);
+    if (comment == undefined || comment == "") {
+      // this.setState({
+      //   Commentmsg: "please provide comments",
+      // });
+
+      setCommentmsg("please provide comments");
     } else {
       await sp.web.lists
         .getByTitle("User Files")
-        .items.getById(this.state.UniqueItem.ID)
+        .items.getById(UniqueItem.ID)
         .update({
           Status: "Rejected",
         });
-      this.setState({
-        Denystatus: false,
-      });
+      // this.setState({
+      //   Denystatus: false,
+      // });
+      setDenyStatus(false);
 
       Denymail(
-        this.props,
+        props,
         await (
           await sp.web.currentUser()
         ).Email,
-        this.state.comment
+        comment
       );
 
-      this.state.UniqueItem.toCallBack(true);
+      UniqueItem.toCallBack(true);
+    console.log(UniqueItem.toCallBack(true))
     }
   };
 
-  public sendDeny = async () => {
-    console.log(this.state.hideDialog);
+
+  const sendDeny = async () => {
+    console.log(hideDialog);
     console.log("hello");
-    this.setState({
-      UniqueItem: this.props,
-      opendialog: true,
-      hideDialog: false,
-    });
-    console.log(this.state.comment);
+    // this.setState({
+    //   UniqueItem: this.props,
+    //   opendialog: true,
+    //   hideDialog: false,
+    // });
+
+    setUniqueItem(props);
+    setOpendialog(true);
+    setHideDialog(false);
+    
+    console.log(comment);
   };
 
-  render() {
-    const Feedbackhandle = (e, value) => {
+
+    const Feedbackhandle = (e, value:any) => {
       console.log(value);
-      this.setState({
-        comment: value,
-      });
+      // this.setState({
+      //   comment: value,
+      // });
+      setComment(value);
     };
     return (
       <div>
         <PrimaryButton style={{
                         backgroundColor: "#0078D4",
-                      }} text="Deny" onClick={this.sendDeny} allowDisabledFocus />
-        {this.state.opendialog ? (
+                      }} text="Deny" onClick={sendDeny} allowDisabledFocus />
+        {opendialog ? (
           <Dialog
             containerClassName={"ms-dialogMainOverride " + styles.textDialog}
-            hidden={this.state.hideDialog}
+            hidden={hideDialog}
             dialogContentProps={dialogContentProps}
             isBlocking={false}
-            onDismiss={this.toggleHideDialog}
+            onDismiss={toggleHideDialog}
           >
-            {this.state.Denystatus ? (
+            {Denystatus ? (
               <div>
                 <div style={{ margin: "15px" }}>
                   <TextField
@@ -147,7 +221,7 @@ export default class DenyPopup extends React.Component<{}, any> {
                     placeholder="Deny"
                     onChange={Feedbackhandle}
                     resizable={false}
-                    errorMessage={this.state.Commentmsg}
+                    errorMessage={Commentmsg}
                   />
                 </div>
                 <DialogFooter>
@@ -155,11 +229,11 @@ export default class DenyPopup extends React.Component<{}, any> {
                   style={{
                     backgroundColor: "#0078D4",
                   }}
-                    onClick={this.HandleDenystatus}
+                    onClick={HandleDenystatus}
                     text="Submit"
                   />
                   <DefaultButton
-                    onClick={this.toggleHideDialog}
+                    onClick={toggleHideDialog}
                     text="Cancel"
                   />
                 </DialogFooter>
@@ -214,7 +288,7 @@ export default class DenyPopup extends React.Component<{}, any> {
 
                 <DialogFooter>
                   <DefaultButton
-                    onClick={this.toggleHideDialog}
+                    onClick={toggleHideDialog}
                     text="Cancel"
                   />
                 </DialogFooter>
@@ -226,5 +300,5 @@ export default class DenyPopup extends React.Component<{}, any> {
         )}
       </div>
     );
-  }
+  
 }

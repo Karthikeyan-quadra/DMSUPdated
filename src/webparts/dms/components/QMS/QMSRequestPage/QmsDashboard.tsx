@@ -27,6 +27,7 @@ import ApprovalPopup from "./ApprovalPopup";
 import DenyPopup from "./DenyPopup";
 import UploadFile from "./UploadFile";
 import { TablePagination } from "@material-ui/core";
+import { useEffect, useState } from "react";
 
 const stackTokens: IStackTokens = { childrenGap: 20 };
 const textFieldStyles: Partial<ITextFieldStyles> = {
@@ -136,165 +137,250 @@ let columns = [
   },
 ];
 
-export default class QmsDashboard extends React.Component<{}, any> {
-  //sendApproval: any;
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      hideDialog: true,
-      opendialog: false,
-      Selecteditem: "",
-      uploadfile: false,
-      rowsPerPage: 5,
-      page: 0,
-      overalllist: [],
-    };
-    //this.sendApproval= this.sendApproval.bind(this);
-  }
 
-  public async componentDidMount() {
+  export default function QmsDashboard (props) {
+
+  //sendApproval: any;
+  
+    
+    // this.state = {
+    //   items: [],
+    //   hideDialog: true,
+    //   opendialog: false,
+    //   Selecteditem: "",
+    //   uploadfile: false,
+    //   rowsPerPage: 5,
+    //   page: 0,
+    //   overalllist: [],
+    // };
+    //this.sendApproval= this.sendApproval.bind(this);
+
+    const [items, setItems] = useState([]);
+  const [hideDialog, setHideDialog] = useState(true);
+  const [opendialog, setOpenDialog] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [uploadFile, setUploadFile] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [overalllist, setOverallList] = useState([]);
+  const [value, setValue] = useState([]);
+  const [count, setCount] = useState(0);
+
+
+  
+
+  // public async componentDidMount() {
+  //   const sp:SPFI=getSp()
+  //   console.log(await sp.web.currentUser());
+  //   console.log(await (await sp.web.currentUser()).Email);
+  //   this.setState(
+  //     {
+  //       //items:await getSitelist(),
+  //       value: await getSitelist(),
+  //     },
+  //     () => {
+  //       this.setState({
+  //         count: this.state.value.length,
+  //         items: this.state.value.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //         overalllist: this.state.value,
+  //       });
+  //     }
+  //   );
+
+  //   console.log(this.state.items);
+  //   console.log(this.state.value);
+  //   console.log(this.state.overalllist);
+  //   console.log(this.state.count);
+  // }
+
+
+  const fetchData = async () => {
     const sp:SPFI=getSp()
     console.log(await sp.web.currentUser());
     console.log(await (await sp.web.currentUser()).Email);
-    this.setState(
-      {
-        //items:await getSitelist(),
-        value: await getSitelist(),
-      },
-      () => {
-        this.setState({
-          count: this.state.value.length,
-          items: this.state.value.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-          overalllist: this.state.value,
-        });
-      }
+
+    const fetchedValue:any = await getSitelist();
+
+    setValue(fetchedValue);
+
+    setCount(fetchedValue.length);
+
+    const slicedItems = fetchedValue.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
     );
 
-    console.log(this.state.items);
-    console.log(this.state.value);
-    console.log(this.state.overalllist);
-    console.log(this.state.count);
+    setItems(slicedItems);
 
-    
-  }
-  private _getKey(item: any, index?: number): string {
+    setOverallList(fetchedValue);
+  };
+
+  useEffect(()=>{
+    fetchData();
+  },[page, rowsPerPage])
+
+
+
+
+  function _getKey(item: any, index?: number): string {
     console.log(item.key);
     return item.key;
   }
 
-  private _onFilter = (
-    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    text: string
-  ): void => {
-    let val = this.state.overalllist.filter(
-      (i) =>
+  // private _onFilter = (
+  //   ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+  //   text: string
+  // ): void => {
+  //   let val = this.state.overalllist.filter(
+  //     (i) =>
+  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
+  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
+  //   );
+  //   console.log(val);
+    
+  //   let condition = text.toLowerCase() ? val : this.state.overalllist;
+  //   console.log(condition);
+    
+  //   this.setState(
+  //     {
+  //       items: text.toLowerCase()
+  //         ? val.slice(
+  //             this.state.page * this.state.rowsPerPage,
+  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //           )
+  //         : this.state.overalllist.slice(
+  //             this.state.page * this.state.rowsPerPage,
+  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //           ),
+  //     },
+  //     () => {
+  //       this.setState({
+  //         count: condition.length,
+  //         value: condition,
+  //       });
+  //     }
+  //   );
+  //   console.log(val);
+  // };
+
+
+  const  _onFilter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,text: string) => {
+    let val:any = overalllist.filter(
+      (i:any) =>
         i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
         i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
     );
     console.log(val);
     
-    let condition = text.toLowerCase() ? val : this.state.overalllist;
+    let condition = text.toLowerCase() ? val : overalllist;
     console.log(condition);
     
-    this.setState(
-      {
-        items: text.toLowerCase()
-          ? val.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            )
-          : this.state.overalllist.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            ),
-      },
-      () => {
-        this.setState({
-          count: condition.length,
-          value: condition,
-        });
-      }
+    setItems(
+      text.toLowerCase()
+        ? val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        : overalllist.slice(
+            page * rowsPerPage,
+            page * rowsPerPage + rowsPerPage
+          )
     );
+  
+    setCount(condition.length);
+    setValue(condition);
     console.log(val);
   };
 
-  public UploadFile = () => {
-    this.setState({
-      uploadfile: true,
-    });
+
+
+  const UploadFile = () => {
+    // this.setState({
+    //   uploadfile: true,
+    // });
+    setUploadFile(true);
   };
 
-  public updated = async (isupdated) => {
+  const updated = async (isupdated) => {
     if (isupdated) {
-      this.setState(
-        {
-          value: await getSitelist(),
-        },
-        () => {
-          this.setState({
-            count: this.state.value.length,
-            items: this.state.value.slice(
-              this.state.page * this.state.rowsPerPage,
-              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-            ),
-            overalllist: this.state.value,
-          });
-        }
+      const updatedValue:any = await getSitelist();
+  
+      setValue(updatedValue);
+      setCount(updatedValue.length);
+  
+      const slicedItems = updatedValue.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
       );
+  
+      setItems(slicedItems);
+      setOverallList(updatedValue);
     }
   };
 
-  public sendApproval() {
-    console.log(this.state);
+  const sendApproval = () =>{
     console.log("hello");
-    this.setState({
-      opendialog: true,
-      hideDialog: false,
-    });
+    // this.setState({
+    //   opendialog: true,
+    //   hideDialog: false,
+    // });
+    setOpenDialog(true);
+    setHideDialog(false);
   }
 
-  public toggleHideDialog = () => {
-    this.setState((prevstate) => {
-      hideDialog: prevstate.hideDialog ? false : true;
-    });
-    console.log(this.state.hideDialog);
+  // public toggleHideDialog = () => {
+  //   this.setState((prevstate) => {
+  //     hideDialog: prevstate.hideDialog ? false : true;
+  //   });
+  //   console.log(this.state.hideDialog);
+  // };
+
+  const toggleHideDialog = (setHideDialog) => {
+    setHideDialog((prevHideDialog) => !prevHideDialog);
   };
 
-  public setRowsPerPage = (value) => {
-    this.setState({
-      rowsPerPage: value,
-    });
+  const RowsPerPage = (value) => {
+    setRowsPerPage(value);
   };
 
-  public setPage = (value) => {
-    this.setState(
-      {
-        page: value,
-      },
-      () => {
-        this.setState({
-          items: this.state.value.slice(
-            this.state.page * this.state.rowsPerPage,
-            this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-          ),
-        });
-      }
-    );
+  // public setPage = (value) => {
+  //   this.setState(
+  //     {
+  //       page: value,
+  //     },
+  //     () => {
+  //       this.setState({
+  //         items: this.state.value.slice(
+  //           this.state.page * this.state.rowsPerPage,
+  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+  //         ),
+  //       });
+  //     }
+  //   );
+  // };
+
+  const Page = (value) => {
+    setPage(value);
+    setItems(
+      value.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ))
+   
   };
 
-  render() {
+
     const handleChangePage = (event, newPage) => {
-      this.setPage(newPage);
-    };
+      Page(newPage);
+      fetchData()
+        };
 
     const handleChangeRowsPerPage = (event) => {
       console.log(event.target.value);
-      this.setRowsPerPage(parseInt(event.target.value, 10));
-      this.setPage(0);
+      RowsPerPage(parseInt(event.target.value, 10));
+      Page(0);
+      fetchData();
+
     };
 
     const _renderItemColumn = (item, index: number, column) => {
@@ -402,8 +488,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
                 <DenyPopup
                   {...item}
                   toCallBack={async (isupdated) => {
-                    console.log(this.state);
-                    await this.updated(isupdated);
+                    await updated(isupdated);
                   }}
                 ></DenyPopup>
               );
@@ -426,7 +511,7 @@ export default class QmsDashboard extends React.Component<{}, any> {
           <TextField
             underlined
             placeholder="Search"
-            onChange={this._onFilter}
+            onChange={_onFilter}
             styles={textFieldStyles}
           />
 
@@ -434,17 +519,17 @@ export default class QmsDashboard extends React.Component<{}, any> {
         </Stack>
         <DetailsList
           className={styles.list}
-          items={this.state.items}
+          items={items}
           compact={false}
           columns={columns}
           onRenderItemColumn={_renderItemColumn}
           selectionMode={SelectionMode.none}
-          getKey={this._getKey}
+          getKey={_getKey}
           setKey="none"
           layoutMode={DetailsListLayoutMode.justified}
           isHeaderVisible={true}
         />
-        {this.state.overalllist.length == 0 ? (
+        {overalllist.length == 0 ? (
           <div
             style={{
               // borderStyle:'dashed',
@@ -474,13 +559,13 @@ export default class QmsDashboard extends React.Component<{}, any> {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.count}
-          page={this.state.page}
+          count={count}
+          page={page}
           onPageChange={handleChangePage}
-          rowsPerPage={this.state.rowsPerPage}
+          rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     );
-  }
+  
 }

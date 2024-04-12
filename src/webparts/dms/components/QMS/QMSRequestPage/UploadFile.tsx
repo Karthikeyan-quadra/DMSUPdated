@@ -10,8 +10,8 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import { DefaultButton, Dialog, DialogFooter, DialogType, Label,  PrimaryButton } from 'office-ui-fabric-react';
 import { TextField, ITextFieldStyles } from 'office-ui-fabric-react';
+import { useState } from 'react';
 
-const sp:SPFI=getSp()
 const textFieldSingle: Partial<ITextFieldStyles> = { fieldGroup: { width: 300 } };
 const textFieldMultiple: Partial<ITextFieldStyles> = { fieldGroup: { width: 400 } };
 const dialogContentProps = {
@@ -19,78 +19,98 @@ const dialogContentProps = {
   title: "File Upload",
 };
 
-export default class UploadFile extends React.Component<{},any> {
-constructor(props){
-    super(props);
-    this.state={
-        items:[],
-        hideDialog:true,
-        filestatus:true,
-        Commentmsg:''
-    };
-}
+export default function UploadFile (props) {
 
-public async componentDidMount() {
-  }
-  public toggleHideDialog=()=>{
+    // this.state={
+    //     items:[],
+    //     hideDialog:true,
+    //     filestatus:true,
+    //     Commentmsg:''
+    // };
 
-    if(this.state.hideDialog)
-      this.setState({
-        hideDialog:false
-      })
+    const [items, setItems] = useState([]);
+    const [hideDialog, setHideDialog] = useState(true);
+    const [filestatus, setFilestatus] = useState(true);
+    const [Commentmsg, setCommentmsg] = useState("");
+    const [comment, setComment] = useState<any>();
+    const [UniqueItem, setUniqueItem] = useState<any>();
+    const [opendialog, setOpendialog] = useState(false);
+
+
+
+// public async componentDidMount() {
+//   }
+
+
+  const toggleHideDialog=()=>{
+
+    if(hideDialog)
+      // this.setState({
+      //   hideDialog:false
+      // })
+      setHideDialog(false);
       else
-      this.setState({
-        hideDialog:true
-      })
+      // this.setState({
+      //   hideDialog:true
+      // })
+      setHideDialog(true);
 
-    console.log(this.state.hideDialog)
+
+    console.log(hideDialog)
    }
 
-   public SubmitFile=async()=>{
+   const SubmitFile=async()=>{
 
-    if(this.state.comment==undefined)
+    if(comment==undefined)
     {
-      this.setState({
-      Commentmsg:"please provide comments"
-      })
+      // this.setState({
+      // Commentmsg:"please provide comments"
+      // })
+      setCommentmsg("please provide comments");
     }
     else
-      this.setState({
+      // this.setState({
 
-        filestatus:false
-      })
+      //   filestatus:false
+      // })
+      setFilestatus(false);
    }
 
-   public OpenFileDialog=async()=>{
-    console.log(this.state.hideDialog)
+   const OpenFileDialog=async()=>{
+    console.log(hideDialog)
     console.log("hello")
-    this.setState({
-      UniqueItem:this.props,
-      opendialog:true,
-      hideDialog:false
-    })
+    // this.setState({
+    //   UniqueItem:this.props,
+    //   opendialog:true,
+    //   hideDialog:false
+    // })
+
+    setUniqueItem(props);
+    setOpendialog(true);
+    setHideDialog(false);
   }
 
 
-render(){
   const Feedbackhandle=(e,value)=>{
 console.log(value)
-this.setState({
-  comment:value
-})
+// this.setState({
+//   comment:value
+// })
+setComment(value);
+
   }
     return(
       <div >
-        <PrimaryButton text="Upload" onClick={this.OpenFileDialog} allowDisabledFocus />
-      {(this.state.opendialog)?(
+        <PrimaryButton text="Upload" onClick={OpenFileDialog} allowDisabledFocus />
+      {(opendialog)?(
         <Dialog
         containerClassName={"ms-dialogMainOverride " + styles.textDialog}
-        hidden={this.state.hideDialog}
+        hidden={hideDialog}
         dialogContentProps={dialogContentProps}
         isBlocking={false}
-     onDismiss={this.toggleHideDialog}
+     onDismiss={toggleHideDialog}
    >
-       {(this.state.filestatus)?(
+       {(filestatus)?(
        <div><div style={{margin:"15px"}}>
            <TextField
         styles={textFieldSingle}
@@ -98,7 +118,7 @@ this.setState({
           label="File Title"
           onChange={Feedbackhandle}
           resizable={false}
-          errorMessage={this.state.Commentmsg}
+          errorMessage={Commentmsg}
         />
 <TextField
 
@@ -111,8 +131,8 @@ this.setState({
         <input type="file" name="myFile" id="newfile"></input>
 </div>
 <DialogFooter >
-       <PrimaryButton onClick={this.SubmitFile} text="Submit" />
-       <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
+       <PrimaryButton onClick={SubmitFile} text="Submit" />
+       <DefaultButton onClick={toggleHideDialog} text="Cancel" />
      </DialogFooter>
      </div>):<div>
      <svg width="537" height="201" style={{margin:"auto 20px",width:"600px"}} viewBox="0 0 537 201" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -126,7 +146,7 @@ this.setState({
 </svg>
 <Label style={{margin:"0 auto",width:"300px",textAlign:"center"}}>File Submitted</Label>
 <DialogFooter>
-      <DefaultButton onClick={this.toggleHideDialog} text="Close" />
+      <DefaultButton onClick={toggleHideDialog} text="Close" />
 </DialogFooter>
       </div>}
 
@@ -134,5 +154,5 @@ this.setState({
       }
       </div>
     )
-}
+
 }

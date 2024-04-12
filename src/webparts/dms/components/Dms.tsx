@@ -95,27 +95,11 @@ const dialogContentPropsUpload = {
   title: 'Upload File',
 };
 
-export default class DmsWebPart extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-
-  public async componentDidMount() {
-
-  }
-  // approverslist
-  public render(): React.ReactElement<IDmsProps> {
-
-
+export default function DmsWebPart(props){
  
     return (
       <div style={{
-        // borderStyle: 'dashed',
         width: '1400px',
-        // height: '1000px',
       }}>
           <Navbar />
       </div>
@@ -123,5 +107,5 @@ export default class DmsWebPart extends React.Component<{}, any> {
   }
 
 
-  }
+
 

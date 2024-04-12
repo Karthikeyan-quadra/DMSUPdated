@@ -14,6 +14,7 @@ import { SPFI } from "@pnp/sp";
 import { getSp } from "../../../../helpers/PnPConfig";
 import "@pnp/sp/lists";
 import "@pnp/sp/items/get-all";
+import { useEffect, useState } from "react";
 
 
 var date = new Date();
@@ -160,52 +161,181 @@ let columns = [
   }
 ];
 
-export default class header extends React.Component<{}, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      overalllist: [],
-      rowsPerPage: 5,
-      page: 0,
-      CurrentUser: "",
-      fileArray: [],
-      openDialog: false,
-      openDialogUpload: false,
-      hiddenDialogUpload: true,
-      hiddenDialog: true,
-      hiddenDialog1: true,
-      CurrentFile: [],
-      fileDes: "",
-      loading: false,
-      error: false,
-    };
-  }
+export default function Approvers() {
+  
+    // this.state = {
+    //   items: [],
+    //   overalllist: [],
+    //   rowsPerPage: 5,
+    //   page: 0,
+    //   CurrentUser: "",
+    //   fileArray: [],
+    //   openDialog: false,
+    //   openDialogUpload: false,
+    //   hiddenDialogUpload: true,
+    //   hiddenDialog: true,
+    //   hiddenDialog1: true,
+    //   CurrentFile: [],
+    //   fileDes: "",
+    //   loading: false,
+    //   error: false,
+    // };
+
+  const [items, setItems] = useState([]);
+  const [overalllist, setOverallList] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [CurrentUser, setCurrentUser] = useState("");
+  const [fileArray, setFileArray] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogUpload, setOpenDialogUpload] = useState(false);
+  const [hiddenDialogUpload, setHiddenDialogUpload] = useState(true);
+  const [hiddenDialog, setHiddenDialog] = useState(true);
+  const [hiddenDialog1, setHiddenDialog1] = useState(true);
+  const [CurrentFile, setCurrentFile] = useState([]);
+  const [fileDes, setFileDes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [value, setValue] = useState<any>();
+  const [count, setCount] = useState<any>();
 
 
 
-  public async componentDidMount() {
+  // public async componentDidMount() {
 
-    // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
-    const sp:SPFI=getSp()
+  //   // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
+  //   const sp:SPFI=getSp()
 
-    // const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
-    const items: any[] = await sp.web.lists.getByTitle("Approverlist").items.getAll();
+  //   // const items: any[] = await sp.web.lists.getByTitle("Approverlist").items();
+  //   const items: any[] = await sp.web.lists.getByTitle("Approverlist").items.getAll();
 
-    // const filesForApproval: any[] = await sp.web.lists
-    //   .getByTitle("User Files")
-    //   .items();
+  //   // const filesForApproval: any[] = await sp.web.lists
+  //   //   .getByTitle("User Files")
+  //   //   .items();
 
-    const filesForApproval: any[] = await sp.web.lists
-    .getByTitle("User Files")
-    .items.getAll();
+  //   const filesForApproval: any[] = await sp.web.lists
+  //   .getByTitle("User Files")
+  //   .items.getAll();
+  //   console.log(filesForApproval);
+  //   let user = await sp.web.currentUser();
+  //   console.log(user.Email);
+  //   // let userDetails = [];
+  //   // let fileArray = [];
+  //   // let fileArrayUpdated = [];
+
+  //   let userDetails:any = [];
+  //   let fileArray:any = [];
+  //   let fileArrayUpdated:any = [];
+
+  //   await filesForApproval.map(async (files) => {
+  //     if (files.Approver2 === user.Email && files.ApprovalStatus === "APPROVER 2") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver3 === user.Email && files.ApprovalStatus === "APPROVER 3") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver4 === user.Email && files.ApprovalStatus === "APPROVER 4") {
+  //       await userDetails.push(files);
+  //     }
+  //   });
+
+  //   await console.log(userDetails);
+
+  //   var uniq = {};
+  //   // var arr  = [{"id":"1"},{"id":"1"},{"id":"2"}]
+  //   fileArray = userDetails.filter(
+  //     (obj) => !uniq[obj.ID] && (uniq[obj.ID] = true)
+  //   );
+
+  //   console.log("fileArray", fileArray);
+
+  //   await fileArray.filter(async (files) => {
+  //     if (files.Status === "Processing") {
+  //       fileArrayUpdated.push(files);
+  //     }
+  //   });
+
+  //   console.log("fileArrayUpdated", fileArrayUpdated);
+
+  //   this.setState({
+  //     value: fileArrayUpdated,
+  //     CurrentUser: user.Email
+  // },()=>{
+  //   this.setState({
+  //     count:this.state.value.length,items:this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
+  //     overalllist:this.state.value
+  //   })
+  // })
+
+
+  // }
+
+ 
+
+  // const fetchData = async () => {
+  //   const sp:SPFI=getSp() // Adjust this according to your actual method to get sp
+   
+
+
+  //   const items:any[] = await sp.web.lists.getByTitle("Approverlist").items.getAll();
+  //   const filesForApproval :any[] = await sp.web.lists.getByTitle("User Files").items.getAll();
+  //   console.log(filesForApproval);
+  //   let user = await sp.web.currentUser();
+  //   console.log(user.Email);
+    
+  //   let userDetails:any = [];
+  //   let fileArray:any = [];
+  //   let fileArrayUpdated:any = [];
+
+  //   await filesForApproval.map(async (files) => {
+  //     if (files.Approver2 === user.Email && files.ApprovalStatus === "APPROVER 2") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver3 === user.Email && files.ApprovalStatus === "APPROVER 3") {
+  //       await userDetails.push(files);
+  //     }
+  //     if (files.Approver4 === user.Email && files.ApprovalStatus === "APPROVER 4") {
+  //       await userDetails.push(files);
+  //     }
+  //   });
+
+  //   await console.log(userDetails);
+
+  //   var uniq = {};
+  //   // var arr  = [{"id":"1"},{"id":"1"},{"id":"2"}]
+  //   fileArray = userDetails.filter(
+  //     (obj) => !uniq[obj.ID] && (uniq[obj.ID] = true)
+  //   );
+
+  //   console.log("fileArray", fileArray);
+
+  //   await fileArray.filter(async (files) => {
+  //     if (files.Status === "Processing") {
+  //       fileArrayUpdated.push(files);
+  //     }
+  //   });
+
+  //   console.log("fileArrayUpdated", fileArrayUpdated);
+    
+  //   setValue(fileArrayUpdated);
+  //   setCurrentUser(user.Email);
+  //   setCount(value.length);
+  //   setItems(value.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+  //   setOverallList(fileArrayUpdated);
+  // };
+
+  
+  const fetchData = async () => {
+    const sp:SPFI=getSp() // Adjust this according to your actual method to get sp
+   
+
+
+    const items:any[] = await sp.web.lists.getByTitle("Approverlist").items.getAll();
+    const filesForApproval :any[] = await sp.web.lists.getByTitle("User Files").items.getAll();
     console.log(filesForApproval);
     let user = await sp.web.currentUser();
     console.log(user.Email);
-    // let userDetails = [];
-    // let fileArray = [];
-    // let fileArrayUpdated = [];
-
+    
     let userDetails:any = [];
     let fileArray:any = [];
     let fileArrayUpdated:any = [];
@@ -232,26 +362,33 @@ export default class header extends React.Component<{}, any> {
 
     console.log("fileArray", fileArray);
 
-    await fileArray.filter(async (files) => {
+    await fileArray.filter(async (files:any) => {
       if (files.Status === "Processing") {
         fileArrayUpdated.push(files);
       }
     });
 
     console.log("fileArrayUpdated", fileArrayUpdated);
+    
+    let val = fileArrayUpdated;
+    setValue(fileArrayUpdated);
+    console.log(val);
+    setCurrentUser(user.Email);
+    setCount(val.length);
+    setItems(val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+    setOverallList(val);
+  };
 
-    this.setState({
-      value: fileArrayUpdated,
-      CurrentUser: user.Email
-  },()=>{
-    this.setState({
-      count:this.state.value.length,items:this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
-      overalllist:this.state.value
-    })
-  })
+
+  useEffect(() => {
+   console.log(rowsPerPage); // This will log the updated value of rowsPerPage
+   console.log(page); // This will log the updated value of rowsPerPage
+   fetchData();
 
 
-  }
+  }, [rowsPerPage, page]);
+
+
 
   // public async componentDidMount() {
 
@@ -325,43 +462,82 @@ export default class header extends React.Component<{}, any> {
   // }
 
 
-  private _getKey(item: any, index?: number): string {
+  function _getKey(item: any, index?: number): string {
     return item.key;
   }
 
-  public setRowsPerPage = (value) => {
-    this.setState({
-      rowsPerPage: value
-    })
-
+  const RowsPerPage = (value:any) => {
+    // this.setState({
+    //   rowsPerPage: value
+    // })
+    let val = value;
+    setRowsPerPage(val);
+    console.log(rowsPerPage);
+    console.log(val);
+    fetchData()
   }
 
-  public setPage = (value) => {
-    this.setState({
-      page: value
-    }, () => {
-      this.setState({
-        items: this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-      })
-    })
-  }
-  private _onFilter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string): void => {
-    let val = this.state.overalllist.filter(i => i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 || i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1)
-    let condition = text.toLowerCase() ? val : this.state.overalllist
-    this.setState({
-      items: text.toLowerCase() ? val.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage) : this.state.overalllist.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
-    }, () => {
-      this.setState({
-        count: condition.length,
-        value: condition
-      })
-    });
+  // public setPage = (value) => {
+  //   this.setState({
+  //     page: value
+  //   }, () => {
+  //     this.setState({
+  //       items: this.state.value.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+  //     })
+  //   })
+  // }
+
+  const Page = (value:any) => {
+    let val = value;
+    setPage(val);
+    setItems(val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+    fetchData()
+
+  };
+
+
+  // private _onFilter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string): void => {
+  //   let val = this.state.overalllist.filter(i => i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 || i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1)
+  //   let condition = text.toLowerCase() ? val : this.state.overalllist
+  //   this.setState({
+  //     items: text.toLowerCase() ? val.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage) : this.state.overalllist.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
+  //   }, () => {
+  //     this.setState({
+  //       count: condition.length,
+  //       value: condition
+  //     })
+  //   });
+  //   console.log(val);
+  //   console.log(condition);
+    
+  // };
+
+  const _onFilter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string)=> {
+    let val:any = overalllist.filter((i:any) => i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 || i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1)
+    let condition = text.toLowerCase() ? val : overalllist
+    // this.setState({
+    //   items: text.toLowerCase() ? val.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage) : this.state.overalllist.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
+    // }, () => {
+    //   this.setState({
+    //     count: condition.length,
+    //     value: condition
+    //   })
+    // });
+
+    const newItems = text.toLowerCase() ? val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : overalllist.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    setItems(newItems);
+
+    setCount(condition.length);
+    setValue(condition);
+
     console.log(val);
     console.log(condition);
     
   };
 
-  public render() {
+
+
+  
     const Approvemail: any = async (value, ApprovalStatus) => {
 
       try {
@@ -369,11 +545,16 @@ export default class header extends React.Component<{}, any> {
         console.log(value.ID);
         console.log(value.RelativeURL)
 
-        this.setState({
-          loading: true,
-          openDialog: true,
-          hiddenDialog1: false,
-        })
+        // this.setState({
+        //   loading: true,
+        //   openDialog: true,
+        //   hiddenDialog1: false,
+        // })
+
+        setLoading(true);
+        setOpenDialog(true);
+        setHiddenDialog1(false);
+
         let siteUrl = value.RelativeURL.split("/")
         siteUrl[3] = "Original File";
         console.log(siteUrl);
@@ -738,48 +919,63 @@ export default class header extends React.Component<{}, any> {
           .then(async () => {
             // let RefreshData = this.state.overalllist;
             // let LastDate = [];
-            let RefreshData: any = this.state.overalllist;
+            let RefreshData: any = overalllist;
             let LastDate: any = [];
-            console.log("overalllist", this.state.overalllist)
-            await RefreshData.filter((files) => {
+            console.log("overalllist", overalllist)
+            await RefreshData.filter((files:any) => {
               if (files.ID !== value.ID) {
                 LastDate.push(files);
               }
             });
             console.log("LastDate", LastDate);
-            await this.setState({
-              value: LastDate,
-              overalllist: LastDate,
-              items: LastDate,
-              openDialog: false,
-              hiddenDialog: true,
-            });
+            // await this.setState({
+            //   value: LastDate,
+            //   overalllist: LastDate,
+            //   items: LastDate,
+            //   openDialog: false,
+            //   hiddenDialog: true,
+            // });
+
+            setValue(LastDate);
+            setOverallList(LastDate);
+            setItems(LastDate);
+            setOpenDialog(false);
+            setHiddenDialog(true);
           }).catch((er) => console.error(er)
           )
 
-        await this.setState({
-          loading: false,
-        })
+        // await this.setState({
+        //   loading: false,
+        // })
+        await setLoading(false);
       } catch (e) {
         console.log(e);
 
 
-        await this.setState({
-          loading: false,
-          error: true,
-        })
+        // await this.setState({
+        //   loading: false,
+        //   error: true,
+        // })
+
+        setLoading(false);
+        setError(true);
       }
+      fetchData();
     };
 
     const handleChangePage = (event, newPage) => {
-      this.setPage(newPage);
-
+    const newpagechange=newPage;
+    setPage(newpagechange);
+    console.log(page);
+    fetchData();
+    
     };
 
     const handleChangeRowsPerPage = (event) => {
       console.log(event.target.value)
-      this.setRowsPerPage(parseInt(event.target.value, 10));
-      this.setPage(0);
+      RowsPerPage(parseInt(event.target.value, 10));
+      Page(0);
+      fetchData();
     };
 
     const _renderItemColumn = (item, index: number, column) => {
@@ -914,6 +1110,7 @@ export default class header extends React.Component<{}, any> {
           return <span>{fieldContent}</span>;
       }
 
+
     }
 
     //     const RejectFunc = async (fileDetails)  => {
@@ -927,15 +1124,22 @@ export default class header extends React.Component<{}, any> {
     const RejectFunc = async (fileDetails) => {
       try {
         // Display dialog for rejection comments
-        this.setState({
-          openDialog: true,
-          hiddenDialog: false,
-          CurrentFile: fileDetails,
-        });
+        // this.setState({
+        //   openDialog: true,
+        //   hiddenDialog: false,
+        //   CurrentFile: fileDetails,
+        // });
+
+        setOpenDialog(true);
+        setHiddenDialog(false);
+        setCurrentFile(fileDetails);
+
       } catch (error) {
         console.error("Error displaying rejection dialog:", error);
         alert("An error occurred. Please check the console for more details.");
       }
+      fetchData();
+
     }
 
 
@@ -943,13 +1147,13 @@ export default class header extends React.Component<{}, any> {
       console.log(value);
       console.log(value.ID);
 
-      if (this.state.fileDes.length === 0) {
+      if (fileDes.length === 0) {
         alert("Please enter the rejection comments.");
       } else {
         await Denymail(
           value.RequestorEmail,
           value,
-          this.state.fileDes
+          fileDes
         );
 
         // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal");
@@ -961,77 +1165,88 @@ export default class header extends React.Component<{}, any> {
             Status: "Rejected",
           })
           .then(async () => {
-            let RefreshData = this.state.fileArray;
+            let RefreshData = fileArray;
             // let LastDate = [];
             let LastDate: any = [];
 
-            await RefreshData.filter((files) => {
+            await RefreshData.filter((files:any) => {
               if (files.ID !== value.ID) {
                 LastDate.push(files);
               }
             });
-            await this.setState({
-              fileArray: LastDate,
-              value: LastDate,
-              overalllist: LastDate,
-              items: LastDate,
-              openDialog: false,
-              hiddenDialog: true,
-            });
+            // await this.setState({
+            //   fileArray: LastDate,
+            //   value: LastDate,
+            //   overalllist: LastDate,
+            //   items: LastDate,
+            //   openDialog: false,
+            //   hiddenDialog: true,
+            // });
+
+            setFileArray(LastDate);
+            setValue(LastDate);
+            setOverallList(LastDate);
+            setItems(LastDate);
+            setOpenDialog(false);
+            setHiddenDialog(true);
           });
-        await alert("File has been rejected");
+          fetchData();
+        alert("File has been rejected");
       }
-
-
     };
 
     const changeValueFileDescription = async (e) => {
       console.log(e.target.value);
-      await this.setState({
-        fileDes: e.target.value,
-      })
+      // await this.setState({
+      //   fileDes: e.target.value,
+      // })
+      setFileDes(e.target.value);
     }
 
     const closeHideDialog = () => {
-      this.setState({
-        openDialog: false,
-        hiddenDialog: true,
-      });
+      // this.setState({
+      //   openDialog: false,
+      //   hiddenDialog: true,
+      // });
+      setOpenDialog(false);
+      setHiddenDialog(true);
     };
 
     const closeHideDialog1 = () => {
-      this.setState({
-        openDialog: false,
-        hiddenDialog1: true,
-      });
+      // this.setState({
+      //   openDialog: false,
+      //   hiddenDialog1: true,
+      // });
+      setOpenDialog(false);
+      setHiddenDialog1(true);
     };
     return (
       <div className={styles.QmsDashboard}>
         <Dialog
-          hidden={this.state.hiddenDialog}
+          hidden={hiddenDialog}
           dialogContentProps={dialogContentProps}
           isBlocking={false}
         >
           <TextField
             label="Reason"
-            defaultValue={this.state.fileDes}
+            defaultValue={fileDes}
             multiline
             rows={3}
             onChange={changeValueFileDescription}
           />
           <DialogFooter>
-            <PrimaryButton style={{ backgroundColor: "#0078D4" }} onClick={() => Rejectmail(this.state.CurrentFile)} text="Reject" />
+            <PrimaryButton style={{ backgroundColor: "#0078D4" }} onClick={() => Rejectmail(CurrentFile)} text="Reject" />
             <DefaultButton onClick={closeHideDialog} text="Cancel" />
           </DialogFooter>
         </Dialog>
         <Dialog
-          hidden={this.state.hiddenDialog1}
+          hidden={hiddenDialog1}
           dialogContentProps={dialogContentPropsLoading}
           modalProps={modelProps}
           styles={getStyles}
         >
           {
-            this.state.loading === true ?
+            loading === true ?
               <div style={{
                 // borderStyle: 'dashed',
                 marginTop: '20px'
@@ -1040,7 +1255,7 @@ export default class header extends React.Component<{}, any> {
               </div>
               :
 
-              this.state.error === true ? <div>
+              error === true ? <div>
                 <Label
                   style={{
                     margin: "0 auto",
@@ -1117,24 +1332,24 @@ export default class header extends React.Component<{}, any> {
           tokens={stackTokens}>
           <TextField underlined
             placeholder="Search"
-            onChange={this._onFilter}
+            onChange={_onFilter}
             styles={textFieldStyles}
           />
 
         </Stack>
         <DetailsList
           className={styles.list}
-          items={this.state.items}
+          items={items}
           compact={false}
           columns={columns}
           onRenderItemColumn={_renderItemColumn}
           selectionMode={SelectionMode.none}
-          getKey={this._getKey}
+          getKey={_getKey}
           setKey="none"
           layoutMode={DetailsListLayoutMode.justified}
           isHeaderVisible={true}
         />
-        {(this.state.overalllist.length === 0) ?
+        {(overalllist.length === 0) ?
           <div style={{
             padding: "70px 0",
             margin: "auto",
@@ -1154,13 +1369,13 @@ export default class header extends React.Component<{}, any> {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.count}
-          page={this.state.page}
+          count={count}
+          page={page}
           onPageChange={handleChangePage}
-          rowsPerPage={this.state.rowsPerPage}
+          rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     );
-  }
+  
 }
