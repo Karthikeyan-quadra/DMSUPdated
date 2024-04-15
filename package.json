@@ -27,6 +27,7 @@
     "@pnp/polyfill-ie11": "^2.0.2",
     "@pnp/sp": "^3.24.0",
     "@pnp/spfx-controls-react": "^3.16.1",
+    "antd": "^5.16.2",
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
     "office-ui-fabric-react": "^7.204.0",

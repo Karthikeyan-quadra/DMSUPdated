@@ -3803,7 +3803,30 @@ export default function User(props) {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+
+      <div className={styles.rectangle}>
+        <div className={styles.template}  onClick={toggleHideDialog}>
+          <span className={styles.smallcard1}>
+          <img src={require("../../../../Images/Template.png")} alt="Template logo"  style={{width:"50%"}}/> 
+          </span>
+          <span style={{fontSize:"22px"}}>
+           Select template
+          </span>
+        </div>
+
+        <div className={styles.upload}   onClick={toggleHideDialogUpload}>
+          <span className={styles.smallcard2}>
+          <img src={require("../../../../Images/Upload.png")} alt="Upload logo"  style={{width:"50%"}}/> 
+          </span>
+          <span style={{fontSize:"22px"}}>
+          Upload Document
+          </span>
+        </div>
+      </div>
     </div>
+
+
   );
 }
 
