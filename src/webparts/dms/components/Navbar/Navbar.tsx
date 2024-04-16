@@ -531,25 +531,26 @@ export default function Navbar(){
             {
               key: '1',
               // icon: <UserOutlined />,
-              icon: <img src={require("../../../../Images/Profile.png")} alt="User Dashboard logo" />,
+              icon: <img src={require("../../../../Images/Profile.png")} alt="User Dashboard logo" style={{width:"24px", height:"24px"}}/>,
               label: 'User Dashboard',
               
               
             },
             {
               key: '2',
-              icon: showFirstItem ? <img src={require("../../../../Images/InProgress.png")} alt="QMS logo" /> : null,
+              icon: showFirstItem ? <img src={require("../../../../Images/InProgress.png")} alt="QMS logo" style={{width:"24px", height:"24px"}}/> : null,
               label: showFirstItem ? 'QMS' : '',
             },
             {
               key: '3',
-              icon: showApproverTab ? <img src={require("../../../../Images/Verified.png")} alt="Approver Dashboard logo" /> : null,
+              icon: showApproverTab ? <img src={require("../../../../Images/Verified.png")} alt="Approver Dashboard logo" style={{width:"24px", height:"24px"}}/> : null,
               label: showApproverTab ? 'Approver Dashboard' : '',
             },
           ]}
         />
       </Sider>
-          <div>
+          <div style={{width: "86%",
+    margin: "auto"}}>
             {selectedMenuItem === '1' && <User />}
             {selectedMenuItem === '2' && showFirstItem && <Qms />}
             {selectedMenuItem === '3' && showApproverTab && <Approvers />}

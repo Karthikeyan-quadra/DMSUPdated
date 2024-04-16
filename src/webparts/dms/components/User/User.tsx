@@ -22,11 +22,15 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
+import { Button} from 'antd';
+import { Input } from 'antd';
+
+
 import { TextField } from "@fluentui/react/lib/TextField";
 import ReactTable from "react-table";
 // import Navbar from './Navbar/Navbar';
 import { ISharingResult, SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
-import { Button, Table } from "react-bootstrap";
+// import { Button, Table } from "react-bootstrap";
 import {
   DefaultButton,
   DetailsList,
@@ -50,6 +54,8 @@ import { SPFI } from "@pnp/sp";
 import { getUserDetails } from "../Data/GetSiteList";
 import { useEffect, useState } from "react";
 
+import { Space, Table, Tag } from 'antd';
+import type { TableProps } from 'antd';
 
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
@@ -152,92 +158,152 @@ function formatDate(date) {
   ].join("/");
 }
 
-let columns = [
+// let columns = [
+//   {
+//     key: "Document No",
+//     name: "Document No",
+//     isIconOnly: false,
+//     fieldName: "Filename",
+//     minWidth: 170,
+//     data: "string",
+//     maxWidth: 170,
+//     isResizable: true,
+//     isCollapsible: true,
+//     isPadded: true,
+//   },
+//   {
+//     key: "Upload status",
+//     name: "Upload status",
+//     fieldName: "Status",
+//     minWidth: 100,
+//     maxWidth: 100,
+//     data: "string",
+//     isPadded: true,
+//     isResizable: true,
+//     isCollapsible: true,
+//     isIconOnly: false,
+//   },
+//   {
+//     key: "File Title",
+//     name: "File Title",
+//     fieldName: "FileTitle",
+//     minWidth: 110,
+//     maxWidth: 110,
+//     data: "string",
+//     isPadded: true,
+//     isResizable: true,
+//     isCollapsible: true,
+//     isIconOnly: false,
+//   },
+//   {
+//     key: "File Upload Date",
+//     name: "File Upload Date",
+//     fieldName: "FileUploadDate",
+//     minWidth: 70,
+//     maxWidth: 70,
+//     isResizable: true,
+//     isCollapsible: true,
+//     data: "string",
+//     isIconOnly: false,
+//     isPadded: true,
+//   },
+//   {
+//     key: "Approval Status",
+//     name: "Approval Status",
+//     fieldName: "ApprovalStatus",
+//     minWidth: 150,
+//     maxWidth: 150,
+//     isResizable: true,
+//     isCollapsible: true,
+//     data: "number",
+//     isIconOnly: false,
+//     isPadded: true,
+//   },
+//   {
+//     key: "Requester Name",
+//     name: "Requester Name",
+//     fieldName: "Requester",
+//     minWidth: 120,
+//     maxWidth: 120,
+//     isResizable: true,
+//     isCollapsible: true,
+//     data: "number",
+//     isIconOnly: false,
+//     isPadded: true,
+//   },
+//   {
+//     key: "Link",
+//     name: "Link",
+//     fieldName: "Fileurl",
+//     minWidth: 100,
+//     maxWidth: 100,
+//     isResizable: true,
+//     isCollapsible: true,
+//     data: "number",
+//     isIconOnly: false,
+//     isPadded: true,
+//   },
+// ];
+const { Search } = Input;
+
+
+const columns:any = [
+
   {
-    key: "Document No",
-    name: "Document No",
-    isIconOnly: false,
-    fieldName: "Filename",
-    minWidth: 170,
-    data: "string",
-    maxWidth: 170,
-    isResizable: true,
-    isCollapsible: true,
-    isPadded: true,
+    title: "File Name",
+    dataIndex: "FileTitle",
+    width: 120,
+    align: "center",
+    resizable: true,
+    responsive: ['md', 'lg'],
   },
   {
-    key: "Upload status",
-    name: "Upload status",
-    fieldName: "Status",
-    minWidth: 100,
-    maxWidth: 100,
-    data: "string",
-    isPadded: true,
-    isResizable: true,
-    isCollapsible: true,
-    isIconOnly: false,
+    title: "Document ID",
+    dataIndex: "Filename",
+    width: 170,
+    align: "center",
+    resizable: true,
   },
   {
-    key: "File Title",
-    name: "File Title",
-    fieldName: "FileTitle",
-    minWidth: 110,
-    maxWidth: 110,
-    data: "string",
-    isPadded: true,
-    isResizable: true,
-    isCollapsible: true,
-    isIconOnly: false,
+  title: "Uploaded Date",
+  dataIndex: "FileUploadDate",
+  width: 70,
+  align: "center",
+  resizable: true,
+},
+
+  {
+    title: "Approver",
+    dataIndex: "ApprovalStatus",
+    width: 150,
+    align: "center",
+    resizable: true,
   },
   {
-    key: "File Upload Date",
-    name: "File Upload Date",
-    fieldName: "FileUploadDate",
-    minWidth: 70,
-    maxWidth: 70,
-    isResizable: true,
-    isCollapsible: true,
-    data: "string",
-    isIconOnly: false,
-    isPadded: true,
+    title: "Status",
+    dataIndex: "Status",
+    width: 110,
+    align: "center",
+    resizable: true,
   },
+ 
   {
-    key: "Approval Status",
-    name: "Approval Status",
-    fieldName: "ApprovalStatus",
-    minWidth: 150,
-    maxWidth: 150,
-    isResizable: true,
-    isCollapsible: true,
-    data: "number",
-    isIconOnly: false,
-    isPadded: true,
-  },
-  {
-    key: "Requester Name",
-    name: "Requester Name",
-    fieldName: "Requester",
-    minWidth: 120,
-    maxWidth: 120,
-    isResizable: true,
-    isCollapsible: true,
-    data: "number",
-    isIconOnly: false,
-    isPadded: true,
-  },
-  {
-    key: "Link",
-    name: "Link",
-    fieldName: "Fileurl",
-    minWidth: 100,
-    maxWidth: 100,
-    isResizable: true,
-    isCollapsible: true,
-    data: "number",
-    isIconOnly: false,
-    isPadded: true,
+    title: "View",
+    dataIndex: "Fileurl",
+    width: 100,
+    align: "center",
+    resizable: true,
   },
 ];
+
+const styl=`:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper table{
+  width: 100%;
+  text-align: start;
+  border-radius: 8px 8px 0 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed !important;
+}`
 
 export default function User(props) {
   // constructor(props) {
@@ -302,55 +368,8 @@ export default function User(props) {
   const [showFirstItem, setShowFirstItem] = useState(false);
   const [count, setCount] = useState<any>();
   const [value, setValue] = useState<any>();
-
-
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const sp = getSp();
-
-  //       // Fetch user details
-  //       const userDetails = await getUserDetails();
-  //       const uploadValue = userDetails.length > 0 && userDetails[0].Fileuploader;
-  //       console.log("User details:", userDetails);
-  //       console.log("Upload value:", uploadValue);
-
-  //       // Fetch current user
-  //       let user = await sp.web.currentUser();
-  //       console.log("Current user email:", user.Email);
-
-  //       // Fetch user files
-  //       const sss = await sp.web.lists.getByTitle("User Files")
-  //         .items.select(
-  //           "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-  //         )
-  //         .expand("File")
-  //         .getAll();
-
-  //       console.log("User files:", sss);
-
-  //       // Reverse the order of fetched files
-  //       const y:any = [...sss].reverse();
-
-
-
-  //       // Set state with fetched data
-  //       setValue(y);
-  //       setCount(y.length);
-  //       setItems(y.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-  //       setOveralllist(y);
-
-  //       // setShowFirstItem(uploadValue === "true");
-  //       // setCount(y.length);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [page, rowsPerPage]);
-
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -653,39 +672,50 @@ export default function User(props) {
 
 
 
-  const _onFilter = (event: any, text: string) => {
-    let val: any = overalllist.filter(
-      (i: any) =>
-        i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
-        i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
+  const _onFilter = (text:any) => {
+    const filtered:any = overalllist.filter((item:any)=>
+      item.FileTitle.toLowerCase().includes(text.toLowerCase()) ||
+      item.Status.toLowerCase().includes(text.toLowerCase())
     );
-    let condition = text.toLowerCase() ? val : overalllist;
-    // useState((prevState) => ({
-    //   ...prevState,
-    //   items: text.toLowerCase()
-    //     ? val.slice(
-    //         page * rowsPerPage,
-    //         page * rowsPerPage + rowsPerPage
-    //       )
-    //     : overalllist.slice(
-    //         page * rowsPerPage,
-    //         page * rowsPerPage + rowsPerPage
-    //       ),
-    //   count: condition.length,
-    //   value: condition,
-    // }));
-
-    setItems(text.toLowerCase()
-      ? val.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      )
-      : overalllist.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),)
-
+    setFilteredData(filtered);
+    setSearchText(text);
   };
+
+  // const _onFilter = (event: any, text: string) => {
+  //   let val: any = overalllist.filter(
+  //     (i: any) =>
+  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
+  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
+  //   );
+  //   console.log(val)
+  //   let condition = text.toLowerCase() ? val : overalllist;
+  //   console.log(condition);
+  //   // useState((prevState) => ({
+  //   //   ...prevState,
+  //   //   items: text.toLowerCase()
+  //   //     ? val.slice(
+  //   //         page * rowsPerPage,
+  //   //         page * rowsPerPage + rowsPerPage
+  //   //       )
+  //   //     : overalllist.slice(
+  //   //         page * rowsPerPage,
+  //   //         page * rowsPerPage + rowsPerPage
+  //   //       ),
+  //   //   count: condition.length,
+  //   //   value: condition,
+  //   // }));
+
+  //   setItems(text.toLowerCase()
+  //     ? val.slice(
+  //       page * rowsPerPage,
+  //       page * rowsPerPage + rowsPerPage
+  //     )
+  //     : overalllist.slice(
+  //       page * rowsPerPage,
+  //       page * rowsPerPage + rowsPerPage
+  //     ),)
+
+  // };
   // private _onFilters = (): void => {
   //   console.log("button pressed");
   //   console.log(this.state.searchValue);
@@ -3148,7 +3178,9 @@ export default function User(props) {
   }
 
   return (
+  <div>
     <div className="container" style={{ marginTop: "10px" }}>
+      <style>{styl}</style>
       <div
         style={{
           flex: "1",
@@ -3711,20 +3743,10 @@ export default function User(props) {
           <div
             style={{
               marginTop: "70px",
-              // // borderStyle: "dashed",
-              // height: "50px",
-              // justifyContent: "center",
-              // alignItems: "center",
-              // textAlign: "center"
+        
             }}
           >
-            {/* <img src="https://cdn-icons-png.flaticon.com/512/892/892311.png" alt="Girl in a jacket" width="200" height="200"></img>
-              <div style={{
-               margin: "20px",
-            }}></div>
-              <p style={{
-                fontWeight: "bold"
-              }}>Please wait while file gets Uploaded.</p> */}
+   
             <ProgressIndicator
               label="File is uploading"
               description="It will take some time."
@@ -3755,7 +3777,7 @@ export default function User(props) {
         {/*<UploadFile></UploadFile>*/}
       </Stack>
       <div style={{ margin: "35px" }}></div>
-      <DetailsList
+      {/* <DetailsList
         className={styles.list}
         items={items}
         compact={false}
@@ -3766,7 +3788,7 @@ export default function User(props) {
         setKey="none"
         layoutMode={DetailsListLayoutMode.justified}
         isHeaderVisible={true}
-      />
+      /> */}
       {overalllist.length == 0 ? (
         <div
           style={{
@@ -3805,7 +3827,10 @@ export default function User(props) {
       />
 
 
-      <div className={styles.rectangle}>
+      
+    </div>
+    <div>
+    <div className={styles.rectangle}>
         <div className={styles.template}  onClick={toggleHideDialog}>
           <span className={styles.smallcard1}>
           <img src={require("../../../../Images/Template.png")} alt="Template logo"  style={{width:"50%"}}/> 
@@ -3824,9 +3849,18 @@ export default function User(props) {
           </span>
         </div>
       </div>
-    </div>
+      
+      <div className={styles.Tablediv}>
+        <Search placeholder="Search" onSearch={_onFilter} style={{ width: 300 }} />
+      <Table
+    columns={columns}
+    dataSource={searchText ? filteredData : overalllist}  
 
-
+    />
+      </div>
+      </div>
+      </div>
+  
   );
 }
 

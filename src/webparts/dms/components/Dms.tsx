@@ -99,7 +99,7 @@ export default function DmsWebPart(props){
  
     return (
       <div style={{
-        width: '1400px',
+        width: '100%',
       }}>
           <Navbar />
       </div>
