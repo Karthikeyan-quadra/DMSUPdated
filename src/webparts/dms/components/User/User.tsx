@@ -22,9 +22,8 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
-import { Button} from 'antd';
-import { Input } from 'antd';
-
+import { Button, Layout } from "antd";
+import { Input } from "antd";
 
 import { TextField } from "@fluentui/react/lib/TextField";
 import ReactTable from "react-table";
@@ -54,8 +53,8 @@ import { SPFI } from "@pnp/sp";
 import { getUserDetails } from "../Data/GetSiteList";
 import { useEffect, useState } from "react";
 
-import { Space, Table, Tag } from 'antd';
-import type { TableProps } from 'antd';
+import { Space, Table, Tag } from "antd";
+import type { TableProps } from "antd";
 
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
@@ -246,64 +245,91 @@ function formatDate(date) {
 // ];
 const { Search } = Input;
 
-
-const columns:any = [
-
+const columns: any = [
   {
     title: "File Name",
     dataIndex: "FileTitle",
-    width: 120,
-    align: "center",
+    // width: 150,
+    width: "14%",
+    align: "left",
     resizable: true,
-    responsive: ['md', 'lg'],
+    responsive: ["md", "lg"],
+    ellipsis: true,
+
+    // render: (text) => {
+    //   if (text.length > 10) {
+    //     return <span title={text}>{text.slice(0, 10)}...</span>;
+    //   } else {
+    //     return <span>{text}</span>;
+    //   }
+    // },
   },
   {
     title: "Document ID",
     dataIndex: "Filename",
-    width: 170,
-    align: "center",
+    // width: 220,
+    width: "40%",
+    align: "left",
     resizable: true,
+    ellipsis: true,
   },
   {
-  title: "Uploaded Date",
-  dataIndex: "FileUploadDate",
-  width: 70,
-  align: "center",
-  resizable: true,
-},
+    title: "Uploaded Date",
+    dataIndex: "FileUploadDate",
+    // width: 70,
+    width: "12%",
+    align: "left",
+    resizable: true,
+  },
 
   {
     title: "Approver",
     dataIndex: "ApprovalStatus",
-    width: 150,
-    align: "center",
+    // width: 100,
+    width: "11%",
+    align: "left",
     resizable: true,
   },
   {
     title: "Status",
     dataIndex: "Status",
-    width: 110,
-    align: "center",
+    // width: 100,
+    width: "11%",
+    align: "left",
     resizable: true,
   },
- 
+
   {
     title: "View",
     dataIndex: "Fileurl",
-    width: 100,
-    align: "center",
+    // width: 100,
+    width: "6%",
+    align: "left",
     resizable: true,
+    render: (text, record) => (
+      // <Button
+      //   text="View"
+      //   target="_blank"
+      //   href={record.Fileurl}
+      // />
+
+      <img
+        src={require("../../../../Images/Eye.png")}
+        alt="View"
+        onClick={() => window.open(record.Fileurl, "_blank")}
+      />
+    ),
   },
 ];
 
-const styl=`:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper table{
+const styl = `:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper table{
   width: 100%;
   text-align: start;
   border-radius: 8px 8px 0 0;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed !important;
-}`
+}`;
 
 export default function User(props) {
   // constructor(props) {
@@ -323,7 +349,7 @@ export default function User(props) {
   const [fileDes, setFileDes] = useState("");
   const [fileArray, setFileArray] = useState([]);
   const [departmentName, setDepartmentName] = useState<any>([]);
-  const [documetntype, setDocumetntype] =useState("");
+  const [documetntype, setDocumetntype] = useState("");
   const [documentType, setDocumentType] = useState([]);
   const [ProjectName, setProjectName] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -331,7 +357,7 @@ export default function User(props) {
   const [Filess, setFiless] = useState([]);
   const [SubdepartmentsMain1, setSubdepartmentsMain1] = useState([]);
   const [SubdepartmentsMain2, setSubdepartmentsMain2] = useState([]);
-  const [Subdepartments2, setSubdepartments2] = useState<any>([])
+  const [Subdepartments2, setSubdepartments2] = useState<any>([]);
   const [choose, setChoose] = useState<any>(false);
   const [Subdepartments, setSubdepartments] = useState([]);
   const [SubfolderState, setSubfolderState] = useState(false);
@@ -345,11 +371,11 @@ export default function User(props) {
   const [fileNameStruct, setFileNameStruct] = useState("");
   const [params1, setParams1] = useState<any>("");
   const [params11, setParams11] = useState<any>("");
-  const [departmentKey, setDepartmentKey] = useState<any>('');
-  const [projectKey, setProjectKey] = useState<any>('');
-  const [subFoldersMainKey, setSubFoldersMainKey] = useState('');
+  const [departmentKey, setDepartmentKey] = useState<any>("");
+  const [projectKey, setProjectKey] = useState<any>("");
+  const [subFoldersMainKey, setSubFoldersMainKey] = useState("");
   const [params111, setParams111] = useState<any>("");
-  const [documentKey, setDocumentKey] = useState<any>('');
+  const [documentKey, setDocumentKey] = useState<any>("");
   const [Uploading, setUploading] = useState(false);
   const [DownloadURI, setDownloadURI] = useState(true);
   const [params22, setParams22] = useState<any>("");
@@ -368,7 +394,7 @@ export default function User(props) {
   const [showFirstItem, setShowFirstItem] = useState(false);
   const [count, setCount] = useState<any>();
   const [value, setValue] = useState<any>();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   const fetchData = async () => {
@@ -387,7 +413,8 @@ export default function User(props) {
       console.log("Current user email:", user.Email);
 
       // Fetch user files
-      const sss = await sp.web.lists.getByTitle("User Files")
+      const sss = await sp.web.lists
+        .getByTitle("User Files")
         .items.select(
           "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
         )
@@ -398,8 +425,6 @@ export default function User(props) {
 
       // Reverse the order of fetched files
       const y: any = [...sss].reverse();
-
-
 
       // Set state with fetched data
       setValue(y);
@@ -412,14 +437,12 @@ export default function User(props) {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage]);
 
-
   const fetchAdditionalData = async () => {
-
     try {
       const sp: SPFI = getSp();
 
@@ -432,14 +455,16 @@ export default function User(props) {
       console.log(user.Email);
 
       await fetchData();
-      const items: any[] = await sp.web.lists.getByTitle("Project List").items();
+      const items: any[] = await sp.web.lists
+        .getByTitle("Project List")
+        .items();
       console.log(items.length);
       // this.setState({
       //   DocID: items.length,
       // });
       setDocID(items.length);
 
-      let DepartmentNames: IDropdownOption[] = []
+      let DepartmentNames: IDropdownOption[] = [];
 
       let DocumentType: any = [];
       let ProjectName: any = [];
@@ -513,10 +538,8 @@ export default function User(props) {
           // this.setState({
           //   SubfoldersParent: uniqueArray,
           // });
-          setSubfoldersParent(uniqueArray)
-
+          setSubfoldersParent(uniqueArray);
         });
-
 
       await sp.web.lists
         .getByTitle("Sub departments Main")
@@ -561,11 +584,7 @@ export default function User(props) {
       setSubdepartments2(SubDepartments1);
       setProjectName(ProjectName);
       setCurrentUser(user.Email);
-      setShowFirstItem(uploadValue === 'true');
-
-
-
-
+      setShowFirstItem(uploadValue === "true");
 
       //        const sss = await sp.web.lists.getByTitle("User Files")
       //   .items.select(
@@ -620,18 +639,13 @@ export default function User(props) {
       //     // useState(prevState => ({ ...prevState, CurrentUser: user.Email, showFirstItem: uploadValue === "true" }));
       //     setCurrentUser(user.Email);
       //     setShowFirstItem(uploadValue==="true");
-
     } catch (error) {
-      console.error('Error in fetchAdditionalData:', error);
+      console.error("Error in fetchAdditionalData:", error);
     }
-  }
+  };
   useEffect(() => {
     fetchAdditionalData();
   }, []);
-
-
-
-
 
   // private _onFilter = (
   //   event: React.ChangeEvent<HTMLInputElement>,
@@ -670,12 +684,11 @@ export default function User(props) {
   //   console.log(val);
   // };
 
-
-
-  const _onFilter = (text:any) => {
-    const filtered:any = overalllist.filter((item:any)=>
-      item.FileTitle.toLowerCase().includes(text.toLowerCase()) ||
-      item.Status.toLowerCase().includes(text.toLowerCase())
+  const _onFilter = (text: any) => {
+    const filtered: any = overalllist.filter(
+      (item: any) =>
+        item.FileTitle.toLowerCase().includes(text.toLowerCase()) ||
+        item.Status.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredData(filtered);
     setSearchText(text);
@@ -770,7 +783,6 @@ export default function User(props) {
   //   );
   // };
 
-
   const Page = (value) => {
     // ((prevState) => ({
     //   ...prevState,
@@ -781,19 +793,14 @@ export default function User(props) {
     //   ),
     // }));
     setPage(value);
-    setItems(value.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage)
-    )
-  }
-
+    setItems(value.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+  };
 
   // approverslist
 
   // var sss = [];
   var sss: any = [];
   // const { showFirstItem } = this.state; // Access showFirstItem from state
-
 
   const toggleHideDialog = () => {
     setOpenDialog(true);
@@ -806,7 +813,6 @@ export default function User(props) {
     setOpenDialogUpload(true);
     setHiddenDialogUpload(false);
   };
-
 
   // valueFileType
   const changeValueFileType = async (e, value: any) => {
@@ -821,10 +827,10 @@ export default function User(props) {
     setParams3("");
     setParams4("");
     setParams5("");
-    setDepartmentKey('');
-    setDocumentKey('');
-    setProjectKey('');
-    setSubFoldersMainKey('');
+    setDepartmentKey("");
+    setDocumentKey("");
+    setProjectKey("");
+    setSubFoldersMainKey("");
     setParams22("");
     setParams11("");
     setParams111("");
@@ -836,7 +842,6 @@ export default function User(props) {
 
   // console.log(this.state);
   // console.log(this.context);
-
 
   //original code
   // const changeValuedepartmentName = async (e, value: any) => {
@@ -887,8 +892,10 @@ export default function User(props) {
   //   await console.log(this.state.some)
   // };
 
-
-  const changeValuedepartmentName = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+  const changeValuedepartmentName = async (
+    event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ) => {
     console.log("changeValuedepartmentName function called.");
     console.log("Selected department value:", option);
 
@@ -913,13 +920,13 @@ export default function User(props) {
       if (SubfoldersMainParent.includes(selectedDepartment)) {
         console.log("Selected department has subfolders.");
 
-        const subfolders = SubdepartmentsMain2
-          .filter((subfolder: any) => subfolder.ParentFolders === selectedDepartment)
-          .map((subfolder: any) => ({
-            text: subfolder.SubFolders,
-            key: subfolder.SubFolders,
-            Code: subfolder.Code,
-          }));
+        const subfolders = SubdepartmentsMain2.filter(
+          (subfolder: any) => subfolder.ParentFolders === selectedDepartment
+        ).map((subfolder: any) => ({
+          text: subfolder.SubFolders,
+          key: subfolder.SubFolders,
+          Code: subfolder.Code,
+        }));
 
         console.log("SubdepartmentsMain array:", subfolders);
 
@@ -951,11 +958,7 @@ export default function User(props) {
     } catch (error) {
       console.error("Error in changeValuedepartmentName:", error);
     }
-
   };
-
-
-
 
   // const changeValuedepartmentName = (e, value) => {
   //   console.log(value);
@@ -1000,8 +1003,10 @@ export default function User(props) {
   //   this.setState({ sss: sssCopy });
   // };
 
-
-  const changeValuedocumentType = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+  const changeValuedocumentType = async (
+    event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ) => {
     console.log(option);
     const selectedDocumentKey: any = option?.key;
     console.log("Selected department:", selectedDocumentKey);
@@ -1016,7 +1021,10 @@ export default function User(props) {
     setDocumentKey(selectedDocumentKey);
   };
 
-  const changeValueProjectName = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+  const changeValueProjectName = async (
+    event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ) => {
     // console.log(value);
     console.log(option);
     const selectedProjectKey: any = option?.key;
@@ -1030,14 +1038,16 @@ export default function User(props) {
     setProjectKey(selectedProjectKey);
   };
 
-  const changeValueSubdepartmentsMain = async (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+  const changeValueSubdepartmentsMain = async (
+    event: React.FormEvent<HTMLDivElement>,
+    option?: IDropdownOption
+  ) => {
     console.log(option);
     // subFoldersMainKey
     // Subfolders ,ParentFolder
     const SubDepartmentmainkey: any = option?.key;
     console.log(SubDepartmentmainkey);
     console.log(option?.key);
-
 
     if (SubfoldersParent.includes(option?.text)) {
       // let array1 = [];
@@ -1068,7 +1078,6 @@ export default function User(props) {
       setSubdepartments(array1);
       setParams1(option?.key);
       setParams3(option?.text);
-
     } else {
       // this.setState({
       //   SubfolderState1: false,
@@ -1083,7 +1092,6 @@ export default function User(props) {
       setParams1(option?.key);
       setParams3(option?.text);
       setSubFoldersMainKey(SubDepartmentmainkey);
-
     }
 
     // await console.log(this.state.some)
@@ -1126,17 +1134,15 @@ export default function User(props) {
     //   fileDes: value,
     // });
     setFileDes(value);
-
   };
 
   const downloadFile = async () => {
     //download xl file
-    const sp: SPFI = getSp()
+    const sp: SPFI = getSp();
 
     console.log(downloadUrl);
     console.log(downloadUrl.split("/")[4]);
     let fileName = downloadUrl.split("/")[4];
-
 
     //  console.log(this.state.downloadUrl.split("/")[5]);
     // let fileName = this.state.downloadUrl.split("/")[5];
@@ -1171,10 +1177,6 @@ export default function User(props) {
     }
   };
 
-
-
-
-
   //ORIGINAL CODE
   // const clickGenerate = async () => {
   //   console.log(this.state);
@@ -1184,7 +1186,6 @@ export default function User(props) {
   //   let somee:any = [];
   //   let somee1:any = [];
   //   let somee2:any = [];
-
 
   //   if (this.state.params111.length <= 0) {
   //     alert("Please add Department Name before generating ID!");
@@ -1271,7 +1272,6 @@ export default function User(props) {
 
   //     // let somss:any = await folder.getAll().then(async (s) => {
 
-
   //     let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
   //     let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
   //     let somss:any = await folder.files.getAll().then(async (s) => {
@@ -1330,7 +1330,6 @@ export default function User(props) {
   //   }
   // };
 
-
   //  const clickGenerate = async () => {
   //     console.log(this.state);
   //     // let somee = [];
@@ -1339,7 +1338,6 @@ export default function User(props) {
   //     let somee:any = [];
   //     let somee1:any = [];
   //     let somee2:any = [];
-
 
   //     if (this.state.params111.length <= 0) {
   //       alert("Please add Department Name before generating ID!");
@@ -1433,8 +1431,6 @@ export default function User(props) {
   //       //   digitArray.push(splitFileEx);
   //       // });
 
-
-
   //       const sp: SPFI = getSp();
   //       let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
 
@@ -1451,10 +1447,6 @@ export default function User(props) {
   //         let splitFileEx: any = last.split(".")[0];
   //         digitArray.push(splitFileEx);
   //       });
-
-
-
-
 
   //       // Calculate lastDigit and update state
   //       if (digitArray.length > 0) {
@@ -1487,7 +1479,6 @@ export default function User(props) {
   //       console.log(this.state);
   //     }
   //   };
-
 
   //This code works
   // const clickGenerate = async () => {
@@ -1585,8 +1576,6 @@ export default function User(props) {
   //   }
   // };
 
-
-
   const clickGenerate = async () => {
     // Clear arrays and other relevant state variables
     let somee: any = [];
@@ -1641,20 +1630,22 @@ export default function User(props) {
       const sp: SPFI = getSp();
       // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
       // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-      let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join("/")}`;
-
-
+      let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join(
+        "/"
+      )}`;
 
       const list = sp.web.lists.getByTitle("Original File");
       try {
-        const items = await list.items.select('Id,Title,FileRef,FileLeafRef,FileDirRef').filter(`FileDirRef eq '${folderPath}'`).getAll();
+        const items = await list.items
+          .select("Id,Title,FileRef,FileLeafRef,FileDirRef")
+          .filter(`FileDirRef eq '${folderPath}'`)
+          .getAll();
         console.log("Fetched items:", items);
-
 
         if (items.length > 0) {
           // console.log('HI')
           items.forEach((item: any) => {
-            console.log(item)
+            console.log(item);
             if (item && item.FileLeafRef) {
               console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
 
@@ -1665,24 +1656,22 @@ export default function User(props) {
                 console.log("Extracted Digits:", extractedDigits);
                 digitArray.push(...extractedDigits); // Use spread operator to push individual digits
               } else {
-                console.log("No valid digits found in FileLeafRef:", item.FileLeafRef);
+                console.log(
+                  "No valid digits found in FileLeafRef:",
+                  item.FileLeafRef
+                );
               }
             }
           });
         }
-
-
-      }
-
-      catch (error) {
+      } catch (error) {
         console.error("Error fetching items:", error);
       }
-
 
       if (digitArray.length > 0) {
         let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
         let last = sortNumbers[sortNumbers.length - 1];
-        let returnNumber: string = (last + 1).toString().padStart(4, '0');
+        let returnNumber: string = (last + 1).toString().padStart(4, "0");
 
         if (returnNumber.length === 1) {
           lastDigit = "000" + returnNumber;
@@ -1707,16 +1696,12 @@ export default function User(props) {
       //   fileUrl: somee2.join("/"),
       //   fileNameStruct: somee1.join("-"),
       // });
-      setFileUrl(somee2.join("/"))
-      setFileNameStruct(somee1.join("-"))
+      setFileUrl(somee2.join("/"));
+      setFileNameStruct(somee1.join("-"));
 
       // console.log(this.state);
     }
   };
-
-
-
-
 
   const changeValueFileID = async (e, value: any) => {
     // console.log(value);
@@ -1736,28 +1721,18 @@ export default function User(props) {
     if (params111.length <= 0) {
       // alert("Please add Department Name before generating ID!");
       alert("Please select Department Name");
-
     } else if (params2.length <= 0) {
       // alert("Please add Document Name before generating ID!");
       alert("Please select Document Name");
-
     }
     // else if(params5.length <= 0) {
     //   alert("Please add Project Name before generating ID!")
     // }
-    else if (
-      SubfolderState === true &&
-      params3.length <= 0
-    ) {
+    else if (SubfolderState === true && params3.length <= 0) {
       // alert("Please add Sub Folders Main before generating ID!");
       alert("Please select Sub Folders Main");
-
-    } else if (
-      SubfolderState1 === true &&
-      params4.length <= 0
-    ) {
+    } else if (SubfolderState1 === true && params4.length <= 0) {
       alert("Please add Sub Folders before generating ID!");
-
     }
 
     if (params111.length > 0) {
@@ -1789,10 +1764,7 @@ export default function User(props) {
     console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
     console.log(`${fileUrl}`);
 
-
-
-
-    const sp: SPFI = getSp()
+    const sp: SPFI = getSp();
     // let filesName = [];
     let filesName: any = [];
 
@@ -1808,11 +1780,13 @@ export default function User(props) {
     //   `/sites/DMS-Quadra/Original File/${fileUrl}`
     // );
 
-
-    const folder: any = await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Original File/${fileUrl}`).files.expand("Files/ListItemAllFields,DocID").select()()
+    const folder: any = await sp.web
+      .getFolderByServerRelativePath(
+        `/sites/DMS-Quadra/Original File/${fileUrl}`
+      )
+      .files.expand("Files/ListItemAllFields,DocID")
+      .select()();
     console.log(folder);
-
-
 
     console.log(folder);
 
@@ -1830,7 +1804,6 @@ export default function User(props) {
     // });
     setFileUrl(somee.join("/"));
     setFiless(filesName);
-
 
     // this.setState({
     //   fileUrl: somee.join("/"),
@@ -1881,7 +1854,6 @@ export default function User(props) {
 
       setDocumetntype(value.text);
 
-
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
         { key: "Work Instruction", text: "CNC Shop Floor" },
@@ -1909,7 +1881,6 @@ export default function User(props) {
       setChoose(true);
       setDocumetntype(value.text);
 
-
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
         { key: "Work Instruction", text: "CNC Shop Floor" },
@@ -1936,7 +1907,7 @@ export default function User(props) {
       // });
       setChoose(false);
 
-      const sp: SPFI = getSp()
+      const sp: SPFI = getSp();
       let somss: any = await sp.web.lists.getByTitle("My Docs").items();
       console.log(somss);
       await somss.filter((file) => {
@@ -1973,7 +1944,7 @@ export default function User(props) {
 
     let ID;
     let path;
-    const sp: SPFI = getSp()
+    const sp: SPFI = getSp();
     let somss: any = await sp.web.lists.getByTitle("My Docs").items();
     console.log(somss);
     await somss.filter((file: any) => {
@@ -1981,7 +1952,6 @@ export default function User(props) {
         ID = file.ID;
         console.log(ID);
         console.log(file);
-
       }
     });
     console.log(ID);
@@ -2036,7 +2006,6 @@ export default function User(props) {
     setDownloadUrl("");
     setDownloadURI(true);
 
-
     chooose.length = 0;
   };
 
@@ -2081,9 +2050,9 @@ export default function User(props) {
     setFiless([]);
     setFileNameStruct("");
     setValueFileType("");
-    setDepartmentKey('');
-    setDocumentKey('');
-    setProjectKey('');
+    setDepartmentKey("");
+    setDocumentKey("");
+    setProjectKey("");
 
     // console.log(this.state.openDialog)
   };
@@ -2102,7 +2071,6 @@ export default function User(props) {
     const fieldContent = item[column.fieldName] as string;
     console.log(fieldContent);
     console.log(item);
-
 
     switch (column.key) {
       case "Upload status":
@@ -2190,22 +2158,15 @@ export default function User(props) {
     console.log(filenames.length);
     console.log(fileDes.length);
 
-
     if (Array.isArray(fileess) && fileess.length > 0) {
-
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
 
       console.log(fileToUpload);
-    }
-    else if (fileNameStruct.length <= 0) {
+    } else if (fileNameStruct.length <= 0) {
       alert("Please generate Id");
-    }
-
-    else if (fileess.length <= 0) {
+    } else if (fileess.length <= 0) {
       alert("Please Choose File");
-    }
-
-    else if (filenames.length <= 0) {
+    } else if (filenames.length <= 0) {
       alert("Please give file name");
     } else if (fileDes.length <= 0) {
       alert("Please give file Description");
@@ -2218,7 +2179,7 @@ export default function User(props) {
       // this.setState({
       //   Uploading: true,
       // });
-      setUploading(true)
+      setUploading(true);
 
       let Department: any = "";
       let Subdepartment: any = "";
@@ -2282,7 +2243,6 @@ export default function User(props) {
         //   });
         // });
 
-
         //This code works
         let fileexe: any = myfile.name.split(".").pop();
         console.log(fileexe);
@@ -2295,9 +2255,7 @@ export default function User(props) {
         // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
 
-
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
 
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
         // const documentLibraryName = "Shared Documents1";
@@ -2320,7 +2278,7 @@ export default function User(props) {
         const documentLibraryName = "Shared Documents1";
 
         // Split the fileUrl string into individual folder names
-        const folders = fileUrl.split('/');
+        const folders = fileUrl.split("/");
         console.log(fileUrl);
         console.log(folders);
 
@@ -2334,17 +2292,27 @@ export default function User(props) {
             currentFolderPath += `/${folderName}`;
 
             // Check if the folder already exists
-            const folder = await sp.web.getFolderByServerRelativePath(currentFolderPath).getItem();
-            console.log(`Folder "${folderName}" already exists at path: ${currentFolderPath}`);
+            const folder = await sp.web
+              .getFolderByServerRelativePath(currentFolderPath)
+              .getItem();
+            console.log(
+              `Folder "${folderName}" already exists at path: ${currentFolderPath}`
+            );
           } catch (error) {
             // Handle the error if the folder doesn't exist
-            console.error(`Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`);
-            console.log(`Creating folder "${folderName}" at path: ${currentFolderPath}`);
+            console.error(
+              `Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`
+            );
+            console.log(
+              `Creating folder "${folderName}" at path: ${currentFolderPath}`
+            );
 
             // Attempt to create the folder
             try {
               await sp.web.folders.addUsingPath(currentFolderPath);
-              console.log(`Folder "${folderName}" created successfully at path: ${currentFolderPath}`);
+              console.log(
+                `Folder "${folderName}" created successfully at path: ${currentFolderPath}`
+              );
             } catch (error) {
               console.error(`Error creating folder "${folderName}":`, error);
               return;
@@ -2352,8 +2320,11 @@ export default function User(props) {
           }
         }
 
-        await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
+        await sp.web
+          .getFolderByServerRelativePath(folderPath)
+          .files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, {
+            Overwrite: true,
+          })
 
           .then(async (f) => {
             await f.file.getItem().then(async (item) => {
@@ -2378,9 +2349,6 @@ export default function User(props) {
               console.log(item);
             });
           });
-
-
-
 
         fileUrl;
         let fileurl: any = "";
@@ -2412,9 +2380,7 @@ export default function User(props) {
           // update item in an sp list
           const items: any[] = await sp.web.lists
             .getByTitle("User Files")
-            .items.filter(
-              `Filename eq '${fileNameStruct}.${fileexe}'`
-            )();
+            .items.filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
           console.log(items);
           const max = items.reduce(function (prev, current) {
             // var ts = new Date("2022-04-06T09:21:13Z");
@@ -2446,7 +2412,6 @@ export default function User(props) {
               // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2476,8 +2441,6 @@ export default function User(props) {
               //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2496,17 +2459,14 @@ export default function User(props) {
         // this.setState({
         //   Uploading: false,
         // });
-        setUploading(false)
-
+        setUploading(false);
       } else {
-        const sp: SPFI = getSp()
+        const sp: SPFI = getSp();
         console.log(myfile.name);
         let fileexe: any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
         // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
-
-
 
         console.log(`${fileNameStruct}.${fileexe}`);
         // await sp.web
@@ -2517,7 +2477,6 @@ export default function User(props) {
           .getFolderByServerRelativePath(
             // `/sites/DMS-TATA/Shared Documents1/${fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
-
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
@@ -2541,7 +2500,7 @@ export default function User(props) {
                 // this.setState({
                 //   fileIDs: myupdate.ID,
                 // });
-                setFileIDs(myupdate.ID)
+                setFileIDs(myupdate.ID);
                 // console.log("Metadata Updated");
               });
             });
@@ -2575,7 +2534,10 @@ export default function User(props) {
 
         const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
 
-        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+        const items: any = await folder.files
+          .expand("Files/ListItemAllFields,DocID")
+          .select()
+          .getAll();
 
         for (const item of items) {
           console.log(item);
@@ -2642,7 +2604,6 @@ export default function User(props) {
               // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2655,7 +2616,7 @@ export default function User(props) {
         // this.setState({
         //   Uploading: false,
         // });
-        setUploading(false)
+        setUploading(false);
       }
 
       // this.setState({
@@ -2687,49 +2648,40 @@ export default function User(props) {
       setHiddenDialogUpload(true);
       setSubfolderState(false);
       setSubfolderState1(false);
-      setFileUrl('');
-      setFilenames('');
-      setFileDes('');
+      setFileUrl("");
+      setFilenames("");
+      setFileDes("");
       setFiless([]);
-      setParams1('');
-      setParams22('');
-      setParams11('');
-      setParams2('');
-      setParams3('');
-      setParams4('');
-      setParams5('');
-      setFileNameStruct('');
-      setValueFileType('Old Files');
+      setParams1("");
+      setParams22("");
+      setParams11("");
+      setParams2("");
+      setParams3("");
+      setParams4("");
+      setParams5("");
+      setFileNameStruct("");
+      setValueFileType("Old Files");
       setFileess([]);
-      setDepartmentKey('');
-      setDocumentKey('');
-      setProjectKey('');
+      setDepartmentKey("");
+      setDocumentKey("");
+      setProjectKey("");
       // console.log(this.state);
     }
-
-  }
-
+  };
 
   const filesaveold = async () => {
     console.log(filenames.length);
     console.log(fileDes.length);
 
-
     if (Array.isArray(fileess) && fileess.length > 0) {
-
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
 
       console.log(fileToUpload);
-    }
-    else if (fileNameStruct.length <= 0) {
+    } else if (fileNameStruct.length <= 0) {
       alert("Please click search and select the file");
-    }
-
-    else if (fileess.length <= 0) {
+    } else if (fileess.length <= 0) {
       alert("Please Choose File");
-    }
-
-    else if (filenames.length <= 0) {
+    } else if (filenames.length <= 0) {
       alert("Please give an file name");
     } else if (fileDes.length <= 0) {
       alert("Please give an file Description");
@@ -2742,7 +2694,7 @@ export default function User(props) {
       // this.setState({
       //   Uploading: true,
       // });
-      setUploading(true)
+      setUploading(true);
 
       let Department: any = "";
       let Subdepartment: any = "";
@@ -2806,13 +2758,11 @@ export default function User(props) {
         //   });
         // });
 
-
         //This code works
         let fileexe: any = myfile.name.split(".").pop();
         console.log(fileexe);
         // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
-
 
         console.log(`${fileNameStruct}.${fileexe}`);
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
@@ -2821,12 +2771,15 @@ export default function User(props) {
         // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
 
-
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
-
-        await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`).files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
+        await sp.web
+          .getFolderByServerRelativePath(
+            `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
+          )
+          .files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, {
+            Overwrite: true,
+          })
 
           .then(async (f) => {
             await f.file.getItem().then(async (item) => {
@@ -2851,9 +2804,6 @@ export default function User(props) {
               console.log(item);
             });
           });
-
-
-
 
         fileUrl;
         let fileurl: any = "";
@@ -2885,9 +2835,7 @@ export default function User(props) {
           // update item in an sp list
           const items: any[] = await sp.web.lists
             .getByTitle("User Files")
-            .items.filter(
-              `Filename eq '${fileNameStruct}.${fileexe}'`
-            )();
+            .items.filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
           console.log(items);
           const max = items.reduce(function (prev, current) {
             // var ts = new Date("2022-04-06T09:21:13Z");
@@ -2919,7 +2867,6 @@ export default function User(props) {
               // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2949,8 +2896,6 @@ export default function User(props) {
               //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -2969,16 +2914,14 @@ export default function User(props) {
         // this.setState({
         //   Uploading: false,
         // });
-        setUploading(false)
+        setUploading(false);
       } else {
-        const sp: SPFI = getSp()
+        const sp: SPFI = getSp();
         console.log(myfile.name);
         let fileexe: any = myfile.name.split(".").pop();
         // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
         // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
-
-
 
         console.log(`${fileNameStruct}.${fileexe}`);
         // await sp.web
@@ -2989,7 +2932,6 @@ export default function User(props) {
           .getFolderByServerRelativePath(
             // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
-
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
@@ -3013,7 +2955,7 @@ export default function User(props) {
                 // this.setState({
                 //   fileIDs: myupdate.ID,
                 // });
-                setFileIDs(myupdate.ID)
+                setFileIDs(myupdate.ID);
                 // console.log("Metadata Updated");
               });
             });
@@ -3043,10 +2985,12 @@ export default function User(props) {
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
 
-
         const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
 
-        const items: any = await folder.files.expand("Files/ListItemAllFields,DocID").select().getAll();
+        const items: any = await folder.files
+          .expand("Files/ListItemAllFields,DocID")
+          .select()
+          .getAll();
 
         for (const item of items) {
           console.log(item);
@@ -3113,7 +3057,6 @@ export default function User(props) {
               // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
-
               Department: Department,
               SubDepartment: Subdepartment,
             })
@@ -3156,185 +3099,186 @@ export default function User(props) {
       setHiddenDialogUpload(true);
       setSubfolderState(false);
       setSubfolderState1(false);
-      setFileUrl('');
-      setFilenames('');
-      setFileDes('');
+      setFileUrl("");
+      setFilenames("");
+      setFileDes("");
       setFiless([]);
-      setParams1('');
-      setParams22('');
-      setParams11('');
-      setParams2('');
-      setParams3('');
-      setParams4('');
-      setParams5('');
-      setFileNameStruct('');
-      setValueFileType('Old Files');
-      setDepartmentKey('');
-      setDocumentKey('');
-      setProjectKey('');
+      setParams1("");
+      setParams22("");
+      setParams11("");
+      setParams2("");
+      setParams3("");
+      setParams4("");
+      setParams5("");
+      setFileNameStruct("");
+      setValueFileType("Old Files");
+      setDepartmentKey("");
+      setDocumentKey("");
+      setProjectKey("");
       setFileess([]);
-
     }
-  }
+  };
 
   return (
-  <div>
-    <div className="container" style={{ marginTop: "10px" }}>
-      <style>{styl}</style>
-      <div
-        style={{
-          flex: "1",
-          flexDirection: "row",
-          //    margin:'2px',
-          //    gap:'3px',
-          // borderStyle: 'dashed',
-          // borderColor: 'black',
-          position: "relative",
-
-          columnGap: "2px",
-        }}
-      >
-        <PrimaryButton
-          text="Template"
-          style={{ backgroundColor: "#0078D4" }}
-          onClick={toggleHideDialog}
-        />
-
-        {showFirstItem && (<PrimaryButton
-          text="Upload"
+    <div>
+      <div className="container" style={{ marginTop: "10px", display: "none" }}>
+        <style>{styl}</style>
+        <div
           style={{
+            flex: "1",
+            flexDirection: "row",
+            //    margin:'2px',
+            //    gap:'3px',
             // borderStyle: 'dashed',
             // borderColor: 'black',
-            position: "absolute",
-            left: "86%",
-            backgroundColor: "#0078D4",
+            position: "relative",
+
+            columnGap: "2px",
           }}
-          onClick={toggleHideDialogUpload}
-        />)}
-      </div>
-
-      <Dialog
-        hidden={hiddenDialog}
-        // containerClassName={ 'ms-dialogMainOverride ' + styles.textDialog}
-        dialogContentProps={dialogContentProps}
-        isBlocking={false}
-      >
-        {/* <p>Download template</p> */}
-        <Dropdown
-          placeholder="Select an option"
-          label="Template"
-          options={options1}
-          onChange={changeValue}
-          styles={dropdownStyles}
-        />
-        {choose ? (
-          <Dropdown
-            placeholder="Select an option"
-            label="Sub Section"
-            options={chooose}
-            onChange={changeValue1}
-            styles={dropdownStyles}
+        >
+          <PrimaryButton
+            text="Template"
+            style={{ backgroundColor: "#0078D4" }}
+            onClick={toggleHideDialog}
           />
-        ) : (
-          <div></div>
-        )}
-        <DialogFooter>
-          {DownloadURI === true ? (
-            <PrimaryButton
-              disabled={DownloadURI}
-              style={{ backgroundColor: "#989898" }}
-              onClick={downloadFile}
-              text="Download"
-            />
-          ) : (
-            <PrimaryButton
-              disabled={DownloadURI}
-              style={{ backgroundColor: "#0078D4" }}
-              onClick={downloadFile}
-              text="Download"
-            />
-          )}
-          <DefaultButton onClick={closeHideDialog} text="Cancel" />
-        </DialogFooter>
-      </Dialog>
 
-      <Dialog
-        hidden={hiddenDialogUpload}
-        containerClassName={"ms-dialogMainOverride " + styles.textDialog}
-        dialogContentProps={dialogContentPropsUpload}
-        modalProps={modelProps}
-        styles={getStyles}
-      >
-        <div>
-          {Uploading === false && (
-            <Dropdown
-              placeholder="Select an option"
-              label="File type"
-              // selectedKey={this.state.valueFileType}
-              options={options}
-              onChange={(e, value) => changeValueFileType(e, value)}
-              styles={dropdownStyles}
+          {showFirstItem && (
+            <PrimaryButton
+              text="Upload"
+              style={{
+                // borderStyle: 'dashed',
+                // borderColor: 'black',
+                position: "absolute",
+                left: "86%",
+                backgroundColor: "#0078D4",
+              }}
+              onClick={toggleHideDialogUpload}
             />
           )}
         </div>
-        {Uploading === false ? (
+
+        <Dialog
+          hidden={hiddenDialog}
+          // containerClassName={ 'ms-dialogMainOverride ' + styles.textDialog}
+          dialogContentProps={dialogContentProps}
+          isBlocking={false}
+        >
+          {/* <p>Download template</p> */}
+          <Dropdown
+            placeholder="Select an option"
+            label="Template"
+            options={options1}
+            onChange={changeValue}
+            styles={dropdownStyles}
+          />
+          {choose ? (
+            <Dropdown
+              placeholder="Select an option"
+              label="Sub Section"
+              options={chooose}
+              onChange={changeValue1}
+              styles={dropdownStyles}
+            />
+          ) : (
+            <div></div>
+          )}
+          <DialogFooter>
+            {DownloadURI === true ? (
+              <PrimaryButton
+                disabled={DownloadURI}
+                style={{ backgroundColor: "#989898" }}
+                onClick={downloadFile}
+                text="Download"
+              />
+            ) : (
+              <PrimaryButton
+                disabled={DownloadURI}
+                style={{ backgroundColor: "#0078D4" }}
+                onClick={downloadFile}
+                text="Download"
+              />
+            )}
+            <DefaultButton onClick={closeHideDialog} text="Cancel" />
+          </DialogFooter>
+        </Dialog>
+
+        <Dialog
+          hidden={hiddenDialogUpload}
+          containerClassName={"ms-dialogMainOverride " + styles.textDialog}
+          dialogContentProps={dialogContentPropsUpload}
+          modalProps={modelProps}
+          styles={getStyles}
+        >
           <div>
-            {valueFileType === "Old Files" ? (
-              <div
-                style={{
-                  marginTop: "30px",
-                }}
-              >
-                <div>
-                  {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
-                  <div
-                    style={{
-                      height: "200px",
-                      // borderStyle: 'dashed',
-                      // borderColor: 'black',
-                      // flexDirection: 'row',
-                      position: "relative",
-                      // left: '86%',
-                      // backgroundColor: "#0078D4"
-                    }}
-                  >
+            {Uploading === false && (
+              <Dropdown
+                placeholder="Select an option"
+                label="File type"
+                // selectedKey={this.state.valueFileType}
+                options={options}
+                onChange={(e, value) => changeValueFileType(e, value)}
+                styles={dropdownStyles}
+              />
+            )}
+          </div>
+          {Uploading === false ? (
+            <div>
+              {valueFileType === "Old Files" ? (
+                <div
+                  style={{
+                    marginTop: "30px",
+                  }}
+                >
+                  <div>
+                    {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
                     <div
                       style={{
-                        left: "0%",
-                        position: "absolute",
+                        height: "200px",
+                        // borderStyle: 'dashed',
+                        // borderColor: 'black',
+                        // flexDirection: 'row',
+                        position: "relative",
                         // left: '86%',
                         // backgroundColor: "#0078D4"
                       }}
                     >
-                      <Dropdown
-                        placeholder="Select an option"
-                        label="Department Name"
-                        disabled={valueFileType !== "Old Files"}
-                        selectedKey={departmentKey}
-                        options={departmentName}
-                        onChange={changeValuedepartmentName}
-                        styles={dropdownStyles}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        left: "35%",
-                        position: "absolute",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
-                      }}
-                    >
-                      <Dropdown
-                        placeholder="Select an option"
-                        label="Document Name"
-                        disabled={valueFileType !== "Old Files"}
-                        selectedKey={documentKey}
-                        options={documentType}
-                        onChange={changeValuedocumentType}
-                        styles={dropdownStyles}
-                      />
-                    </div>
-                    {/* <div
+                      <div
+                        style={{
+                          left: "0%",
+                          position: "absolute",
+                          // left: '86%',
+                          // backgroundColor: "#0078D4"
+                        }}
+                      >
+                        <Dropdown
+                          placeholder="Select an option"
+                          label="Department Name"
+                          disabled={valueFileType !== "Old Files"}
+                          selectedKey={departmentKey}
+                          options={departmentName}
+                          onChange={changeValuedepartmentName}
+                          styles={dropdownStyles}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          left: "35%",
+                          position: "absolute",
+                          // left: '86%',
+                          // backgroundColor: "#0078D4"
+                        }}
+                      >
+                        <Dropdown
+                          placeholder="Select an option"
+                          label="Document Name"
+                          disabled={valueFileType !== "Old Files"}
+                          selectedKey={documentKey}
+                          options={documentType}
+                          onChange={changeValuedocumentType}
+                          styles={dropdownStyles}
+                        />
+                      </div>
+                      {/* <div
                   style={{
                     left: "60%",
                     position: "absolute",
@@ -3350,434 +3294,440 @@ export default function User(props) {
                     styles={dropdownStyles}
                   />
                 </div> */}
-                    {SubfolderState === true ? (
-                      <div
-                        style={{
-                          left: "0%",
-                          marginTop: "100px",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Sub Folders Main"
-                          disabled={valueFileType !== "Old Files"}
-                          selectedKey={subFoldersMainKey}
-                          options={SubdepartmentsMain}
-                          onChange={changeValueSubdepartmentsMain}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    {SubfolderState1 === true ? (
-                      <div
-                        style={{
-                          marginTop: "100px",
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Sub Folders"
-                          options={Subdepartments}
-                          onChange={changeValueSubdepartments}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
+                      {SubfolderState === true ? (
+                        <div
+                          style={{
+                            left: "0%",
+                            marginTop: "100px",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <Dropdown
+                            placeholder="Select an option"
+                            label="Sub Folders Main"
+                            disabled={valueFileType !== "Old Files"}
+                            selectedKey={subFoldersMainKey}
+                            options={SubdepartmentsMain}
+                            onChange={changeValueSubdepartmentsMain}
+                            styles={dropdownStyles}
+                          />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                      {SubfolderState1 === true ? (
+                        <div
+                          style={{
+                            marginTop: "100px",
+                            left: "35%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <Dropdown
+                            placeholder="Select an option"
+                            label="Sub Folders"
+                            options={Subdepartments}
+                            onChange={changeValueSubdepartments}
+                            styles={dropdownStyles}
+                          />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
 
-                    {SubfolderState1 === false ? (
-                      <div
-                        style={{
-                          marginTop: "130px",
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <PrimaryButton
-                          text="Search"
-                          style={{ backgroundColor: "#0078D4" }}
-                          onClick={clickGenerate1}
-                          disabled={valueFileType !== "Old Files"}
-
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          marginTop: "130px",
-                          left: "70%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <PrimaryButton
-                          text="Search"
-                          disabled={valueFileType !== "Old Files"}
-                          style={{ backgroundColor: "#0078D4" }}
-                          onClick={clickGenerate1}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      marginBottom: "30px",
-                      position: "relative",
-                    }}
-                  >
-                    <Dropdown
-                      placeholder="Select File"
-                      label="Select File"
-                      options={Filess}
-                      onChange={changeSalectFilename}
-                      style={{
-                        width: "50%",
-                      }}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "50px",
-                    }}
-                  >
-                    <input type="file" name="myFile" id="newfile" accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
-                      disabled={valueFileType !== "Old Files"}></input>
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "20px",
-                    }}
-                  >
-                    <TextField
-                      label="File name"
-                      value={filenames}
-                      onChange={changeValueFilename}
-                      disabled={valueFileType !== "Old Files"}
-                    />
-                    <TextField
-                      label="File description"
-                      value={fileDes}
-                      multiline
-                      rows={3}
-                      onChange={changeValueFileDescription}
-                      disabled={valueFileType !== "Old Files"}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <PrimaryButton
-                    text="Upload"
-                    style={{ backgroundColor: "#0078D4" }}
-                    // onClick={this.filesave}
-                    onClick={filesaveold}
-                    disabled={valueFileType !== "Old Files"}
-                  />
-                  <DefaultButton
-                    onClick={closeHideDialogUpload}
-                    text="Cancel"
-                  />
-                </DialogFooter>
-              </div>
-            ) : (
-              // New file
-              <div
-                style={{
-                  marginTop: "30px",
-                }}
-              >
-                <div>
-                  {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
-                  <div
-                    style={{
-                      height: "200px",
-                      // borderStyle: 'dashed',
-                      // borderColor: 'black',
-                      // flexDirection: 'row',
-                      position: "relative",
-                      // left: '86%',
-                      // backgroundColor: "#0078D4"
-                    }}
-                  >
+                      {SubfolderState1 === false ? (
+                        <div
+                          style={{
+                            marginTop: "130px",
+                            left: "35%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <PrimaryButton
+                            text="Search"
+                            style={{ backgroundColor: "#0078D4" }}
+                            onClick={clickGenerate1}
+                            disabled={valueFileType !== "Old Files"}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            marginTop: "130px",
+                            left: "70%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <PrimaryButton
+                            text="Search"
+                            disabled={valueFileType !== "Old Files"}
+                            style={{ backgroundColor: "#0078D4" }}
+                            onClick={clickGenerate1}
+                          />
+                        </div>
+                      )}
+                    </div>
                     <div
                       style={{
-                        left: "0%",
-                        position: "absolute",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
+                        marginBottom: "30px",
+                        position: "relative",
                       }}
                     >
                       <Dropdown
-                        placeholder="Select an option"
-                        label="Department Name"
-                        disabled={valueFileType !== "New Files"}
-                        // defaultValue={params11}
-                        selectedKey={departmentKey}
-                        options={departmentName}
-                        onChange={changeValuedepartmentName}
-                        styles={dropdownStyles}
+                        placeholder="Select File"
+                        label="Select File"
+                        options={Filess}
+                        onChange={changeSalectFilename}
+                        style={{
+                          width: "50%",
+                        }}
                       />
                     </div>
                     <div
                       style={{
-                        left: "35%",
-                        position: "absolute",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
+                        marginTop: "50px",
                       }}
                     >
-                      <Dropdown
-                        placeholder="Select an option"
-                        label="Document Name"
-                        disabled={valueFileType !== "New Files"}
-                        selectedKey={documentKey}
-                        options={documentType}
-                        onChange={changeValuedocumentType}
-                        styles={dropdownStyles}
-                      />
+                      <input
+                        type="file"
+                        name="myFile"
+                        id="newfile"
+                        accept=".doc, .docx, .xls, .xlsx"
+                        onChange={(e) => handleFileChange(e)}
+                        disabled={valueFileType !== "Old Files"}
+                      ></input>
                     </div>
                     <div
                       style={{
-                        left: "70%",
-                        position: "absolute",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
-                      }}
-                    >
-                      <Dropdown
-                        placeholder="Select an option"
-                        label="Project Name"
-                        disabled={valueFileType !== "New Files"}
-                        options={ProjectName}
-                        selectedKey={projectKey}
-                        onChange={changeValueProjectName}
-                        styles={dropdownStyles}
-                      />
-                    </div>
-                    {SubfolderState === true ? (
-                      <div
-                        style={{
-                          left: "0%",
-                          marginTop: "100px",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Sub Folders Main"
-                          disabled={valueFileType !== "New Files"}
-                          options={SubdepartmentsMain}
-                          selectedKey={subFoldersMainKey}
-                          onChange={changeValueSubdepartmentsMain}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    {SubfolderState1 === true ? (
-                      <div
-                        style={{
-                          marginTop: "100px",
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Sub Folders"
-                          options={Subdepartments}
-                          onChange={changeValueSubdepartments}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-
-                    {SubfolderState1 === false ? (
-                      <div
-                        style={{
-                          marginTop: "130px",
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <PrimaryButton
-                          text="Generate ID"
-                          style={{ backgroundColor: "#0078D4" }}
-                          onClick={clickGenerate}
-                          disabled={valueFileType !== "New Files"}
-
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          marginTop: "130px",
-                          left: "70%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <PrimaryButton
-                          text="Generate ID"
-                          style={{ backgroundColor: "#0078D4" }}
-                          onClick={clickGenerate}
-                          disabled={valueFileType !== "New Files"}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      marginBottom: "30px",
-                      position: "relative",
-                    }}
-                  >
-                    <div
-                      style={{
-                        // marginTop: "130px",
-                        left: "0%",
-                        position: "absolute",
+                        marginTop: "20px",
                       }}
                     >
                       <TextField
-                        label="ID (Please copy the generated ID before uploading)"
-                        disabled
-                        value={fileNameStruct}
-                        // style={{
-                        //   width:"50%",
-                        // }}
-                        defaultValue={fileNameStruct}
-                        onChange={changeValueFileID}
-                      // required
+                        label="File name"
+                        value={filenames}
+                        onChange={changeValueFilename}
+                        disabled={valueFileType !== "Old Files"}
                       />
+                      <TextField
+                        label="File description"
+                        value={fileDes}
+                        multiline
+                        rows={3}
+                        onChange={changeValueFileDescription}
+                        disabled={valueFileType !== "Old Files"}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <PrimaryButton
+                      text="Upload"
+                      style={{ backgroundColor: "#0078D4" }}
+                      // onClick={this.filesave}
+                      onClick={filesaveold}
+                      disabled={valueFileType !== "Old Files"}
+                    />
+                    <DefaultButton
+                      onClick={closeHideDialogUpload}
+                      text="Cancel"
+                    />
+                  </DialogFooter>
+                </div>
+              ) : (
+                // New file
+                <div
+                  style={{
+                    marginTop: "30px",
+                  }}
+                >
+                  <div>
+                    {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
+                    <div
+                      style={{
+                        height: "200px",
+                        // borderStyle: 'dashed',
+                        // borderColor: 'black',
+                        // flexDirection: 'row',
+                        position: "relative",
+                        // left: '86%',
+                        // backgroundColor: "#0078D4"
+                      }}
+                    >
+                      <div
+                        style={{
+                          left: "0%",
+                          position: "absolute",
+                          // left: '86%',
+                          // backgroundColor: "#0078D4"
+                        }}
+                      >
+                        <Dropdown
+                          placeholder="Select an option"
+                          label="Department Name"
+                          disabled={valueFileType !== "New Files"}
+                          // defaultValue={params11}
+                          selectedKey={departmentKey}
+                          options={departmentName}
+                          onChange={changeValuedepartmentName}
+                          styles={dropdownStyles}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          left: "35%",
+                          position: "absolute",
+                          // left: '86%',
+                          // backgroundColor: "#0078D4"
+                        }}
+                      >
+                        <Dropdown
+                          placeholder="Select an option"
+                          label="Document Name"
+                          disabled={valueFileType !== "New Files"}
+                          selectedKey={documentKey}
+                          options={documentType}
+                          onChange={changeValuedocumentType}
+                          styles={dropdownStyles}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          left: "70%",
+                          position: "absolute",
+                          // left: '86%',
+                          // backgroundColor: "#0078D4"
+                        }}
+                      >
+                        <Dropdown
+                          placeholder="Select an option"
+                          label="Project Name"
+                          disabled={valueFileType !== "New Files"}
+                          options={ProjectName}
+                          selectedKey={projectKey}
+                          onChange={changeValueProjectName}
+                          styles={dropdownStyles}
+                        />
+                      </div>
+                      {SubfolderState === true ? (
+                        <div
+                          style={{
+                            left: "0%",
+                            marginTop: "100px",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <Dropdown
+                            placeholder="Select an option"
+                            label="Sub Folders Main"
+                            disabled={valueFileType !== "New Files"}
+                            options={SubdepartmentsMain}
+                            selectedKey={subFoldersMainKey}
+                            onChange={changeValueSubdepartmentsMain}
+                            styles={dropdownStyles}
+                          />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                      {SubfolderState1 === true ? (
+                        <div
+                          style={{
+                            marginTop: "100px",
+                            left: "35%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <Dropdown
+                            placeholder="Select an option"
+                            label="Sub Folders"
+                            options={Subdepartments}
+                            onChange={changeValueSubdepartments}
+                            styles={dropdownStyles}
+                          />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+
+                      {SubfolderState1 === false ? (
+                        <div
+                          style={{
+                            marginTop: "130px",
+                            left: "35%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <PrimaryButton
+                            text="Generate ID"
+                            style={{ backgroundColor: "#0078D4" }}
+                            onClick={clickGenerate}
+                            disabled={valueFileType !== "New Files"}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            marginTop: "130px",
+                            left: "70%",
+                            position: "absolute",
+                            // left: '86%',
+                            // backgroundColor: "#0078D4"
+                          }}
+                        >
+                          <PrimaryButton
+                            text="Generate ID"
+                            style={{ backgroundColor: "#0078D4" }}
+                            onClick={clickGenerate}
+                            disabled={valueFileType !== "New Files"}
+                          />
+                        </div>
+                      )}
                     </div>
                     <div
                       style={{
-                        marginTop: "31px",
-                        left: "45%",
-                        position: "absolute",
+                        marginBottom: "30px",
+                        position: "relative",
                       }}
                     >
-                      <PrimaryButton
-                        text="Copy"
-                        style={{ backgroundColor: "#0078D4" }}
-                        disabled={fileNameStruct === ""}
-                        onClick={async () => {
-                          navigator.clipboard.writeText(
-                            fileNameStruct
-                          );
-                          alert("ID copied successfully!");
+                      <div
+                        style={{
+                          // marginTop: "130px",
+                          left: "0%",
+                          position: "absolute",
                         }}
+                      >
+                        <TextField
+                          label="ID (Please copy the generated ID before uploading)"
+                          disabled
+                          value={fileNameStruct}
+                          // style={{
+                          //   width:"50%",
+                          // }}
+                          defaultValue={fileNameStruct}
+                          onChange={changeValueFileID}
+                          // required
+                        />
+                      </div>
+                      <div
+                        style={{
+                          marginTop: "31px",
+                          left: "45%",
+                          position: "absolute",
+                        }}
+                      >
+                        <PrimaryButton
+                          text="Copy"
+                          style={{ backgroundColor: "#0078D4" }}
+                          disabled={fileNameStruct === ""}
+                          onClick={async () => {
+                            navigator.clipboard.writeText(fileNameStruct);
+                            alert("ID copied successfully!");
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: "100px",
+                      }}
+                    >
+                      <input
+                        type="file"
+                        name="myFile"
+                        id="newfile"
+                        accept=".doc, .docx, .xls, .xlsx"
+                        onChange={(e) => handleFileChange(e)}
+                        disabled={valueFileType !== "New Files"}
+                      ></input>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: "20px",
+                      }}
+                    >
+                      <TextField
+                        label="File name"
+                        value={filenames}
+                        onChange={changeValueFilename}
+                        disabled={valueFileType !== "New Files"}
+                        // required
+                      />
+                      <TextField
+                        label="File description"
+                        value={fileDes}
+                        multiline
+                        rows={3}
+                        onChange={changeValueFileDescription}
+                        disabled={valueFileType !== "New Files"}
+                        // required
                       />
                     </div>
                   </div>
-                  <div
-                    style={{
-                      marginTop: "100px",
-                    }}
-                  >
-                    <input type="file" name="myFile" id="newfile" accept=".doc, .docx, .xls, .xlsx" onChange={(e) => handleFileChange(e)}
-                      disabled={valueFileType !== "New Files"}></input>
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "20px",
-                    }}
-                  >
-                    <TextField
-                      label="File name"
-                      value={filenames}
-                      onChange={changeValueFilename}
+                  <DialogFooter>
+                    <PrimaryButton
+                      text="Upload"
+                      style={{ backgroundColor: "#0078D4" }}
+                      onClick={filesave}
                       disabled={valueFileType !== "New Files"}
-                    // required
                     />
-                    <TextField
-                      label="File description"
-                      value={fileDes}
-                      multiline
-                      rows={3}
-                      onChange={changeValueFileDescription}
-                      disabled={valueFileType !== "New Files"}
-                    // required
+                    <DefaultButton
+                      onClick={closeHideDialogUpload}
+                      text="Cancel"
                     />
-                  </div>
+                  </DialogFooter>
                 </div>
-                <DialogFooter>
-                  <PrimaryButton
-                    text="Upload"
-                    style={{ backgroundColor: "#0078D4" }}
-                    onClick={filesave}
-                    disabled={valueFileType !== "New Files"}
-                  />
-                  <DefaultButton
-                    onClick={closeHideDialogUpload}
-                    text="Cancel"
-                  />
-                </DialogFooter>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div
-            style={{
-              marginTop: "70px",
-        
-            }}
-          >
-   
-            <ProgressIndicator
-              label="File is uploading"
-              description="It will take some time."
-            />
-          </div>
-        )}
-      </Dialog>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                marginTop: "70px",
+              }}
+            >
+              <ProgressIndicator
+                label="File is uploading"
+                description="It will take some time."
+              />
+            </div>
+          )}
+        </Dialog>
 
-      <div style={{ margin: "35px" }}></div>
-      <Stack
-        horizontal
-        // className={styles.filter}
-        tokens={stackTokens}
-      >
-        {/* <h5>Search:</h5> */}
-        <TextField
-          underlined
-          placeholder="Search"
-          onChange={_onFilter}
-          styles={textFieldStyles}
-        />
-        {/* <PrimaryButton
+        <div style={{ margin: "35px" }}></div>
+        <Stack
+          horizontal
+          // className={styles.filter}
+          tokens={stackTokens}
+        >
+          {/* <h5>Search:</h5> */}
+          <TextField
+            underlined
+            placeholder="Search"
+            onChange={_onFilter}
+            styles={textFieldStyles}
+          />
+          {/* <PrimaryButton
               text="Search"
               style={{ backgroundColor: "#0078D4" }}
               onClick={this._onFilters}
     /> */}
 
-        {/*<UploadFile></UploadFile>*/}
-      </Stack>
-      <div style={{ margin: "35px" }}></div>
-      {/* <DetailsList
+          {/*<UploadFile></UploadFile>*/}
+        </Stack>
+        <div style={{ margin: "35px" }}></div>
+        {/* <DetailsList
         className={styles.list}
         items={items}
         compact={false}
@@ -3789,82 +3739,93 @@ export default function User(props) {
         layoutMode={DetailsListLayoutMode.justified}
         isHeaderVisible={true}
       /> */}
-      {overalllist.length == 0 ? (
-        <div
-          style={{
-            // borderStyle:'dashed',
-            padding: "70px 0",
-            // height: "200px",
-            margin: "auto",
-            // width: "300px",
-            textAlign: "center",
-          }}
-        >
-          <img
+        {overalllist.length == 0 ? (
+          <div
             style={{
               // borderStyle:'dashed',
-              display: "block",
+              padding: "70px 0",
+              // height: "200px",
               margin: "auto",
-              padding: "40px",
-              width: "40%",
-              // height: ""
+              // width: "300px",
+              textAlign: "center",
             }}
-            src={Logo}
+          >
+            <img
+              style={{
+                // borderStyle:'dashed',
+                display: "block",
+                margin: "auto",
+                padding: "40px",
+                width: "40%",
+                // height: ""
+              }}
+              src={Logo}
+            />
+            <b style={{ fontWeight: "bold" }}>No Pending Request Available</b>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={count}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+      <div className={styles.newdesigndiv}>
+        <div className={styles.rectangle}>
+          <div className={styles.template} onClick={toggleHideDialog}>
+            <span className={styles.smallcard1}>
+              <img
+                src={require("../../../../Images/Template.png")}
+                alt="Template logo"
+                style={{ width: "50%" }}
+              />
+            </span>
+            <span style={{ fontSize: "22px" }}>Select template</span>
+          </div>
+
+          {showFirstItem && (
+            <div className={styles.upload} onClick={toggleHideDialogUpload}>
+              <span className={styles.smallcard2}>
+                <img
+                  src={require("../../../../Images/Upload.png")}
+                  alt="Upload logo"
+                  style={{ width: "50%" }}
+                />
+              </span>
+              <span style={{ fontSize: "22px" }}>Upload Document</span>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.Tablediv}>
+          <Search
+            placeholder="Search"
+            onSearch={_onFilter}
+            style={{ width: 300 }}
           />
-          <b style={{ fontWeight: "bold" }}>No Pending Request Available</b>
+          <Table
+            columns={columns}
+            dataSource={searchText ? filteredData : overalllist}
+          />
         </div>
-      ) : (
-        <div></div>
-      )}
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={count}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-
-
-      
+      </div>
+      {/* <div hidden={hiddenDialogUpload}>
+        {Uploading === false && (
+          <div>
+            <Layout>
+              <div>
+                <p>Sample</p>
+              </div>
+            </Layout>
+          </div>
+        )}
+      </div> */}
     </div>
-    <div>
-    <div className={styles.rectangle}>
-        <div className={styles.template}  onClick={toggleHideDialog}>
-          <span className={styles.smallcard1}>
-          <img src={require("../../../../Images/Template.png")} alt="Template logo"  style={{width:"50%"}}/> 
-          </span>
-          <span style={{fontSize:"22px"}}>
-           Select template
-          </span>
-        </div>
-
-        <div className={styles.upload}   onClick={toggleHideDialogUpload}>
-          <span className={styles.smallcard2}>
-          <img src={require("../../../../Images/Upload.png")} alt="Upload logo"  style={{width:"50%"}}/> 
-          </span>
-          <span style={{fontSize:"22px"}}>
-          Upload Document
-          </span>
-        </div>
-      </div>
-      
-      <div className={styles.Tablediv}>
-        <Search placeholder="Search" onSearch={_onFilter} style={{ width: 300 }} />
-      <Table
-    columns={columns}
-    dataSource={searchText ? filteredData : overalllist}  
-
-    />
-      </div>
-      </div>
-      </div>
-  
   );
 }
-
-
-
-
-

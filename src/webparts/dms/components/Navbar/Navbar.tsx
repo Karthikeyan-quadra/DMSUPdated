@@ -36,7 +36,7 @@
 
 //     let sss = await sp.web.lists
 //       .getByTitle("My Docs")
-//       .items.getById(11)      
+//       .items.getById(11)
 //       .versions()
 
 //       // .versions.get()
@@ -45,7 +45,7 @@
 
 //     const items: any[] = await sp.web.lists.getByTitle("Userdetails").items()
 //     console.log(items)
- 
+
 //     let userArray = await items.filter(async (i) => {
 //       const { Username, EmailID, FileViewer, Fileuploader, QMS, Approver } = i;
 //       if (currentUser.Email === EmailID) {
@@ -57,7 +57,7 @@
 //           QMS: QMS,
 //           Approver: Approver,
 //         });
-//       } 
+//       }
 //       });
 //     await console.log(userArray)
 //     // let userArray = await newFunction();
@@ -172,17 +172,14 @@
 //     const approverValue = userDetails.length > 0 && userDetails[0].Approver;
 //     console.log(approverValue);
 
-
-    
 //     // let web = Web("https://m365x44410739.sharepoint.com/sites/DMSportal")
 //     const sp:SPFI=getSp()
 //     const currentUser = await sp.web.currentUser()
 //     console.log(currentUser)
 
-
 //     // let sss = await sp.web.lists
 //     //   .getByTitle("My Docs")
-//     //   .items.getById(11)      
+//     //   .items.getById(11)
 //     //   .versions()
 
 //     //   // .versions.get()
@@ -191,7 +188,7 @@
 
 //     const items: any[] = await sp.web.lists.getByTitle("Userdetails").items()
 //     console.log(items)
- 
+
 //     let userArray:any = await items.filter(async (i) => {
 //       const { Username, EmailID, FileViewer, Fileuploader, QMS, Approver } = i;
 //       if (currentUser.Email === EmailID) {
@@ -203,7 +200,7 @@
 //           QMS: QMS,
 //           Approver: Approver,
 //         });
-//       } 
+//       }
 //       });
 //     await console.log(userArray)
 //     // let userArray = await newFunction();
@@ -211,10 +208,10 @@
 //     // try {
 //     //   const userDetails = await getUserDetails();
 //     //   console.log(userDetails);
-      
+
 //     //   const qmsValue = userDetails.length > 0 && userDetails[0].QMS; // Check if QMS column exists and its value
 //     //   console.log(qmsValue);
-      
+
 //     //   this.setState({
 //     //     QMS: qmsValue,
 //     //     showFirstItem: qmsValue === true ? true : false,
@@ -223,8 +220,6 @@
 //     //   console.error("Error fetching user details:", error);
 //     // }
 
-
-    
 //     await this.setState({
 //       userArray: userArray,
 //       QMS: userArray[0].QMS,
@@ -245,7 +240,6 @@
 
 //     const {showApproverTab} = this.state;
 //     console.log(showApproverTab);
-
 
 //     let val = (
 //       <img
@@ -304,27 +298,23 @@
 //           </PivotItem>)}
 //         </Pivot>
 
-
 //       </div>
 //     )
 //   }
 // }
 
-
 import { SPFI } from "@pnp/sp";
 import { getSp } from "../../../../helpers/PnPConfig";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import styless from "./navbar.module.scss"
+import styless from "./navbar.module.scss";
 import { Pivot, PivotItem, PivotLinkFormat } from "office-ui-fabric-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import User from "../User/User";
 import Qms from "../QMS/Qms";
 import Approvers from "../Approvers/Approvers";
-import {
-  getUserDetails,
-} from "../Data/GetSiteList";
+import { getUserDetails } from "../Data/GetSiteList";
 
 import {
   MenuFoldOutlined,
@@ -332,13 +322,16 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+} from "@ant-design/icons";
+import { Button, Layout, Menu, theme } from "antd";
+
+import { Routes, Route } from "react-router-dom"; // Import HashRouter, Routes, and Route
+import { Link } from "react-router-dom"; // Import Link component
+import { RouteProps } from "react-router";
 
 const { Header, Sider, Content } = Layout;
 
-
-export default function Navbar(){
+export default function Navbar() {
   const [state, setState] = useState({
     userArray: [],
     QMS: "false",
@@ -355,13 +348,13 @@ export default function Navbar(){
       const qmsValue = userDetails.length > 0 && userDetails[0].QMS;
 
       const approverValue = userDetails.length > 0 && userDetails[0].Approver;
-      const sp:SPFI=getSp();
-      const currentUser = await sp.web.currentUser()
-        console.log(currentUser);
+      const sp: SPFI = getSp();
+      const currentUser = await sp.web.currentUser();
+      console.log(currentUser);
       // const currentUser = await getCurrentUser();
 
       // const items: any[] = await getAllUserDetails();
-      const items: any[] = await sp.web.lists.getByTitle("Userdetails").items()
+      const items: any[] = await sp.web.lists.getByTitle("Userdetails").items();
       console.log(items);
 
       let userArray: any = items.filter(async (i) => {
@@ -393,65 +386,68 @@ export default function Navbar(){
     fetchData();
   }, []);
 
-     const {showFirstItem} = state; // Access showFirstItem from state
-    console.log(showFirstItem);
+  const { showFirstItem } = state; // Access showFirstItem from state
+  console.log(showFirstItem);
 
-    const {showApproverTab} = state;
-    console.log(showApproverTab);
+  const { showApproverTab } = state;
+  console.log(showApproverTab);
 
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-      token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
-    // const [selectedKey, setSelectedKey] = useState('1');
-    const [selectedMenuItem, setSelectedMenuItem] = useState('1');
+  // const [selectedKey, setSelectedKey] = useState('1');
+  const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
+  // const renderContent = () => {
+  //   switch (selectedKey) {
+  //     case '1':
+  //       return <User />;
+  //     case '2':
+  //       return <Qms />;
+  //     case '3':
+  //       return <Approvers />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
-    // const renderContent = () => {
-    //   switch (selectedKey) {
-    //     case '1':
-    //       return <User />;
-    //     case '2':
-    //       return <Qms />;
-    //     case '3':
-    //       return <Approvers />;
-    //     default:
-    //       return null;
-    //   }
-    // };
+  // const renderMenuItem = () => {
+  //   switch (selectedMenuItem) {
+  //     case '1':
+  //       return <User />;
+  //     case '2':
+  //       return <Qms />;
+  //     case '3':
+  //       return <Approvers />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
-    // const renderMenuItem = () => {
-    //   switch (selectedMenuItem) {
-    //     case '1':
-    //       return <User />;
-    //     case '2':
-    //       return <Qms />;
-    //     case '3':
-    //       return <Approvers />;
-    //     default:
-    //       return null;
-    //   }
-    // };
+  const handleMenuClick = (menuItem) => {
+    if (menuItem.key === "2" && !showFirstItem) return; // If QMS is not available, return early
+    if (menuItem.key === "3" && !showApproverTab) return; // If Approver Dashboard is not available, return early
+    setSelectedMenuItem(menuItem.key);
+  };
 
-    const handleMenuClick = (menuItem) => {
-      if (menuItem.key === '2' && !showFirstItem) return; // If QMS is not available, return early
-      if (menuItem.key === '3' && !showApproverTab) return; // If Approver Dashboard is not available, return early
+  const handleTabClick = (menuItem) => {
+    if (menuItem.icon && menuItem.label) {
       setSelectedMenuItem(menuItem.key);
-    };
+    }
+  };
 
-    const handleTabClick = (menuItem) => {
-      if (menuItem.icon && menuItem.label) {
-        setSelectedMenuItem(menuItem.key);
-      }
-    };
-
-    const styles= `
+  const styles = `
     .ant-layout .ant-layout-sider {
       position: relative;
       min-width: 0;
       background-color: white;
       transition: all 0.2s, background 0s;
+      max-width: 288px !important;
+      min-width: 288px !important;
+      width: 288px !important;
+      flex: 0 0 200px;
   }
   :where(.css-dev-only-do-not-override-usln0u).ant-layout .ant-layout-sider-children {
     height: 100%;
@@ -463,12 +459,21 @@ export default function Navbar(){
 :where(.css-dev-only-do-not-override-usln0u).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu .ant-menu-item-selected {
   color: rgba(18, 150, 114, 1);
 }
-  `
 
+:where(.css-dev-only-do-not-override-usln0u).ant-menu-light.ant-menu-inline .ant-menu-item, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-item {
+  position: relative;
+  padding-left: 10px;
+}
+:where(.css-dev-only-do-not-override-usln0u).ant-menu-light, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu {
+  color: rgba(0, 0, 0, 0.88);
+  background: #ffffff;
+  margin-top: 80%;
+}
+  `;
 
   return (
     <div>
-          {/* <div className={styless.header}>
+      {/* <div className={styless.header}>
             <span>
             <p
               style={{
@@ -515,52 +520,100 @@ export default function Navbar(){
         )}
       </Pivot> */}
 
-      <div >
+      <div>
         <style>{styles}</style>
-      <Layout className={styless.sidenavbarheight}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu className={styless.margin}
-          theme="light"
-          mode="inline"
-          // onSelect={({ key }) => setSelectedKey(key)}
-          onClick={handleMenuClick}
-          selectedKeys={[selectedMenuItem]}
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              // icon: <UserOutlined />,
-              icon: <img src={require("../../../../Images/Profile.png")} alt="User Dashboard logo" style={{width:"24px", height:"24px"}}/>,
-              label: 'User Dashboard',
-              
-              
-            },
-            {
-              key: '2',
-              icon: showFirstItem ? <img src={require("../../../../Images/InProgress.png")} alt="QMS logo" style={{width:"24px", height:"24px"}}/> : null,
-              label: showFirstItem ? 'QMS' : '',
-            },
-            {
-              key: '3',
-              icon: showApproverTab ? <img src={require("../../../../Images/Verified.png")} alt="Approver Dashboard logo" style={{width:"24px", height:"24px"}}/> : null,
-              label: showApproverTab ? 'Approver Dashboard' : '',
-            },
-          ]}
-        />
-      </Sider>
-          <div style={{width: "86%",
+        <Layout className={styless.sidenavbarheight}>
+          <Sider trigger={null} collapsible collapsed={collapsed}>
+            <div className="demo-logo-vertical" />
+            <Menu
+              className={styless.margin}
+              theme="light"
+              mode="inline"
+              // onSelect={({ key }) => setSelectedKey(key)}
+              onClick={handleMenuClick}
+              selectedKeys={[selectedMenuItem]}
+              defaultSelectedKeys={["1"]}
+              items={[
+                {
+                  key: "1",
+                  // icon: <UserOutlined />,
+                  icon: (
+                    <img
+                      src={require("../../../../Images/Profile.png")}
+                      alt="User Dashboard logo"
+                      style={{ width: "24px", height: "24px" }}
+                    />
+                  ),
+                  // Link to User Dashboard
+                  label: <Link to="/">User Dashboard</Link>,
+                },
+                {
+                  key: "2",
+                  icon: showFirstItem ? (
+                    <img
+                      src={require("../../../../Images/InProgress.png")}
+                      alt="QMS logo"
+                      style={{ width: "24px", height: "24px" }}
+                    />
+                  ) : null,
+                  // label: showFirstItem ? 'QMS' : '',
+                  label: showFirstItem ? <Link to="/qms">QMS</Link> : "", // Link to QMS if available
+                },
+                {
+                  key: "3",
+                  icon: showApproverTab ? (
+                    <img
+                      src={require("../../../../Images/Verified.png")}
+                      alt="Approver Dashboard logo"
+                      style={{ width: "24px", height: "24px" }}
+                    />
+                  ) : null,
+                  // label: showApproverTab ? 'Approver Dashboard' : '',
+                  label: showApproverTab ? (
+                    <Link to="/approvers">Approver Dashboard</Link> // Link to Approvers if available
+                  ) : (
+                    ""
+                  ),
+                },
+              ]}
+            />
+          </Sider>
+          {/* <div style={{width: "86%",
     margin: "auto"}}>
             {selectedMenuItem === '1' && <User />}
             {selectedMenuItem === '2' && showFirstItem && <Qms />}
             {selectedMenuItem === '3' && showApproverTab && <Approvers />}
-          </div>
-      </Layout>
+          </div> */}
 
+          {/* <div style={{ width: "86%", margin: "auto" }}>
+          <Routes>
+            <Route path="/">
+              <User />
+            </Route>
+            {showFirstItem &&
+              <Route path="/qms">
+                <Qms />
+              </Route>
+            }
+            {showApproverTab &&
+              <Route path="/approvers">
+                <Approvers />
+              </Route>
+            }
+          </Routes>
+        </div> */}
+
+          <div style={{ width: "86%", margin: "auto" }}>
+            <Routes>
+              <Route path="/" element={<User />} />
+              {showFirstItem && <Route path="/qms" element={<Qms />} />}
+              {showApproverTab && (
+                <Route path="/approvers" element={<Approvers />} />
+              )}
+            </Routes>
+          </div>
+        </Layout>
       </div>
     </div>
-
-
-        
   );
 }
