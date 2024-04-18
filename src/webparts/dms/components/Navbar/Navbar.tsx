@@ -603,7 +603,7 @@ export default function Navbar() {
           </Routes>
         </div> */}
 
-          <div style={{ width: "86%", margin: "auto" }}>
+          <div style={{ width: "86%" }}>
             <Routes>
               <Route path="/" element={<User />} />
               {showFirstItem && <Route path="/qms" element={<Qms />} />}

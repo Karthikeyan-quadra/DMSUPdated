@@ -22,7 +22,7 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
-import { Button, Layout } from "antd";
+import { Button, Card, Form, Layout, Select } from "antd";
 import { Input } from "antd";
 
 import { TextField } from "@fluentui/react/lib/TextField";
@@ -55,6 +55,7 @@ import { useEffect, useState } from "react";
 
 import { Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
+import { Radio } from "antd";
 
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
@@ -397,6 +398,15 @@ export default function User(props) {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
+  const [showUploadDiv, setShowUploadDiv] = useState(true); // State to manage the visibility of upload div
+
+  const [radiovalue, setRadioValue] = useState(1);
+
+  const onChange = (e: any) => {
+    console.log("radio checked", e.target.value);
+    setRadioValue(e.target.value);
+  };
+
   const fetchData = async () => {
     try {
       const sp: SPFI = getSp();
@@ -441,6 +451,16 @@ export default function User(props) {
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage]);
+
+  const toggleUploadDiv = () => {
+    console.log("Upload button clicked");
+    setShowUploadDiv(!showUploadDiv);
+    console.log(showUploadDiv);
+  };
+  useEffect(() => {
+    toggleUploadDiv();
+    console.log(showUploadDiv);
+  }, []);
 
   const fetchAdditionalData = async () => {
     try {
@@ -892,31 +912,94 @@ export default function User(props) {
   //   await console.log(this.state.some)
   // };
 
-  const changeValuedepartmentName = async (
-    event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
-  ) => {
+  // const changeValuedepartmentName = async (
+  //   // event: React.FormEvent<HTMLDivElement>,
+  //   // option?: IDropdownOption
+  //   option?: any
+  // ) => {
+  //   console.log("changeValuedepartmentName function called.");
+  //   console.log("Selected department value:", option);
+
+  //   try {
+  //     // const sp: SPFI = getSp();
+  //     // this.setState({
+  //     //   params1: "",
+  //     //   params3: "",
+  //     //   params4: "",
+  //     //   params5: "",
+  //     // });
+  //     setParams1("");
+  //     setParams3("");
+  //     setParams4("");
+  //     setParams5("");
+
+  //     const selectedDepartment = option?.text;
+  //     const selectedDepartmentKey = option?.key;
+  //     console.log("Selected department:", selectedDepartment);
+
+  //     // Check if the selected department has subfolders
+  //     if (SubfoldersMainParent.includes(selectedDepartment)) {
+  //       console.log("Selected department has subfolders.");
+
+  //       const subfolders = SubdepartmentsMain2.filter(
+  //         (subfolder: any) => subfolder.ParentFolders === selectedDepartment
+  //       ).map((subfolder: any) => ({
+  //         text: subfolder.SubFolders,
+  //         key: subfolder.SubFolders,
+  //         Code: subfolder.Code,
+  //       }));
+
+  //       console.log("SubdepartmentsMain array:", subfolders);
+
+  //       // this.setState({
+  //       //   SubfolderState: true,
+  //       //   SubdepartmentsMain: subfolders,
+  //       //   params111: option?.key,
+  //       //   params11: selectedDepartment,
+  //       //   departmentKey: selectedDepartmentKey,
+  //       //   some: [selectedDepartment],
+  //       // });
+  //       setSubfolderState(true);
+  //       setSubdepartmentsMain(subfolders);
+  //       setParams111(option?.key);
+  //       setParams11(selectedDepartment);
+  //       setDepartmentKey(selectedDepartmentKey);
+  //       setSome([selectedDepartment]);
+  //     } else {
+  //       console.log("Selected department does not have subfolders.");
+
+  //       // this.setState({
+  //       //   SubfolderState: false,
+  //       //   params111: option?.key,
+  //       //   params11: selectedDepartment,
+  //       // });
+  //     }
+
+  //     // console.log("Updated state:", this.state);
+  //   } catch (error) {
+  //     console.error("Error in changeValuedepartmentName:", error);
+  //   }
+  // };
+
+  const changeValuedepartmentName = async (selectedValue: any) => {
     console.log("changeValuedepartmentName function called.");
-    console.log("Selected department value:", option);
+    console.log("Selected department value:", selectedValue);
 
     try {
-      // const sp: SPFI = getSp();
-      // this.setState({
-      //   params1: "",
-      //   params3: "",
-      //   params4: "",
-      //   params5: "",
-      // });
       setParams1("");
       setParams3("");
       setParams4("");
       setParams5("");
 
-      const selectedDepartment = option?.text;
-      const selectedDepartmentKey = option?.key;
+      const selectedDepartment = selectedValue; // Use selectedValue directly
       console.log("Selected department:", selectedDepartment);
 
-      // Check if the selected department has subfolders
+      // Assuming departmentKey is the selected key
+      const selectedDepartmentKey = departmentName.find(
+        (option) => option.text === selectedDepartment
+      )?.key;
+      console.log("Selected department key:", selectedDepartmentKey);
+
       if (SubfoldersMainParent.includes(selectedDepartment)) {
         console.log("Selected department has subfolders.");
 
@@ -930,31 +1013,20 @@ export default function User(props) {
 
         console.log("SubdepartmentsMain array:", subfolders);
 
-        // this.setState({
-        //   SubfolderState: true,
-        //   SubdepartmentsMain: subfolders,
-        //   params111: option?.key,
-        //   params11: selectedDepartment,
-        //   departmentKey: selectedDepartmentKey,
-        //   some: [selectedDepartment],
-        // });
         setSubfolderState(true);
         setSubdepartmentsMain(subfolders);
-        setParams111(option?.key);
+        setParams111(selectedDepartmentKey);
         setParams11(selectedDepartment);
         setDepartmentKey(selectedDepartmentKey);
         setSome([selectedDepartment]);
       } else {
         console.log("Selected department does not have subfolders.");
-
-        // this.setState({
-        //   SubfolderState: false,
-        //   params111: option?.key,
-        //   params11: selectedDepartment,
-        // });
+        setSubfolderState(false);
+        setParams111(selectedDepartmentKey);
+        setParams11(selectedDepartment);
+        setDepartmentKey(selectedDepartmentKey);
+        setSome([selectedDepartment]);
       }
-
-      // console.log("Updated state:", this.state);
     } catch (error) {
       console.error("Error in changeValuedepartmentName:", error);
     }
@@ -3776,56 +3848,137 @@ export default function User(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-      <div className={styles.newdesigndiv}>
-        <div className={styles.rectangle}>
-          <div className={styles.template} onClick={toggleHideDialog}>
-            <span className={styles.smallcard1}>
-              <img
-                src={require("../../../../Images/Template.png")}
-                alt="Template logo"
-                style={{ width: "50%" }}
-              />
-            </span>
-            <span style={{ fontSize: "22px" }}>Select template</span>
-          </div>
 
-          {showFirstItem && (
-            <div className={styles.upload} onClick={toggleHideDialogUpload}>
-              <span className={styles.smallcard2}>
+      {!showUploadDiv && (
+        <div className={styles.newdesigndiv}>
+          <div className={styles.rectangle}>
+            <div className={styles.template} onClick={toggleHideDialog}>
+              <span className={styles.smallcard1}>
                 <img
-                  src={require("../../../../Images/Upload.png")}
-                  alt="Upload logo"
+                  src={require("../../../../Images/Template.png")}
+                  alt="Template logo"
                   style={{ width: "50%" }}
                 />
               </span>
-              <span style={{ fontSize: "22px" }}>Upload Document</span>
+              <span style={{ fontSize: "22px" }}>Select template</span>
             </div>
-          )}
-        </div>
 
-        <div className={styles.Tablediv}>
-          <Search
-            placeholder="Search"
-            onSearch={_onFilter}
-            style={{ width: 300 }}
-          />
-          <Table
-            columns={columns}
-            dataSource={searchText ? filteredData : overalllist}
-          />
-        </div>
-      </div>
-      {/* <div hidden={hiddenDialogUpload}>
-        {Uploading === false && (
-          <div>
-            <Layout>
-              <div>
-                <p>Sample</p>
+            {showFirstItem && (
+              <div className={styles.upload} onClick={toggleUploadDiv}>
+                <span className={styles.smallcard2}>
+                  <img
+                    src={require("../../../../Images/Upload.png")}
+                    alt="Upload logo"
+                    style={{ width: "50%" }}
+                  />
+                </span>
+                <span style={{ fontSize: "22px" }}>Upload Document</span>
               </div>
-            </Layout>
+            )}
           </div>
-        )}
-      </div> */}
+
+          <div className={styles.Tablediv}>
+            <Search
+              placeholder="Search"
+              onSearch={_onFilter}
+              style={{ width: 300 }}
+            />
+            <Table
+              columns={columns}
+              dataSource={searchText ? filteredData : overalllist}
+            />
+          </div>
+        </div>
+      )}
+      {showUploadDiv && (
+        <div>
+          <Layout>
+            <div>
+              <Card>
+                <div className={styles.uploadfilesdiv}>
+                  <span>
+                    <img src={require("../../../../Images/Arrow.png")} />
+                  </span>
+                  <span className={styles.uploadstyle}>Upload</span>
+                  <span>
+                    <Radio.Group onChange={onChange} value={radiovalue}>
+                      <Radio value={1}>New Files</Radio>
+                      <Radio value={2}>Replace old files</Radio>
+                    </Radio.Group>
+                  </span>
+                </div>
+                <div>
+                  <Form layout="vertical">
+                    <Form.Item
+                      label="Department Name"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <Select
+                        placeholder="Select an option"
+                        // disabled={valueFileType !== "Old Files"}
+                        // value={departmentKey}
+                        onChange={(value) => {
+                          changeValuedepartmentName(value);
+                        }}
+                      >
+                        {departmentName.map((option: any) => (
+                          <Select.Option key={option.key} value={option.key}>
+                            {option.text}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Document Name"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <Select
+                        placeholder="Select an option"
+                        // disabled={valueFileType !== "Old Files"}
+                        // value={departmentKey}
+                        onChange={(value) => {
+                          changeValuedocumentType(value);
+                        }}
+                      >
+                        {documentType.map((option: any) => (
+                          <Select.Option key={option.key} value={option.key}>
+                            {option.text}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Project Name"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <Select
+                        placeholder="Select an option"
+                        // disabled={valueFileType !== "Old Files"}
+                        // value={departmentKey}
+                        onChange={(value) => {
+                          changeValueProjectName(value);
+                        }}
+                      >
+                        {ProjectName.map((option: any) => (
+                          <Select.Option key={option.key} value={option.text}>
+                            {option.text}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Form>
+                </div>
+              </Card>
+            </div>
+            <div>
+              <button>Upload</button>
+              <button onClick={toggleUploadDiv}>Cancel</button>
+            </div>
+          </Layout>
+        </div>
+      )}
     </div>
   );
 }

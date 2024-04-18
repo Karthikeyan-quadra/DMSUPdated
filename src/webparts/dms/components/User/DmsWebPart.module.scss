@@ -1,7 +1,6 @@
-@import '~office-ui-fabric-react/dist/sass/References.scss';
+@import "~office-ui-fabric-react/dist/sass/References.scss";
 
 :global {
-
   #workbenchPageContent,
   .CanvasComponent.LCS .CanvasZone {
     max-width: 100% !important;
@@ -47,18 +46,21 @@
   a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+    color: var(
+      --link
+    ); // note: CSS Custom Properties support is limited to modern browsers only
 
     &:hover {
       text-decoration: underline;
       color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+      color: var(
+        --linkHovered
+      ); // note: CSS Custom Properties support is limited to modern browsers only
     }
   }
 }
 
 .QmsDashboard {
-
   .filter {
     float: right;
   }
@@ -91,7 +93,7 @@
   height: 320px;
 }
 
-.newdesigndiv{
+.newdesigndiv {
   width: 100%;
   margin-left: 12px;
   background: rgba(243, 243, 243, 1);
@@ -107,7 +109,7 @@
   border-radius: 18px 18px 0px 0px;
   // opacity: 0px;
   z-index: 0;
-  background: linear-gradient(90deg, #CBEDE3 0%, #E4EDFA 100%);
+  background: linear-gradient(90deg, #cbede3 0%, #e4edfa 100%);
   display: flex;
 }
 
@@ -132,8 +134,7 @@
   display: flex;
   align-items: center;
   // gap: 14%;
-  gap:10%;
-
+  gap: 10%;
 }
 
 .smallcard1 {
@@ -149,7 +150,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .upload {
@@ -162,7 +162,7 @@
   // gap: 0px;
   // border: 1px 0px 0px 0px;
   // opacity: 0px;
-  border: 1px solid rgba(16, 166, 225, .85);
+  border: 1px solid rgba(16, 166, 225, 0.85);
 
   // border-image: linear-gradient(180deg, #000000, #18AB83, rgba(16, 166, 225, 0.85)) 1;
   /* Apply linear gradient as border */
@@ -173,7 +173,6 @@
   display: flex;
   align-items: center;
   gap: 10%;
-
 }
 
 .smallcard2 {
@@ -189,10 +188,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-.Tablediv{
+.Tablediv {
   width: 95%;
   // margin-left: 52px;
   // margin-top: 28px;
@@ -202,6 +200,16 @@
   flex-direction: column;
   align-items: end;
   gap: 2rem;
-  
+}
 
+.uploadfilesdiv {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.uploadstyle {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 32.87px;
+  text-align: left;
 }
