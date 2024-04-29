@@ -22,7 +22,7 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
-import { Button, Card, Form, Layout, Select } from "antd";
+import { Button, Card, Form, Layout, Select, Upload } from "antd";
 import { Input } from "antd";
 
 import { TextField } from "@fluentui/react/lib/TextField";
@@ -56,6 +56,8 @@ import { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { Radio } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
 
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
@@ -330,7 +332,20 @@ const styl = `:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed !important;
-}`;
+}
+
+:where(.css-dev-only-do-not-override-usln0u).ant-form-item .ant-form-item-control-input-content {
+  flex: auto;
+  max-width: 100%;
+  width:100%;
+}
+
+:where(.css-dev-only-do-not-override-usln0u).ant-upload-wrapper .ant-upload-select {
+  display: inline-block;
+  width: 30%;
+}
+
+`;
 
 export default function User(props) {
   // constructor(props) {
@@ -1110,63 +1125,146 @@ export default function User(props) {
     setProjectKey(selectedProjectKey);
   };
 
-  const changeValueSubdepartmentsMain = async (
-    event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
-  ) => {
-    console.log(option);
-    // subFoldersMainKey
-    // Subfolders ,ParentFolder
-    const SubDepartmentmainkey: any = option?.key;
-    console.log(SubDepartmentmainkey);
-    console.log(option?.key);
+  // const changeValueSubdepartmentsMain = async (
+  //   event: React.FormEvent<HTMLDivElement>,
+  //   option?: IDropdownOption
+  // ) => {
+  //   console.log(option);
+  //   // subFoldersMainKey
+  //   // Subfolders ,ParentFolder
+  //   const SubDepartmentmainkey: any = option?.key;
+  //   console.log(SubDepartmentmainkey);
+  //   console.log(option?.key);
 
-    if (SubfoldersParent.includes(option?.text)) {
-      // let array1 = [];
-      let array1: any = [];
+  //   if (SubfoldersParent.includes(option?.text)) {
+  //     // let array1 = [];
+  //     let array1: any = [];
 
-      // console.log(Subdepartments2);
+  //     // console.log(Subdepartments2);
 
-      await Subdepartments2.filter((names) => {
-        // console.log(names.ParentFolders)
-        // console.log(names)
-        if (names.ParentFolders === option?.text) {
-          console.log(names.SubFolders);
-          array1.push({ text: names.SubFolders, key: names.SubFolders });
-        }
-      });
-      console.log(array1);
-      console.log(option?.text);
-      console.log(option);
-      // this.setState({
-      //   SubfolderState1: true,
-      //   Subdepartments: array1,
-      //   // params1: option?.Code,
-      //   params1: option?.key,
-      //   params3: option?.text,
-      //   // subFoldersMainKey: SubDepartmentmainkey
-      // });
+  //     await Subdepartments2.filter((names) => {
+  //       // console.log(names.ParentFolders)
+  //       // console.log(names)
+  //       if (names.ParentFolders === option?.text) {
+  //         console.log(names.SubFolders);
+  //         array1.push({ text: names.SubFolders, key: names.SubFolders });
+  //       }
+  //     });
+  //     console.log(array1);
+  //     console.log(option?.text);
+  //     console.log(option);
+  //     // this.setState({
+  //     //   SubfolderState1: true,
+  //     //   Subdepartments: array1,
+  //     //   // params1: option?.Code,
+  //     //   params1: option?.key,
+  //     //   params3: option?.text,
+  //     //   // subFoldersMainKey: SubDepartmentmainkey
+  //     // });
+  //     setSubfolderState1(true);
+  //     setSubdepartments(array1);
+  //     setParams1(option?.key);
+  //     setParams3(option?.text);
+  //   } else {
+  //     // this.setState({
+  //     //   SubfolderState1: false,
+  //     //   // params1: option?.Code,
+  //     //   params1: option?.key,
+
+  //     //   params3: option?.text,
+  //     //   subFoldersMainKey: SubDepartmentmainkey
+
+  //     // });
+  //     setSubfolderState1(false);
+  //     setParams1(option?.key);
+  //     setParams3(option?.text);
+  //     setSubFoldersMainKey(SubDepartmentmainkey);
+  //   }
+
+  //   // await console.log(this.state.some)
+  // };
+
+  // const changeValueSubdepartmentsMain = async (value?: any) => {
+  //   console.log(value);
+  //   // subFoldersMainKey
+  //   // Subfolders ,ParentFolder
+  //   const SubDepartmentmainkey: any = value?.key;
+  //   console.log(SubDepartmentmainkey);
+  //   console.log(value?.key);
+
+  //   if (SubfoldersParent.includes(value?.text)) {
+  //     // let array1 = [];
+  //     let array1: any = [];
+
+  //     // console.log(Subdepartments2);
+
+  //     await Subdepartments2.filter((names: any) => {
+  //       // console.log(names.ParentFolders)
+  //       // console.log(names)
+  //       if (names.ParentFolders === value?.text) {
+  //         console.log(names.SubFolders);
+  //         array1.push({ text: names.SubFolders, key: names.SubFolders });
+  //       }
+  //     });
+  //     console.log(array1);
+  //     console.log(value?.text);
+  //     console.log(value);
+  //     // this.setState({
+  //     //   SubfolderState1: true,
+  //     //   Subdepartments: array1,
+  //     //   // params1: option?.Code,
+  //     //   params1: option?.key,
+  //     //   params3: option?.text,
+  //     //   // subFoldersMainKey: SubDepartmentmainkey
+  //     // });
+  //     setSubfolderState1(true);
+  //     setSubdepartments(array1);
+  //     setParams1(value?.key);
+  //     setParams3(value?.text);
+  //   } else {
+  //     // this.setState({
+  //     //   SubfolderState1: false,
+  //     //   // params1: option?.Code,
+  //     //   params1: option?.key,
+
+  //     //   params3: option?.text,
+  //     //   subFoldersMainKey: SubDepartmentmainkey
+
+  //     // });
+  //     setSubfolderState1(false);
+  //     setParams1(value?.key);
+  //     setParams3(value?.text);
+  //     setSubFoldersMainKey(SubDepartmentmainkey);
+  //   }
+
+  //   // await console.log(this.state.some)
+  // };
+  const changeValueSubdepartmentsMain = async (value?: any) => {
+    console.log("Selected value:", value);
+
+    const SubDepartmentmainkey: any = value?.key;
+    console.log("Selected department key:", SubDepartmentmainkey);
+    console.log("Selected department text:", value?.text);
+
+    if (SubfoldersParent.includes(value?.text)) {
+      let array1 = Subdepartments2.filter(
+        (names: any) => names.ParentFolders === value?.text
+      ).map((subfolder) => ({
+        text: subfolder.SubFolders,
+        key: subfolder.SubFolders,
+      }));
+      console.log("Filtered subfolders:", array1);
+
       setSubfolderState1(true);
       setSubdepartments(array1);
-      setParams1(option?.key);
-      setParams3(option?.text);
+      setParams1(value?.key);
+      setParams3(value?.text);
     } else {
-      // this.setState({
-      //   SubfolderState1: false,
-      //   // params1: option?.Code,
-      //   params1: option?.key,
-
-      //   params3: option?.text,
-      //   subFoldersMainKey: SubDepartmentmainkey
-
-      // });
       setSubfolderState1(false);
-      setParams1(option?.key);
-      setParams3(option?.text);
+      setParams1(value?.key);
+      setParams3(value?.text);
       setSubFoldersMainKey(SubDepartmentmainkey);
     }
-
-    // await console.log(this.state.some)
   };
 
   const changeValueSubdepartments = async (e, value: any) => {
@@ -3967,6 +4065,98 @@ export default function User(props) {
                           </Select.Option>
                         ))}
                       </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Sub Folders Main"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <Select
+                        placeholder="Select an option"
+                        onChange={(value) => {
+                          changeValueSubdepartmentsMain(value);
+                        }}
+                      >
+                        {SubdepartmentsMain.map((option: any) => (
+                          <Select.Option key={option.key} value={option.key}>
+                            {option.text}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+
+                    <Button
+                      onClick={clickGenerate}
+                      style={{ padding: "0px", display: "block" }}
+                    >
+                      <span>
+                        <img
+                          src={require("../../../../Images/Gear.png")}
+                          alt="Gear"
+                          style={{ width: "50%" }}
+                        />
+                      </span>
+                      <span
+                        style={{
+                          color: "rgba(74, 173, 146, 1)",
+                          paddingRight: "18px",
+                        }}
+                      >
+                        Generate ID
+                      </span>
+                    </Button>
+
+                    <Space.Compact style={{ width: "30%", marginTop: "30px" }}>
+                      <Input />
+                      <Button
+                        style={{ background: "rgba(74, 173, 146, 1)" }}
+                        disabled={fileNameStruct === ""}
+                        onClick={async () => {
+                          navigator.clipboard.writeText(fileNameStruct);
+                          alert("ID copied successfully!");
+                        }}
+                      >
+                        <span>
+                          <img
+                            src={require("../../../../Images/Copy.png")}
+                            alt="Copy"
+                          />
+                        </span>
+                        <span style={{ paddingLeft: "5px" }}>Copy</span>
+                      </Button>
+                    </Space.Compact>
+
+                    <Form.Item
+                      label="Upload New file"
+                      style={{ width: "100%", marginTop: "30px" }}
+                    >
+                      <Upload>
+                        <Button
+                          icon={<UploadOutlined />}
+                          className={styles.uploadbutton}
+                        >
+                          Upload
+                        </Button>
+                      </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="File Name"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="File Description"
+                      style={{ maxWidth: 400, marginTop: 37 }}
+                    >
+                      <TextArea
+                        showCount
+                        maxLength={100}
+                        onChange={onChange}
+                        style={{ height: 120, resize: "none" }}
+                      />
                     </Form.Item>
                   </Form>
                 </div>
