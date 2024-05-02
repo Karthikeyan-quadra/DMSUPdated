@@ -381,7 +381,7 @@ export default function User(props) {
   const [SubfoldersMainParent, setSubfoldersMainParent] = useState<any>([]);
   const [SubfoldersParent, setSubfoldersParent] = useState<any>([]);
   const [fileUrl, setFileUrl] = useState("");
-  const [valueFileType, setValueFileType] = useState("");
+  const [valueFileType, setValueFileType] = useState("New Files");
   const [textToCopy, setTextToCopy] = useState("");
   const [DocID, setDocID] = useState<any>("");
   const [fileNameStruct, setFileNameStruct] = useState("");
@@ -415,13 +415,9 @@ export default function User(props) {
 
   const [showUploadDiv, setShowUploadDiv] = useState(true); // State to manage the visibility of upload div
 
-  const [radiovalue, setRadioValue] = useState(1);
+  const [radiovalue, setRadioValue] = useState("New Files");
 
-  const onChange = (e: any) => {
-    console.log("radio checked", e.target.value);
-    setRadioValue(e.target.value);
-  };
-
+ 
   const fetchData = async () => {
     try {
       const sp: SPFI = getSp();
@@ -477,6 +473,46 @@ export default function User(props) {
     console.log(showUploadDiv);
   }, []);
 
+  useEffect(() => {
+    // setRadioValue("New Files");
+    console.log(radiovalue);
+  }, [radiovalue]);
+ 
+  useEffect(() => {
+    // setRadioValue("New Files");
+    console.log(radiovalue);
+  }, []);
+
+  const onChange = (e: any) => {
+    console.log("radio checked", e.target.value);
+    setRadioValue(e.target.value);
+    console.log(radiovalue);
+    setValueFileType(e.target.value);
+    setSubfolderState(false);
+    setSubfolderState1(false);
+    setFileDes("");
+    setFilenames("");
+    setFileUrl("");
+    setParams1("");
+    setParams2("");
+    setParams3("");
+    setParams4("");
+    setParams5("");
+    setDepartmentKey("");
+    setDocumentKey("");
+    setProjectKey("");
+    setSubFoldersMainKey("");
+    setParams22("");
+    setParams11("");
+    setParams111("");
+    setFiless([]);
+    setFileNameStruct("");
+
+    console.log(valueFileType);
+    
+  };
+
+
   const fetchAdditionalData = async () => {
     try {
       const sp: SPFI = getSp();
@@ -499,7 +535,9 @@ export default function User(props) {
       // });
       setDocID(items.length);
 
-      let DepartmentNames: IDropdownOption[] = [];
+      // let DepartmentNames: IDropdownOption[] = [];
+      let DepartmentNames: any = [];
+
 
       let DocumentType: any = [];
       let ProjectName: any = [];
@@ -620,6 +658,12 @@ export default function User(props) {
       setProjectName(ProjectName);
       setCurrentUser(user.Email);
       setShowFirstItem(uploadValue === "true");
+
+      console.log("SubdepartmentsMain:", SubdepartmentsMain);
+      console.log("SubDepartments1:", SubDepartments1);
+      console.log("ProjectName:", ProjectName);
+      
+      
 
       //        const sss = await sp.web.lists.getByTitle("User Files")
       //   .items.select(
@@ -996,56 +1040,62 @@ export default function User(props) {
   //   }
   // };
 
-  const changeValuedepartmentName = async (selectedValue: any) => {
-    console.log("changeValuedepartmentName function called.");
-    console.log("Selected department value:", selectedValue);
+  // const changeValuedepartmentName = async (selectedValue: any) => {
+  //   console.log("changeValuedepartmentName function called.");
+  //   console.log("Selected department value:", selectedValue);
+  //   console.log("Selected value key:", selectedValue.Key);
+  //   console.log("Selected value text:", selectedValue.text);
 
-    try {
-      setParams1("");
-      setParams3("");
-      setParams4("");
-      setParams5("");
+  //   try {
+  //     setParams1("");
+  //     setParams3("");
+  //     setParams4("");
+  //     setParams5("");
+     
+  //     const selectedDepartment = selectedValue.text; // Use selectedValue directly
+  //     console.log("Selected department:", selectedDepartment);
 
-      const selectedDepartment = selectedValue; // Use selectedValue directly
-      console.log("Selected department:", selectedDepartment);
+  //     // Assuming departmentKey is the selected key
+  //     // const selectedDepartmentKey = departmentName.find(
+  //     //   (option) => option.text === selectedDepartment
+  //     // )?.key;
+  //     const selectedDepartmentKey = selectedValue.key;
+  //     console.log("Selected department key:", selectedDepartmentKey);
+  //         console.log("Selected department:", selectedDepartment);
 
-      // Assuming departmentKey is the selected key
-      const selectedDepartmentKey = departmentName.find(
-        (option) => option.text === selectedDepartment
-      )?.key;
-      console.log("Selected department key:", selectedDepartmentKey);
+  //     if (SubfoldersMainParent.includes(selectedDepartment)) {
+  //       console.log("Selected department has subfolders.");
 
-      if (SubfoldersMainParent.includes(selectedDepartment)) {
-        console.log("Selected department has subfolders.");
+  //       const subfolders = SubdepartmentsMain2.filter(
+  //         (subfolder: any) => subfolder.ParentFolders === selectedDepartment
+  //       ).map((subfolder: any) => ({
+  //         text: subfolder.SubFolders,
+  //         key: subfolder.SubFolders,
+  //         Code: subfolder.Code,
+  //       }));
 
-        const subfolders = SubdepartmentsMain2.filter(
-          (subfolder: any) => subfolder.ParentFolders === selectedDepartment
-        ).map((subfolder: any) => ({
-          text: subfolder.SubFolders,
-          key: subfolder.SubFolders,
-          Code: subfolder.Code,
-        }));
+  //       console.log("SubdepartmentsMain array:", subfolders);
 
-        console.log("SubdepartmentsMain array:", subfolders);
-
-        setSubfolderState(true);
-        setSubdepartmentsMain(subfolders);
-        setParams111(selectedDepartmentKey);
-        setParams11(selectedDepartment);
-        setDepartmentKey(selectedDepartmentKey);
-        setSome([selectedDepartment]);
-      } else {
-        console.log("Selected department does not have subfolders.");
-        setSubfolderState(false);
-        setParams111(selectedDepartmentKey);
-        setParams11(selectedDepartment);
-        setDepartmentKey(selectedDepartmentKey);
-        setSome([selectedDepartment]);
-      }
-    } catch (error) {
-      console.error("Error in changeValuedepartmentName:", error);
-    }
-  };
+  //       setSubfolderState(true);
+  //       setSubdepartmentsMain(subfolders);
+  //       setParams111(selectedValue.key);
+  //       setParams11(selectedDepartment);
+  //       setDepartmentKey(selectedDepartmentKey);
+  //       setSome([selectedDepartment]);
+  //     } else {
+  //       console.log("Selected department does not have subfolders.");
+  //       setSubfolderState(false);
+  //       setParams111(selectedValue.Key);
+  //       setParams11(selectedValue.text);
+  //       setDepartmentKey(selectedDepartmentKey);
+  //       setSome([selectedDepartment]);
+  //       console.log("Params111:",params111);
+        
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in changeValuedepartmentName:", error);
+  //   }
+  // };
 
   // const changeValuedepartmentName = (e, value) => {
   //   console.log(value);
@@ -1090,12 +1140,86 @@ export default function User(props) {
   //   this.setState({ sss: sssCopy });
   // };
 
-  const changeValuedocumentType = async (
-    event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
+
+  const changeValuedepartmentName = async (
+    event: any,
+    value: any
   ) => {
-    console.log(option);
-    const selectedDocumentKey: any = option?.key;
+    console.log("changeValuedepartmentName function called.");
+    console.log("Selected department value:", value);
+
+    try {
+      // const sp: SPFI = getSp();
+      // this.setState({
+      //   params1: "",
+      //   params3: "",
+      //   params4: "",
+      //   params5: "",
+      // });
+      setParams1("");
+      setParams3("");
+      setParams4("");
+      setParams5("");
+     
+      const selectedDepartment = value.value;
+      const selectedDepartmentKey = value.key;
+      console.log("Selected department:", selectedDepartment);
+      console.log("Selected department key:", value.key);
+
+      // Check if the selected department has subfolders
+      if (SubfoldersMainParent.includes(selectedDepartment)) {
+        console.log("Selected department has subfolders.");
+
+        const subfolders = SubdepartmentsMain2.filter(
+          (subfolder: any) => subfolder.ParentFolders === selectedDepartment
+        ).map((subfolder: any) => ({
+          text: subfolder.SubFolders,
+          key: subfolder.SubFolders,
+          Code: subfolder.Code,
+        }));
+
+        console.log("SubdepartmentsMain array:", subfolders);
+
+        // this.setState({
+        //   SubfolderState: true,
+        //   SubdepartmentsMain: subfolders,
+        //   params111: option?.key,
+        //   params11: selectedDepartment,
+        //   departmentKey: selectedDepartmentKey,
+        //   some: [selectedDepartment],
+        // });
+        setSubfolderState(true);
+        setSubdepartmentsMain(subfolders);
+        setParams111(value.key);
+        setParams11(selectedDepartment);
+        setDepartmentKey(selectedDepartmentKey);
+        setSome([selectedDepartment]);
+      } else {
+        console.log("Selected department does not have subfolders.");
+
+        // this.setState({
+        //   SubfolderState: false,
+        //   params111: option?.key,
+        //   params11: selectedDepartment,
+        // });
+
+        setSubfolderState(false);
+        setParams111(value.key);
+        setParams11(selectedDepartment);
+      }
+
+      // console.log("Updated state:", this.state);
+    } catch (error) {
+      console.error("Error in changeValuedepartmentName:", error);
+    }
+  };
+
+  const changeValuedocumentType = async (
+    event: any,
+    value:any
+  ) => {
+    console.log(value);
+    const selectedDocumentKey: any = value.key;
     console.log("Selected department:", selectedDocumentKey);
 
     // this.setState({
@@ -1103,25 +1227,25 @@ export default function User(props) {
     //   params22: option?.text,
     //   documentKey: selectedDocumentKey,
     // });
-    setParams2(option?.key);
-    setParams22(option?.text);
+    setParams2(value.key);
+    setParams22(value.value);
     setDocumentKey(selectedDocumentKey);
   };
 
   const changeValueProjectName = async (
-    event: React.FormEvent<HTMLDivElement>,
-    option?: IDropdownOption
+    event: any,
+    value:any
   ) => {
     // console.log(value);
-    console.log(option);
-    const selectedProjectKey: any = option?.key;
+    console.log(value);
+    const selectedProjectKey: any = value.key;
     console.log("Selected department:", selectedProjectKey);
     // this.setState({
     //   params5: option?.text,
     //   projectKey:selectedProjectKey,
     // });
 
-    setParams5(option?.text);
+    setParams5(value.value);
     setProjectKey(selectedProjectKey);
   };
 
@@ -1239,17 +1363,18 @@ export default function User(props) {
 
   //   // await console.log(this.state.some)
   // };
-  const changeValueSubdepartmentsMain = async (value?: any) => {
+  const changeValueSubdepartmentsMain = async (event: any,
+    value:any) => {
     console.log("Selected value:", value);
 
-    const SubDepartmentmainkey: any = value?.key;
+    const SubDepartmentmainkey: any = value.key;
     console.log("Selected department key:", SubDepartmentmainkey);
-    console.log("Selected department text:", value?.text);
+    console.log("Selected department text:", value.value);
 
-    if (SubfoldersParent.includes(value?.text)) {
+    if (SubfoldersParent.includes(value.text)) {
       let array1 = Subdepartments2.filter(
-        (names: any) => names.ParentFolders === value?.text
-      ).map((subfolder) => ({
+        (names: any) => names.ParentFolders === value.value
+      ).map((subfolder:any) => ({
         text: subfolder.SubFolders,
         key: subfolder.SubFolders,
       }));
@@ -1257,20 +1382,22 @@ export default function User(props) {
 
       setSubfolderState1(true);
       setSubdepartments(array1);
-      setParams1(value?.key);
-      setParams3(value?.text);
+      setParams1(value.key);
+      setParams3(value.value);
     } else {
       setSubfolderState1(false);
-      setParams1(value?.key);
-      setParams3(value?.text);
+      setParams1(value.key);
+      setParams3(value.value);
       setSubFoldersMainKey(SubDepartmentmainkey);
     }
   };
 
-  const changeValueSubdepartments = async (e, value: any) => {
+  const changeValueSubdepartments = async (value: any) => {
     // console.log(value);
     if (SubfolderState1 === true) {
       await sss.push(...sss, value.text);
+      console.log(sss);
+      
     }
     // this.setState({
     //   params4: value.text,
@@ -1278,6 +1405,10 @@ export default function User(props) {
     // });
     setParams4(value.text);
     setSome([value.text]);
+    console.log(params4);
+    console.log(some);
+    
+    
   };
 
   const changeSalectFilename = async (e, value: any) => {
@@ -1290,20 +1421,33 @@ export default function User(props) {
     setFileNameStruct(testFile);
   };
 
-  const changeValueFilename = async (e, value: any) => {
-    // console.log(value);
-    // this.setState({
-    //   filenames: value,
-    // });
-    setFilenames(value);
+  // const changeValueFilename = async (e, value: any) => {
+  //   // console.log(value);
+  //   // this.setState({
+  //   //   filenames: value,
+  //   // });
+  //   setFilenames(value);
+  //   console.log(filenames);
+  // };
+
+  const changeValueFilename = (e:any, value: any) => {
+    // Update the filenames state with the new value entered in the input
+    setFilenames(e.target.value);
+    console.log(filenames);
   };
 
-  const changeValueFileDescription = async (e, value: any) => {
-    // console.log(value);
-    // this.setState({
-    //   fileDes: value,
-    // });
-    setFileDes(value);
+  // const changeValueFileDescription = async (e, value: any) => {
+  //   // console.log(value);
+  //   // this.setState({
+  //   //   fileDes: value,
+  //   // });
+  //   setFileDes(value);
+  // };
+
+  const changeValueFileDescription = (e:any, value: any) => {
+    // Update the filenames state with the new value entered in the input
+    setFileDes(e.target.value);
+    console.log(fileDes);
   };
 
   const downloadFile = async () => {
@@ -1748,6 +1892,8 @@ export default function User(props) {
 
   const clickGenerate = async () => {
     // Clear arrays and other relevant state variables
+    console.log("clickGenerate function called");
+    
     let somee: any = [];
     let somee1: any = [];
     let somee2: any = [];
@@ -2153,14 +2299,25 @@ export default function User(props) {
   // })
   // }
 
-  const handleFileChange = (e) => {
-    console.log(e.target.files);
-    // this.setState({
-    //   fileess: e.target.files,
-    // });
-    setFileess(e.target.files);
+  // const handleFileChange = ({ fileList }) => {
+  //   // this.setState({
+  //   //   fileess: e.target.files,
+  //   // });
+  //   setFileess(fileList);
+  // };
+  // console.log(fileess);
+
+  const handleFileChange = (info) => {
+    const { fileList } = info;
+    setFileess(fileList);
+    console.log(fileess);
   };
-  console.log(fileess);
+
+  // const handleFileChange = (fileList) => {
+  //   console.log(fileList);
+  //   setFileess(fileList);
+  // };
+  // console.log(fileess);
 
   const closeHideDialog = () => {
     // this.setState({
@@ -2325,8 +2482,10 @@ export default function User(props) {
   };
 
   const filesave = async () => {
+    console.log("filesave function called");
     console.log(filenames.length);
     console.log(fileDes.length);
+    console.log(fileNameStruct);
 
     if (Array.isArray(fileess) && fileess.length > 0) {
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
@@ -2350,6 +2509,8 @@ export default function User(props) {
       //   Uploading: true,
       // });
       setUploading(true);
+      console.log(Uploading);
+    
 
       let Department: any = "";
       let Subdepartment: any = "";
@@ -3571,7 +3732,7 @@ export default function User(props) {
                         name="myFile"
                         id="newfile"
                         accept=".doc, .docx, .xls, .xlsx"
-                        onChange={(e) => handleFileChange(e)}
+                        // onChange={(e) => handleFileChange(e)}
                         disabled={valueFileType !== "Old Files"}
                       ></input>
                     </div>
@@ -3819,7 +3980,7 @@ export default function User(props) {
                         name="myFile"
                         id="newfile"
                         accept=".doc, .docx, .xls, .xlsx"
-                        onChange={(e) => handleFileChange(e)}
+                        // onChange={(e) => handleFileChange(e)}
                         disabled={valueFileType !== "New Files"}
                       ></input>
                     </div>
@@ -3999,28 +4160,37 @@ export default function User(props) {
                   </span>
                   <span className={styles.uploadstyle}>Upload</span>
                   <span>
-                    <Radio.Group onChange={onChange} value={radiovalue}>
-                      <Radio value={1}>New Files</Radio>
-                      <Radio value={2}>Replace old files</Radio>
+                    <Radio.Group onChange={onChange}
+                     value={radiovalue}>
+                      <Radio value={"New Files"}>New Files</Radio>
+                      <Radio value={"old files"}>Replace old files</Radio>
                     </Radio.Group>
                   </span>
                 </div>
                 <div>
-                  <Form layout="vertical">
+                  <Form 
+                  name="basic"
+                  layout="vertical" 
+                  onFinish={filesave}
+                  autoComplete="off"
+                  >
                     <Form.Item
                       label="Department Name"
+                      name="Department Name"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true}]}
+
                     >
                       <Select
                         placeholder="Select an option"
                         // disabled={valueFileType !== "Old Files"}
                         // value={departmentKey}
-                        onChange={(value) => {
-                          changeValuedepartmentName(value);
-                        }}
+                        onChange={(event, option) => changeValuedepartmentName(event, option)}
+                        
+
                       >
                         {departmentName.map((option: any) => (
-                          <Select.Option key={option.key} value={option.key}>
+                          <Select.Option key={option.key} value={option.text}>
                             {option.text}
                           </Select.Option>
                         ))}
@@ -4029,18 +4199,22 @@ export default function User(props) {
 
                     <Form.Item
                       label="Document Name"
+                      name="Document Name"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true}]}
                     >
                       <Select
                         placeholder="Select an option"
                         // disabled={valueFileType !== "Old Files"}
                         // value={departmentKey}
-                        onChange={(value) => {
-                          changeValuedocumentType(value);
+                        onChange={(event, option) => {
+                          changeValuedocumentType(event, option);
                         }}
+
+                        // onChange={changeValuedocumentType}
                       >
                         {documentType.map((option: any) => (
-                          <Select.Option key={option.key} value={option.key}>
+                          <Select.Option key={option.key} value={option.text}>
                             {option.text}
                           </Select.Option>
                         ))}
@@ -4049,14 +4223,16 @@ export default function User(props) {
 
                     <Form.Item
                       label="Project Name"
+                      name="Project Name"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true}]}
                     >
                       <Select
                         placeholder="Select an option"
                         // disabled={valueFileType !== "Old Files"}
                         // value={departmentKey}
-                        onChange={(value) => {
-                          changeValueProjectName(value);
+                        onChange={(event, option) => {
+                          changeValueProjectName(event, option);
                         }}
                       >
                         {ProjectName.map((option: any) => (
@@ -4067,24 +4243,51 @@ export default function User(props) {
                       </Select>
                     </Form.Item>
 
-                    <Form.Item
+                    {SubfolderState === true ? (<Form.Item
                       label="Sub Folders Main"
+                      name="Sub Folders Main"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true}]}
                     >
                       <Select
                         placeholder="Select an option"
-                        onChange={(value) => {
-                          changeValueSubdepartmentsMain(value);
+                        onChange={(event, option) => {
+                          changeValueSubdepartmentsMain(event, option);
                         }}
                       >
                         {SubdepartmentsMain.map((option: any) => (
+                          <Select.Option key={option.key} value={option.text}>
+                            {option.text}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>):
+                     (<div></div>
+                    )}
+
+                {SubfolderState1 === true ? (
+                        <Form.Item
+                        label="Sub Folders"
+                        name="Sub Folders"
+                        style={{ maxWidth: 400, marginTop: 37 }}
+                        rules={[{ required: true}]}
+                      >
+                           <Select
+                        placeholder="Select an option"
+                        onChange={changeValueSubdepartments}
+                      >
+                        {Subdepartments.map((option: any) => (
                           <Select.Option key={option.key} value={option.key}>
                             {option.text}
                           </Select.Option>
                         ))}
                       </Select>
-                    </Form.Item>
-
+                        </Form.Item>
+                      ) : (
+                        <div></div>
+                      )}
+                    {SubfolderState1 === false ? (
+                    <Form.Item>
                     <Button
                       onClick={clickGenerate}
                       style={{ padding: "0px", display: "block" }}
@@ -4105,9 +4308,36 @@ export default function User(props) {
                         Generate ID
                       </span>
                     </Button>
-
+                    </Form.Item>
+                    ):(
+                      <Form.Item>
+                      <Button
+                      onClick={clickGenerate}
+                      style={{ padding: "0px", display: "block" }}
+                    >
+                      <span>
+                        <img
+                          src={require("../../../../Images/Gear.png")}
+                          alt="Gear"
+                          style={{ width: "50%" }}
+                        />
+                      </span>
+                      <span
+                        style={{
+                          color: "rgba(74, 173, 146, 1)",
+                          paddingRight: "18px",
+                        }}
+                      >
+                        Generate ID
+                      </span>
+                    </Button>
+                    </Form.Item>
+                    )}
                     <Space.Compact style={{ width: "30%", marginTop: "30px" }}>
-                      <Input />
+                      <Input 
+    value={fileNameStruct.length > 35 ? `${fileNameStruct.slice(0, 35)}...` : fileNameStruct}
+
+                      onChange={changeValueFileID}/>
                       <Button
                         style={{ background: "rgba(74, 173, 146, 1)" }}
                         disabled={fileNameStruct === ""}
@@ -4128,12 +4358,21 @@ export default function User(props) {
 
                     <Form.Item
                       label="Upload New file"
+                      name="Upload New file"
                       style={{ width: "100%", marginTop: "30px" }}
+                      rules={[{ required: true, message: 'Please choose file to upload!' }]}
                     >
-                      <Upload>
+                      <Upload accept=".doc, .docx, .xls, .xlsx"
+                      onChange={handleFileChange}
+
+                        fileList={fileess}
+
+                        maxCount={1}
+                        >
                         <Button
                           icon={<UploadOutlined />}
                           className={styles.uploadbutton}
+                          // onChange={(e:any) => handleFileChange(e)}
                         >
                           Upload
                         </Button>
@@ -4142,29 +4381,40 @@ export default function User(props) {
 
                     <Form.Item
                       label="File Name"
+                      name="File Name"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true, message: 'Please input your File Name!' }]}
                     >
-                      <Input />
+                      <Input 
+                       value={filenames}
+                       onChange={changeValueFilename} 
+                       />
                     </Form.Item>
 
                     <Form.Item
                       label="File Description"
+                      name="File Description"
                       style={{ maxWidth: 400, marginTop: 37 }}
+                      rules={[{ required: true, message: 'Please input your File Description!' }]}
                     >
                       <TextArea
                         showCount
                         maxLength={100}
-                        onChange={onChange}
+                        onChange={changeValueFileDescription}
                         style={{ height: 120, resize: "none" }}
+                        
                       />
                     </Form.Item>
+
+                     <Form.Item>
+                     <Button htmlType="submit">Upload</Button>
+                      </Form.Item>     
                   </Form>
                 </div>
               </Card>
             </div>
             <div>
-              <button>Upload</button>
-              <button onClick={toggleUploadDiv}>Cancel</button>
+              <Button onClick={toggleUploadDiv}>Cancel</Button>
             </div>
           </Layout>
         </div>
