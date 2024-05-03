@@ -22,7 +22,7 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
-import { Button, Card, Form, Layout, Select, Upload } from "antd";
+import { Button, Card, Col, Form, Layout, Row, Select, Upload } from "antd";
 import { Input } from "antd";
 
 import { TextField } from "@fluentui/react/lib/TextField";
@@ -507,8 +507,9 @@ export default function User(props) {
     setParams111("");
     setFiless([]);
     setFileNameStruct("");
-
     console.log(valueFileType);
+    console.log(radiovalue);
+
     
   };
 
@@ -2299,25 +2300,45 @@ export default function User(props) {
   // })
   // }
 
-  // const handleFileChange = ({ fileList }) => {
+  // const handleFileChange = (e:any) => {
   //   // this.setState({
   //   //   fileess: e.target.files,
   //   // });
-  //   setFileess(fileList);
+  //   setFileess(e.target.files);
   // };
   // console.log(fileess);
 
   const handleFileChange = (info) => {
+    // Extract the fileList from info
     const { fileList } = info;
-    setFileess(fileList);
-    console.log(fileess);
+  
+    // Convert the fileList array to a FileList object
+    const fileArray = fileList.map((file) => file.originFileObj);
+    const filelistObject = new DataTransfer();
+    fileArray.forEach((file) => {
+      filelistObject.items.add(file);
+    });
+  
+    // Set the file list using the constructed FileList object
+    setFileess(filelistObject.files);
   };
+  console.log(fileess);
 
-  // const handleFileChange = (fileList) => {
-  //   console.log(fileList);
-  //   setFileess(fileList);
+
+  // const handleFileChange = (fileInfoOrEvent) => {
+  //   // Check if fileInfoOrEvent is an event or an object containing file information
+  //   if (fileInfoOrEvent.target) {
+  //     // If it's an event, extract files from the event
+  //     setFileess(fileInfoOrEvent.target.files);
+  //   } else {
+  //     // If it's an object containing file information, directly set the fileList
+  //     setFileess(fileInfoOrEvent.fileList);
+  //   }
   // };
   // console.log(fileess);
+  
+
+
 
   const closeHideDialog = () => {
     // this.setState({
@@ -3045,7 +3066,7 @@ export default function User(props) {
       } else {
         Subdepartment = "";
       }
-
+      
       if (myfile.size <= 10485760) {
         const sp: SPFI = getSp();
 
@@ -4173,7 +4194,10 @@ export default function User(props) {
                   layout="vertical" 
                   onFinish={filesave}
                   autoComplete="off"
-                  >
+                  style={{maxWidth:"100%"}}
+                  > 
+                  <Row gutter={24}>
+                  <Col span={12}>
                     <Form.Item
                       label="Department Name"
                       name="Department Name"
@@ -4186,8 +4210,6 @@ export default function User(props) {
                         // disabled={valueFileType !== "Old Files"}
                         // value={departmentKey}
                         onChange={(event, option) => changeValuedepartmentName(event, option)}
-                        
-
                       >
                         {departmentName.map((option: any) => (
                           <Select.Option key={option.key} value={option.text}>
@@ -4196,7 +4218,8 @@ export default function User(props) {
                         ))}
                       </Select>
                     </Form.Item>
-
+                    </Col>
+                    <Col span={12}>
                     <Form.Item
                       label="Document Name"
                       name="Document Name"
@@ -4220,11 +4243,15 @@ export default function User(props) {
                         ))}
                       </Select>
                     </Form.Item>
+                    </Col>
+                    </Row>
 
+                    <Row gutter={24}>
+                    <Col span={12}>
                     <Form.Item
                       label="Project Name"
                       name="Project Name"
-                      style={{ maxWidth: 400, marginTop: 37 }}
+                      style={{ maxWidth: 400, marginTop: 17 }}
                       rules={[{ required: true}]}
                     >
                       <Select
@@ -4242,11 +4269,12 @@ export default function User(props) {
                         ))}
                       </Select>
                     </Form.Item>
-
+                    </Col>
+                    <Col span={12}>
                     {SubfolderState === true ? (<Form.Item
                       label="Sub Folders Main"
                       name="Sub Folders Main"
-                      style={{ maxWidth: 400, marginTop: 37 }}
+                      style={{ maxWidth: 400, marginTop: 17 }}
                       rules={[{ required: true}]}
                     >
                       <Select
@@ -4264,12 +4292,16 @@ export default function User(props) {
                     </Form.Item>):
                      (<div></div>
                     )}
+                    </Col>
+                    </Row>
 
-                {SubfolderState1 === true ? (
+                    <Row gutter={24}>
+                    <Col span={24}> 
+                   {SubfolderState1 === true ? (
                         <Form.Item
                         label="Sub Folders"
                         name="Sub Folders"
-                        style={{ maxWidth: 400, marginTop: 37 }}
+                        style={{ maxWidth: 400, marginTop: 17 }}
                         rules={[{ required: true}]}
                       >
                            <Select
@@ -4290,7 +4322,7 @@ export default function User(props) {
                     <Form.Item>
                     <Button
                       onClick={clickGenerate}
-                      style={{ padding: "0px", display: "block" }}
+                      style={{ padding: "0px", display: "block", marginTop: 17 }}
                     >
                       <span>
                         <img
@@ -4313,7 +4345,7 @@ export default function User(props) {
                       <Form.Item>
                       <Button
                       onClick={clickGenerate}
-                      style={{ padding: "0px", display: "block" }}
+                      style={{ padding: "0px", display: "block", marginTop: 17 }}
                     >
                       <span>
                         <img
@@ -4333,7 +4365,12 @@ export default function User(props) {
                     </Button>
                     </Form.Item>
                     )}
-                    <Space.Compact style={{ width: "30%", marginTop: "30px" }}>
+                      </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                      <Col span={24}>
+                    <Space.Compact style={{ width: "30%", marginTop: "17px" }}>
                       <Input 
     value={fileNameStruct.length > 35 ? `${fileNameStruct.slice(0, 35)}...` : fileNameStruct}
 
@@ -4352,37 +4389,41 @@ export default function User(props) {
                             alt="Copy"
                           />
                         </span>
-                        <span style={{ paddingLeft: "5px" }}>Copy</span>
+                        <span style={{ paddingLeft: "5px", color:"white" }}>Copy</span>
                       </Button>
                     </Space.Compact>
+                    </Col>
+                    </Row>
 
-                    <Form.Item
+                    <Row gutter={24}>
+                    <Col span={24}>
+                  <Form.Item
                       label="Upload New file"
                       name="Upload New file"
                       style={{ width: "100%", marginTop: "30px" }}
                       rules={[{ required: true, message: 'Please choose file to upload!' }]}
                     >
-                      <Upload accept=".doc, .docx, .xls, .xlsx"
-                      onChange={handleFileChange}
+              
+              <Upload
+              accept=".doc, .docx, .xls, .xlsx"
+              onChange={handleFileChange}
+              beforeUpload={() => false} // Prevent actual upload
+              >
+             <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
 
-                        fileList={fileess}
-
-                        maxCount={1}
-                        >
-                        <Button
-                          icon={<UploadOutlined />}
-                          className={styles.uploadbutton}
-                          // onChange={(e:any) => handleFileChange(e)}
-                        >
-                          Upload
-                        </Button>
-                      </Upload>
                     </Form.Item>
+                    </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+
+                    <Col span={24}>
 
                     <Form.Item
                       label="File Name"
                       name="File Name"
-                      style={{ maxWidth: 400, marginTop: 37 }}
+                      style={{ maxWidth: 400, marginTop: 17 }}
                       rules={[{ required: true, message: 'Please input your File Name!' }]}
                     >
                       <Input 
@@ -4390,11 +4431,15 @@ export default function User(props) {
                        onChange={changeValueFilename} 
                        />
                     </Form.Item>
+                    </Col>
+                    </Row>
 
+                    <Row gutter={24}>
+                    <Col span={24}>
                     <Form.Item
                       label="File Description"
                       name="File Description"
-                      style={{ maxWidth: 400, marginTop: 37 }}
+                      style={{ maxWidth: 400, marginTop: 17 }}
                       rules={[{ required: true, message: 'Please input your File Description!' }]}
                     >
                       <TextArea
@@ -4405,17 +4450,29 @@ export default function User(props) {
                         
                       />
                     </Form.Item>
+                    </Col>
+                    </Row>
 
+                    <Row gutter={24}>
+                    <Col span={24} style={{display:"flex",justifyContent:"flex-end"}}>
                      <Form.Item>
-                     <Button htmlType="submit">Upload</Button>
-                      </Form.Item>     
+                     <Button htmlType="submit"
+                      style={{ background: "rgba(74, 173, 146, 1)", color:"white" }}
+                     >Submit</Button>
+                      </Form.Item>    
+                   
+                     <Form.Item>
+                     <Button onClick={toggleUploadDiv} style={{marginLeft:"10px"}}>Cancel</Button>
+                      </Form.Item>    
+                      </Col>
+
+                      </Row>
+
                   </Form>
                 </div>
               </Card>
             </div>
-            <div>
-              <Button onClick={toggleUploadDiv}>Cancel</Button>
-            </div>
+          
           </Layout>
         </div>
       )}
