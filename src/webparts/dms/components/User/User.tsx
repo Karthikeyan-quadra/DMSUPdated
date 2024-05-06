@@ -22,7 +22,17 @@ import {
   IDropdownStyles,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
-import { Button, Card, Col, Form, Layout, Row, Select, Upload } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Drawer,
+  Form,
+  Layout,
+  Row,
+  Select,
+  Upload,
+} from "antd";
 import { Input } from "antd";
 
 import { TextField } from "@fluentui/react/lib/TextField";
@@ -415,9 +425,10 @@ export default function User(props) {
 
   const [showUploadDiv, setShowUploadDiv] = useState(true); // State to manage the visibility of upload div
 
+  const [showTemplateDiv, setshowTemplateDiv] = useState(true);
+
   const [radiovalue, setRadioValue] = useState("New Files");
 
- 
   const fetchData = async () => {
     try {
       const sp: SPFI = getSp();
@@ -468,16 +479,29 @@ export default function User(props) {
     setShowUploadDiv(!showUploadDiv);
     console.log(showUploadDiv);
   };
+
+  const toggletemplateDiv = () => {
+    console.log("Template button clicked");
+    setshowTemplateDiv(!showTemplateDiv);
+    console.log(showTemplateDiv);
+  };
+
+  const onClose = () => {
+    setshowTemplateDiv(false);
+  };
+
   useEffect(() => {
     toggleUploadDiv();
     console.log(showUploadDiv);
+    toggletemplateDiv();
+    console.log(showTemplateDiv);
   }, []);
 
   useEffect(() => {
     // setRadioValue("New Files");
     console.log(radiovalue);
   }, [radiovalue]);
- 
+
   useEffect(() => {
     // setRadioValue("New Files");
     console.log(radiovalue);
@@ -509,10 +533,7 @@ export default function User(props) {
     setFileNameStruct("");
     console.log(valueFileType);
     console.log(radiovalue);
-
-    
   };
-
 
   const fetchAdditionalData = async () => {
     try {
@@ -538,7 +559,6 @@ export default function User(props) {
 
       // let DepartmentNames: IDropdownOption[] = [];
       let DepartmentNames: any = [];
-
 
       let DocumentType: any = [];
       let ProjectName: any = [];
@@ -663,8 +683,6 @@ export default function User(props) {
       console.log("SubdepartmentsMain:", SubdepartmentsMain);
       console.log("SubDepartments1:", SubDepartments1);
       console.log("ProjectName:", ProjectName);
-      
-      
 
       //        const sss = await sp.web.lists.getByTitle("User Files")
       //   .items.select(
@@ -886,6 +904,7 @@ export default function User(props) {
     setOpenDialog(true);
     setHiddenDialog(false);
     setDownloadURI(true);
+    setshowTemplateDiv(true);
     // console.log({ openDialog, hiddenDialog, DownloadURI });
   };
 
@@ -1052,7 +1071,7 @@ export default function User(props) {
   //     setParams3("");
   //     setParams4("");
   //     setParams5("");
-     
+
   //     const selectedDepartment = selectedValue.text; // Use selectedValue directly
   //     console.log("Selected department:", selectedDepartment);
 
@@ -1091,7 +1110,7 @@ export default function User(props) {
   //       setDepartmentKey(selectedDepartmentKey);
   //       setSome([selectedDepartment]);
   //       console.log("Params111:",params111);
-        
+
   //     }
   //   } catch (error) {
   //     console.error("Error in changeValuedepartmentName:", error);
@@ -1141,11 +1160,7 @@ export default function User(props) {
   //   this.setState({ sss: sssCopy });
   // };
 
-
-  const changeValuedepartmentName = async (
-    event: any,
-    value: any
-  ) => {
+  const changeValuedepartmentName = async (event: any, value: any) => {
     console.log("changeValuedepartmentName function called.");
     console.log("Selected department value:", value);
 
@@ -1161,7 +1176,7 @@ export default function User(props) {
       setParams3("");
       setParams4("");
       setParams5("");
-     
+
       const selectedDepartment = value.value;
       const selectedDepartmentKey = value.key;
       console.log("Selected department:", selectedDepartment);
@@ -1215,10 +1230,7 @@ export default function User(props) {
     }
   };
 
-  const changeValuedocumentType = async (
-    event: any,
-    value:any
-  ) => {
+  const changeValuedocumentType = async (event: any, value: any) => {
     console.log(value);
     const selectedDocumentKey: any = value.key;
     console.log("Selected department:", selectedDocumentKey);
@@ -1233,10 +1245,7 @@ export default function User(props) {
     setDocumentKey(selectedDocumentKey);
   };
 
-  const changeValueProjectName = async (
-    event: any,
-    value:any
-  ) => {
+  const changeValueProjectName = async (event: any, value: any) => {
     // console.log(value);
     console.log(value);
     const selectedProjectKey: any = value.key;
@@ -1364,8 +1373,7 @@ export default function User(props) {
 
   //   // await console.log(this.state.some)
   // };
-  const changeValueSubdepartmentsMain = async (event: any,
-    value:any) => {
+  const changeValueSubdepartmentsMain = async (event: any, value: any) => {
     console.log("Selected value:", value);
 
     const SubDepartmentmainkey: any = value.key;
@@ -1375,7 +1383,7 @@ export default function User(props) {
     if (SubfoldersParent.includes(value.text)) {
       let array1 = Subdepartments2.filter(
         (names: any) => names.ParentFolders === value.value
-      ).map((subfolder:any) => ({
+      ).map((subfolder: any) => ({
         text: subfolder.SubFolders,
         key: subfolder.SubFolders,
       }));
@@ -1398,7 +1406,6 @@ export default function User(props) {
     if (SubfolderState1 === true) {
       await sss.push(...sss, value.text);
       console.log(sss);
-      
     }
     // this.setState({
     //   params4: value.text,
@@ -1408,8 +1415,6 @@ export default function User(props) {
     setSome([value.text]);
     console.log(params4);
     console.log(some);
-    
-    
   };
 
   const changeSalectFilename = async (e, value: any) => {
@@ -1422,6 +1427,18 @@ export default function User(props) {
     setFileNameStruct(testFile);
   };
 
+  const changeSelectFilename = async (e, value: any) => {
+    console.log(value);
+    let testFile = value.value.split(".")[0];
+    console.log(testFile);
+    // this.setState({
+    //   fileNameStruct: testFile,
+    // });
+    setFileNameStruct(testFile);
+    console.log(fileNameStruct);
+  };
+  console.log(fileNameStruct);
+
   // const changeValueFilename = async (e, value: any) => {
   //   // console.log(value);
   //   // this.setState({
@@ -1431,11 +1448,28 @@ export default function User(props) {
   //   console.log(filenames);
   // };
 
-  const changeValueFilename = (e:any, value: any) => {
+  const changeValueFilename = (e: any, value: any) => {
     // Update the filenames state with the new value entered in the input
     setFilenames(e.target.value);
     console.log(filenames);
   };
+
+  const changeFile = (info) => {
+    // Extract the fileList from info
+    const { fileList } = info;
+
+    // Convert the fileList array to a FileList object
+    const fileArray = fileList.map((file) => file.originFileObj);
+    const filelistObject = new DataTransfer();
+    fileArray.forEach((file) => {
+      filelistObject.items.add(file);
+    });
+
+    // Set the file list using the constructed FileList object
+    setFileess(filelistObject.files);
+    console.log(fileess);
+  };
+  console.log(fileess);
 
   // const changeValueFileDescription = async (e, value: any) => {
   //   // console.log(value);
@@ -1445,7 +1479,7 @@ export default function User(props) {
   //   setFileDes(value);
   // };
 
-  const changeValueFileDescription = (e:any, value: any) => {
+  const changeValueFileDescription = (e: any, value: any) => {
     // Update the filenames state with the new value entered in the input
     setFileDes(e.target.value);
     console.log(fileDes);
@@ -1894,7 +1928,7 @@ export default function User(props) {
   const clickGenerate = async () => {
     // Clear arrays and other relevant state variables
     console.log("clickGenerate function called");
-    
+
     let somee: any = [];
     let somee1: any = [];
     let somee2: any = [];
@@ -2311,19 +2345,18 @@ export default function User(props) {
   const handleFileChange = (info) => {
     // Extract the fileList from info
     const { fileList } = info;
-  
+
     // Convert the fileList array to a FileList object
     const fileArray = fileList.map((file) => file.originFileObj);
     const filelistObject = new DataTransfer();
     fileArray.forEach((file) => {
       filelistObject.items.add(file);
     });
-  
+
     // Set the file list using the constructed FileList object
     setFileess(filelistObject.files);
   };
   console.log(fileess);
-
 
   // const handleFileChange = (fileInfoOrEvent) => {
   //   // Check if fileInfoOrEvent is an event or an object containing file information
@@ -2336,9 +2369,6 @@ export default function User(props) {
   //   }
   // };
   // console.log(fileess);
-  
-
-
 
   const closeHideDialog = () => {
     // this.setState({
@@ -2531,7 +2561,6 @@ export default function User(props) {
       // });
       setUploading(true);
       console.log(Uploading);
-    
 
       let Department: any = "";
       let Subdepartment: any = "";
@@ -3066,7 +3095,7 @@ export default function User(props) {
       } else {
         Subdepartment = "";
       }
-      
+
       if (myfile.size <= 10485760) {
         const sp: SPFI = getSp();
 
@@ -4129,10 +4158,10 @@ export default function User(props) {
         />
       </div>
 
-      {!showUploadDiv && (
+      {!showUploadDiv ? (
         <div className={styles.newdesigndiv}>
           <div className={styles.rectangle}>
-            <div className={styles.template} onClick={toggleHideDialog}>
+            <div className={styles.template} onClick={toggletemplateDiv}>
               <span className={styles.smallcard1}>
                 <img
                   src={require("../../../../Images/Template.png")}
@@ -4142,6 +4171,43 @@ export default function User(props) {
               </span>
               <span style={{ fontSize: "22px" }}>Select template</span>
             </div>
+
+            {showTemplateDiv && (
+              <>
+                <Drawer
+                  title="Select template"
+                  onClose={onClose}
+                  open={showTemplateDiv}
+                >
+                  <Row gutter={24}>
+                    <Col span={12}>
+                      <Form.Item
+                        label="Template"
+                        name="Template"
+                        style={{ maxWidth: 400, marginTop: 37 }}
+                      >
+                        <Select
+                          placeholder="Select an option"
+                          // disabled={valueFileType !== "Old Files"}
+                          // value={departmentKey}
+                          onChange={(event, option) => {
+                            changeValue(event, option);
+                          }}
+
+                          // onChange={changeValuedocumentType}
+                        >
+                          {options1.map((option: any) => (
+                            <Select.Option key={option.key} value={option.text}>
+                              {option.text}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Drawer>
+              </>
+            )}
 
             {showFirstItem && (
               <div className={styles.upload} onClick={toggleUploadDiv}>
@@ -4169,8 +4235,7 @@ export default function User(props) {
             />
           </div>
         </div>
-      )}
-      {showUploadDiv && (
+      ) : (
         <div>
           <Layout>
             <div>
@@ -4181,72 +4246,432 @@ export default function User(props) {
                   </span>
                   <span className={styles.uploadstyle}>Upload</span>
                   <span>
-                    <Radio.Group onChange={onChange}
-                     value={radiovalue}>
+                    <Radio.Group onChange={onChange} value={radiovalue}>
                       <Radio value={"New Files"}>New Files</Radio>
                       <Radio value={"old files"}>Replace old files</Radio>
                     </Radio.Group>
                   </span>
                 </div>
-                <div>
-                  <Form 
-                  name="basic"
-                  layout="vertical" 
-                  onFinish={filesave}
-                  autoComplete="off"
-                  style={{maxWidth:"100%"}}
-                  > 
-                  <Row gutter={24}>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Department Name"
-                      name="Department Name"
-                      style={{ maxWidth: 400, marginTop: 37 }}
-                      rules={[{ required: true}]}
-
+                {showUploadDiv && valueFileType === "New Files" ? (
+                  <div>
+                    <Form
+                      name="basic"
+                      layout="vertical"
+                      onFinish={filesave}
+                      autoComplete="off"
+                      style={{ maxWidth: "100%" }}
                     >
-                      <Select
-                        placeholder="Select an option"
-                        // disabled={valueFileType !== "Old Files"}
-                        // value={departmentKey}
-                        onChange={(event, option) => changeValuedepartmentName(event, option)}
-                      >
-                        {departmentName.map((option: any) => (
-                          <Select.Option key={option.key} value={option.text}>
-                            {option.text}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                    <Form.Item
-                      label="Document Name"
-                      name="Document Name"
-                      style={{ maxWidth: 400, marginTop: 37 }}
-                      rules={[{ required: true}]}
-                    >
-                      <Select
-                        placeholder="Select an option"
-                        // disabled={valueFileType !== "Old Files"}
-                        // value={departmentKey}
-                        onChange={(event, option) => {
-                          changeValuedocumentType(event, option);
-                        }}
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <Form.Item
+                            label="Department Name"
+                            name="Department Name"
+                            style={{ maxWidth: 400, marginTop: 37 }}
+                            rules={[{ required: true }]}
+                          >
+                            <Select
+                              placeholder="Select an option"
+                              // disabled={valueFileType !== "Old Files"}
+                              // value={departmentKey}
+                              onChange={(event, option) =>
+                                changeValuedepartmentName(event, option)
+                              }
+                            >
+                              {departmentName.map((option: any) => (
+                                <Select.Option
+                                  key={option.key}
+                                  value={option.text}
+                                >
+                                  {option.text}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                          <Form.Item
+                            label="Document Name"
+                            name="Document Name"
+                            style={{ maxWidth: 400, marginTop: 37 }}
+                            rules={[{ required: true }]}
+                          >
+                            <Select
+                              placeholder="Select an option"
+                              // disabled={valueFileType !== "Old Files"}
+                              // value={departmentKey}
+                              onChange={(event, option) => {
+                                changeValuedocumentType(event, option);
+                              }}
 
-                        // onChange={changeValuedocumentType}
-                      >
-                        {documentType.map((option: any) => (
-                          <Select.Option key={option.key} value={option.text}>
-                            {option.text}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    </Col>
-                    </Row>
+                              // onChange={changeValuedocumentType}
+                            >
+                              {documentType.map((option: any) => (
+                                <Select.Option
+                                  key={option.key}
+                                  value={option.text}
+                                >
+                                  {option.text}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                      </Row>
 
-                    <Row gutter={24}>
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <Form.Item
+                            label="Project Name"
+                            name="Project Name"
+                            style={{ maxWidth: 400, marginTop: 17 }}
+                            rules={[{ required: true }]}
+                          >
+                            <Select
+                              placeholder="Select an option"
+                              // disabled={valueFileType !== "Old Files"}
+                              // value={departmentKey}
+                              onChange={(event, option) => {
+                                changeValueProjectName(event, option);
+                              }}
+                            >
+                              {ProjectName.map((option: any) => (
+                                <Select.Option
+                                  key={option.key}
+                                  value={option.text}
+                                >
+                                  {option.text}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                          {SubfolderState === true ? (
+                            <Form.Item
+                              label="Sub Folders Main"
+                              name="Sub Folders Main"
+                              style={{ maxWidth: 400, marginTop: 17 }}
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                placeholder="Select an option"
+                                onChange={(event, option) => {
+                                  changeValueSubdepartmentsMain(event, option);
+                                }}
+                              >
+                                {SubdepartmentsMain.map((option: any) => (
+                                  <Select.Option
+                                    key={option.key}
+                                    value={option.text}
+                                  >
+                                    {option.text}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          ) : (
+                            <div></div>
+                          )}
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          {SubfolderState1 === true ? (
+                            <Form.Item
+                              label="Sub Folders"
+                              name="Sub Folders"
+                              style={{ maxWidth: 400, marginTop: 17 }}
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                placeholder="Select an option"
+                                onChange={changeValueSubdepartments}
+                              >
+                                {Subdepartments.map((option: any) => (
+                                  <Select.Option
+                                    key={option.key}
+                                    value={option.key}
+                                  >
+                                    {option.text}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          ) : (
+                            <div></div>
+                          )}
+                          {SubfolderState1 === false ? (
+                            <Form.Item>
+                              <Button
+                                onClick={clickGenerate}
+                                style={{
+                                  padding: "0px",
+                                  display: "block",
+                                  marginTop: 17,
+                                }}
+                              >
+                                <span>
+                                  <img
+                                    src={require("../../../../Images/Gear.png")}
+                                    alt="Gear"
+                                    style={{ width: "50%" }}
+                                  />
+                                </span>
+                                <span
+                                  style={{
+                                    color: "rgba(74, 173, 146, 1)",
+                                    paddingRight: "18px",
+                                  }}
+                                >
+                                  Generate ID
+                                </span>
+                              </Button>
+                            </Form.Item>
+                          ) : (
+                            <Form.Item>
+                              <Button
+                                onClick={clickGenerate}
+                                style={{
+                                  padding: "0px",
+                                  display: "block",
+                                  marginTop: 17,
+                                }}
+                              >
+                                <span>
+                                  <img
+                                    src={require("../../../../Images/Gear.png")}
+                                    alt="Gear"
+                                    style={{ width: "50%" }}
+                                  />
+                                </span>
+                                <span
+                                  style={{
+                                    color: "rgba(74, 173, 146, 1)",
+                                    paddingRight: "18px",
+                                  }}
+                                >
+                                  Generate ID
+                                </span>
+                              </Button>
+                            </Form.Item>
+                          )}
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Space.Compact
+                            style={{ width: "30%", marginTop: "17px" }}
+                          >
+                            <Input
+                              value={
+                                fileNameStruct.length > 39
+                                  ? `${fileNameStruct.slice(0, 35)}...`
+                                  : fileNameStruct
+                              }
+                              onChange={changeValueFileID}
+                            />
+                            <Button
+                              style={{ background: "rgba(74, 173, 146, 1)" }}
+                              disabled={fileNameStruct === ""}
+                              onClick={async () => {
+                                navigator.clipboard.writeText(fileNameStruct);
+                                alert("ID copied successfully!");
+                              }}
+                            >
+                              <span>
+                                <img
+                                  src={require("../../../../Images/Copy.png")}
+                                  alt="Copy"
+                                />
+                              </span>
+                              <span
+                                style={{ paddingLeft: "5px", color: "white" }}
+                              >
+                                Copy
+                              </span>
+                            </Button>
+                          </Space.Compact>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Form.Item
+                            label="Upload New file"
+                            name="Upload New file"
+                            style={{ width: "100%", marginTop: "30px" }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please choose file to upload!",
+                              },
+                            ]}
+                          >
+                            <Upload
+                              accept=".doc, .docx, .xls, .xlsx"
+                              onChange={handleFileChange}
+                              beforeUpload={() => false} // Prevent actual upload
+                            >
+                              <Button
+                                icon={<UploadOutlined />}
+                                style={{ width: 400, textAlign: "start" }}
+                              >
+                                Upload
+                              </Button>
+                            </Upload>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Form.Item
+                            label="File Name"
+                            name="File Name"
+                            style={{ maxWidth: 400, marginTop: 17 }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your File Name!",
+                              },
+                            ]}
+                          >
+                            <Input
+                              value={filenames}
+                              onChange={changeValueFilename}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Form.Item
+                            label="File Description"
+                            name="File Description"
+                            style={{ maxWidth: 400, marginTop: 17 }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your File Description!",
+                              },
+                            ]}
+                          >
+                            <TextArea
+                              showCount
+                              maxLength={100}
+                              onChange={changeValueFileDescription}
+                              style={{ height: 120, resize: "none" }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col
+                          span={24}
+                          style={{ display: "flex", marginLeft: "57%" }}
+                        >
+                          <Form.Item>
+                            <Button
+                              htmlType="submit"
+                              style={{
+                                background: "rgba(74, 173, 146, 1)",
+                                color: "white",
+                                width: "149px",
+                              }}
+                            >
+                              Submit
+                            </Button>
+                          </Form.Item>
+
+                          <Form.Item>
+                            <Button
+                              onClick={toggleUploadDiv}
+                              style={{ marginLeft: "10px", width: "149px" }}
+                            >
+                              Cancel
+                            </Button>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </div>
+                ) : (
+                  <div>
+                    <div style={{ maxWidth: 400, marginTop: 37 }}>
+                      <p className={styles.SelectOldFilestyle}>
+                        Select Old File
+                      </p>
+                    </div>
+                    <div>
+                      <Form
+                        name="basic"
+                        layout="vertical"
+                        onFinish={filesaveold}
+                        autoComplete="off"
+                        style={{ maxWidth: "100%" }}
+                      >
+                        <Row gutter={24}>
+                          <Col span={12}>
+                            <Form.Item
+                              label="Department Name"
+                              name="Department Name"
+                              style={{ maxWidth: 400 }}
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                placeholder="Select an option"
+                                // disabled={valueFileType !== "Old Files"}
+                                // value={departmentKey}
+                                onChange={(event, option) =>
+                                  changeValuedepartmentName(event, option)
+                                }
+                              >
+                                {departmentName.map((option: any) => (
+                                  <Select.Option
+                                    key={option.key}
+                                    value={option.text}
+                                  >
+                                    {option.text}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                          <Col span={12}>
+                            <Form.Item
+                              label="Document Name"
+                              name="Document Name"
+                              style={{ maxWidth: 400 }}
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                placeholder="Select an option"
+                                // disabled={valueFileType !== "Old Files"}
+                                // value={departmentKey}
+                                onChange={(event, option) => {
+                                  changeValuedocumentType(event, option);
+                                }}
+
+                                // onChange={changeValuedocumentType}
+                              >
+                                {documentType.map((option: any) => (
+                                  <Select.Option
+                                    key={option.key}
+                                    value={option.text}
+                                  >
+                                    {option.text}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+
+                        {/* <Row gutter={24}>
                     <Col span={12}>
                     <Form.Item
                       label="Project Name"
@@ -4293,186 +4718,275 @@ export default function User(props) {
                      (<div></div>
                     )}
                     </Col>
-                    </Row>
+                    </Row> */}
 
-                    <Row gutter={24}>
-                    <Col span={24}> 
-                   {SubfolderState1 === true ? (
-                        <Form.Item
-                        label="Sub Folders"
-                        name="Sub Folders"
-                        style={{ maxWidth: 400, marginTop: 17 }}
-                        rules={[{ required: true}]}
-                      >
-                           <Select
-                        placeholder="Select an option"
-                        onChange={changeValueSubdepartments}
-                      >
-                        {Subdepartments.map((option: any) => (
-                          <Select.Option key={option.key} value={option.key}>
-                            {option.text}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                        </Form.Item>
-                      ) : (
-                        <div></div>
-                      )}
-                    {SubfolderState1 === false ? (
-                    <Form.Item>
-                    <Button
-                      onClick={clickGenerate}
-                      style={{ padding: "0px", display: "block", marginTop: 17 }}
-                    >
-                      <span>
-                        <img
-                          src={require("../../../../Images/Gear.png")}
-                          alt="Gear"
-                          style={{ width: "50%" }}
-                        />
-                      </span>
-                      <span
-                        style={{
-                          color: "rgba(74, 173, 146, 1)",
-                          paddingRight: "18px",
-                        }}
-                      >
-                        Generate ID
-                      </span>
-                    </Button>
-                    </Form.Item>
-                    ):(
-                      <Form.Item>
-                      <Button
-                      onClick={clickGenerate}
-                      style={{ padding: "0px", display: "block", marginTop: 17 }}
-                    >
-                      <span>
-                        <img
-                          src={require("../../../../Images/Gear.png")}
-                          alt="Gear"
-                          style={{ width: "50%" }}
-                        />
-                      </span>
-                      <span
-                        style={{
-                          color: "rgba(74, 173, 146, 1)",
-                          paddingRight: "18px",
-                        }}
-                      >
-                        Generate ID
-                      </span>
-                    </Button>
-                    </Form.Item>
-                    )}
-                      </Col>
-                      </Row>
+                        <Row gutter={24}>
+                          <Col span={24}>
+                            {SubfolderState === true ? (
+                              <Form.Item
+                                label="Sub Folders Main"
+                                name="Sub Folders Main"
+                                style={{ maxWidth: 400, marginTop: 17 }}
+                                rules={[{ required: true }]}
+                              >
+                                <Select
+                                  placeholder="Select an option"
+                                  onChange={changeValueSubdepartmentsMain}
+                                >
+                                  {SubdepartmentsMain.map((option: any) => (
+                                    <Select.Option
+                                      key={option.key}
+                                      value={option.key}
+                                    >
+                                      {option.text}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            ) : (
+                              <div></div>
+                            )}
 
-                      <Row gutter={24}>
-                      <Col span={24}>
-                    <Space.Compact style={{ width: "30%", marginTop: "17px" }}>
-                      <Input 
-    value={fileNameStruct.length > 35 ? `${fileNameStruct.slice(0, 35)}...` : fileNameStruct}
+                            {SubfolderState1 === true ? (
+                              <Form.Item
+                                label="Sub Folders"
+                                name="Sub Folders"
+                                style={{ maxWidth: 400, marginTop: 17 }}
+                                rules={[{ required: true }]}
+                              >
+                                <Select
+                                  placeholder="Select an option"
+                                  onChange={changeValueSubdepartments}
+                                >
+                                  {Subdepartments.map((option: any) => (
+                                    <Select.Option
+                                      key={option.key}
+                                      value={option.key}
+                                    >
+                                      {option.text}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            ) : (
+                              <div></div>
+                            )}
 
-                      onChange={changeValueFileID}/>
-                      <Button
-                        style={{ background: "rgba(74, 173, 146, 1)" }}
-                        disabled={fileNameStruct === ""}
-                        onClick={async () => {
-                          navigator.clipboard.writeText(fileNameStruct);
-                          alert("ID copied successfully!");
-                        }}
-                      >
-                        <span>
-                          <img
-                            src={require("../../../../Images/Copy.png")}
-                            alt="Copy"
-                          />
-                        </span>
-                        <span style={{ paddingLeft: "5px", color:"white" }}>Copy</span>
-                      </Button>
-                    </Space.Compact>
-                    </Col>
-                    </Row>
+                            {SubfolderState1 === false ? (
+                              <Form.Item>
+                                <Button
+                                  onClick={clickGenerate1}
+                                  style={{
+                                    padding: "0px",
+                                    display: "block",
+                                    marginTop: 17,
+                                    width: "10%",
+                                  }}
+                                >
+                                  <span>
+                                    <img
+                                      src={require("../../../../Images/Search.png")}
+                                      alt="Search"
+                                      style={{ width: "100%" }}
+                                    />
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: "rgba(74, 173, 146, 1)",
+                                      paddingRight: "18px",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    Search
+                                  </span>
+                                </Button>
+                              </Form.Item>
+                            ) : (
+                              <Form.Item>
+                                <Button
+                                  onClick={clickGenerate1}
+                                  style={{
+                                    padding: "0px",
+                                    display: "block",
+                                    marginTop: 17,
+                                    width: "10%",
+                                  }}
+                                >
+                                  <span>
+                                    <img
+                                      src={require("../../../../Images/Search.png")}
+                                      alt="Search"
+                                      style={{ width: "100%" }}
+                                    />
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: "rgba(74, 173, 146, 1)",
+                                      paddingRight: "18px",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    Search
+                                  </span>
+                                </Button>
+                              </Form.Item>
+                            )}
+                          </Col>
+                        </Row>
 
-                    <Row gutter={24}>
-                    <Col span={24}>
-                  <Form.Item
-                      label="Upload New file"
-                      name="Upload New file"
-                      style={{ width: "100%", marginTop: "30px" }}
-                      rules={[{ required: true, message: 'Please choose file to upload!' }]}
-                    >
-              
-              <Upload
-              accept=".doc, .docx, .xls, .xlsx"
-              onChange={handleFileChange}
-              beforeUpload={() => false} // Prevent actual upload
-              >
-             <Button icon={<UploadOutlined />}>Upload</Button>
-            </Upload>
+                        <Row
+                          gutter={24}
+                          style={{ maxWidth: 400, marginTop: 24 }}
+                        >
+                          <Col span={24}>
+                            <p className={styles.ReplaceFileStyle}>
+                              Replace File
+                            </p>
+                          </Col>
+                        </Row>
 
-                    </Form.Item>
-                    </Col>
-                    </Row>
+                        <Row gutter={24}>
+                          <Col span={12}>
+                            <Form.Item
+                              label="Select File"
+                              name="Select File"
+                              style={{ maxWidth: 400 }}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please choose file to upload!",
+                                },
+                              ]}
+                            >
+                              <Select
+                                placeholder="Select File"
+                                // disabled={valueFileType !== "Old Files"}
+                                // value={departmentKey}
+                                onChange={(event, option) => {
+                                  changeSelectFilename(event, option);
+                                }}
 
-                    <Row gutter={24}>
+                                // onChange={changeValuedocumentType}
+                              >
+                                {Filess.map((option: any) => (
+                                  <Select.Option
+                                    key={option.key}
+                                    value={option.text}
+                                  >
+                                    {option.text}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
 
-                    <Col span={24}>
+                          <Col span={12}>
+                            <Form.Item
+                              label="New file"
+                              name="New file"
+                              style={{ maxWidth: 400, marginTop: 0 }}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please choose file to upload!",
+                                },
+                              ]}
+                            >
+                              <Upload
+                                accept=".doc, .docx, .xls, .xlsx"
+                                onChange={changeFile}
+                                beforeUpload={() => false} // Prevent actual upload
+                              >
+                                <Button
+                                  icon={<UploadOutlined />}
+                                  style={{ width: 400, textAlign: "start" }}
+                                >
+                                  Upload
+                                </Button>
+                              </Upload>
+                            </Form.Item>
+                          </Col>
+                        </Row>
 
-                    <Form.Item
-                      label="File Name"
-                      name="File Name"
-                      style={{ maxWidth: 400, marginTop: 17 }}
-                      rules={[{ required: true, message: 'Please input your File Name!' }]}
-                    >
-                      <Input 
-                       value={filenames}
-                       onChange={changeValueFilename} 
-                       />
-                    </Form.Item>
-                    </Col>
-                    </Row>
+                        <Row gutter={24}>
+                          <Col span={24}>
+                            <Form.Item
+                              label="File Name"
+                              name="File Name"
+                              style={{ maxWidth: 400, marginTop: 17 }}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input your File Name!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                value={filenames}
+                                onChange={changeValueFilename}
+                              />
+                            </Form.Item>
+                          </Col>
+                        </Row>
 
-                    <Row gutter={24}>
-                    <Col span={24}>
-                    <Form.Item
-                      label="File Description"
-                      name="File Description"
-                      style={{ maxWidth: 400, marginTop: 17 }}
-                      rules={[{ required: true, message: 'Please input your File Description!' }]}
-                    >
-                      <TextArea
-                        showCount
-                        maxLength={100}
-                        onChange={changeValueFileDescription}
-                        style={{ height: 120, resize: "none" }}
-                        
-                      />
-                    </Form.Item>
-                    </Col>
-                    </Row>
+                        <Row gutter={24}>
+                          <Col span={24}>
+                            <Form.Item
+                              label="File Description"
+                              name="File Description"
+                              style={{ maxWidth: 400, marginTop: 17 }}
+                              rules={[
+                                {
+                                  required: true,
+                                  message:
+                                    "Please input your File Description!",
+                                },
+                              ]}
+                            >
+                              <TextArea
+                                showCount
+                                maxLength={100}
+                                onChange={changeValueFileDescription}
+                                style={{ height: 120, resize: "none" }}
+                              />
+                            </Form.Item>
+                          </Col>
+                        </Row>
 
-                    <Row gutter={24}>
-                    <Col span={24} style={{display:"flex",justifyContent:"flex-end"}}>
-                     <Form.Item>
-                     <Button htmlType="submit"
-                      style={{ background: "rgba(74, 173, 146, 1)", color:"white" }}
-                     >Submit</Button>
-                      </Form.Item>    
-                   
-                     <Form.Item>
-                     <Button onClick={toggleUploadDiv} style={{marginLeft:"10px"}}>Cancel</Button>
-                      </Form.Item>    
-                      </Col>
+                        <Row gutter={24}>
+                          <Col
+                            span={24}
+                            style={{ display: "flex", marginLeft: "57%" }}
+                          >
+                            <Form.Item>
+                              <Button
+                                htmlType="submit"
+                                style={{
+                                  background: "rgba(74, 173, 146, 1)",
+                                  color: "white",
+                                  width: "149px",
+                                }}
+                              >
+                                Submit
+                              </Button>
+                            </Form.Item>
 
-                      </Row>
-
-                  </Form>
-                </div>
+                            <Form.Item>
+                              <Button
+                                onClick={toggleUploadDiv}
+                                style={{ marginLeft: "10px", width: "149px" }}
+                              >
+                                Cancel
+                              </Button>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </div>
+                  </div>
+                )}
               </Card>
             </div>
-          
           </Layout>
         </div>
       )}
