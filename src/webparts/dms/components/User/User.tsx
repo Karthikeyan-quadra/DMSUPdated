@@ -2163,7 +2163,8 @@ export default function User(props) {
   };
 
   const changeValue = async (e, value: any) => {
-    console.log(value.text);
+    console.log(value.value);
+    console.log(value);
     // { key: 'Work Instruction', text: 'Work Instruction' },
     // { key: 'MSOP', text: 'MSOP' },
     // { key: 'Forms', text: 'Forms' },
@@ -2175,7 +2176,8 @@ export default function User(props) {
       //   Documetntype: value.text,
       // });
       setChoose(true);
-      setDocumetntype(value.text);
+      setDocumetntype(value.value);
+      console.log(documentType);
 
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
@@ -2203,7 +2205,7 @@ export default function User(props) {
       setChoose(true);
       console.log(choose);
 
-      setDocumetntype(value.text);
+      setDocumetntype(value.value);
 
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
@@ -2299,7 +2301,7 @@ export default function User(props) {
     let somss: any = await sp.web.lists.getByTitle("My Docs").items();
     console.log(somss);
     await somss.filter((file: any) => {
-      if (file.fileType === value.text) {
+      if (file.fileType === value.value) {
         ID = file.ID;
         console.log(ID);
         console.log(file);
@@ -4272,7 +4274,7 @@ export default function User(props) {
                     )}
                     <Row gutter={24}>
                       <Col span={12}>
-                        <Button onClick={closeHideDialog}>Cancel</Button>
+                        <Button onClick={onClose}>Cancel</Button>
                       </Col>
                     </Row>
                   </div>
