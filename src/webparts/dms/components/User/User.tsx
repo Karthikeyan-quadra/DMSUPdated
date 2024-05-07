@@ -4180,7 +4180,7 @@ export default function User(props) {
                   open={showTemplateDiv}
                 >
                   <Row gutter={24}>
-                    <Col span={12}>
+                    <Col span={24}>
                       <Form.Item
                         label="Template"
                         name="Template"
@@ -4205,6 +4205,77 @@ export default function User(props) {
                       </Form.Item>
                     </Col>
                   </Row>
+                  {choose ? (
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Sub Section"
+                          name="Sub Section"
+                          style={{ maxWidth: 400, marginTop: 10 }}
+                        >
+                          <Select
+                            placeholder="Select an option"
+                            // disabled={valueFileType !== "Old Files"}
+                            // value={departmentKey}
+                            onChange={(event, option) => {
+                              changeValue1(event, option);
+                            }}
+
+                            // onChange={changeValuedocumentType}
+                          >
+                            {choose.map((option: any) => (
+                              <Select.Option
+                                key={option.key}
+                                value={option.text}
+                              >
+                                {option.text}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <div></div>
+                  )}
+                  <div style={{ display: "flex" }}>
+                    {DownloadURI === true ? (
+                      <Row gutter={12}>
+                        <Col span={12}>
+                          <Button
+                            onClick={downloadFile}
+                            style={{
+                              background: "rgba(74, 173, 146, 1)",
+                              color: "white",
+                              width: "149px",
+                            }}
+                          >
+                            Download
+                          </Button>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row gutter={12}>
+                        <Col span={12}>
+                          <Button
+                            onClick={downloadFile}
+                            style={{
+                              background: "rgba(74, 173, 146, 1)",
+                              color: "white",
+                              width: "149px",
+                            }}
+                          >
+                            Download
+                          </Button>
+                        </Col>
+                      </Row>
+                    )}
+                    <Row gutter={24}>
+                      <Col span={12}>
+                        <Button onClick={closeHideDialog}>Cancel</Button>
+                      </Col>
+                    </Row>
+                  </div>
                 </Drawer>
               </>
             )}
