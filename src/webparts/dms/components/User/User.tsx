@@ -141,7 +141,7 @@ const dialogContentPropsUpload = {
   title: "Upload File",
 };
 
-const options1: IDropdownOption[] = [
+const options1: any[] = [
   { key: "Manual", text: "Manual" },
   { key: "Policy", text: "Policy" },
   { key: "SOP", text: "SOP" },
@@ -150,7 +150,7 @@ const options1: IDropdownOption[] = [
   { key: "Form", text: "Form" },
 ];
 
-const chooose: IDropdownOption[] = [];
+const chooose: any[] = [];
 
 function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
@@ -428,6 +428,7 @@ export default function User(props) {
   const [showTemplateDiv, setshowTemplateDiv] = useState(true);
 
   const [radiovalue, setRadioValue] = useState("New Files");
+  const [fileID, setFileID] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -2176,7 +2177,7 @@ export default function User(props) {
       //   Documetntype: value.text,
       // });
       setChoose(true);
-      setDocumetntype(value.value);
+      setDocumetntype(value.text);
       console.log(documentType);
 
       let array = [
@@ -2204,8 +2205,11 @@ export default function User(props) {
       // });
       setChoose(true);
       console.log(choose);
+      console.log(value);
+      console.log(value.text);
+      console.log(value.key);
 
-      setDocumetntype(value.value);
+      setDocumetntype(value.text);
 
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
@@ -2248,32 +2252,35 @@ export default function User(props) {
       array.map((i) => {
         if (i.key === value.text) {
           chooose.push(i);
+          console.log(value.text);
         }
       });
-      console.log(choose);
+      console.log("chooose:", choose);
     } else {
       let ID;
       let path;
-      console.log("entyered in else");
+      console.log("entered in else");
       // this.setState({
       //   choose: false,
       // });
+      // setChoose(false);
       setChoose(false);
+
+      console.log(choose);
 
       const sp: SPFI = getSp();
       let somss: any = await sp.web.lists.getByTitle("My Docs").items();
       console.log(somss);
-      await somss.filter((file) => {
-        if (file.fileType === value.text) {
-          ID = file.ID;
-        }
+      let filteredFile = somss.filter((file: any) => {
+        console.log(file.fileType);
+        return file.fileType === value.key;
       });
-      console.log(ID);
+      console.log(filteredFile);
 
       // get relative url of file.
       await sp.web.lists
         .getByTitle("My Docs")
-        .items.getById(ID)
+        .items.getById(fileID)
         .select("ID,FileRef")()
         .then(async (items: any) => {
           console.log(items.FileRef);
@@ -2283,6 +2290,7 @@ export default function User(props) {
           // });
           setDownloadUrl(items.FileRef);
           setDownloadURI(false);
+          console.log(items.FileRef);
         });
     }
 
@@ -2290,7 +2298,8 @@ export default function User(props) {
   };
 
   const changeValue1 = async (e, value: any) => {
-    console.log(value.text);
+    console.log("changeValue1 function called");
+    console.log(value.value);
     // { key: 'Work Instruction', text: 'Work Instruction' },
     // { key: 'MSOP', text: 'MSOP' },
     // { key: 'Forms', text: 'Forms' },
@@ -2301,10 +2310,13 @@ export default function User(props) {
     let somss: any = await sp.web.lists.getByTitle("My Docs").items();
     console.log(somss);
     await somss.filter((file: any) => {
-      if (file.fileType === value.value) {
+      if (file.fileType === value.key) {
         ID = file.ID;
         console.log(ID);
         console.log(file);
+        console.log(value.value);
+        console.log(value.text);
+        console.log(value.key);
       }
     });
     console.log(ID);
@@ -4182,7 +4194,7 @@ export default function User(props) {
                   open={showTemplateDiv}
                 >
                   <Row gutter={24}>
-                    <Col span={24}>
+                    <Col span={12}>
                       <Form.Item
                         label="Template"
                         name="Template"
@@ -4190,13 +4202,10 @@ export default function User(props) {
                       >
                         <Select
                           placeholder="Select an option"
-                          // disabled={valueFileType !== "Old Files"}
-                          // value={departmentKey}
                           onChange={(event, option) => {
                             changeValue(event, option);
                           }}
-
-                          // onChange={changeValuedocumentType}
+                          style={{ width: "330px" }}
                         >
                           {options1.map((option: any) => (
                             <Select.Option key={option.key} value={option.text}>
@@ -4209,23 +4218,20 @@ export default function User(props) {
                   </Row>
                   {choose ? (
                     <Row gutter={24}>
-                      <Col span={24}>
+                      <Col span={12}>
                         <Form.Item
                           label="Sub Section"
                           name="Sub Section"
-                          style={{ maxWidth: 400, marginTop: 10 }}
+                          style={{ maxWidth: 400, marginTop: 0 }}
                         >
                           <Select
                             placeholder="Select an option"
-                            // disabled={valueFileType !== "Old Files"}
-                            // value={departmentKey}
                             onChange={(event, option) => {
                               changeValue1(event, option);
                             }}
-
-                            // onChange={changeValuedocumentType}
+                            style={{ width: "330px" }}
                           >
-                            {choose.map((option: any) => (
+                            {chooose.map((option: any) => (
                               <Select.Option
                                 key={option.key}
                                 value={option.text}

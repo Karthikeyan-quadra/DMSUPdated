@@ -49,7 +49,18 @@ import { Approvalmail } from "./MailTrigger";
 
 import { off } from "process";
 import { useEffect, useState } from "react";
-import { Button } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Select,
+} from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 200 },
@@ -110,6 +121,7 @@ export default function ApprovalPopup({ props }) {
   const [UniqueItem, setUniqueItem] = useState<any>();
   const [opendialog, setOpenDialog] = useState(false);
   const [errmsg, setErrmsg] = useState("");
+  const [open, setOpen] = useState(false);
 
   // public async componentDidMount() {
   //   this.setState(
@@ -239,6 +251,7 @@ export default function ApprovalPopup({ props }) {
     setDepartment(props.Department);
 
     setSubDepartment(props.SubDepartment);
+    setOpen(true);
   };
 
   // padTo2Digits(num) {
@@ -316,6 +329,7 @@ export default function ApprovalPopup({ props }) {
   // };
 
   const SendRequest = async () => {
+    console.log("SendRequest function called");
     if (Level != "") {
       console.log(Approver_A);
       console.log(Approver_B);
@@ -359,7 +373,9 @@ export default function ApprovalPopup({ props }) {
           ).Email,
           Approver_A.EmailID
         );
-        UniqueItem.toCallBack(true);
+        // UniqueItem.toCallBack(true);
+        // UniqueItem.toCallBack(true);
+        setUniqueItem(true);
       }
     } else {
       // this.setState({
@@ -396,7 +412,7 @@ export default function ApprovalPopup({ props }) {
 
   const HandleLevel = async (e, value: any) => {
     console.log(value);
-    const levels = value.text;
+    const levels = value.key;
     console.log(levels);
     setLevel(levels);
     console.log(Level);
@@ -424,6 +440,14 @@ export default function ApprovalPopup({ props }) {
     }
   };
 
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       {/* <PrimaryButton
@@ -435,7 +459,7 @@ export default function ApprovalPopup({ props }) {
         allowDisabledFocus
       /> */}
 
-      <Button
+      {/* <Button
         style={{
           marginLeft: "10px",
           color: "rgba(4, 173, 58, 1)",
@@ -444,9 +468,9 @@ export default function ApprovalPopup({ props }) {
         onClick={sendApproval}
       >
         Approve
-      </Button>
+      </Button> */}
 
-      <Dialog
+      {/* <Dialog
         hidden={hideDialog}
         containerClassName={"ms-dialogMainOverride " + styles.textDialog}
         dialogContentProps={dialogContentProps}
@@ -613,7 +637,177 @@ export default function ApprovalPopup({ props }) {
             </DialogFooter>
           </div>
         )}
-      </Dialog>
+      </Dialog> */}
+
+      <Button
+        style={{
+          marginLeft: "10px",
+          color: "rgba(4, 173, 58, 1)",
+          border: "1px solid rgba(14, 173, 58, 1)",
+        }}
+        onClick={sendApproval}
+      >
+        Approve
+      </Button>
+      <Drawer title="Approval" onClose={onClose} open={open}>
+        <div>
+          <Row gutter={24}>
+            <Col span={24}>
+              <p style={{ fontSize: "13px" }}>
+                Select next level approver and submit
+              </p>
+            </Col>
+          </Row>
+
+          {Denystatus ? (
+            <Row gutter={24}>
+              <Col span={24}>
+                <Form.Item
+                  label="Approval Level"
+                  name="Approval Level"
+                  style={{ maxWidth: 400, marginTop: 37 }}
+                >
+                  <Select
+                    placeholder="Select an option"
+                    onChange={(event, option) => {
+                      HandleLevel(event, option);
+                    }}
+                    style={{ width: "330px" }}
+                  >
+                    {levelitems &&
+                      levelitems.map((option: any) => (
+                        <Select.Option key={option.Key} value={option.Text}>
+                          {option.Text}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+          ) : (
+            <div></div>
+          )}
+
+          <Row gutter={24}>
+            <Col span={24}>
+              <Form.Item
+                label="Department"
+                name="Department"
+                style={{ maxWidth: 400, marginTop: 10 }}
+              >
+                <Input
+                  defaultValue={Department}
+                  disabled={true}
+                  style={{ width: "330px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {subDepartment != "" && subDepartment != null ? (
+            <Row gutter={24}>
+              <Col span={24}>
+                <Form.Item
+                  label="Section"
+                  name="Section"
+                  style={{ maxWidth: 400, marginTop: 10 }}
+                >
+                  <Input
+                    defaultValue={subDepartment}
+                    disabled={true}
+                    style={{ width: "330px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          ) : (
+            <></>
+          )}
+
+          <div style={{ marginTop: 37 }}>
+            <div>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <p>Approver Info</p>
+                  <span>
+                    {errmsgApprover ? (
+                      <span
+                        style={{
+                          color: "red",
+                          fontWeight: "normal",
+                          fontSize: "13px",
+                        }}
+                      >
+                        &nbsp;
+                        <FontIcon
+                          aria-label="AlertSolid"
+                          iconName="AlertSolid"
+                          style={{
+                            color: "red",
+                            fontSize: "12px",
+                            margin: "3px",
+                          }}
+                        />
+                        {errmsgApprover}
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <p>Manage approver</p>
+                </Col>
+              </Row>
+            </div>
+            <div>
+              <Card style={{ width: 330 }}>
+                <p>
+                  <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
+                    {Approver_A.Name && Approver_A.Name.length >= 2
+                      ? Approver_A.Name.slice(0, 2)
+                      : Approver_A.Name}
+                  </Avatar>
+                  <span style={{ marginLeft: "20px" }}>{Approver_A.Name}</span>
+                </p>
+              </Card>
+              <Card style={{ width: 330 }}>
+                <p>
+                  <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
+                    {Approver_B.Name && Approver_B.Name.length >= 2
+                      ? Approver_B.Name.slice(0, 2)
+                      : Approver_B.Name}
+                  </Avatar>
+                  <span style={{ marginLeft: "20px" }}>{Approver_B.Name}</span>
+                </p>
+              </Card>
+            </div>
+          </div>
+          <div
+            style={{
+              maxWidth: 400,
+              marginTop: 37,
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Row gutter={24}>
+              <Col span={24}>
+                <Button
+                  style={{
+                    backgroundColor: "rgba(74, 173, 146, 1)",
+                    color: "white",
+                  }}
+                  onClick={SendRequest}
+                >
+                  Submit
+                </Button>
+                <Button onClick={toggleHideDialog}>Cancel</Button>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 }
