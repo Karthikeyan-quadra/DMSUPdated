@@ -205,12 +205,16 @@ export default function ApprovalPopup({ props }) {
   //   });
   // };
 
+  useEffect(() => {
+    toggleHideDialog();
+  }, []);
+
   const toggleHideDialog = () => {
     setHideDialog(true);
+    setLevel("");
     setErrormsg("");
     setErrmsgApprover("");
     setDenystatus(true);
-    setLevel("");
     setApprover_A({
       Name: "Not Assigned",
       EmailID: "Not Assigned",
@@ -219,6 +223,8 @@ export default function ApprovalPopup({ props }) {
       Name: "Not Assigned",
       EmailID: "Not Assigned",
     });
+    // setOpen(false);
+    console.log(Level);
   };
 
   // public sendApproval = async () => {
@@ -249,7 +255,6 @@ export default function ApprovalPopup({ props }) {
     setOpenDialog(true);
     setHideDialog(false);
     setDepartment(props.Department);
-
     setSubDepartment(props.SubDepartment);
     setOpen(true);
   };
@@ -649,6 +654,7 @@ export default function ApprovalPopup({ props }) {
       >
         Approve
       </Button>
+
       <Drawer title="Approval" onClose={onClose} open={open}>
         <div>
           <Row gutter={24}>
@@ -658,154 +664,167 @@ export default function ApprovalPopup({ props }) {
               </p>
             </Col>
           </Row>
-
-          {Denystatus ? (
-            <Row gutter={24}>
-              <Col span={24}>
-                <Form.Item
-                  label="Approval Level"
-                  name="Approval Level"
-                  style={{ maxWidth: 400, marginTop: 37 }}
-                >
-                  <Select
-                    placeholder="Select an option"
-                    onChange={(event, option) => {
-                      HandleLevel(event, option);
-                    }}
-                    style={{ width: "330px" }}
+          <Form name="basic" layout="vertical">
+            {Denystatus ? (
+              <Row gutter={24}>
+                <Col span={24}>
+                  <Form.Item
+                    label="Approval Level"
+                    name="Approval Level"
+                    style={{ maxWidth: 400, marginTop: 37 }}
+                    rules={[{ required: true }]}
                   >
-                    {levelitems &&
-                      levelitems.map((option: any) => (
-                        <Select.Option key={option.Key} value={option.Text}>
-                          {option.Text}
-                        </Select.Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-          ) : (
-            <div></div>
-          )}
+                    <Select
+                      placeholder="Select an option"
+                      onChange={(event, option) => {
+                        HandleLevel(event, option);
+                      }}
+                      style={{ width: "330px" }}
+                    >
+                      {levelitems &&
+                        levelitems.map((option: any) => (
+                          <Select.Option key={option.Key} value={option.Key}>
+                            {option.Key}
+                          </Select.Option>
+                        ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+            ) : (
+              <div></div>
+            )}
 
-          <Row gutter={24}>
-            <Col span={24}>
-              <Form.Item
-                label="Department"
-                name="Department"
-                style={{ maxWidth: 400, marginTop: 10 }}
-              >
-                <Input
-                  defaultValue={Department}
-                  disabled={true}
-                  style={{ width: "330px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {subDepartment != "" && subDepartment != null ? (
             <Row gutter={24}>
               <Col span={24}>
                 <Form.Item
-                  label="Section"
-                  name="Section"
+                  label="Department"
+                  name="Department"
                   style={{ maxWidth: 400, marginTop: 10 }}
                 >
                   <Input
-                    defaultValue={subDepartment}
+                    defaultValue={Department}
                     disabled={true}
                     style={{ width: "330px" }}
                   />
                 </Form.Item>
               </Col>
             </Row>
-          ) : (
-            <></>
-          )}
 
-          <div style={{ marginTop: 37 }}>
-            <div>
+            {subDepartment != "" && subDepartment != null ? (
               <Row gutter={24}>
-                <Col span={12}>
-                  <p>Approver Info</p>
-                  <span>
-                    {errmsgApprover ? (
-                      <span
-                        style={{
-                          color: "red",
-                          fontWeight: "normal",
-                          fontSize: "13px",
-                        }}
-                      >
-                        &nbsp;
-                        <FontIcon
-                          aria-label="AlertSolid"
-                          iconName="AlertSolid"
+                <Col span={24}>
+                  <Form.Item
+                    label="Section"
+                    name="Section"
+                    style={{ maxWidth: 400, marginTop: 10 }}
+                  >
+                    <Input
+                      defaultValue={subDepartment}
+                      disabled={true}
+                      style={{ width: "330px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            ) : (
+              <></>
+            )}
+
+            <div style={{ marginTop: 37 }}>
+              <div>
+                <Row gutter={24}>
+                  <Col span={12}>
+                    <p>Approver Info</p>
+                    <span>
+                      {errmsgApprover ? (
+                        <span
                           style={{
                             color: "red",
-                            fontSize: "12px",
-                            margin: "3px",
+                            fontWeight: "normal",
+                            fontSize: "13px",
                           }}
-                        />
-                        {errmsgApprover}
-                      </span>
-                    ) : (
-                      <span></span>
-                    )}
-                  </span>
-                </Col>
-                <Col span={12}>
-                  <p>Manage approver</p>
+                        >
+                          &nbsp;
+                          <FontIcon
+                            aria-label="AlertSolid"
+                            iconName="AlertSolid"
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              margin: "3px",
+                            }}
+                          />
+                          {errmsgApprover}
+                        </span>
+                      ) : (
+                        <span></span>
+                      )}
+                    </span>
+                  </Col>
+                  <Col span={12}>
+                    <p>Manage approver</p>
+                  </Col>
+                </Row>
+              </div>
+              <div>
+                <Card style={{ width: 330 }}>
+                  <p>
+                    <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
+                      {Approver_A.Name && Approver_A.Name.length >= 2
+                        ? Approver_A.Name.slice(0, 2)
+                        : Approver_A.Name}
+                    </Avatar>
+                    <span style={{ marginLeft: "20px" }}>
+                      {Approver_A.Name}
+                    </span>
+                  </p>
+                </Card>
+                <Card style={{ width: 330 }}>
+                  <p>
+                    <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
+                      {Approver_B.Name && Approver_B.Name.length >= 2
+                        ? Approver_B.Name.slice(0, 2)
+                        : Approver_B.Name}
+                    </Avatar>
+                    <span style={{ marginLeft: "20px" }}>
+                      {Approver_B.Name}
+                    </span>
+                  </p>
+                </Card>
+              </div>
+            </div>
+            <div
+              style={{
+                maxWidth: 400,
+                marginTop: 37,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Row gutter={24}>
+                <Col span={24}>
+                  <Button
+                    // htmlType="submit"
+                    style={{
+                      width: "100px",
+                      backgroundColor: "rgba(74, 173, 146, 1)",
+                      color: "white",
+                    }}
+                    onClick={SendRequest}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    style={{ width: "100px", marginLeft: "4px" }}
+                    onClick={toggleHideDialog}
+                  >
+                    Cancel
+                  </Button>
                 </Col>
               </Row>
             </div>
-            <div>
-              <Card style={{ width: 330 }}>
-                <p>
-                  <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
-                    {Approver_A.Name && Approver_A.Name.length >= 2
-                      ? Approver_A.Name.slice(0, 2)
-                      : Approver_A.Name}
-                  </Avatar>
-                  <span style={{ marginLeft: "20px" }}>{Approver_A.Name}</span>
-                </p>
-              </Card>
-              <Card style={{ width: 330 }}>
-                <p>
-                  <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
-                    {Approver_B.Name && Approver_B.Name.length >= 2
-                      ? Approver_B.Name.slice(0, 2)
-                      : Approver_B.Name}
-                  </Avatar>
-                  <span style={{ marginLeft: "20px" }}>{Approver_B.Name}</span>
-                </p>
-              </Card>
-            </div>
-          </div>
-          <div
-            style={{
-              maxWidth: 400,
-              marginTop: 37,
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Row gutter={24}>
-              <Col span={24}>
-                <Button
-                  style={{
-                    backgroundColor: "rgba(74, 173, 146, 1)",
-                    color: "white",
-                  }}
-                  onClick={SendRequest}
-                >
-                  Submit
-                </Button>
-                <Button onClick={toggleHideDialog}>Cancel</Button>
-              </Col>
-            </Row>
-          </div>
+          </Form>
         </div>
       </Drawer>
     </div>
