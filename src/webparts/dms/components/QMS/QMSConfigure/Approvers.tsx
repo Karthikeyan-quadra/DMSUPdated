@@ -46,7 +46,7 @@ import {
 } from "office-ui-fabric-react";
 import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 import { useEffect, useState } from "react";
-import { Avatar, Card, Col, Form, Row, Select } from "antd";
+import { Avatar, Button, Card, Col, Form, Row, Select } from "antd";
 import { Divider } from "@fluentui/web-components";
 
 // import { sp } from "@pnp/sp";
@@ -521,7 +521,6 @@ export default function Approvers(props) {
           Department: val.Department,
           SubDepartment: val.SubDepartment,
         }));
-
         if (approverAList.length === 0) {
           // this.setState({
           //   errmsgApproverA: "No Data found",
@@ -764,7 +763,7 @@ export default function Approvers(props) {
   };
 
   const HandleSubDepartment = async (e, value: any) => {
-    setSubDepartment(value.text);
+    setSubDepartment(value.value);
     setErrmsgApprover("");
 
     setApproverA(
@@ -843,6 +842,10 @@ export default function Approvers(props) {
 
   const HandleApproverA = (e, value) => {
     console.log(value);
+    console.log("Selected Value:", value.key);
+    console.log("Selected Text:", value.value);
+    console.log("Department:", value.Department);
+    console.log("SubDepartment:", value.SubDepartment);
     console.log("HandleApproverA triggered");
     console.log("Selected Value:", value);
     console.log("Event Object:", e);
@@ -1112,7 +1115,7 @@ export default function Approvers(props) {
     //   </div>
     // </div>
 
-    <div style={{ marginTop: "10px", marginLeft: "2%" }}>
+    <div style={{ marginTop: "50px", marginLeft: "3%" }}>
       <div>
         <Form
           name="basic"
@@ -1155,7 +1158,7 @@ export default function Approvers(props) {
                   {Departmentitems &&
                     Departmentitems.map((option: any) => (
                       <Select.Option key={option.key} value={option.text}>
-                        {option.text}
+                        {option.key}
                       </Select.Option>
                     ))}
                 </Select>
@@ -1198,7 +1201,8 @@ export default function Approvers(props) {
                 >
                   <Select
                     placeholder="Select Approver"
-                    onChange={(event, option) => HandleApproverA(event, option)}
+                    onChange={(value, option) => HandleApproverA(value, option)}
+                    labelInValue
                   >
                     {ApproverA &&
                       ApproverA.map((option: any) => (
@@ -1233,7 +1237,7 @@ export default function Approvers(props) {
           ) : (
             <div></div>
           )}
-          <div>
+          <div style={{ marginTop: "30px" }}>
             <div>Approver Info</div>
             <div>
               <Card style={{ width: 330 }}>
@@ -1256,6 +1260,40 @@ export default function Approvers(props) {
                   <span style={{ marginLeft: "20px" }}>{Approver_B.Name}</span>
                 </p>
               </Card>
+            </div>
+            <div
+              style={{
+                // maxWidth: 100%,
+                marginTop: 50,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Row gutter={24}>
+                <Col span={24}>
+                  <Button
+                    // htmlType="submit"
+                    style={{
+                      width: "149px",
+                      backgroundColor: "rgba(74, 173, 146, 1)",
+                      color: "white",
+                    }}
+                    onClick={() => {
+                      Handlechange();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    style={{ width: "149px", marginLeft: "4px" }}
+                    onClick={() => {
+                      toggleHideDialog();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Col>
+              </Row>
             </div>
           </div>
         </Form>
