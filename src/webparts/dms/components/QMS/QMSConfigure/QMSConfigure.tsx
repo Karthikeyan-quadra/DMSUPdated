@@ -1,278 +1,297 @@
-import * as React from "react"
-import styles from "../QMSRequestPage/QmsDashboard.module.scss"
+import * as React from "react";
+import styles from "../QMSRequestPage/QmsDashboard.module.scss";
 
-import { Web, IWeb } from "@pnp/sp/presets/all"
-import "@pnp/sp/sputilities"
+import { Web, IWeb } from "@pnp/sp/presets/all";
+import "@pnp/sp/sputilities";
 
-import "@pnp/sp/lists"
-import "@pnp/sp/items"
-import "@pnp/polyfill-ie11"
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/polyfill-ie11";
 
-import "@pnp/sp/webs"
-import "@pnp/sp/files"
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
 import { getSp } from "../../../../../helpers/PnPConfig";
 import { SPFI } from "@pnp/sp";
-import Approvers from "./Approvers"
+import Approvers from "./Approvers";
 import {
   INavLinkGroup,
   INavStyles,
   Nav,
   Separator,
-} from "office-ui-fabric-react"
-import Department from "./Department"
-import Project from "./Project"
-import UserDetails from "./UserDetails"
-import ExistingFlow from "./ExistingFlow"
-import UserDepartment from "./UserDepartment"
-import { useState } from "react"
+} from "office-ui-fabric-react";
+import Department from "./Department";
+import Project from "./Project";
+import UserDetails from "./UserDetails";
+import ExistingFlow from "./ExistingFlow";
+import UserDepartment from "./UserDepartment";
+import { useState } from "react";
+import { Menu } from "antd";
 
+// const items: any = [
+//   {
+//     label: "Manage Approvers",
+//     key: "1",
+//   },
+// ];
 
-const navLinkGroups: INavLinkGroup[] = [
-  {
-    links: [
-      {
-        name: "Manage Approvers",
-        url: "",
-        key: "1",
-        target: "_blank",
-        title: "",
-      },
-      {
-        name: "Manage Flow",
-        url: "",
-        key: "2",
-        target: "",
-        title: "",
-      },
-      {
-        name: "Departments",
-        url: "",
-        key: "3",
-        title: "",
-      },
-      {
-        name: "User Properties",
-        url: "",
-        key: "4",
-        target: "_blank",
-        title: "",
-      },
-      {
-        name: "Department User",
-        url: "",
-        key: "5",
-        target: "_blank",
-        title: "",
-      },
-    ],
-  },
-]
-const navStyles: Partial<INavStyles> = {
-  root: {
-    width: 208,
-    height: 500,
+// const navLinkGroups: INavLinkGroup[] = [
+//   {
+//     links: [
+//       {
+//         name: "Manage Approvers",
+//         url: "",
+//         key: "1",
+//         target: "_blank",
+//         title: "",
+//       },
+//       {
+//         name: "Manage Flow",
+//         url: "",
+//         key: "2",
+//         target: "",
+//         title: "",
+//       },
+//       {
+//         name: "Departments",
+//         url: "",
+//         key: "3",
+//         title: "",
+//       },
+//       {
+//         name: "User Properties",
+//         url: "",
+//         key: "4",
+//         target: "_blank",
+//         title: "",
+//       },
+//       {
+//         name: "Department User",
+//         url: "",
+//         key: "5",
+//         target: "_blank",
+//         title: "",
+//       },
+//     ],
+//   },
+// ];
+// const navStyles: Partial<INavStyles> = {
+//   root: {
+//     width: 208,
+//     height: 500,
 
-    boxSizing: "border-box",
-    border: "1px solid #eee",
-    overflowY: "auto",
-    verticalAlign: "baseline",
-  },
-  // these link styles override the default truncation behavior
-  link: {
-    whiteSpace: "normal",
-    lineHeight: "inherit",
-  },
-}
+//     boxSizing: "border-box",
+//     border: "1px solid #eee",
+//     overflowY: "auto",
+//     verticalAlign: "baseline",
+//   },
+//   // these link styles override the default truncation behavior
+//   link: {
+//     whiteSpace: "normal",
+//     lineHeight: "inherit",
+//   },
+// };
 
 // export default class QMSConfigure extends React.Component<{}, any> {
-  export default function QMSConfigure(props) {
+export default function QMSConfigure(props) {
+  const [nav, setNav] = useState(true);
+  const [SelectedKey, setSelectedKey] = useState("1");
+  const [Approversconfig, setApproversConfig] = useState(false);
+  const [Flowconfig, setFlowConfig] = useState<any>();
+  const [Deptconfig, setDeptConfig] = useState<any>();
+  const [Userconfig, setUserConfig] = useState<any>();
+  const [DMconfig, setDMConfig] = useState<any>();
+  const [current, setCurrent] = useState("1");
 
-    const [nav, setNav] = useState(true);
-    const [SelectedKey, setSelectedKey] = useState("0");
-    const [Approversconfig, setApproversConfig] = useState(false);
-    const [Flowconfig, setFlowConfig] = useState<any>();
-    const [Deptconfig, setDeptConfig] = useState<any>();
-    const [ Userconfig,  setUserConfig] = useState<any>();
-    const [ DMconfig,  setDMConfig] = useState<any>();
-  
-    // const AssignApproverConfig = () => {
-    //   this.setState({
-    //     Approversconfig: true,
-    //     nav: false,
-    //     SelectedKey: "1",
-    //   })
-    // }
+  // const AssignApproverConfig = () => {
+  //   this.setState({
+  //     Approversconfig: true,
+  //     nav: false,
+  //     SelectedKey: "1",
+  //   })
+  // }
 
-    const AssignApproverConfig = () => {
-      setApproversConfig(true);
-      setNav(false);
-      setSelectedKey("1");
-    };
+  // const onClick: any["onClick"] = (e) => {
+  //   console.log("click ", e);
+  //   setCurrent(e.key);
+  // };
 
-    // const AssignFlowConfig = () => {
-    //   this.setState({
-    //     Flowconfig: true,
-    //     nav: false,
-    //     SelectedKey: "2",
-    //   })
-    // }
+  const handleMenuClick = (e) => {
+    setSelectedKey(e.key); // Update the selected key state based on the clicked menu item
+  };
 
-    const AssignFlowConfig = () => {
-      setFlowConfig(true);
-      setNav(false);
-      setSelectedKey("2");
-    };
+  // const AssignApproverConfig = () => {
+  //   setApproversConfig(true);
+  //   setNav(false);
+  //   setSelectedKey("1");
+  // };
 
+  // const AssignFlowConfig = () => {
+  //   this.setState({
+  //     Flowconfig: true,
+  //     nav: false,
+  //     SelectedKey: "2",
+  //   })
+  // }
 
-    // const AssignDeptConfig = () => {
-    //   this.setState({
-    //     Deptconfig: true,
-    //     nav: false,
-    //     SelectedKey: "3",
-    //   })
-    // }
-    const AssignDeptConfig = () => {
-      setDeptConfig(true);
-      setNav(false);
-      setSelectedKey("3");
-    };
+  // const AssignFlowConfig = () => {
+  //   setFlowConfig(true);
+  //   setNav(false);
+  //   setSelectedKey("2");
+  // };
 
+  // const AssignDeptConfig = () => {
+  //   this.setState({
+  //     Deptconfig: true,
+  //     nav: false,
+  //     SelectedKey: "3",
+  //   })
+  // }
+  // const AssignDeptConfig = () => {
+  //   setDeptConfig(true);
+  //   setNav(false);
+  //   setSelectedKey("3");
+  // };
 
-    // const AssignUserConfig = () => {
-    //   this.setState({
-    //     Userconfig: true,
-    //     nav: false,
-    //     SelectedKey: "4",
-    //   })
-    // }
+  // const AssignUserConfig = () => {
+  //   this.setState({
+  //     Userconfig: true,
+  //     nav: false,
+  //     SelectedKey: "4",
+  //   })
+  // }
 
-    const AssignUserConfig = () => {
-      setUserConfig(true);
-      setNav(false);
-      setSelectedKey("4");
-    };
+  // const AssignUserConfig = () => {
+  //   setUserConfig(true);
+  //   setNav(false);
+  //   setSelectedKey("4");
+  // };
 
-    // const DepartmentUserConfig = () => {
-    //   this.setState({
-    //     DMconfig: true,
-    //     nav: false,
-    //     SelectedKey: "5",
-    //   })
-    // }
+  // const DepartmentUserConfig = () => {
+  //   this.setState({
+  //     DMconfig: true,
+  //     nav: false,
+  //     SelectedKey: "5",
+  //   })
+  // }
 
-    const DepartmentUserConfig = () => {
-      setDMConfig(true);
-      setNav(false);
-      setSelectedKey("5");
-    };
+  // const DepartmentUserConfig = () => {
+  //   setDMConfig(true);
+  //   setNav(false);
+  //   setSelectedKey("5");
+  // };
 
-    // const onclicked = (ev, value) => {
-    //   switch (value.key) {
-    //     case "1":
-    //       this.setState({
-    //         SelectedKey: value.key,
-    //         Approversconfig: true,
-    //         Flowconfig: false,
-    //         Deptconfig: false,
-    //         Userconfig: false,
-    //         DMconfig: false,
-    //       })
-    //       break
-    //     case "2":
-    //       this.setState({
-    //         SelectedKey: value.key,
-    //         Approversconfig: false,
-    //         Flowconfig: true,
-    //         Deptconfig: false,
-    //         Userconfig: false,
-    //         DMconfig: false,
-    //       })
-    //       break
-    //     case "3":
-    //       this.setState({
-    //         Approversconfig: false,
-    //         Flowconfig: false,
-    //         Deptconfig: true,
-    //         Userconfig: false,
-    //         DMconfig: false,
-    //         SelectedKey: value.key,
-    //       })
-    //       break
-    //     case "4":
-    //       this.setState({
-    //         Approversconfig: false,
-    //         Flowconfig: false,
-    //         Deptconfig: false,
-    //         Userconfig: true,
-    //         DMconfig: false,
-    //         SelectedKey: value.key,
-    //       })
-    //       break
-    //     case "5":
-    //       this.setState({
-    //         Approversconfig: false,
-    //         Flowconfig: false,
-    //         Deptconfig: false,
-    //         Userconfig: false,
-    //         DMconfig: true,
-    //         SelectedKey: value.key,
-    //       })
-    //       break
-    //     default:
-    //       this.setState({})
-    //   }
-    // }
+  // const onclicked = (ev, value) => {
+  //   switch (value.key) {
+  //     case "1":
+  //       this.setState({
+  //         SelectedKey: value.key,
+  //         Approversconfig: true,
+  //         Flowconfig: false,
+  //         Deptconfig: false,
+  //         Userconfig: false,
+  //         DMconfig: false,
+  //       })
+  //       break
+  //     case "2":
+  //       this.setState({
+  //         SelectedKey: value.key,
+  //         Approversconfig: false,
+  //         Flowconfig: true,
+  //         Deptconfig: false,
+  //         Userconfig: false,
+  //         DMconfig: false,
+  //       })
+  //       break
+  //     case "3":
+  //       this.setState({
+  //         Approversconfig: false,
+  //         Flowconfig: false,
+  //         Deptconfig: true,
+  //         Userconfig: false,
+  //         DMconfig: false,
+  //         SelectedKey: value.key,
+  //       })
+  //       break
+  //     case "4":
+  //       this.setState({
+  //         Approversconfig: false,
+  //         Flowconfig: false,
+  //         Deptconfig: false,
+  //         Userconfig: true,
+  //         DMconfig: false,
+  //         SelectedKey: value.key,
+  //       })
+  //       break
+  //     case "5":
+  //       this.setState({
+  //         Approversconfig: false,
+  //         Flowconfig: false,
+  //         Deptconfig: false,
+  //         Userconfig: false,
+  //         DMconfig: true,
+  //         SelectedKey: value.key,
+  //       })
+  //       break
+  //     default:
+  //       this.setState({})
+  //   }
+  // }
 
-    const onclicked = (ev, value) => {
-      switch (value.key) {
-        case "1":
-          setApproversConfig(true);
-          setFlowConfig(false);
-          setDeptConfig(false);
-          setUserConfig(false);
-          setDMConfig(false);
-          setSelectedKey(value.key);
-          break;
-        case "2":
-          setApproversConfig(false);
-          setFlowConfig(true);
-          setDeptConfig(false);
-          setUserConfig(false);
-          setDMConfig(false);
-          setSelectedKey(value.key);
-          break;
-        case "3":
-          setApproversConfig(false);
-          setFlowConfig(false);
-          setDeptConfig(true);
-          setUserConfig(false);
-          setDMConfig(false);
-          setSelectedKey(value.key);
-          break;
-        case "4":
-          setApproversConfig(false);
-          setFlowConfig(false);
-          setDeptConfig(false);
-          setUserConfig(true);
-          setDMConfig(false);
-          setSelectedKey(value.key);
-          break;
-        case "5":
-          setApproversConfig(false);
-          setFlowConfig(false);
-          setDeptConfig(false);
-          setUserConfig(false);
-          setDMConfig(true);
-          setSelectedKey(value.key);
-          break;
-        default:
-          break;
-      }
-    };
-
-    return (
-      <div>
-        {nav == true ? (
+  const onclicked = (ev, value) => {
+    switch (value.key) {
+      case "1":
+        setApproversConfig(true);
+        setFlowConfig(false);
+        setDeptConfig(false);
+        setUserConfig(false);
+        setDMConfig(false);
+        setSelectedKey(value.key);
+        break;
+      case "2":
+        setApproversConfig(false);
+        setFlowConfig(true);
+        setDeptConfig(false);
+        setUserConfig(false);
+        setDMConfig(false);
+        setSelectedKey(value.key);
+        break;
+      case "3":
+        setApproversConfig(false);
+        setFlowConfig(false);
+        setDeptConfig(true);
+        setUserConfig(false);
+        setDMConfig(false);
+        setSelectedKey(value.key);
+        break;
+      case "4":
+        setApproversConfig(false);
+        setFlowConfig(false);
+        setDeptConfig(false);
+        setUserConfig(true);
+        setDMConfig(false);
+        setSelectedKey(value.key);
+        break;
+      case "5":
+        setApproversConfig(false);
+        setFlowConfig(false);
+        setDeptConfig(false);
+        setUserConfig(false);
+        setDMConfig(true);
+        setSelectedKey(value.key);
+        break;
+      default:
+        break;
+    }
+  };
+  const styl = `:where(.css-dev-only-do-not-override-usln0u).ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-selected::after, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu-selected::after {
+      border-bottom-width: 2px;
+      border-bottom-color: rgba(41, 161, 128, 1);
+  }`;
+  return (
+    <div>
+      <style>{styl}</style>
+      <div className={styles.configureStyle}>Configure</div>
+      {/* {nav == true ? (
           <div>
             <div className={styles.gridx} onClick={AssignApproverConfig}>
               <img
@@ -364,8 +383,40 @@ const navStyles: Partial<INavStyles> = {
               </tr>
             </table>
           </>
-        )}
+        )} */}
+
+      <div>
+        <Menu
+          onClick={handleMenuClick}
+          selectedKeys={[SelectedKey]}
+          mode="horizontal"
+          className={styles.menuStyle}
+        >
+          <Menu.Item key="1" className={styles.menuItemStyle}>
+            Manage Approvers
+          </Menu.Item>
+          <Menu.Item key="2" className={styles.menuItemStyle}>
+            Manage Flow
+          </Menu.Item>
+          <Menu.Item key="3" className={styles.menuItemStyle}>
+            Departments
+          </Menu.Item>
+          <Menu.Item key="4" className={styles.menuItemStyle}>
+            User Properties
+          </Menu.Item>
+          <Menu.Item key="5" className={styles.menuItemStyle}>
+            Admin Users
+          </Menu.Item>
+        </Menu>
+
+        {/* Render component based on the selected menu item */}
+        {SelectedKey === "1" && <Approvers />}
+        {SelectedKey === "2" && <ExistingFlow />}
+        {SelectedKey === "3" && <Department />}
+        {SelectedKey === "4" && <UserDetails />}
+        {SelectedKey === "5" && <UserDepartment />}
+        {/* Add Project component here if needed */}
       </div>
-    )
-  
+    </div>
+  );
 }

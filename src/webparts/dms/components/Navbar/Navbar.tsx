@@ -330,6 +330,10 @@ import { Link } from "react-router-dom"; // Import Link component
 import { RouteProps } from "react-router";
 
 const { Header, Sider, Content } = Layout;
+import type { MenuProps } from "antd";
+import QMSConfigure from "../QMS/QMSConfigure/QMSConfigure";
+
+type MenuItem = Required<MenuProps>["items"][number];
 
 export default function Navbar() {
   const [state, setState] = useState({
@@ -557,7 +561,30 @@ export default function Navbar() {
                     />
                   ) : null,
                   // label: showFirstItem ? 'QMS' : '',
-                  label: showFirstItem ? <Link to="/qms">QMS</Link> : "", // Link to QMS if available
+                  label: showFirstItem ? (
+                    <Link
+                      to="/qms"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      QMS
+                    </Link>
+                  ) : (
+                    ""
+                  ),
+                  //   children: showFirstItem ? [
+                  //   { key: "2.1", label: "Configure" },
+                  // ] : null,
+
+                  // children: showFirstItem ? [{ key: "2.1", label: "Configure" }] :[]
+
+                  children: showFirstItem
+                    ? [
+                        {
+                          key: "2.1",
+                          label: <Link to="/qms/configure">Configure</Link>,
+                        },
+                      ]
+                    : [],
                 },
                 {
                   key: "3",
@@ -607,6 +634,10 @@ export default function Navbar() {
             <Routes>
               <Route path="/" element={<User />} />
               {showFirstItem && <Route path="/qms" element={<Qms />} />}
+              {showFirstItem && (
+                <Route path="/qms/configure" element={<QMSConfigure />} />
+              )}
+
               {showApproverTab && (
                 <Route path="/approvers" element={<Approvers />} />
               )}

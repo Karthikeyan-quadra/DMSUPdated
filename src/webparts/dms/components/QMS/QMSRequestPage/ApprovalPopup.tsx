@@ -61,6 +61,7 @@ import {
   Select,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useForm } from "antd/es/form/Form";
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 200 },
@@ -95,7 +96,7 @@ export default function ApprovalPopup({ props }) {
   //     EmailID: "Not Assigned",
   //   },
   // };
-
+  const [form] = useForm();
   const [items, setItems] = useState([]);
   const [show, setShow] = useState(true);
   const [hideDialog, setHideDialog] = useState(true);
@@ -147,40 +148,39 @@ export default function ApprovalPopup({ props }) {
   //   );
   // }
 
+  const fetchData = async () => {
+    try {
+      const levelitems: any = await getRequestlevellist().then(async (item) => {
+        const list: { Key: string; text: string }[] = [];
+        item.map(async (val) => {
+          list.push({
+            Key: val.Key,
+            text: val.Text,
+          });
+          console.log(list);
+        });
+        return list;
+      });
+      setLevelitems(levelitems);
+
+      const qmsApproverData = await getQMSApprover();
+      setQMSApprover(qmsApproverData);
+
+      setValue(props);
+      console.log(props);
+      console.log(hideDialog);
+
+      setRemainder(props.Remainder);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     setSubDepartment(props.SubDepartment);
     console.log(Level);
 
     console.log(props);
-    const fetchData = async () => {
-      try {
-        const levelitems: any = await getRequestlevellist().then(
-          async (item) => {
-            const list: { Key: string; text: string }[] = [];
-            item.map(async (val) => {
-              list.push({
-                Key: val.Key,
-                text: val.Text,
-              });
-              console.log(list);
-            });
-            return list;
-          }
-        );
-        setLevelitems(levelitems);
-
-        const qmsApproverData = await getQMSApprover();
-        setQMSApprover(qmsApproverData);
-
-        setValue(props);
-        console.log(props);
-        console.log(hideDialog);
-
-        setRemainder(props.Remainder);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     fetchData();
   }, [props]);
@@ -205,10 +205,6 @@ export default function ApprovalPopup({ props }) {
   //   });
   // };
 
-  useEffect(() => {
-    toggleHideDialog();
-  }, []);
-
   const toggleHideDialog = () => {
     setHideDialog(true);
     setLevel("");
@@ -223,9 +219,24 @@ export default function ApprovalPopup({ props }) {
       Name: "Not Assigned",
       EmailID: "Not Assigned",
     });
-    // setOpen(false);
-    console.log(Level);
+    console.log("Level is :", Level);
+    form.resetFields();
+    setOpen(false);
   };
+
+  // const toggleHideDialog = () => {
+  //   setLevel("");
+  //   setDenystatus(true);
+  //   setOpen(false);
+  // };
+
+  // const handleDrawerClose = () => {
+  //   toggleHideDialog(); // Reset form when the drawer is closed
+  // };
+
+  // useEffect(() => {
+  //   toggleHideDialog();
+  // }, []);
 
   // public sendApproval = async () => {
   //   console.log(this.props);
@@ -388,6 +399,7 @@ export default function ApprovalPopup({ props }) {
       // });
       setErrmsg("Please Select level");
     }
+    await fetchData();
   };
 
   // const HandleLevel = async (e, value: any) => {
@@ -451,6 +463,7 @@ export default function ApprovalPopup({ props }) {
 
   const onClose = () => {
     setOpen(false);
+    form.resetFields();
   };
 
   return (
@@ -664,7 +677,7 @@ export default function ApprovalPopup({ props }) {
               </p>
             </Col>
           </Row>
-          <Form name="basic" layout="vertical">
+          <Form name="basic" layout="vertical" form={form}>
             {Denystatus ? (
               <Row gutter={24}>
                 <Col span={24}>
@@ -680,6 +693,7 @@ export default function ApprovalPopup({ props }) {
                         HandleLevel(event, option);
                       }}
                       style={{ width: "330px" }}
+                      value={Level}
                     >
                       {levelitems &&
                         levelitems.map((option: any) => (
@@ -797,7 +811,7 @@ export default function ApprovalPopup({ props }) {
             <div
               style={{
                 maxWidth: 400,
-                marginTop: 37,
+                marginTop: 50,
                 display: "flex",
                 justifyContent: "flex-end",
               }}
@@ -811,13 +825,17 @@ export default function ApprovalPopup({ props }) {
                       backgroundColor: "rgba(74, 173, 146, 1)",
                       color: "white",
                     }}
-                    onClick={SendRequest}
+                    onClick={() => {
+                      SendRequest();
+                    }}
                   >
                     Submit
                   </Button>
                   <Button
                     style={{ width: "100px", marginLeft: "4px" }}
-                    onClick={toggleHideDialog}
+                    onClick={() => {
+                      toggleHideDialog();
+                    }}
                   >
                     Cancel
                   </Button>
