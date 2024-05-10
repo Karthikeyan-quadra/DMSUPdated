@@ -148,3 +148,47 @@ body {
 
   // margin-left: 3%;
 }
+.addUserTextStyle {
+  font-family: Segoe UI;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 23.94px;
+  text-align: center;
+  margin-left: 10px;
+}
+.addUserButtonStyle {
+  background-color: rgb(74, 173, 146);
+  color: white;
+  width: 186px;
+  height: 42px;
+  text-align: center;
+}
+.Accessiblestyle {
+  font-family: Raleway;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  color: rgba(88, 174, 51, 1);
+  background-color: rgba(246, 255, 237, 1);
+}
+.AccessibleBorder {
+  border: 1px solid rgba(183, 235, 143, 1);
+  background-color: rgba(246, 255, 237, 1);
+  width: 98px;
+  text-align: center;
+}
+
+.Inaccessiblestyle {
+  font-family: Raleway;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  color: rgba(212, 56, 13, 1);
+  background-color: rgba(255, 242, 232, 1);
+}
+.InaccessibleBorder {
+  border: 1px solid rgba(255, 187, 150, 1);
+  background-color: rgba(255, 242, 232, 1);
+  width: 98px;
+  text-align: center;
+}

@@ -677,7 +677,15 @@ export default function ApprovalPopup({ props }) {
               </p>
             </Col>
           </Row>
-          <Form name="basic" layout="vertical" form={form}>
+          <Form
+            name="basic"
+            layout="vertical"
+            onFinish={() => {
+              SendRequest();
+            }}
+            autoComplete="off"
+            form={form}
+          >
             {Denystatus ? (
               <Row gutter={24}>
                 <Col span={24}>
@@ -819,15 +827,15 @@ export default function ApprovalPopup({ props }) {
               <Row gutter={24}>
                 <Col span={24}>
                   <Button
-                    // htmlType="submit"
+                    htmlType="submit"
                     style={{
                       width: "100px",
                       backgroundColor: "rgba(74, 173, 146, 1)",
                       color: "white",
                     }}
-                    onClick={() => {
-                      SendRequest();
-                    }}
+                    // onClick={() => {
+                    //   SendRequest();
+                    // }}
                   >
                     Submit
                   </Button>

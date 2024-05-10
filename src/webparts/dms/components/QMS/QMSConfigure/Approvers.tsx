@@ -48,6 +48,7 @@ import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 import { useEffect, useState } from "react";
 import { Avatar, Button, Card, Col, Form, Row, Select } from "antd";
 import { Divider } from "@fluentui/web-components";
+import { useForm } from "antd/es/form/Form";
 
 // import { sp } from "@pnp/sp";
 
@@ -60,6 +61,7 @@ const stackTokens: IStackTokens = { childrenGap: 50 };
 
 // export default class QMSConfigure extends React.Component<{}, any> {
 export default function Approvers(props) {
+  const [form] = useForm();
   const [items, setItems] = useState([]);
   const [show, setShow] = useState(true);
   const [Level, setLevel] = useState("");
@@ -571,7 +573,8 @@ export default function Approvers(props) {
       // this.setState({
       //   errmsgApprover: "Select a valid approval flow",
       // });
-      setErrmsgApprover("Select a valid approval flow");
+      setErrmsgApprover("Please select a valid approval flow !");
+      console.log(errmsgApprover);
     } else {
       if (Approver_A.EmailID != "Not Assigned") {
         let val = `Level eq '${Approver_A.Level}' and Department eq '${Approver_A.Department}' and ApproverLevel eq '${Approver_A.ApproverLevel}'`;
@@ -598,7 +601,7 @@ export default function Approvers(props) {
                 })
                 .then((result) => {
                   // this.setState({ hideDialog: false });
-                  setHideDialog(false);
+                  // setHideDialog(false);
                   console.log(JSON.stringify(result));
                 });
             } else {
@@ -615,7 +618,7 @@ export default function Approvers(props) {
                 })
                 .then((result) => {
                   // this.setState({ hideDialog: false });
-                  setHideDialog(false);
+                  // setHideDialog(false);
                   console.log(JSON.stringify(result));
                 });
             }
@@ -646,7 +649,7 @@ export default function Approvers(props) {
                 })
                 .then((result) => {
                   // this.setState({ hideDialog: false });
-                  setHideDialog(false);
+                  // setHideDialog(false);
                   console.log(JSON.stringify(result));
                 });
             } else {
@@ -663,13 +666,14 @@ export default function Approvers(props) {
                 })
                 .then((result) => {
                   // this.setState({ hideDialog: false });
-                  setHideDialog(false);
+                  // setHideDialog(false);
                   console.log(JSON.stringify(result));
                 });
             }
           });
       }
     }
+    form.resetFields();
   };
 
   // const HandleDepartment = async (e, value: any) => {
@@ -840,54 +844,116 @@ export default function Approvers(props) {
   //   });
   // };
 
+  // const HandleApproverA = (e, value) => {
+  //   console.log(value);
+  //   console.log("Selected Value:", value.key);
+  //   console.log("Selected Text:", value.value);
+  //   console.log("Department:", value.Department);
+  //   console.log("SubDepartment:", value.SubDepartment);
+  //   console.log("HandleApproverA triggered");
+  //   console.log("Selected Value:", value);
+  //   console.log("Event Object:", e);
+  //   setApprover_A({
+  //     Name: value.text,
+  //     EmailID: value.Key,
+  //     Level: value.Level,
+  //     ApproverLevel: "APPROVER 2",
+  //     Department: value.Department,
+  //     SubDepartment: value.SubDepartment,
+  //   });
+  //   setIsChanged(false);
+  //   setErrmsgApprover("");
+  // };
+
   const HandleApproverA = (e, value) => {
     console.log(value);
     console.log("Selected Value:", value.key);
     console.log("Selected Text:", value.value);
-    console.log("Department:", value.Department);
-    console.log("SubDepartment:", value.SubDepartment);
+
+    // Parse the JSON string stored in data-option attribute
+    const optionData = JSON.parse(value["data-option"]);
+
+    console.log("Department:", optionData.Department);
+    console.log("SubDepartment:", optionData.SubDepartment);
+    console.log("Level:", optionData.Level);
+    console.log("Name:", optionData.text);
+    console.log("EmailID:", optionData.Key);
+    console.log(optionData);
+
     console.log("HandleApproverA triggered");
-    console.log("Selected Value:", value);
-    console.log("Event Object:", e);
+
+    // Set state with values extracted from optionData
     setApprover_A({
-      Name: value.text,
-      EmailID: value.Key,
-      Level: value.Level,
+      Name: optionData.text,
+      EmailID: optionData.Key,
+      Level: optionData.Level,
       ApproverLevel: "APPROVER 2",
-      Department: value.Department,
-      SubDepartment: value.SubDepartment,
+      Department: optionData.Department,
+      SubDepartment: optionData.SubDepartment,
     });
+
     setIsChanged(false);
     setErrmsgApprover("");
   };
 
-  const HandleApproverB = (e, value: any) => {
-    console.log("HandleApproverB triggered");
-    console.log("Selected Value:", value);
-    console.log("Event Object:", e);
-    console.log(value);
-    // this.setState({
-    //   Approver_B: {
-    //     Name: value.text,
-    //     EmailID: value.Key,
-    //     // Authority: value.Authority,
-    //     Level: value.Level,
-    //     ApproverLevel: "APPROVER 3",
-    //     Department: value.Department,
-    //     SubDepartment: value.SubDepartment,
-    //   },
-    //   ischanged: false,
-    //   errmsgApprover: "",
-    // });
+  // const HandleApproverB = (e, value: any) => {
+  //   console.log("HandleApproverB triggered");
+  //   console.log("Selected Value:", value);
+  //   console.log("Event Object:", e);
+  //   console.log(value);
+  //   // this.setState({
+  //   //   Approver_B: {
+  //   //     Name: value.text,
+  //   //     EmailID: value.Key,
+  //   //     // Authority: value.Authority,
+  //   //     Level: value.Level,
+  //   //     ApproverLevel: "APPROVER 3",
+  //   //     Department: value.Department,
+  //   //     SubDepartment: value.SubDepartment,
+  //   //   },
+  //   //   ischanged: false,
+  //   //   errmsgApprover: "",
+  //   // });
 
+  //   setApprover_B({
+  //     Name: value.text,
+  //     EmailID: value.Key,
+  //     // Authority: value.Authority,
+  //     Level: value.Level,
+  //     ApproverLevel: "APPROVER 3",
+  //     Department: value.Department,
+  //     SubDepartment: value.SubDepartment,
+  //   });
+
+  //   setIsChanged(false);
+  //   setErrmsgApprover("");
+  // };
+
+  const HandleApproverB = (e, value) => {
+    console.log(value);
+    console.log("Selected Value:", value.key);
+    console.log("Selected Text:", value.value);
+
+    // Parse the JSON string stored in data-option attribute
+    const optionData = JSON.parse(value["data-option"]);
+
+    console.log("Department:", optionData.Department);
+    console.log("SubDepartment:", optionData.SubDepartment);
+    console.log("Level:", optionData.Level);
+    console.log("Name:", optionData.text);
+    console.log("EmailID:", optionData.Key);
+    console.log(optionData);
+
+    console.log("HandleApproverB triggered");
+
+    // Set state with values extracted from optionData
     setApprover_B({
-      Name: value.text,
-      EmailID: value.Key,
-      // Authority: value.Authority,
-      Level: value.Level,
+      Name: optionData.text,
+      EmailID: optionData.Key,
+      Level: optionData.Level,
       ApproverLevel: "APPROVER 3",
-      Department: value.Department,
-      SubDepartment: value.SubDepartment,
+      Department: optionData.Department,
+      SubDepartment: optionData.SubDepartment,
     });
 
     setIsChanged(false);
@@ -906,6 +972,11 @@ export default function Approvers(props) {
   console.log(ApproverB);
   console.log(Approver_A);
   console.log(Approver_B);
+
+  const styl = `:where(.css-dev-only-do-not-override-usln0u).ant-card .ant-card-body {
+    padding: 6px;
+    border-radius: 0 0 8px 8px;
+}`;
 
   return (
     // <div style={{ clear: "both" }}>
@@ -1116,12 +1187,15 @@ export default function Approvers(props) {
     // </div>
 
     <div style={{ marginTop: "50px", marginLeft: "3%" }}>
+      <style>{styl}</style>
       <div>
         <Form
           name="basic"
           layout="vertical"
+          onFinish={() => Handlechange()}
           autoComplete="off"
           style={{ maxWidth: "100%" }}
+          form={form}
         >
           <Row gutter={24}>
             <Col span={8}>
@@ -1129,7 +1203,9 @@ export default function Approvers(props) {
                 label="Document Level"
                 name="Document Level"
                 style={{ maxWidth: 300 }}
-                rules={[{ required: true }]}
+                rules={[
+                  { required: true, message: "Please select document level" },
+                ]}
               >
                 <Select
                   placeholder="Select level"
@@ -1149,7 +1225,9 @@ export default function Approvers(props) {
                 label="Department"
                 name="Department"
                 style={{ maxWidth: 300 }}
-                rules={[{ required: true }]}
+                rules={[
+                  { required: true, message: "Please select department" },
+                ]}
               >
                 <Select
                   placeholder="Select Department"
@@ -1170,7 +1248,9 @@ export default function Approvers(props) {
                   label="Sub-Department"
                   name="Sub-Department"
                   style={{ maxWidth: 300 }}
-                  rules={[{ required: true }]}
+                  rules={[
+                    { required: true, message: "Please select sub-department" },
+                  ]}
                 >
                   <Select
                     placeholder="Select Sub-Department"
@@ -1197,16 +1277,22 @@ export default function Approvers(props) {
                   label="Approver 2"
                   name="Approver 2"
                   style={{ maxWidth: 300 }}
-                  rules={[{ required: true }]}
+                  rules={[
+                    { required: true, message: "Please select Approver 2" },
+                  ]}
                 >
                   <Select
                     placeholder="Select Approver"
-                    onChange={(value, option) => HandleApproverA(value, option)}
+                    onChange={(event, option) => HandleApproverA(event, option)}
                     labelInValue
                   >
                     {ApproverA &&
                       ApproverA.map((option: any) => (
-                        <Select.Option key={option.Key} value={option.text}>
+                        <Select.Option
+                          key={option.Key}
+                          value={option.Key}
+                          data-option={JSON.stringify(option)}
+                        >
                           {option.text}
                         </Select.Option>
                       ))}
@@ -1218,15 +1304,22 @@ export default function Approvers(props) {
                   label="Approver 3"
                   name="Approver 3"
                   style={{ maxWidth: 300 }}
-                  rules={[{ required: true }]}
+                  rules={[
+                    { required: true, message: "Please select Approver 3" },
+                  ]}
                 >
                   <Select
                     placeholder="Select Approver"
                     onChange={(event, option) => HandleApproverB(event, option)}
+                    labelInValue
                   >
                     {ApproverA &&
                       ApproverA.map((option: any) => (
-                        <Select.Option key={option.Key} value={option.text}>
+                        <Select.Option
+                          key={option.Key}
+                          value={option.text}
+                          data-option={JSON.stringify(option)}
+                        >
                           {option.text}
                         </Select.Option>
                       ))}
@@ -1238,63 +1331,83 @@ export default function Approvers(props) {
             <div></div>
           )}
           <div style={{ marginTop: "30px" }}>
-            <div>Approver Info</div>
-            <div>
-              <Card style={{ width: 330 }}>
+            <Form.Item
+              label="Approver Info"
+              style={{ fontWeight: "600", fontSize: "18px" }}
+              validateStatus={errmsgApprover ? "error" : ""}
+              help={errmsgApprover ? errmsgApprover : ""}
+            ></Form.Item>
+            <Form.Item style={{ marginTop: "2px" }}>
+              <Card style={{ width: 360 }}>
                 <p>
                   <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
                     {Approver_A.Name && Approver_A.Name.length >= 2
                       ? Approver_A.Name.slice(0, 2)
                       : Approver_A.Name}
                   </Avatar>
-                  <span style={{ marginLeft: "20px" }}>{Approver_A.Name}</span>
+                  <span style={{ marginLeft: "20px", fontSize: "16px" }}>
+                    {Approver_A.Name}
+                  </span>
+                  <span
+                    style={{
+                      marginLeft: "20px",
+                      fontSize: "12px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    File Reviewer
+                  </span>
                 </p>
               </Card>
-              <Card style={{ width: 330 }}>
+              <Card style={{ width: 360 }}>
                 <p>
                   <Avatar size={50} style={{ backgroundColor: "#87d068" }}>
                     {Approver_B.Name && Approver_B.Name.length >= 2
                       ? Approver_B.Name.slice(0, 2)
                       : Approver_B.Name}
                   </Avatar>
-                  <span style={{ marginLeft: "20px" }}>{Approver_B.Name}</span>
+                  <span style={{ marginLeft: "20px", fontSize: "16px" }}>
+                    {Approver_B.Name}
+                  </span>
+                  <span
+                    style={{
+                      marginLeft: "20px",
+                      fontSize: "12px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    File Approver
+                  </span>
                 </p>
               </Card>
-            </div>
-            <div
+            </Form.Item>
+
+            <Form.Item
               style={{
-                // maxWidth: 100%,
                 marginTop: 50,
-                display: "flex",
-                justifyContent: "flex-end",
+                // display: "flex",
+                // justifyContent: "flex-end",
+                textAlign: "end",
               }}
             >
               <Row gutter={24}>
-                <Col span={24}>
+                <Col span={23}>
                   <Button
-                    // htmlType="submit"
+                    htmlType="submit"
                     style={{
                       width: "149px",
                       backgroundColor: "rgba(74, 173, 146, 1)",
                       color: "white",
                     }}
-                    onClick={() => {
-                      Handlechange();
-                    }}
+                    // onClick={() => {
+                    //   Handlechange();
+                    // }}
                   >
                     Submit
                   </Button>
-                  <Button
-                    style={{ width: "149px", marginLeft: "4px" }}
-                    onClick={() => {
-                      toggleHideDialog();
-                    }}
-                  >
-                    Cancel
-                  </Button>
                 </Col>
               </Row>
-            </div>
+            </Form.Item>
           </div>
         </Form>
       </div>
