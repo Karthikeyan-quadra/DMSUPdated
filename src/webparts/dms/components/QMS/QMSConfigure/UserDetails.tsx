@@ -26,6 +26,7 @@ import { Button, Col, Drawer, Form, Input, Row, Table } from "antd";
 import Search from "antd/es/input/Search";
 import type { CheckboxProps, GetProp } from "antd";
 import { Checkbox } from "antd";
+import { useForm } from "antd/es/form/Form";
 
 // type CheckboxValueType = GetProp<typeof Checkbox.Group, 'value'>[number];
 
@@ -157,6 +158,7 @@ export default function UserDetails() {
   //   overalllist: [],
   // };
 
+  const [form] = useForm();
   const [items, setItems] = useState([]);
   const [users, setUsers] = useState([]);
   const [hideDialog, setHideDialog] = useState(true);
@@ -184,20 +186,26 @@ export default function UserDetails() {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]); // State to hold filtered data
   const [open, setOpen] = useState(false);
+  const [Manageopen, setManageOpen] = useState(false);
+
+  const [checkedList, setCheckedList] = useState<any>(false);
 
   // private _getKey(item: any, index?: number): string {
   //   return item.key;
   // }
+  const plainOptions = ["File Upload Access", "QMS User", "Approval Access"];
 
   let columns: any = [
     {
       title: "User Name",
       dataIndex: "Username",
+      key: "Username",
       width: "15%",
       align: "left",
       resizable: true,
       responsive: ["md", "lg"],
       ellipsis: true,
+      editable: true,
     },
     // {
     //   title: "Uploadstatus",
@@ -211,6 +219,7 @@ export default function UserDetails() {
     {
       title: "User MailID",
       dataIndex: "EmailID",
+      key: "EmailID",
       width: "25%",
       align: "left",
       resizable: true,
@@ -220,6 +229,7 @@ export default function UserDetails() {
     {
       title: "File Uploader",
       dataIndex: "Fileuploader",
+      key: "Fileuploader",
       width: "11%",
       align: "left",
       resizable: true,
@@ -240,6 +250,7 @@ export default function UserDetails() {
     {
       title: "QMS",
       dataIndex: "QMS",
+      key: "QMS",
       width: "11%",
       align: "left",
       resizable: true,
@@ -259,6 +270,7 @@ export default function UserDetails() {
     {
       title: "Approver",
       dataIndex: "Approver",
+      key: "Approver",
       width: "11%",
       align: "left",
       resizable: true,
@@ -284,7 +296,10 @@ export default function UserDetails() {
       resizable: true,
       render: (text, record) => (
         <span
-          onClick={() => editUser(record)}
+          onClick={() => {
+            editUser(record);
+            // showManageDrawer();
+          }}
           style={{
             color: "rgba(22, 119, 255, 1)",
             textDecoration: "underline",
@@ -332,6 +347,29 @@ export default function UserDetails() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const onChange = (checkedValues: any) => {
+    setCheckedList(checkedValues);
+
+    // Check which options are selected and call the appropriate handler functions
+    if (checkedValues.includes("QMS User")) {
+      handleadd_QMS("", true);
+    } else {
+      handleadd_QMS("", false);
+    }
+
+    if (checkedValues.includes("Approval Access")) {
+      handleadd_Approver("", true);
+    } else {
+      handleadd_Approver("", false);
+    }
+
+    if (checkedValues.includes("File Upload Access")) {
+      add_uploader("", true);
+    } else {
+      add_uploader("", false);
+    }
+  };
 
   // public toggleHideDialog = () => {
   //   console.log(this.state.hideDialog);
@@ -429,16 +467,30 @@ export default function UserDetails() {
   //   });
   // };
 
-  const editUser = (value: any) => {
-    setEdit_UserName(value.Username);
-    setEdit_EmailID(value.EmailID);
-    setHideeditDialog(false);
-    setEdit_Uploader(value.Fileuploader);
-    setEdit_QMS(value.QMS);
-    setEdit_Approver(value.Approver);
+  const editUser = (record: any) => {
+    // console.log(value);
+    // setEdit_UserName(value.Username);
+    // setEdit_EmailID(value.EmailID);
+    // // setHideeditDialog(false);
+    // setEdit_Uploader(value.Fileuploader);
+    // setEdit_QMS(value.QMS);
+    // setEdit_Approver(value.Approver);
+    // setIsEdited(true);
+    // setSelecteditem(value);
+    // setSelectedval(value.key);
+    // setManageOpen(true);
+
+    console.log("record:", record);
+    setManageOpen(true);
+    setEdit_UserName(record.Username);
+    setEdit_EmailID(record.EmailID);
+    setEdit_Uploader(record.Fileuploader);
+    setEdit_QMS(record.QMS);
+    setEdit_Approver(record.Approver);
     setIsEdited(true);
-    setSelecteditem(value.ID);
-    setSelectedval(value);
+    setSelecteditem(record.ID);
+    setSelectedval(record);
+    // setHideeditDialog(false); // Show the edit drawer
   };
 
   const _renderItemColumn = (item, index: number, column) => {
@@ -555,9 +607,9 @@ export default function UserDetails() {
 
   // };
 
-  const handledit_Username = (event, value: any) => {
-    setEdit_UserName(value);
-    console.log(value);
+  const handledit_Username = (e: any) => {
+    setEdit_UserName(e.target.value);
+    console.log(edit_UserName);
   };
 
   // const handleedit_UserMailID = (event, value) => {
@@ -639,9 +691,9 @@ export default function UserDetails() {
   //   });
   // };
 
-  const handleadd_Username = (event, value: any) => {
-    setAdd_UserName(value);
-    console.log(value);
+  const handleadd_Username = (e: any) => {
+    setAdd_UserName(e.target.value);
+    console.log(add_UserName);
   };
 
   // const handleadd_UserMailID = (event, value) => {
@@ -650,9 +702,9 @@ export default function UserDetails() {
   //   });
   // };
 
-  const handleadd_UserMailID = (event, value: any) => {
-    setAdd_EmailID(value);
-    console.log(value);
+  const handleadd_UserMailID = (e: any) => {
+    setAdd_EmailID(e.target.value);
+    console.log(add_EmailID);
   };
 
   // const add_uploader = (event, isChecked) => {
@@ -667,6 +719,7 @@ export default function UserDetails() {
 
   const add_uploader = (event, isChecked: any) => {
     setAdd_Uploader(isChecked ? "true" : "false");
+    console.log(add_Uploader);
   };
 
   // const add_QMS = (event, isChecked) => {
@@ -681,6 +734,8 @@ export default function UserDetails() {
 
   const handleadd_QMS = (event, isChecked: any) => {
     setAdd_QMS(isChecked ? "true" : "false");
+    console.log(add_QMS);
+    console.log("handleadd_QMS Function called");
   };
 
   // const add_Approver = (event, isChecked) => {
@@ -695,6 +750,7 @@ export default function UserDetails() {
 
   const handleadd_Approver = (event, isChecked: any) => {
     setAdd_Approver(isChecked ? "true" : "false");
+    console.log(add_Approver);
   };
 
   // const handleAddUser = async () => {
@@ -745,6 +801,7 @@ export default function UserDetails() {
   // };
 
   const handleAddUser = async () => {
+    console.log("Handle Add user function called");
     const sp: SPFI = getSp();
 
     let status = overalllist.filter(
@@ -780,6 +837,9 @@ export default function UserDetails() {
     } else {
       setAdd_EmailID_err("EmailID already Exists");
     }
+
+    setOpen(false);
+    form.resetFields();
   };
 
   // const _filter = (event, text) => {
@@ -1120,16 +1180,32 @@ export default function UserDetails() {
 
   const showDrawer = () => {
     setOpen(true);
+    setIsAdded(true);
   };
 
   const onClose = () => {
     setOpen(false);
+    form.resetFields();
+  };
+
+  // const showManageDrawer = () => {
+  //   setManageOpen(true);
+  //   setIsEdited(true);
+  // };
+
+  const onManageClose = () => {
+    setManageOpen(false);
+  };
+
+  const onCancel = () => {
+    setOpen(false);
+    form.resetFields();
   };
 
   return (
     <div style={{ marginLeft: "3%", marginTop: "50px" }}>
-      <div style={{ display: "none" }}>
-        <div style={{ display: "none" }}>
+      {/* <div style={{ display: "none" }}> */}
+      {/* <div style={{ display: "none" }}>
           <PrimaryButton onClick={AddUser}>
             <FontIcon
               aria-label="AddFriend"
@@ -1144,8 +1220,8 @@ export default function UserDetails() {
             onChange={_filter}
             styles={textFieldStyles}
           />
-        </div>
-        <div style={{ width: "100%", height: "450px", overflowY: "auto" }}>
+        </div> */}
+      {/* <div style={{ width: "100%", height: "450px", overflowY: "auto" }}>
           <DetailsList
             className={styles.list}
             items={items}
@@ -1158,10 +1234,10 @@ export default function UserDetails() {
             layoutMode={DetailsListLayoutMode.justified}
             isHeaderVisible={true}
           />
-        </div>
+        </div> */}
 
-        <div>
-          <Dialog
+      {/* <div> */}
+      {/* <Dialog
             containerClassName={
               "ms-dialogMainOverride " + styles.addProjectDialog
             }
@@ -1169,8 +1245,8 @@ export default function UserDetails() {
             dialogContentProps={dialogContentProps}
             isBlocking={false}
             onDismiss={toggleHideDialog}
-          >
-            {/* {isAdded ? (
+          > */}
+      {/* {isAdded ? (
               <div>
                 <div style={{ margin: "15px" }}>
                   <div
@@ -1253,10 +1329,10 @@ export default function UserDetails() {
                 </DialogFooter>
               </div>
             )} */}
-          </Dialog>
+      {/* </Dialog> */}
 
-          {/*Edit Projects*/}
-          <Dialog
+      {/*Edit Projects*/}
+      {/* <Dialog
             containerClassName={
               "ms-dialogMainOverride " + styles.addProjectDialog
             }
@@ -1264,8 +1340,8 @@ export default function UserDetails() {
             dialogContentProps={dialogContentProps_edit}
             isBlocking={false}
             onDismiss={toggleeditHideDialog}
-          >
-            {/* {isEdited ? (
+          > */}
+      {/* {isEdited ? (
               <div>
                 <div style={{ margin: "15px" }}>
                   <div
@@ -1357,19 +1433,30 @@ export default function UserDetails() {
                 </DialogFooter>
               </div>
             )} */}
-          </Dialog>
-        </div>
-      </div>
+      {/* </Dialog> */}
+      {/* </div> */}
+      {/* </div> */}
 
       <div>
         <Row gutter={24} style={{ width: "98%" }}>
           <Col span={12}>
-            <Button onClick={showDrawer} className={styles.addUserButtonStyle}>
+            <Button
+              onClick={showDrawer}
+              // className={`${styles.addUserButtonStyle} ${styles.addUserTextStyle}`}
+              style={{
+                width: "149px",
+                height: "34px",
+                padding: "0px",
+                backgroundColor: "rgba(74, 173, 146, 1)",
+                color: "white",
+              }}
+            >
               <img
                 src={require("../../../../../Images/UserImage.png")}
                 alt="UserImage"
+                style={{ padding: "5px" }}
               />
-              <span className={styles.addUserTextStyle}> Add User </span>
+              Add User
             </Button>
           </Col>
           <Col
@@ -1396,18 +1483,35 @@ export default function UserDetails() {
             <div>
               <Drawer title="Add User" onClose={onClose} open={open}>
                 <div>
-                  <Form name="basic" layout="vertical" autoComplete="off">
+                  <Form
+                    name="basic"
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={() => handleAddUser()}
+                    form={form}
+                  >
                     <Row gutter={24}>
                       <Col span={24}>
                         <Form.Item
                           label="User Name"
                           name="User Name"
-                          style={{ maxWidth: 400, marginTop: 37 }}
-                          rules={[{ required: true }]}
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 37,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your username!",
+                            },
+                          ]}
                         >
                           <Input
                             placeholder="Specify User Name"
                             onChange={handleadd_Username}
+                            value={add_UserName}
                           />
                         </Form.Item>
                       </Col>
@@ -1418,36 +1522,91 @@ export default function UserDetails() {
                         <Form.Item
                           label="User MailID"
                           name="User MailID"
-                          style={{ maxWidth: 400, marginTop: 17 }}
-                          rules={[{ required: true }]}
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your user mailId!",
+                            },
+                          ]}
                         >
                           <Input
                             placeholder="Specify User MailID"
                             onChange={handleadd_UserMailID}
+                            value={add_EmailID}
                           />
                         </Form.Item>
                       </Col>
                     </Row>
 
                     <Row gutter={24}>
-                      <Col span={24}>
+                      <Col span={13}>
                         <Form.Item
-                          label="Provide Access"
+                          label={
+                            <span
+                              style={{ fontSize: "16px", fontWeight: "600" }}
+                            >
+                              Provide Access
+                            </span>
+                          }
                           name="Provide Access"
-                          style={{ maxWidth: 400, marginTop: 17 }}
-                          rules={[{ required: true }]}
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please provide required access!",
+                            },
+                          ]}
                         >
-                          <CheckboxGroup>
-                            <Checkbox onChange={() => add_uploader}>
-                              File Upload Access
-                            </Checkbox>
-                            <Checkbox onChange={() => handleadd_QMS}>
-                              QMS User
-                            </Checkbox>
-                            <Checkbox onChange={() => handleadd_Approver}>
-                              Approval Access
-                            </Checkbox>
-                          </CheckboxGroup>
+                          <CheckboxGroup
+                            options={plainOptions}
+                            value={checkedList}
+                            onChange={onChange}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24} style={{ marginTop: "300px" }}>
+                      <Col
+                        span={24}
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <Form.Item>
+                          <Button
+                            htmlType="submit"
+                            style={{
+                              width: "100px",
+                              height: "34px",
+                              padding: "0px",
+                              backgroundColor: "rgba(74, 173, 146, 1)",
+                              color: "white",
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Form.Item>
+
+                        <Form.Item>
+                          <Button
+                            onClick={() => onCancel()}
+                            style={{
+                              width: "100px",
+                              height: "34px",
+                              padding: "0px",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Cancel
+                          </Button>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -1459,6 +1618,132 @@ export default function UserDetails() {
             <div></div>
           )}
         </div>
+      </div>
+
+      <div>
+        {isEdited ? (
+          <div>
+            <Drawer
+              title="Manage User"
+              onClose={onManageClose}
+              open={Manageopen}
+            >
+              <div>
+                <Form
+                  name="basic"
+                  layout="vertical"
+                  autoComplete="off"
+                  onFinish={() => handleeditUser()}
+                  form={form}
+                >
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="User Name"
+                        name="User Name"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 37,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        <Input
+                          onChange={handledit_Username}
+                          value={edit_UserName}
+                          defaultValue={edit_UserName}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="User MailID"
+                        name="User MailID"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        <Input
+                          placeholder={edit_EmailID}
+                          onChange={handleadd_UserMailID}
+                          value={edit_EmailID}
+                          // defaultValue={edit_EmailID}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={24}>
+                    <Col span={13}>
+                      <Form.Item
+                        label={
+                          <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                            Provide Access
+                          </span>
+                        }
+                        name="Provide Access"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                        }}
+                      >
+                        <CheckboxGroup
+                          options={plainOptions}
+                          value={checkedList}
+                          onChange={onChange}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={24} style={{ marginTop: "300px" }}>
+                    <Col
+                      span={24}
+                      style={{ display: "flex", justifyContent: "flex-end" }}
+                    >
+                      <Form.Item>
+                        <Button
+                          htmlType="submit"
+                          style={{
+                            width: "100px",
+                            height: "34px",
+                            padding: "0px",
+                            backgroundColor: "rgba(74, 173, 146, 1)",
+                            color: "white",
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </Form.Item>
+
+                      <Form.Item>
+                        <Button
+                          onClick={() => onCancel()}
+                          style={{
+                            width: "100px",
+                            height: "34px",
+                            padding: "0px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
+            </Drawer>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
