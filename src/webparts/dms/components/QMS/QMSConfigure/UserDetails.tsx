@@ -190,6 +190,9 @@ export default function UserDetails() {
 
   const [checkedList, setCheckedList] = useState<any>(false);
 
+  const [managecheckedList, setManageCheckedList] = useState<any>(false);
+  // const [selectedRowData, setSelectedRowData] = useState<any>();
+
   // private _getKey(item: any, index?: number): string {
   //   return item.key;
   // }
@@ -370,6 +373,28 @@ export default function UserDetails() {
       add_uploader("", false);
     }
   };
+  const onManageChange = (checkedValues: any) => {
+    setManageCheckedList(checkedValues);
+
+    // Check which options are selected and call the appropriate handler functions
+    if (checkedValues.includes("QMS User")) {
+      handleEditQMS("", true);
+    } else {
+      handleEditQMS("", false);
+    }
+
+    if (checkedValues.includes("Approval Access")) {
+      handleEditApprover("", true);
+    } else {
+      handleEditApprover("", false);
+    }
+
+    if (checkedValues.includes("File Upload Access")) {
+      edit_uploader("", true);
+    } else {
+      edit_uploader("", false);
+    }
+  };
 
   // public toggleHideDialog = () => {
   //   console.log(this.state.hideDialog);
@@ -466,6 +491,9 @@ export default function UserDetails() {
   //     selectedval: value,
   //   });
   // };
+  useEffect(() => {
+    console.log("Managechecklist:", managecheckedList);
+  }, [managecheckedList]); // This will run every time managecheckedList changes
 
   const editUser = (record: any) => {
     // console.log(value);
@@ -490,6 +518,24 @@ export default function UserDetails() {
     setIsEdited(true);
     setSelecteditem(record.ID);
     setSelectedval(record);
+
+    const newCheckedList = {
+      "File Upload Access": record.Fileuploader === "true",
+      "QMS User": record.QMS === "true",
+      "Approval Access": record.Approver === "true",
+    };
+    console.log("New Checked List:", newCheckedList);
+
+    setManageCheckedList(newCheckedList);
+    console.log("Managechecklist:", managecheckedList);
+
+    form.setFieldsValue({
+      "User Name": record.Username,
+      "User MailID": record.EmailID,
+      "Provide Access": Object.keys(newCheckedList).filter(
+        (key) => newCheckedList[key]
+      ),
+    });
     // setHideeditDialog(false); // Show the edit drawer
   };
 
@@ -618,9 +664,9 @@ export default function UserDetails() {
   //   });
   // };
 
-  const handleedit_UserMailID = (event, value: any) => {
-    setEdit_EmailID(value);
-    console.log(value);
+  const handleedit_UserMailID = (e: any) => {
+    setEdit_EmailID(e.target.value);
+    console.log(e.target.valuelue);
     console.log(edit_EmailID);
   };
 
@@ -651,6 +697,7 @@ export default function UserDetails() {
 
   const handleEditQMS = (event, isChecked: any) => {
     setEdit_QMS(isChecked ? "true" : "false");
+    console.log(edit_QMS);
   };
 
   // const edit_Approver = (event, isChecked) => {
@@ -1635,6 +1682,13 @@ export default function UserDetails() {
                   autoComplete="off"
                   onFinish={() => handleeditUser()}
                   form={form}
+                  // initialValues={{
+                  //   "User Name": ,
+                  //   "User MailID": edit_EmailID,
+                  //   "Provide Access": Object.keys(managecheckedList).filter(
+                  //     (key) => managecheckedList[key]
+                  //   ),
+                  // }}
                 >
                   <Row gutter={24}>
                     <Col span={24}>
@@ -1651,7 +1705,6 @@ export default function UserDetails() {
                         <Input
                           onChange={handledit_Username}
                           value={edit_UserName}
-                          defaultValue={edit_UserName}
                         />
                       </Form.Item>
                     </Col>
@@ -1671,9 +1724,8 @@ export default function UserDetails() {
                       >
                         <Input
                           placeholder={edit_EmailID}
-                          onChange={handleadd_UserMailID}
+                          onChange={handleedit_UserMailID}
                           value={edit_EmailID}
-                          // defaultValue={edit_EmailID}
                         />
                       </Form.Item>
                     </Col>
@@ -1695,8 +1747,8 @@ export default function UserDetails() {
                       >
                         <CheckboxGroup
                           options={plainOptions}
-                          value={checkedList}
-                          onChange={onChange}
+                          value={managecheckedList}
+                          onChange={onManageChange}
                         />
                       </Form.Item>
                     </Col>
@@ -1718,21 +1770,23 @@ export default function UserDetails() {
                             color: "white",
                           }}
                         >
-                          Add
+                          Submit
                         </Button>
                       </Form.Item>
 
                       <Form.Item>
                         <Button
-                          onClick={() => onCancel()}
+                          onClick={() => DeleteUser()}
                           style={{
                             width: "100px",
                             height: "34px",
                             padding: "0px",
                             marginLeft: "5px",
+                            border: "1px solid rgba(203, 68, 68, 1)",
+                            color: "rgba(203, 68, 68, 1)",
                           }}
                         >
-                          Cancel
+                          Delete
                         </Button>
                       </Form.Item>
                     </Col>
