@@ -8,7 +8,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/polyfill-ie11";
 import { ISharingResult, SharingRole } from "@pnp/sp/sharing";
-
+import CheckMark from "../../../../../Images/CheckMark.png";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import { render } from "react-dom";
@@ -59,6 +59,7 @@ import {
   Input,
   Row,
   Select,
+  notification,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
@@ -408,6 +409,7 @@ export default function ApprovalPopup({ props }) {
       // });
       setErrmsg("Please Select level");
     }
+    openNotification();
     await fetchData();
   };
 
@@ -473,6 +475,16 @@ export default function ApprovalPopup({ props }) {
   const onClose = () => {
     setOpen(false);
     form.resetFields();
+  };
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Approved</span>
+      ),
+      description: "You have approved the request successfully",
+      placement: "top",
+      icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
+    });
   };
 
   return (

@@ -15,6 +15,8 @@ import "@pnp/sp/files";
 import { render } from "react-dom";
 import { getSitelist } from "../../Data/GetSiteList";
 import type { NotificationArgsProps } from "antd";
+import Cancel from "../../../../../Images/Cancel.png";
+import CheckMark from "../../../../../Images/CheckMark.png";
 
 import {
   DefaultButton,
@@ -71,12 +73,10 @@ export default function DenyPopup({ props }) {
 
   const openNotification = () => {
     notification.info({
-      message: (
-        <span style={{ fontWeight: "600", fontSize: "24px" }}>Approved</span>
-      ),
-      description: "You have approved the request successfully",
+      message: <span style={{ fontWeight: "600", color: "red" }}>Denied</span>,
+      description: "You have denied the request successfully",
       placement: "top",
-      icon: <img src="../../../../../Images/Cancel.png" alt="Success" />,
+      icon: <img src={Cancel} alt="Cancel" style={{ width: "20%" }} />,
     });
   };
 

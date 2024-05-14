@@ -13,6 +13,8 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/folders";
 import "@pnp/sp/batching";
 import "@pnp/sp/presets/all";
+import Cancel from "../../../../Images/Cancel.png";
+import CheckMark from "../../../../Images/CheckMark.png";
 
 import { folderFromServerRelativePath } from "@pnp/sp/folders";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
@@ -449,7 +451,7 @@ export default function User(props) {
       ),
       description: "You have uploaded the file successfully",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
+      icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
     });
   };
 
@@ -458,9 +460,10 @@ export default function User(props) {
       message: (
         <span style={{ color: "green", fontWeight: "bold" }}>Copied</span>
       ),
-      description: "You had copied the id successfully",
+      description: "You had copied the ID",
       placement: "top",
       // icon: <img src="../../" alt="Success" />,
+      icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
     });
   };
 
@@ -505,14 +508,8 @@ export default function User(props) {
       message: "",
       description: (
         <div>
-          <p style={{ color: "green", fontWeight: "bold" }}>
-            {" "}
-            There is no file inside this folder,
-          </p>
-          <p style={{ color: "green", fontWeight: "bold" }}>
-            {" "}
-            Please create a new file!,
-          </p>
+          <p>There is no file inside this folder.</p>
+          <p>Please create a new file!</p>
         </div>
       ),
       placement: "top",
@@ -5022,7 +5019,7 @@ export default function User(props) {
                                     padding: "0px",
                                     display: "block",
                                     marginTop: 17,
-                                    width: "10%",
+                                    width: "14%",
                                   }}
                                 >
                                   <span>
