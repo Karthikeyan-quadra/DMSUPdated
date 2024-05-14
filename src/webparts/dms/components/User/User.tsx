@@ -29,6 +29,7 @@ import {
   Drawer,
   Form,
   Layout,
+  notification,
   Row,
   Select,
   Upload,
@@ -68,6 +69,10 @@ import type { TableProps } from "antd";
 import { Radio } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import { useForm } from "antd/es/form/Form";
+// import { useForm } from 'antd';
+
+// import form from "antd/es/form";
 
 // import styles from "../DmsWebPart.module.scss";
 // import styles1 from '../DmsWebPart.module.scss';
@@ -257,6 +262,7 @@ function formatDate(date) {
 //   },
 // ];
 const { Search } = Input;
+// const [form] = useForm();
 
 const columns: any = [
   {
@@ -355,6 +361,10 @@ const styl = `:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-
   width: 30%;
 }
 
+:where(.css-dev-only-do-not-override-usln0u).ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+  border-color: rgba(74, 173, 146, 1);
+  background-color: rgba(74, 173, 146, 1);
+}
 `;
 
 export default function User(props) {
@@ -364,6 +374,7 @@ export default function User(props) {
   //   this.filesaveold = this.filesaveold.bind(this);
 
   //   // this.handleFileChange = this.handleFileChange.bind(this);
+  const [form] = useForm(); // Access the form instance
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogUpload, setOpenDialogUpload] = useState(false);
@@ -429,6 +440,85 @@ export default function User(props) {
 
   const [radiovalue, setRadioValue] = useState("New Files");
   const [fileID, setFileID] = useState(0);
+  const [disablesubmit, setDisableSubmit] = useState(false);
+
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Uploaded</span>
+      ),
+      description: "You have uploaded the file successfully",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openCopiedNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Copied</span>
+      ),
+      description: "You had copied the id successfully",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openDepartmentNotification = () => {
+    notification.info({
+      message: "",
+      description: "Please select Department Name",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openDocumentNotification = () => {
+    notification.info({
+      message: "",
+      description: "Please select Document Name",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openSubFoldersMaintNotification = () => {
+    notification.info({
+      message: "",
+      description: "Please select Sub Folders Main",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openSubFolderstNotification = () => {
+    notification.info({
+      message: "",
+      description: "Please select Sub Folders ",
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
+
+  const openNofileNotification = () => {
+    notification.info({
+      message: "",
+      description: (
+        <div>
+          <p style={{ color: "green", fontWeight: "bold" }}>
+            {" "}
+            There is no file inside this folder,
+          </p>
+          <p style={{ color: "green", fontWeight: "bold" }}>
+            {" "}
+            Please create a new file!,
+          </p>
+        </div>
+      ),
+      placement: "top",
+      // icon: <img src="../../" alt="Success" />,
+    });
+  };
 
   const fetchData = async () => {
     try {
@@ -509,7 +599,7 @@ export default function User(props) {
   }, []);
 
   const onChange = (e: any) => {
-    console.log("radio checked", e.target.value);
+    console.log("Radio checked", e.target.value);
     setRadioValue(e.target.value);
     console.log(radiovalue);
     setValueFileType(e.target.value);
@@ -2072,19 +2162,23 @@ export default function User(props) {
     console.log(params4);
     if (params111.length <= 0) {
       // alert("Please add Department Name before generating ID!");
-      alert("Please select Department Name");
+      // alert("Please select Department Name");
+      openDepartmentNotification();
     } else if (params2.length <= 0) {
       // alert("Please add Document Name before generating ID!");
-      alert("Please select Document Name");
+      // alert("Please select Document Name");
+      openDocumentNotification();
     }
     // else if(params5.length <= 0) {
     //   alert("Please add Project Name before generating ID!")
     // }
     else if (SubfolderState === true && params3.length <= 0) {
       // alert("Please add Sub Folders Main before generating ID!");
-      alert("Please select Sub Folders Main");
+      // alert("Please select Sub Folders Main");
+      openSubFoldersMaintNotification();
     } else if (SubfolderState1 === true && params4.length <= 0) {
-      alert("Please add Sub Folders before generating ID!");
+      // alert("Please add Sub Folders before generating ID!");
+      openSubFolderstNotification();
     }
 
     if (params111.length > 0) {
@@ -2147,7 +2241,8 @@ export default function User(props) {
         filesName.push({ key: file.Name, text: file.Name });
       });
     } else {
-      alert("There is no file inside this folder, please create a new file!");
+      // alert("There is no file inside this folder, please create a new file!");
+      openNofileNotification();
     }
 
     // this.setState({
@@ -2547,6 +2642,9 @@ export default function User(props) {
   };
 
   const filesave = async () => {
+    setDisableSubmit(true); // Enable the submit button
+    console.log(disablesubmit);
+
     console.log("filesave function called");
     console.log(filenames.length);
     console.log(fileDes.length);
@@ -2850,7 +2948,8 @@ export default function User(props) {
         //     console.log(t);
         //     });
         await fetchData();
-        alert("Created Successfully");
+        openNotification();
+        // alert("Created Successfully");
         // this.setState({
         //   Uploading: false,
         // });
@@ -3006,8 +3105,9 @@ export default function User(props) {
               console.log(i);
             });
         }
+        openNotification();
 
-        alert("Created Successfully");
+        // alert("Created Successfully");
         // this.setState({
         //   Uploading: false,
         // });
@@ -3039,6 +3139,7 @@ export default function User(props) {
       //   projectKey:'',
 
       // });
+
       setOpenDialogUpload(false);
       setHiddenDialogUpload(true);
       setSubfolderState(false);
@@ -3055,16 +3156,19 @@ export default function User(props) {
       setParams4("");
       setParams5("");
       setFileNameStruct("");
-      setValueFileType("Old Files");
+      setValueFileType("New Files");
       setFileess([]);
       setDepartmentKey("");
       setDocumentKey("");
       setProjectKey("");
       // console.log(this.state);
     }
+    form.resetFields();
+    setDisableSubmit(false);
   };
 
   const filesaveold = async () => {
+    setDisableSubmit(true);
     console.log(filenames.length);
     console.log(fileDes.length);
 
@@ -3305,7 +3409,9 @@ export default function User(props) {
         //     console.log(t);
         //     });
         await fetchData();
-        alert("Created Successfully");
+        // alert("Created Successfully");
+        openNotification();
+
         // this.setState({
         //   Uploading: false,
         // });
@@ -3460,7 +3566,9 @@ export default function User(props) {
             });
         }
 
-        alert("Created Successfully");
+        // alert("Created Successfully");
+        openNotification();
+
         // this.setState({
         //   Uploading: false,
         // });
@@ -3512,12 +3620,15 @@ export default function User(props) {
       setProjectKey("");
       setFileess([]);
     }
+    form.resetFields();
+    setDisableSubmit(false);
   };
 
   return (
     <div>
+      <style>{styl}</style>
+
       <div className="container" style={{ marginTop: "10px", display: "none" }}>
-        <style>{styl}</style>
         <div
           style={{
             flex: "1",
@@ -4334,9 +4445,10 @@ export default function User(props) {
                 {showUploadDiv && valueFileType === "New Files" ? (
                   <div>
                     <Form
+                      form={form}
                       name="basic"
                       layout="vertical"
-                      onFinish={filesave}
+                      onFinish={() => filesave()}
                       autoComplete="off"
                       style={{ maxWidth: "100%" }}
                     >
@@ -4346,7 +4458,12 @@ export default function User(props) {
                             label="Department Name"
                             name="Department Name"
                             style={{ maxWidth: 400, marginTop: 37 }}
-                            rules={[{ required: true }]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select your Department Name!",
+                              },
+                            ]}
                           >
                             <Select
                               placeholder="Select an option"
@@ -4372,7 +4489,12 @@ export default function User(props) {
                             label="Document Name"
                             name="Document Name"
                             style={{ maxWidth: 400, marginTop: 37 }}
-                            rules={[{ required: true }]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select your Document Name!",
+                              },
+                            ]}
                           >
                             <Select
                               placeholder="Select an option"
@@ -4403,7 +4525,12 @@ export default function User(props) {
                             label="Project Name"
                             name="Project Name"
                             style={{ maxWidth: 400, marginTop: 17 }}
-                            rules={[{ required: true }]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select your Project Name!",
+                              },
+                            ]}
                           >
                             <Select
                               placeholder="Select an option"
@@ -4430,7 +4557,13 @@ export default function User(props) {
                               label="Sub Folders Main"
                               name="Sub Folders Main"
                               style={{ maxWidth: 400, marginTop: 17 }}
-                              rules={[{ required: true }]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message:
+                                    "Please select your Sub Folders Main!",
+                                },
+                              ]}
                             >
                               <Select
                                 placeholder="Select an option"
@@ -4540,38 +4673,40 @@ export default function User(props) {
 
                       <Row gutter={24}>
                         <Col span={24}>
-                          <Space.Compact
-                            style={{ width: "30%", marginTop: "17px" }}
-                          >
-                            <Input
-                              value={
-                                fileNameStruct.length > 39
-                                  ? `${fileNameStruct.slice(0, 35)}...`
-                                  : fileNameStruct
-                              }
-                              onChange={changeValueFileID}
-                            />
-                            <Button
-                              style={{ background: "rgba(74, 173, 146, 1)" }}
-                              disabled={fileNameStruct === ""}
-                              onClick={async () => {
-                                navigator.clipboard.writeText(fileNameStruct);
-                                alert("ID copied successfully!");
-                              }}
-                            >
-                              <span>
-                                <img
-                                  src={require("../../../../Images/Copy.png")}
-                                  alt="Copy"
-                                />
-                              </span>
-                              <span
-                                style={{ paddingLeft: "5px", color: "white" }}
+                          <Form.Item style={{ maxWidth: 400, marginTop: 17 }}>
+                            <Space.Compact>
+                              <Input
+                                value={
+                                  fileNameStruct.length > 39
+                                    ? `${fileNameStruct.slice(0, 39)}...`
+                                    : fileNameStruct
+                                }
+                                style={{ width: "310px" }}
+                                onChange={changeValueFileID}
+                              />
+                              <Button
+                                style={{ background: "rgba(74, 173, 146, 1)" }}
+                                disabled={fileNameStruct === ""}
+                                onClick={async () => {
+                                  navigator.clipboard.writeText(fileNameStruct);
+                                  // alert("ID copied successfully!");
+                                  openCopiedNotification();
+                                }}
                               >
-                                Copy
-                              </span>
-                            </Button>
-                          </Space.Compact>
+                                <span>
+                                  <img
+                                    src={require("../../../../Images/Copy.png")}
+                                    alt="Copy"
+                                  />
+                                </span>
+                                <span
+                                  style={{ paddingLeft: "5px", color: "white" }}
+                                >
+                                  Copy
+                                </span>
+                              </Button>
+                            </Space.Compact>
+                          </Form.Item>
                         </Col>
                       </Row>
 
@@ -4653,6 +4788,21 @@ export default function User(props) {
                           span={24}
                           style={{ display: "flex", marginLeft: "57%" }}
                         >
+                          {/* {enablesubmit ?
+                          (<Form.Item>
+                            <Button
+                              htmlType="submit"
+                              style={{
+                                background: "rgba(74, 173, 146, 1)",
+                                color: "white",
+                                width: "149px",
+                              }}
+                            >
+                              Submit
+                            </Button>
+                          </Form.Item>):(<>
+                          </>)} */}
+
                           <Form.Item>
                             <Button
                               htmlType="submit"
@@ -4661,6 +4811,7 @@ export default function User(props) {
                                 color: "white",
                                 width: "149px",
                               }}
+                              disabled={disablesubmit}
                             >
                               Submit
                             </Button>
@@ -4687,11 +4838,13 @@ export default function User(props) {
                     </div>
                     <div>
                       <Form
+                        form={form}
                         name="basic"
                         layout="vertical"
-                        onFinish={filesaveold}
+                        onFinish={() => filesaveold()}
                         autoComplete="off"
                         style={{ maxWidth: "100%" }}
+                        // form={form}
                       >
                         <Row gutter={24}>
                           <Col span={12}>
@@ -4699,7 +4852,12 @@ export default function User(props) {
                               label="Department Name"
                               name="Department Name"
                               style={{ maxWidth: 400 }}
-                              rules={[{ required: true }]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please select Department Name!",
+                                },
+                              ]}
                             >
                               <Select
                                 placeholder="Select an option"
@@ -4725,7 +4883,12 @@ export default function User(props) {
                               label="Document Name"
                               name="Document Name"
                               style={{ maxWidth: 400 }}
-                              rules={[{ required: true }]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please select Document Name!",
+                                },
+                              ]}
                             >
                               <Select
                                 placeholder="Select an option"
@@ -5039,6 +5202,7 @@ export default function User(props) {
                           >
                             <Form.Item>
                               <Button
+                                disabled={disablesubmit}
                                 htmlType="submit"
                                 style={{
                                   background: "rgba(74, 173, 146, 1)",

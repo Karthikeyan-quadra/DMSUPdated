@@ -1228,6 +1228,7 @@ export default function UserDetails() {
   const showDrawer = () => {
     setOpen(true);
     setIsAdded(true);
+    form.resetFields();
   };
 
   const onClose = () => {

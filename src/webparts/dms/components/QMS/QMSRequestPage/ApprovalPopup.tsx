@@ -176,6 +176,15 @@ export default function ApprovalPopup({ props }) {
     }
   };
 
+  // useEffect(() => {
+  //   setSubDepartment(props.SubDepartment);
+  //   console.log(Level);
+
+  //   console.log(props);
+
+  //   fetchData();
+  // }, [props]);
+
   useEffect(() => {
     setSubDepartment(props.SubDepartment);
     console.log(Level);

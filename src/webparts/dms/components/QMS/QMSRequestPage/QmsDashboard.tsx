@@ -336,9 +336,17 @@ export default function QmsDashboard(props) {
     setOverallList(fetchedValue);
   };
 
+  // useEffect(() => {
+  //   fetchData();
+  // }, [page, rowsPerPage]);
+
   useEffect(() => {
     fetchData();
-  }, [page, rowsPerPage]);
+  }, []);
+
+  //   useEffect(() => {
+  //   fetchData();
+  // }, [overalllist]);
 
   function _getKey(item: any, index?: number): string {
     console.log(item.key);
