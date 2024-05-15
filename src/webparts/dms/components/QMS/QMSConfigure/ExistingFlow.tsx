@@ -228,6 +228,7 @@ export default function QmsDashboard(props) {
     {
       title: "Document ID",
       dataIndex: "Filename",
+      key: "Filename",
       width: "36%",
       align: "left",
       resizable: true,
@@ -246,6 +247,7 @@ export default function QmsDashboard(props) {
     {
       title: "File Title",
       dataIndex: "FileTitle",
+      key: "FileTitle",
       width: "14%",
       align: "left",
       resizable: true,
@@ -255,6 +257,7 @@ export default function QmsDashboard(props) {
     {
       title: "Upload Date",
       dataIndex: "FileUploadDate",
+      key: "FileUploadDate",
       width: "15%",
       align: "left",
       resizable: true,
@@ -264,6 +267,7 @@ export default function QmsDashboard(props) {
     {
       title: "Requester Name",
       dataIndex: "Requester",
+      key: "Requester",
       width: "20%",
       align: "left",
       resizable: true,
@@ -273,6 +277,7 @@ export default function QmsDashboard(props) {
     {
       title: "Department",
       dataIndex: "Department",
+      key: "Department",
       width: "15%",
       align: "left",
       resizable: true,
@@ -282,6 +287,7 @@ export default function QmsDashboard(props) {
     {
       title: "Approval Status",
       dataIndex: "ApprovalStatus",
+      key: "ApprovalStatus",
       width: "18%",
       align: "left",
       resizable: true,
@@ -291,6 +297,7 @@ export default function QmsDashboard(props) {
     {
       title: "",
       dataIndex: "Fileurl",
+      key: "Fileurl",
       width: "11%",
       align: "left",
       resizable: true,
@@ -690,15 +697,43 @@ export default function QmsDashboard(props) {
   //   );
   // };
 
-  const editFlow = async (value) => {
+  // const editFlow = async (value) => {
+  //   setOpen(true);
+  //   console.log(value);
+  //   setHideEditDialog(false);
+  //   setIsEdited(true);
+  //   setSelected_item(value);
+  //   const sp: SPFI = getSp();
+
+  //   const approverListResult: any = await Get_departmentusers(value.Department);
+  //   console.log(approverListResult);
+  //   const mappedApproverList: any = approverListResult.map((val: any) => ({
+  //     text: val.Name,
+  //     key: val.EmailID,
+  //   }));
+  //   console.log(mappedApproverList);
+  //   setApproverList(mappedApproverList);
+
+  //   const reviewerNameResult: any = await getName(value.Approver2);
+  //   console.log(reviewerNameResult);
+  //   setReviewerName(reviewerNameResult[0].Name);
+
+  //   const approverNameResult: any = await getName(value.Approver3);
+  //   console.log(approverNameResult);
+  //   setApproverName(approverNameResult[0].Name);
+  // };
+
+  const editFlow = async (record: any) => {
     setOpen(true);
-    console.log(value);
+    console.log(record);
     setHideEditDialog(false);
     setIsEdited(true);
-    setSelected_item(value);
+    setSelected_item(record.ID);
     const sp: SPFI = getSp();
 
-    const approverListResult: any = await Get_departmentusers(value.Department);
+    const approverListResult: any = await Get_departmentusers(
+      record.Department
+    );
     console.log(approverListResult);
     const mappedApproverList: any = approverListResult.map((val: any) => ({
       text: val.Name,
@@ -707,13 +742,24 @@ export default function QmsDashboard(props) {
     console.log(mappedApproverList);
     setApproverList(mappedApproverList);
 
-    const reviewerNameResult: any = await getName(value.Approver2);
+    const reviewerNameResult: any = await getName(record.Approver2);
     console.log(reviewerNameResult);
     setReviewerName(reviewerNameResult[0].Name);
 
-    const approverNameResult: any = await getName(value.Approver3);
+    const approverNameResult: any = await getName(record.Approver3);
     console.log(approverNameResult);
     setApproverName(approverNameResult[0].Name);
+
+    form.setFieldsValue({
+      "Document ID": record.Filename,
+      "Document Title": record.FileTitle,
+      "Requester Info": record.Requester,
+      // view: record.Fileurl,
+      Department: record.Department,
+      Section: record.SubDepartment,
+      "Document Reviewer": record.Approver2,
+      "Document Approver": record.Approver3,
+    });
   };
 
   const previewOutlookUsingIcon: IDocumentCardPreviewProps = {
@@ -1200,16 +1246,16 @@ export default function QmsDashboard(props) {
                   </Row>
                   <Row gutter={24}>
                     <Col>
-                      <Form.Item
-                        label="Modify Approver here"
-                        name="Modify Approver here"
+                      <p
                         style={{
                           maxWidth: 225,
                           marginTop: 37,
-                          fontSize: "16px",
-                          fontWeight: "600",
+                          // fontSize: "16px",
+                          // fontWeight: "600",
                         }}
-                      ></Form.Item>
+                      >
+                        Modify Approver here
+                      </p>
                     </Col>
                   </Row>
 
@@ -1274,6 +1320,33 @@ export default function QmsDashboard(props) {
                               </Select.Option>
                             ))}
                         </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={24}
+                    style={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <Col>
+                      <Form.Item>
+                        <Button
+                          style={{
+                            width: "100px",
+                            height: "34px",
+                            backgroundColor: "rgba(74, 173, 146, 1)",
+                            color: "white",
+                          }}
+                        >
+                          Submit
+                        </Button>
+                        <Button
+                          style={{
+                            marginLeft: "4px",
+                          }}
+                          onClick={() => toggleeditHideDialog()}
+                        >
+                          Cancel
+                        </Button>
                       </Form.Item>
                     </Col>
                   </Row>
