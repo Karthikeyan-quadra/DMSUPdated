@@ -307,7 +307,7 @@ const columns: any = [
     title: "Approver",
     dataIndex: "ApprovalStatus",
     // width: 100,
-    width: "11%",
+    width: "10%",
     align: "left",
     resizable: true,
   },
@@ -315,7 +315,7 @@ const columns: any = [
     title: "Status",
     dataIndex: "Status",
     // width: 100,
-    width: "11%",
+    width: "10%",
     align: "left",
     resizable: true,
   },
@@ -324,7 +324,7 @@ const columns: any = [
     title: "View",
     dataIndex: "Fileurl",
     // width: 100,
-    width: "6%",
+    width: "8%",
     align: "left",
     resizable: true,
     render: (text, record) => (
@@ -576,6 +576,7 @@ export default function User(props) {
 
   const onClose = () => {
     setshowTemplateDiv(false);
+    form.resetFields();
   };
 
   useEffect(() => {
@@ -1612,6 +1613,7 @@ export default function User(props) {
     } catch (e) {
       alert("Something went wrong, Try again later !");
     }
+    onClose();
   };
 
   //ORIGINAL CODE
@@ -2256,20 +2258,26 @@ export default function User(props) {
   };
 
   const changeValue = async (e, value: any) => {
+    // form.resetFields();
+    console.log("change value function called");
     console.log(value.value);
     console.log(value);
+    console.log("chooose:", choose);
+
     // { key: 'Work Instruction', text: 'Work Instruction' },
     // { key: 'MSOP', text: 'MSOP' },
     // { key: 'Forms', text: 'Forms' },
     chooose.length = 0;
-    if (value.text === "Work Instruction") {
+    console.log("chooose:", chooose.length);
+
+    if (value.value === "Work Instruction") {
       console.log("entyered in WI");
       // this.setState({
       //   choose: true,
       //   Documetntype: value.text,
       // });
       setChoose(true);
-      setDocumetntype(value.text);
+      setDocumetntype(value.value);
       console.log(documentType);
 
       let array = [
@@ -2284,11 +2292,11 @@ export default function User(props) {
       ];
 
       array.map((i) => {
-        if (i.key === value.text) {
+        if (i.key === value.value) {
           chooose.push(i);
         }
       });
-    } else if (value.text === "MSOP") {
+    } else if (value.value === "MSOP") {
       console.log("entyered in MSOP");
 
       // this.setState({
@@ -2301,7 +2309,7 @@ export default function User(props) {
       console.log(value.text);
       console.log(value.key);
 
-      setDocumetntype(value.text);
+      setDocumetntype(value.value);
 
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
@@ -2315,12 +2323,12 @@ export default function User(props) {
       ];
 
       array.map((i) => {
-        if (i.key === value.text) {
+        if (i.key === value.value) {
           chooose.push(i);
         }
       });
       console.log(choose);
-    } else if (value.text === "Form") {
+    } else if (value.value === "Form") {
       console.log("entyered in Form");
 
       // this.setState({
@@ -2328,7 +2336,7 @@ export default function User(props) {
       //   Documetntype: value.text,
       // });
       setChoose(true);
-      setDocumetntype(value.text);
+      setDocumetntype(value.value);
 
       let array = [
         { key: "Work Instruction", text: "Assy Eng" },
@@ -2342,9 +2350,9 @@ export default function User(props) {
       ];
 
       array.map((i) => {
-        if (i.key === value.text) {
+        if (i.key === value.value) {
           chooose.push(i);
-          console.log(value.text);
+          console.log(value.value);
         }
       });
       console.log("chooose:", choose);
@@ -2359,11 +2367,14 @@ export default function User(props) {
       setChoose(false);
 
       console.log(choose);
+      console.log(value.key);
+      console.log(value.text);
 
       const sp: SPFI = getSp();
       let somss: any = await sp.web.lists.getByTitle("My Docs").items();
       console.log(somss);
       let filteredFile = somss.filter((file: any) => {
+        console.log(file);
         console.log(file.fileType);
         return file.fileType === value.key;
       });
@@ -2392,9 +2403,15 @@ export default function User(props) {
   const changeValue1 = async (e, value: any) => {
     console.log("changeValue1 function called");
     console.log(value.value);
+    console.log(value);
+    console.log("Selected Value:", value.key);
+    console.log("Selected Text:", value.value);
     // { key: 'Work Instruction', text: 'Work Instruction' },
     // { key: 'MSOP', text: 'MSOP' },
     // { key: 'Forms', text: 'Forms' },
+
+    // const optionData = JSON.parse(value["data-option"]);
+    // console.log("optionData.key:", optionData.key);
 
     let ID;
     let path;
@@ -2402,7 +2419,7 @@ export default function User(props) {
     let somss: any = await sp.web.lists.getByTitle("My Docs").items();
     console.log(somss);
     await somss.filter((file: any) => {
-      if (file.fileType === value.key) {
+      if (file.fileType === value.value) {
         ID = file.ID;
         console.log(ID);
         console.log(file);
@@ -2429,6 +2446,7 @@ export default function User(props) {
         setDownloadUrl(items.FileRef);
         setDownloadURI(false);
       });
+    // form.resetFields();
   };
 
   // const handleFileChange=(e)=>{
@@ -4301,45 +4319,34 @@ export default function User(props) {
                   onClose={onClose}
                   open={showTemplateDiv}
                 >
-                  <Row gutter={24}>
-                    <Col span={12}>
-                      <Form.Item
-                        label="Template"
-                        name="Template"
-                        style={{ maxWidth: 400, marginTop: 37 }}
-                      >
-                        <Select
-                          placeholder="Select an option"
-                          onChange={(event, option) => {
-                            changeValue(event, option);
-                          }}
-                          style={{ width: "330px" }}
-                        >
-                          {options1.map((option: any) => (
-                            <Select.Option key={option.key} value={option.text}>
-                              {option.text}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  {choose ? (
+                  <Form
+                    form={form}
+                    name="basic"
+                    layout="vertical"
+                    onFinish={() => downloadFile()}
+                    autoComplete="off"
+                    style={{
+                      maxWidth: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
                     <Row gutter={24}>
                       <Col span={12}>
                         <Form.Item
-                          label="Sub Section"
-                          name="Sub Section"
-                          style={{ maxWidth: 400, marginTop: 0 }}
+                          label="Template"
+                          name="Template"
+                          style={{ maxWidth: 400, marginTop: 37 }}
                         >
                           <Select
                             placeholder="Select an option"
                             onChange={(event, option) => {
-                              changeValue1(event, option);
+                              changeValue(event, option);
                             }}
                             style={{ width: "330px" }}
                           >
-                            {chooose.map((option: any) => (
+                            {options1.map((option: any) => (
                               <Select.Option
                                 key={option.key}
                                 value={option.text}
@@ -4351,47 +4358,98 @@ export default function User(props) {
                         </Form.Item>
                       </Col>
                     </Row>
-                  ) : (
-                    <div></div>
-                  )}
-                  <div style={{ display: "flex" }}>
-                    {DownloadURI === true ? (
-                      <Row gutter={12}>
+                    {choose ? (
+                      <Row gutter={24}>
                         <Col span={12}>
-                          <Button
-                            onClick={downloadFile}
-                            style={{
-                              background: "rgba(74, 173, 146, 1)",
-                              color: "white",
-                              width: "149px",
-                            }}
+                          <Form.Item
+                            label="Sub Section"
+                            name="Sub Section"
+                            style={{ maxWidth: 400, marginTop: 0 }}
                           >
-                            Download
-                          </Button>
+                            <Select
+                              placeholder="Select an option"
+                              onChange={(event, option) => {
+                                changeValue1(event, option);
+                              }}
+                              style={{ width: "330px" }}
+                              // labelInValue
+                            >
+                              {chooose.map((option: any) => (
+                                <Select.Option
+                                  key={option.text}
+                                  value={option.text}
+                                  // data-option={JSON.stringify(option)}
+                                >
+                                  {option.text}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
                         </Col>
                       </Row>
                     ) : (
-                      <Row gutter={12}>
-                        <Col span={12}>
+                      <div></div>
+                    )}
+                    <div style={{ marginTop: "auto", textAlign: "end" }}>
+                      {/* {DownloadURI === true ? (
+                        <Row gutter={12}>
+                          <Col span={12}>
+                            <Button
+                              // onClick={downloadFile}
+                              htmlType="submit"
+                              style={{
+                                background: "rgba(74, 173, 146, 1)",
+                                color: "white",
+                                width: "149px",
+                              }}
+                            >
+                              Download
+                            </Button>
+                          </Col>
+                        </Row>
+                      ) : (
+                        <Row gutter={12}>
+                          <Col span={12}>
+                            <Button
+                              // onClick={downloadFile}
+                              htmlType="submit"
+                              style={{
+                                background: "rgba(74, 173, 146, 1)",
+                                color: "white",
+                                width: "149px",
+                              }}
+                            >
+                              Download
+                            </Button>
+                          </Col>
+                        </Row>
+                      )} */}
+                      <Row gutter={24}>
+                        <Col span={24}>
                           <Button
-                            onClick={downloadFile}
+                            // onClick={downloadFile}
+                            htmlType="submit"
                             style={{
                               background: "rgba(74, 173, 146, 1)",
                               color: "white",
-                              width: "149px",
+                              width: "100px",
                             }}
                           >
                             Download
                           </Button>
+                          <Button
+                            onClick={onClose}
+                            style={{
+                              width: "100px",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            Cancel
+                          </Button>
                         </Col>
                       </Row>
-                    )}
-                    <Row gutter={24}>
-                      <Col span={12}>
-                        <Button onClick={onClose}>Cancel</Button>
-                      </Col>
-                    </Row>
-                  </div>
+                    </div>
+                  </Form>
                 </Drawer>
               </>
             )}
@@ -5214,7 +5272,7 @@ export default function User(props) {
                             <Form.Item>
                               <Button
                                 onClick={toggleUploadDiv}
-                                style={{ marginLeft: "10px", width: "149px" }}
+                                style={{ marginLeft: "5px", width: "149px" }}
                               >
                                 Cancel
                               </Button>

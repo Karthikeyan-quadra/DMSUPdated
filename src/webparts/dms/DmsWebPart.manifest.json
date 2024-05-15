@@ -1,26 +1,31 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "fefcb63d-06f7-408e-8baf-b65ffeaafe55",
+  "id": "5e576cad-8e60-4611-9cfa-95d9ce596abc",
   "alias": "DmsWebPart",
   "componentType": "WebPart",
-
 
   "version": "*",
   "manifestVersion": 2,
 
-
   "requiresCustomScript": false,
-  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportedHosts": [
+    "SharePointWebPart",
+    "TeamsPersonalApp",
+    "TeamsTab",
+    "SharePointFullPage"
+  ],
   "supportsThemeVariants": true,
 
-  "preconfiguredEntries": [{
-    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", 
-    "group": { "default": "Advanced" },
-    "title": { "default": "dms" },
-    "description": { "default": "dms description" },
-    "officeFabricIconFontName": "Page",
-    "properties": {
-      "description": "dms"
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": { "default": "Advanced" },
+      "title": { "default": "dms 2" },
+      "description": { "default": "dms description 2" },
+      "officeFabricIconFontName": "Page",
+      "properties": {
+        "description": "dms 2"
+      }
     }
-  }]
+  ]
 }
