@@ -405,7 +405,7 @@ export default function QMSConfigure(props) {
             User Properties
           </Menu.Item>
           <Menu.Item key="5" className={styles.menuItemStyle}>
-            Admin Users
+            Department Users
           </Menu.Item>
         </Menu>
 

@@ -23,7 +23,17 @@ import { SPFI } from "@pnp/sp";
 import styles from "../QMSRequestPage/QmsDashboard.module.scss";
 import { getSubDepartmentlist } from "../../Data/GetSiteList";
 import { useEffect, useState } from "react";
-import { Button, Col, Drawer, Form, Input, Row, Select, Table } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Select,
+  Table,
+  notification,
+} from "antd";
 import Search from "antd/es/input/Search";
 import { useForm } from "antd/es/form/Form";
 // let columns = [
@@ -435,6 +445,40 @@ export default function UserDepartment(Props) {
   //   }
   // }
 
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Added</span>
+      ),
+      description: "You have added the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/CheckMark.png")}
+          alt="Success"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
+  const openDeleteNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "red", fontWeight: "bold" }}>Deleted</span>
+      ),
+      description: "You have deleted the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/Cancel.png")}
+          alt="Delete"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
   const fetchData = async () => {
     const sp = getSp();
     try {
@@ -649,8 +693,9 @@ export default function UserDepartment(Props) {
   //   });
   // };
 
-  const handleadd_Username = (event, value) => {
-    setAddUserName(value);
+  const handleadd_Username = (e: any) => {
+    setAddUserName(e.target.value);
+    console.log(add_UserName);
   };
 
   // const handleadd_UserMailID = (event, value) => {
@@ -659,8 +704,9 @@ export default function UserDepartment(Props) {
   //   });
   // };
 
-  const handleadd_UserMailID = (event, value) => {
-    setAddEmailID(value);
+  const handleadd_UserMailID = (e: any) => {
+    setAddEmailID(e.target.value);
+    console.log(add_EmailID);
   };
 
   //       const handleadd_UserMailID = (event, value) => {
@@ -843,6 +889,7 @@ export default function UserDepartment(Props) {
     } catch (error) {
       console.error("Error deleting user:", error);
     }
+    openDeleteNotification();
   };
 
   // const _filter = (event, text) => {
@@ -942,7 +989,7 @@ export default function UserDepartment(Props) {
   // };
 
   const addLevelChange = (event, value) => {
-    setAddLevel(value.text);
+    setAddLevel(value.value);
   };
 
   console.log(add_Level);
@@ -1062,6 +1109,9 @@ export default function UserDepartment(Props) {
       // });
       setAddLevelErr("Please specify Level");
     }
+    setOpen(false);
+    form.resetFields();
+    openNotification();
   };
 
   const showDrawer = () => {
@@ -1070,6 +1120,7 @@ export default function UserDepartment(Props) {
 
   const onClose = () => {
     setOpen(false);
+    form.resetFields();
   };
 
   return (
@@ -1566,7 +1617,7 @@ export default function UserDepartment(Props) {
                         </Col>
                       </Row>
 
-                      <Row gutter={24} style={{ marginTop: "300px" }}>
+                      <Row gutter={24} style={{ marginTop: "200px" }}>
                         <Col
                           span={24}
                           style={{
