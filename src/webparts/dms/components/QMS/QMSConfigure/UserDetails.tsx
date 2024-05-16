@@ -1486,7 +1486,7 @@ export default function UserDetails() {
       {/* </div> */}
 
       <div>
-        <Row gutter={24} style={{ width: "98%" }}>
+        <Row gutter={24} style={{ width: "99%" }}>
           <Col span={12}>
             <Button
               onClick={showDrawer}

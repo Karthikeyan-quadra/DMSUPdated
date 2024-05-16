@@ -45,6 +45,7 @@ import {
   Stack,
 } from "office-ui-fabric-react";
 import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
+import CheckMark from "../../../../../Images/CheckMark.png";
 
 import { TablePagination } from "@material-ui/core";
 import { useEffect, useState } from "react";
@@ -59,6 +60,8 @@ import {
   Row,
   Select,
   Table,
+  Typography,
+  notification,
 } from "antd";
 import Search from "antd/es/input/Search";
 import { useForm } from "antd/es/form/Form";
@@ -193,6 +196,7 @@ export default function QmsDashboard(props) {
   //   Approver_name: "",
   // };
   //this.sendApproval= this.sendApproval.bind(this);
+  const [selectedRecord, setSelectedRecord] = useState<any>({});
   const [form] = useForm();
   const [items, setItems] = useState([]);
   const [hideDialog, setHideDialog] = useState(true);
@@ -377,6 +381,17 @@ export default function QmsDashboard(props) {
 
   //   console.log(this.state.items);
   // }
+
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Altered</span>
+      ),
+      description: "You have altered the flow successfully",
+      placement: "top",
+      icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
+    });
+  };
 
   const fetchData = async () => {
     const sp: SPFI = getSp();
@@ -575,6 +590,7 @@ export default function QmsDashboard(props) {
       setReviewerName("");
       setApproverName("");
     }
+    setOpen(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -633,6 +649,9 @@ export default function QmsDashboard(props) {
   // };
 
   const SubmitFlow = async () => {
+    console.log("SubmitFlow function called");
+    console.log("Selected_item:", Selected_item);
+
     const sp: SPFI = getSp();
     if (Selected_item.Approver2 !== "") {
       if (Selected_item.Approver3 !== "") {
@@ -641,6 +660,8 @@ export default function QmsDashboard(props) {
             .getByTitle("User Files")
             .items.getById(Selected_item.ID)
             .update({
+              // Approver2: Selected_item.Approver2,
+              // Approver3: Selected_item.Approver3,
               Approver2: Selected_item.Approver2,
               Approver3: Selected_item.Approver3,
             });
@@ -660,6 +681,7 @@ export default function QmsDashboard(props) {
     } else {
       setErrApproverMsg("Please specify Approver");
     }
+    openNotification();
   };
 
   // const editFlow = async (value) => {
@@ -726,9 +748,10 @@ export default function QmsDashboard(props) {
   const editFlow = async (record: any) => {
     setOpen(true);
     console.log(record);
+    setSelectedRecord(record);
     setHideEditDialog(false);
     setIsEdited(true);
-    setSelected_item(record.ID);
+    setSelected_item(record);
     const sp: SPFI = getSp();
 
     const approverListResult: any = await Get_departmentusers(
@@ -753,12 +776,15 @@ export default function QmsDashboard(props) {
     form.setFieldsValue({
       "Document ID": record.Filename,
       "Document Title": record.FileTitle,
-      "Requester Info": record.Requester,
-      // view: record.Fileurl,
+      RequesterInfo: {
+        name: record.Requester,
+        email: record.RequestorEmail,
+      },
+      view: record.Fileurl,
       Department: record.Department,
       Section: record.SubDepartment,
-      "Document Reviewer": record.Approver2,
-      "Document Approver": record.Approver3,
+      "Document Reviewer": reviewerNameResult[0].Name,
+      "Document Approver": approverNameResult[0].Name,
     });
   };
 
@@ -780,11 +806,22 @@ export default function QmsDashboard(props) {
   //   }));
   // };
 
-  const ReviewerChange = (event, value) => {
+  const ReviewerChange = async (event, value) => {
     setSelected_item((prevState) => ({
       ...prevState,
       Approver2: value.key,
+      Approver2Name: value.value,
     }));
+
+    const reviewerNameResult: any = await getName(value.key);
+    console.log(reviewerNameResult);
+    setReviewerName(reviewerNameResult[0].Name);
+
+    form.setFieldsValue({
+      "Document Reviewer": reviewerNameResult[0].Name,
+    });
+    console.log(value);
+    console.log(event);
   };
   // const ApproverChange = (event, value) => {
   //   this.setState((prevstate) => ({
@@ -792,36 +829,47 @@ export default function QmsDashboard(props) {
   //   }));
   // };
 
-  const ApproverChange = (event, value) => {
+  const ApproverChange = async (event, value) => {
     setSelected_item((prevState) => ({
       ...prevState,
       Approver3: value.key,
     }));
+    const approverNameResult: any = await getName(value.key);
+    console.log(approverNameResult);
+    setReviewerName(approverNameResult[0].Name);
+
+    form.setFieldsValue({
+      "Document Approver": approverNameResult[0].Name,
+    });
+    console.log(value);
+    console.log(Selected_item);
   };
 
-  const _renderItemColumn = (item, index: number, column) => {
-    const fieldContent = item[column.fieldName] as string;
+  // const _renderItemColumn = (item, index: number, column) => {
+  //   const fieldContent = item[column.fieldName] as string;
 
-    switch (column.key) {
-      case "Manage":
-        return (
-          <FontIcon
-            aria-label="AccountManagement"
-            iconName="AccountManagement"
-            className={styles.manage}
-            style={{ color: "#0078d4" }}
-            onClick={() => editFlow(item)}
-          />
-        );
+  //   switch (column.key) {
+  //     case "Manage":
+  //       return (
+  //         <FontIcon
+  //           aria-label="AccountManagement"
+  //           iconName="AccountManagement"
+  //           className={styles.manage}
+  //           style={{ color: "#0078d4" }}
+  //           onClick={() => editFlow(item)}
+  //         />
+  //       );
 
-      default:
-        return fieldContent.length <= 150 ? (
-          <span>{fieldContent}</span>
-        ) : (
-          <span>{fieldContent.slice(0, 150)}...</span>
-        );
-    }
-  };
+  //     default:
+  //       return fieldContent.length <= 150 ? (
+  //         <span>{fieldContent}</span>
+  //       ) : (
+  //         <span>{fieldContent.slice(0, 150)}...</span>
+  //       );
+  //   }
+  // };
+  console.log("SelectedRecord:", selectedRecord);
+
   return (
     // <div className={styles.QmsDashboard}>
     //   <Stack horizontal className={styles.filter} tokens={stackTokens}>
@@ -1054,10 +1102,14 @@ export default function QmsDashboard(props) {
         </Row>
       </div>
       <div style={{ marginTop: "20px", width: "98%" }}>
-        <Table
-          columns={columns}
-          dataSource={searchText ? filteredData : overalllist}
-        />
+        <Row gutter={24}>
+          <Col span={24}>
+            <Table
+              columns={columns}
+              dataSource={searchText ? filteredData : overalllist}
+            />
+          </Col>
+        </Row>
       </div>
       <div>
         {isEdited ? (
@@ -1066,7 +1118,8 @@ export default function QmsDashboard(props) {
               title="Manage Flow"
               onClose={onClose}
               open={open}
-              width="54%"
+              // width={"fit-content"}
+              size={"large"}
             >
               <div>
                 <Form
@@ -1133,7 +1186,7 @@ export default function QmsDashboard(props) {
                             backgroundColor: "rgba(74, 173, 146, 1)",
                             color: "white",
                           }}
-                          href={Selected_item.Fileurl}
+                          href={form.getFieldValue("view")}
                           target="_blank"
                         >
                           View
@@ -1145,7 +1198,7 @@ export default function QmsDashboard(props) {
                     <Col>
                       <Form.Item
                         label="Requester Info"
-                        name="Requester Info"
+                        name="RequesterInfo"
                         style={{
                           maxWidth: 457,
                           marginTop: 17,
@@ -1169,10 +1222,10 @@ export default function QmsDashboard(props) {
                                   size={50}
                                   style={{ backgroundColor: "#87d068" }}
                                 >
-                                  {Selected_item.Requester &&
-                                  Selected_item.Requester.length >= 2
-                                    ? Selected_item.Requester.slice(0, 2)
-                                    : Selected_item.Requester}
+                                  {selectedRecord.Requester &&
+                                  selectedRecord.Requester.length >= 2
+                                    ? selectedRecord.Requester.slice(0, 2)
+                                    : selectedRecord.Requester}
                                 </Avatar>
                               </Col>
 
@@ -1189,7 +1242,9 @@ export default function QmsDashboard(props) {
                                     fontWeight: "400",
                                   }}
                                 >
-                                  {Selected_item.Requester}
+                                  {/* {form.getFieldValue("RequesterInfo.name")} */}
+                                  {/* {record.Requester} */}
+                                  {selectedRecord.Requester}
                                 </span>
                                 <span
                                   style={{
@@ -1197,7 +1252,8 @@ export default function QmsDashboard(props) {
                                     fontWeight: "400",
                                   }}
                                 >
-                                  {Selected_item.RequestorEmail}
+                                  {/* {record.RequestorEmail} */}
+                                  {selectedRecord.RequestorEmail}
                                 </span>
                               </Col>
                             </Row>
@@ -1272,11 +1328,11 @@ export default function QmsDashboard(props) {
                       >
                         <Select
                           placeholder="Select an option"
+                          value={selectedItem.Approver2Name}
                           onChange={(event, option) => {
                             ReviewerChange(event, option);
                           }}
                           style={{ width: "457px" }}
-                          value={selectedItem}
                         >
                           {Approver_list &&
                             Approver_list.map((option: any) => (
@@ -1308,7 +1364,6 @@ export default function QmsDashboard(props) {
                             ApproverChange(event, option);
                           }}
                           style={{ width: "457px" }}
-                          value={selectedItem}
                         >
                           {Approver_list &&
                             Approver_list.map((option: any) => (
@@ -1330,6 +1385,7 @@ export default function QmsDashboard(props) {
                     <Col>
                       <Form.Item>
                         <Button
+                          htmlType="submit"
                           style={{
                             width: "100px",
                             height: "34px",
@@ -1341,6 +1397,7 @@ export default function QmsDashboard(props) {
                         </Button>
                         <Button
                           style={{
+                            width: "100px",
                             marginLeft: "4px",
                           }}
                           onClick={() => toggleeditHideDialog()}

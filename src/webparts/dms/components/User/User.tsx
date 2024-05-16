@@ -2383,7 +2383,7 @@ export default function User(props) {
       // get relative url of file.
       await sp.web.lists
         .getByTitle("My Docs")
-        .items.getById(fileID)
+        .items.getById(filteredFile[0].ID)
         .select("ID,FileRef")()
         .then(async (items: any) => {
           console.log(items.FileRef);
