@@ -22,7 +22,16 @@ import { SPFI } from "@pnp/sp";
 import "@pnp/sp/lists";
 import "@pnp/sp/items/get-all";
 import { useEffect, useState } from "react";
-import { Button, Col, Drawer, Form, Input, Row, Table } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Table,
+  notification,
+} from "antd";
 import Search from "antd/es/input/Search";
 import type { CheckboxProps, GetProp } from "antd";
 import { Checkbox } from "antd";
@@ -187,10 +196,11 @@ export default function UserDetails() {
   const [filteredData, setFilteredData] = useState([]); // State to hold filtered data
   const [open, setOpen] = useState(false);
   const [Manageopen, setManageOpen] = useState(false);
-
   const [checkedList, setCheckedList] = useState<any>(false);
-
+  const [onchanged, setOnChanged] = useState(false);
   const [managecheckedList, setManageCheckedList] = useState<any>(false);
+  const [editEmailError, setEditEmailError] = useState("");
+
   // const [selectedRowData, setSelectedRowData] = useState<any>();
 
   // private _getKey(item: any, index?: number): string {
@@ -437,6 +447,57 @@ export default function UserDetails() {
     }
   };
 
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Added</span>
+      ),
+      description: "You have added the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/CheckMark.png")}
+          alt="Success"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
+  const openDeleteNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "red", fontWeight: "bold" }}>Deleted</span>
+      ),
+      description: "You have deleted the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/Cancel.png")}
+          alt="Delete"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
+  const openManageNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Updated</span>
+      ),
+      description: "You have updated the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/CheckMark.png")}
+          alt="Success"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
   // public toggleeditHideDialog = () => {
   //   console.log(this.state.hideeditDialog);
   //   if (this.state.hideeditDialog)
@@ -656,6 +717,7 @@ export default function UserDetails() {
   const handledit_Username = (e: any) => {
     setEdit_UserName(e.target.value);
     console.log(edit_UserName);
+    setOnChanged(true);
   };
 
   // const handleedit_UserMailID = (event, value) => {
@@ -668,6 +730,7 @@ export default function UserDetails() {
     setEdit_EmailID(e.target.value);
     console.log(e.target.valuelue);
     console.log(edit_EmailID);
+    setOnChanged(true);
   };
 
   //original code
@@ -683,6 +746,7 @@ export default function UserDetails() {
 
   const edit_uploader = (event, isChecked: any) => {
     setEdit_Uploader(isChecked ? "true" : "false");
+    setOnChanged(true);
   };
 
   // const edit_QMS = (event, isChecked) => {
@@ -698,6 +762,7 @@ export default function UserDetails() {
   const handleEditQMS = (event, isChecked: any) => {
     setEdit_QMS(isChecked ? "true" : "false");
     console.log(edit_QMS);
+    setOnChanged(true);
   };
 
   // const edit_Approver = (event, isChecked) => {
@@ -712,6 +777,7 @@ export default function UserDetails() {
 
   const handleEditApprover = (event, isChecked: any) => {
     setEdit_Approver(isChecked ? "true" : "false");
+    setOnChanged(true);
   };
 
   // const toggleCheckbox = (key) => {
@@ -847,6 +913,48 @@ export default function UserDetails() {
   //   }
   // };
 
+  // const handleAddUser = async () => {
+  //   console.log("Handle Add user function called");
+  //   const sp: SPFI = getSp();
+
+  //   let status = overalllist.filter(
+  //     (res: any) => res.EmailID.toLowerCase() == add_EmailID.toLowerCase()
+  //   );
+
+  //   console.log(status);
+  //   if (status.length == 0) {
+  //     if (add_UserName != "") {
+  //       if (add_EmailID != "") {
+  //         try {
+  //           await sp.web.lists.getByTitle("Userdetails").items.add({
+  //             Username: add_UserName,
+  //             EmailID: add_EmailID,
+  //             Fileuploader: add_Uploader,
+  //             Approver: add_QMS,
+  //             QMS: add_Approver,
+  //           });
+  //           setIsAdded(false);
+  //           setItems(await sp.web.lists.getByTitle("Userdetails").items());
+  //           setOveralllist(
+  //             await sp.web.lists.getByTitle("Userdetails").items()
+  //           );
+  //         } catch (error) {
+  //           console.error(error);
+  //         }
+  //       } else {
+  //         setAdd_EmailID_err("Please specify User MailID");
+  //       }
+  //     } else {
+  //       setAdd_UserName_err("Please specify Code");
+  //     }
+  //   } else {
+  //     setAdd_EmailID_err("EmailID already Exists");
+  //   }
+
+  //   setOpen(false);
+  //   form.resetFields();
+  // };
+
   const handleAddUser = async () => {
     console.log("Handle Add user function called");
     const sp: SPFI = getSp();
@@ -854,39 +962,36 @@ export default function UserDetails() {
     let status = overalllist.filter(
       (res: any) => res.EmailID.toLowerCase() == add_EmailID.toLowerCase()
     );
+    if (status.length !== 0) {
+      // Set error message if email ID already exists
+      setAdd_EmailID_err("Entered emailID already exists!");
+      // setEditEmailError("EmailID already Exists");
+      // form.validateFields(["User MailID"]);
+
+      return; // Exit the function early
+    }
 
     console.log(status);
-    if (status.length == 0) {
-      if (add_UserName != "") {
-        if (add_EmailID != "") {
-          try {
-            await sp.web.lists.getByTitle("Userdetails").items.add({
-              Username: add_UserName,
-              EmailID: add_EmailID,
-              Fileuploader: add_Uploader,
-              Approver: add_QMS,
-              QMS: add_Approver,
-            });
-            setIsAdded(false);
-            setItems(await sp.web.lists.getByTitle("Userdetails").items());
-            setOveralllist(
-              await sp.web.lists.getByTitle("Userdetails").items()
-            );
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          setAdd_EmailID_err("Please specify User MailID");
-        }
-      } else {
-        setAdd_UserName_err("Please specify Code");
-      }
-    } else {
-      setAdd_EmailID_err("EmailID already Exists");
+
+    try {
+      await sp.web.lists.getByTitle("Userdetails").items.add({
+        Username: add_UserName,
+        EmailID: add_EmailID,
+        Fileuploader: add_Uploader,
+        Approver: add_QMS,
+        QMS: add_Approver,
+      });
+      setIsAdded(false);
+      setItems(await sp.web.lists.getByTitle("Userdetails").items());
+      setOveralllist(await sp.web.lists.getByTitle("Userdetails").items());
+      setEdit_EmailID_err("");
+    } catch (error) {
+      console.error(error);
     }
 
     setOpen(false);
     form.resetFields();
+    openNotification();
   };
 
   // const _filter = (event, text) => {
@@ -1108,6 +1213,55 @@ export default function UserDetails() {
   //   }
   // };
 
+  // const handleeditUser = async () => {
+  //   const sp: SPFI = getSp();
+
+  //   // Check if the email ID is being edited
+  //   if (edit_EmailID !== selectedval.EmailID) {
+  //     // Filter the overall list to find if the edited email ID already exists
+  //     let status: any = overalllist.filter(
+  //       (res: any) => res.EmailID.toLowerCase() === edit_EmailID.toLowerCase()
+  //     );
+
+  //     // Check if the filtered list is not empty (indicating that the email ID already exists)
+  //     if (status.length !== 0) {
+  //       // Set error message if email ID already exists
+  //       setEdit_EmailID_err("EmailID already Exists");
+  //       return; // Exit the function early
+  //     }
+  //   }
+
+  //   // Proceed with updating user details
+  //   if (edit_UserName !== "") {
+  //     if (edit_EmailID !== "") {
+  //       try {
+  //         await sp.web.lists
+  //           .getByTitle("Userdetails")
+  //           .items.getById(selecteditem)
+  //           .update({
+  //             Username: edit_UserName,
+  //             EmailID: edit_EmailID,
+  //             Fileuploader: edit_Uploader,
+  //             Approver: edit_Approver,
+  //             QMS: edit_QMS,
+  //           });
+
+  //         setIsEdited(false);
+  //         setItems(await sp.web.lists.getByTitle("Userdetails").items());
+  //         setOveralllist(await sp.web.lists.getByTitle("Userdetails").items());
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     } else {
+  //       // Set error message if edit_EmailID is empty
+  //       setEdit_EmailID_err("Please specify User MailID");
+  //     }
+  //   } else {
+  //     // Set error message if edit_UserName is empty
+  //     setEdit_UserName_err("Please specify Code");
+  //   }
+  // };
+
   const handleeditUser = async () => {
     const sp: SPFI = getSp();
 
@@ -1121,39 +1275,39 @@ export default function UserDetails() {
       // Check if the filtered list is not empty (indicating that the email ID already exists)
       if (status.length !== 0) {
         // Set error message if email ID already exists
-        setEdit_EmailID_err("EmailID already Exists");
+        setEdit_EmailID_err("Entered emailID already exists!");
+        // setEditEmailError("EmailID already Exists");
+        // form.validateFields(["User MailID"]);
+
         return; // Exit the function early
       }
     }
+    // setEditEmailError("");
 
     // Proceed with updating user details
-    if (edit_UserName !== "") {
-      if (edit_EmailID !== "") {
-        try {
-          await sp.web.lists
-            .getByTitle("Userdetails")
-            .items.getById(selecteditem)
-            .update({
-              Username: edit_UserName,
-              EmailID: edit_EmailID,
-              Fileuploader: edit_Uploader,
-              Approver: edit_Approver,
-              QMS: edit_QMS,
-            });
 
-          setIsEdited(false);
-          setItems(await sp.web.lists.getByTitle("Userdetails").items());
-          setOveralllist(await sp.web.lists.getByTitle("Userdetails").items());
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        // Set error message if edit_EmailID is empty
-        setEdit_EmailID_err("Please specify User MailID");
+    try {
+      await sp.web.lists
+        .getByTitle("Userdetails")
+        .items.getById(selecteditem)
+        .update({
+          Username: edit_UserName,
+          EmailID: edit_EmailID,
+          Fileuploader: edit_Uploader,
+          Approver: edit_Approver,
+          QMS: edit_QMS,
+        });
+
+      setIsEdited(false);
+      setItems(await sp.web.lists.getByTitle("Userdetails").items());
+      setOveralllist(await sp.web.lists.getByTitle("Userdetails").items());
+      if (onchanged) {
+        openManageNotification();
+        setOnChanged(false);
       }
-    } else {
-      // Set error message if edit_UserName is empty
-      setEdit_UserName_err("Please specify Code");
+      setEdit_EmailID_err("");
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -1185,6 +1339,7 @@ export default function UserDetails() {
         setItems(await sp.web.lists.getByTitle("Userdetails").items());
         setOveralllist(await sp.web.lists.getByTitle("Userdetails").items());
       });
+    openDeleteNotification();
   };
 
   // const DeleteUser = async () => {
@@ -1251,9 +1406,10 @@ export default function UserDetails() {
   };
 
   return (
-    <div style={{ marginLeft: "3%", marginTop: "50px" }}>
-      {/* <div style={{ display: "none" }}> */}
-      {/* <div style={{ display: "none" }}>
+    <div>
+      <div style={{ marginLeft: "3%", marginTop: "50px" }}>
+        {/* <div style={{ display: "none" }}> */}
+        {/* <div style={{ display: "none" }}>
           <PrimaryButton onClick={AddUser}>
             <FontIcon
               aria-label="AddFriend"
@@ -1269,7 +1425,7 @@ export default function UserDetails() {
             styles={textFieldStyles}
           />
         </div> */}
-      {/* <div style={{ width: "100%", height: "450px", overflowY: "auto" }}>
+        {/* <div style={{ width: "100%", height: "450px", overflowY: "auto" }}>
           <DetailsList
             className={styles.list}
             items={items}
@@ -1284,8 +1440,8 @@ export default function UserDetails() {
           />
         </div> */}
 
-      {/* <div> */}
-      {/* <Dialog
+        {/* <div> */}
+        {/* <Dialog
             containerClassName={
               "ms-dialogMainOverride " + styles.addProjectDialog
             }
@@ -1294,7 +1450,7 @@ export default function UserDetails() {
             isBlocking={false}
             onDismiss={toggleHideDialog}
           > */}
-      {/* {isAdded ? (
+        {/* {isAdded ? (
               <div>
                 <div style={{ margin: "15px" }}>
                   <div
@@ -1377,10 +1533,10 @@ export default function UserDetails() {
                 </DialogFooter>
               </div>
             )} */}
-      {/* </Dialog> */}
+        {/* </Dialog> */}
 
-      {/*Edit Projects*/}
-      {/* <Dialog
+        {/*Edit Projects*/}
+        {/* <Dialog
             containerClassName={
               "ms-dialogMainOverride " + styles.addProjectDialog
             }
@@ -1389,7 +1545,7 @@ export default function UserDetails() {
             isBlocking={false}
             onDismiss={toggleeditHideDialog}
           > */}
-      {/* {isEdited ? (
+        {/* {isEdited ? (
               <div>
                 <div style={{ margin: "15px" }}>
                   <div
@@ -1481,62 +1637,314 @@ export default function UserDetails() {
                 </DialogFooter>
               </div>
             )} */}
-      {/* </Dialog> */}
-      {/* </div> */}
-      {/* </div> */}
+        {/* </Dialog> */}
+        {/* </div> */}
+        {/* </div> */}
 
-      <div>
-        <Row gutter={24} style={{ width: "99%" }}>
-          <Col span={12}>
-            <Button
-              onClick={showDrawer}
-              // className={`${styles.addUserButtonStyle} ${styles.addUserTextStyle}`}
-              style={{
-                width: "149px",
-                height: "34px",
-                padding: "0px",
-                backgroundColor: "rgba(74, 173, 146, 1)",
-                color: "white",
-              }}
-            >
-              <img
-                src={require("../../../../../Images/UserImage.png")}
-                alt="UserImage"
-                style={{ padding: "5px" }}
-              />
-              Add User
-            </Button>
-          </Col>
-          <Col
-            span={12}
-            style={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Search
-              placeholder="Search"
-              onSearch={_filter}
-              style={{ width: 300 }}
-            />
-          </Col>
-        </Row>
+        <div>
+          <div style={{ width: "98%" }}>
+            <Row gutter={24}>
+              <Col span={12}>
+                <Button
+                  onClick={showDrawer}
+                  // className={`${styles.addUserButtonStyle} ${styles.addUserTextStyle}`}
+                  style={{
+                    width: "149px",
+                    height: "34px",
+                    padding: "0px",
+                    backgroundColor: "rgba(74, 173, 146, 1)",
+                    color: "white",
+                  }}
+                >
+                  <img
+                    src={require("../../../../../Images/UserImage.png")}
+                    alt="UserImage"
+                    style={{ padding: "5px" }}
+                  />
+                  Add User
+                </Button>
+              </Col>
+              <Col
+                span={12}
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <Search
+                  placeholder="Search"
+                  onSearch={_filter}
+                  style={{ width: 300 }}
+                />
+              </Col>
+            </Row>
+          </div>
 
-        <div style={{ marginTop: "20px", width: "97%" }}>
-          <Table
-            columns={columns}
-            dataSource={searchText ? filteredData : overalllist}
-          />
+          <div style={{ marginTop: "20px", width: "98%" }}>
+            <Row gutter={24}>
+              <Col span={24}>
+                <Table
+                  columns={columns}
+                  dataSource={searchText ? filteredData : overalllist}
+                />
+              </Col>
+            </Row>
+          </div>
+
+          <div>
+            {isAdded ? (
+              <div>
+                <Drawer
+                  title="Add User"
+                  onClose={onClose}
+                  open={open}
+                  footer={
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                          width: "149px",
+                          backgroundColor: "rgba(74, 173, 146, 1)",
+                          color: "white",
+                        }}
+                        onClick={() => form.submit()} // Trigger the form submit manually
+                      >
+                        Add
+                      </Button>
+                      <Button
+                        onClick={() => onCancel()}
+                        style={{
+                          width: "149px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  }
+                >
+                  <div>
+                    <Form
+                      name="basic"
+                      layout="vertical"
+                      autoComplete="off"
+                      onFinish={() => handleAddUser()}
+                      form={form}
+                    >
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Form.Item
+                            label="User Name"
+                            name="User Name"
+                            style={{
+                              maxWidth: 400,
+                              marginTop: 37,
+                              fontSize: "16px",
+                              fontWeight: "600",
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your username!",
+                              },
+                            ]}
+                          >
+                            <Input
+                              placeholder="Specify User Name"
+                              onChange={handleadd_Username}
+                              value={add_UserName}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={24}>
+                          <Form.Item
+                            label="User MailID"
+                            name="User MailID"
+                            style={{
+                              maxWidth: 400,
+                              marginTop: 17,
+                              fontSize: "16px",
+                              fontWeight: "600",
+                            }}
+                            validateStatus={add_EmailID_err ? "error" : ""}
+                            help={add_EmailID_err}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your user mailId!",
+                              },
+                              {
+                                validator: (_, value) => {
+                                  if (add_EmailID_err) {
+                                    return Promise.reject(
+                                      new Error(add_EmailID_err)
+                                    );
+                                  }
+
+                                  return Promise.resolve();
+                                },
+                              },
+
+                              // ({ getFieldValue }) => ({
+                              //   validator(_, value) {
+                              //     if (getFieldValue("User MailID")) {
+                              //       return Promise.reject(add_EmailID_err);
+                              //     }
+                              //     return Promise.resolve();
+                              //   },
+                              // }),
+                            ]}
+                          >
+                            <Input
+                              placeholder="Specify User MailID"
+                              onChange={handleadd_UserMailID}
+                              value={add_EmailID}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={24}>
+                        <Col span={13}>
+                          <Form.Item
+                            label={
+                              <span
+                                style={{ fontSize: "16px", fontWeight: "600" }}
+                              >
+                                Provide Access
+                              </span>
+                            }
+                            name="Provide Access"
+                            style={{
+                              maxWidth: 400,
+                              marginTop: 17,
+                              fontSize: "16px",
+                              fontWeight: "600",
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please provide required access!",
+                              },
+                            ]}
+                          >
+                            <CheckboxGroup
+                              options={plainOptions}
+                              value={checkedList}
+                              onChange={onChange}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      {/* <Row gutter={24} style={{ marginTop: "300px" }}>
+                        <Col
+                          span={24}
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <Form.Item>
+                            <Button
+                              htmlType="submit"
+                              style={{
+                                width: "100px",
+                                height: "34px",
+                                padding: "0px",
+                                backgroundColor: "rgba(74, 173, 146, 1)",
+                                color: "white",
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </Form.Item>
+
+                          <Form.Item>
+                            <Button
+                              onClick={() => onCancel()}
+                              style={{
+                                width: "100px",
+                                height: "34px",
+                                padding: "0px",
+                                marginLeft: "5px",
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </Form.Item>
+                        </Col>
+                      </Row> */}
+                    </Form>
+                  </div>
+                </Drawer>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
 
         <div>
-          {isAdded ? (
+          {isEdited ? (
             <div>
-              <Drawer title="Add User" onClose={onClose} open={open}>
+              <Drawer
+                title="Manage User"
+                onClose={onManageClose}
+                open={Manageopen}
+                footer={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{
+                        width: "149px",
+                        backgroundColor: "rgba(74, 173, 146, 1)",
+                        color: "white",
+                      }}
+                      onClick={() => form.submit()} // Trigger the form submit manually
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      onClick={() => DeleteUser()}
+                      style={{
+                        width: "149px",
+                        marginLeft: "5px",
+                        border: "1px solid rgba(203, 68, 68, 1)",
+                        color: "rgba(203, 68, 68, 1)",
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                }
+              >
                 <div>
                   <Form
                     name="basic"
                     layout="vertical"
                     autoComplete="off"
-                    onFinish={() => handleAddUser()}
+                    onFinish={() => handleeditUser()}
                     form={form}
+                    // initialValues={{
+                    //   "User Name": ,
+                    //   "User MailID": edit_EmailID,
+                    //   "Provide Access": Object.keys(managecheckedList).filter(
+                    //     (key) => managecheckedList[key]
+                    //   ),
+                    // }}
                   >
                     <Row gutter={24}>
                       <Col span={24}>
@@ -1549,17 +1957,10 @@ export default function UserDetails() {
                             fontSize: "16px",
                             fontWeight: "600",
                           }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your username!",
-                            },
-                          ]}
                         >
                           <Input
-                            placeholder="Specify User Name"
-                            onChange={handleadd_Username}
-                            value={add_UserName}
+                            onChange={handledit_Username}
+                            value={edit_UserName}
                           />
                         </Form.Item>
                       </Col>
@@ -1576,17 +1977,25 @@ export default function UserDetails() {
                             fontSize: "16px",
                             fontWeight: "600",
                           }}
+                          validateStatus={edit_EmailID_err ? "error" : ""}
+                          help={edit_EmailID_err}
                           rules={[
                             {
-                              required: true,
-                              message: "Please input your user mailId!",
+                              validator: (_, value) => {
+                                if (edit_EmailID_err) {
+                                  return Promise.reject(
+                                    new Error(edit_EmailID_err)
+                                  );
+                                }
+                                return Promise.resolve();
+                              },
                             },
                           ]}
                         >
                           <Input
-                            placeholder="Specify User MailID"
-                            onChange={handleadd_UserMailID}
-                            value={add_EmailID}
+                            placeholder={edit_EmailID}
+                            onChange={handleedit_UserMailID}
+                            value={edit_EmailID}
                           />
                         </Form.Item>
                       </Col>
@@ -1607,23 +2016,17 @@ export default function UserDetails() {
                             maxWidth: 400,
                             marginTop: 17,
                           }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please provide required access!",
-                            },
-                          ]}
                         >
                           <CheckboxGroup
                             options={plainOptions}
-                            value={checkedList}
-                            onChange={onChange}
+                            value={managecheckedList}
+                            onChange={onManageChange}
                           />
                         </Form.Item>
                       </Col>
                     </Row>
 
-                    <Row gutter={24} style={{ marginTop: "300px" }}>
+                    {/* <Row gutter={24} style={{ marginTop: "300px" }}>
                       <Col
                         span={24}
                         style={{ display: "flex", justifyContent: "flex-end" }}
@@ -1639,25 +2042,27 @@ export default function UserDetails() {
                               color: "white",
                             }}
                           >
-                            Add
+                            Submit
                           </Button>
                         </Form.Item>
 
                         <Form.Item>
                           <Button
-                            onClick={() => onCancel()}
+                            onClick={() => DeleteUser()}
                             style={{
                               width: "100px",
                               height: "34px",
                               padding: "0px",
                               marginLeft: "5px",
+                              border: "1px solid rgba(203, 68, 68, 1)",
+                              color: "rgba(203, 68, 68, 1)",
                             }}
                           >
-                            Cancel
+                            Delete
                           </Button>
                         </Form.Item>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Form>
                 </div>
               </Drawer>
@@ -1666,139 +2071,6 @@ export default function UserDetails() {
             <div></div>
           )}
         </div>
-      </div>
-
-      <div>
-        {isEdited ? (
-          <div>
-            <Drawer
-              title="Manage User"
-              onClose={onManageClose}
-              open={Manageopen}
-            >
-              <div>
-                <Form
-                  name="basic"
-                  layout="vertical"
-                  autoComplete="off"
-                  onFinish={() => handleeditUser()}
-                  form={form}
-                  // initialValues={{
-                  //   "User Name": ,
-                  //   "User MailID": edit_EmailID,
-                  //   "Provide Access": Object.keys(managecheckedList).filter(
-                  //     (key) => managecheckedList[key]
-                  //   ),
-                  // }}
-                >
-                  <Row gutter={24}>
-                    <Col span={24}>
-                      <Form.Item
-                        label="User Name"
-                        name="User Name"
-                        style={{
-                          maxWidth: 400,
-                          marginTop: 37,
-                          fontSize: "16px",
-                          fontWeight: "600",
-                        }}
-                      >
-                        <Input
-                          onChange={handledit_Username}
-                          value={edit_UserName}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-
-                  <Row gutter={24}>
-                    <Col span={24}>
-                      <Form.Item
-                        label="User MailID"
-                        name="User MailID"
-                        style={{
-                          maxWidth: 400,
-                          marginTop: 17,
-                          fontSize: "16px",
-                          fontWeight: "600",
-                        }}
-                      >
-                        <Input
-                          placeholder={edit_EmailID}
-                          onChange={handleedit_UserMailID}
-                          value={edit_EmailID}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-
-                  <Row gutter={24}>
-                    <Col span={13}>
-                      <Form.Item
-                        label={
-                          <span style={{ fontSize: "16px", fontWeight: "600" }}>
-                            Provide Access
-                          </span>
-                        }
-                        name="Provide Access"
-                        style={{
-                          maxWidth: 400,
-                          marginTop: 17,
-                        }}
-                      >
-                        <CheckboxGroup
-                          options={plainOptions}
-                          value={managecheckedList}
-                          onChange={onManageChange}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-
-                  <Row gutter={24} style={{ marginTop: "300px" }}>
-                    <Col
-                      span={24}
-                      style={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      <Form.Item>
-                        <Button
-                          htmlType="submit"
-                          style={{
-                            width: "100px",
-                            height: "34px",
-                            padding: "0px",
-                            backgroundColor: "rgba(74, 173, 146, 1)",
-                            color: "white",
-                          }}
-                        >
-                          Submit
-                        </Button>
-                      </Form.Item>
-
-                      <Form.Item>
-                        <Button
-                          onClick={() => DeleteUser()}
-                          style={{
-                            width: "100px",
-                            height: "34px",
-                            padding: "0px",
-                            marginLeft: "5px",
-                            border: "1px solid rgba(203, 68, 68, 1)",
-                            color: "rgba(203, 68, 68, 1)",
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form>
-              </div>
-            </Drawer>
-          </div>
-        ) : (
-          <div></div>
-        )}
       </div>
     </div>
   );

@@ -622,6 +622,7 @@ export default function User(props) {
     setFileNameStruct("");
     console.log(valueFileType);
     console.log(radiovalue);
+    form.resetFields();
   };
 
   const fetchAdditionalData = async () => {

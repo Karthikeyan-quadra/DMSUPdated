@@ -225,6 +225,13 @@ export default function UserDepartment(Props) {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [Manageopen, setManageOpen] = useState(false);
+  // const [usernamechange,setUserNameChange] = useState(false);
+  // const [usermailchange,setUserMailChange] = useState(false);
+  // const [userdepartmentchange,setUserDepartmentChange] = useState(false);
+  // const [usersubdepartmentchange,setUserSubDepartmentChange] = useState(false);
+  // const [userlevelchange,setUserLevelChange] = useState(false);
+  const [onchanged, setOnChanged] = useState(false);
 
   let columns: any = [
     {
@@ -298,7 +305,6 @@ export default function UserDepartment(Props) {
         <span
           onClick={() => {
             editUser(record);
-            // showManageDrawer();
           }}
           style={{
             color: "rgba(22, 119, 255, 1)",
@@ -322,7 +328,6 @@ export default function UserDepartment(Props) {
         <Button
           onClick={() => {
             DeleteUser(record);
-            // showManageDrawer();
           }}
           style={{
             color: "rgba(203, 68, 68, 1)",
@@ -334,40 +339,7 @@ export default function UserDepartment(Props) {
       ),
 
       responsive: ["md", "lg"],
-      // ellipsis: true,
     },
-    // {
-    //   title: "Deny",
-    //   dataIndex: "Status",
-    //   width: "7%",
-    //   align: "left",
-    //   resizable: true,
-    //   responsive: ["md", "lg"],
-    //   ellipsis: true,
-    // },
-
-    // {
-    //   title: "View",
-    //   dataIndex: "Fileurl",
-    //   width: "7%",
-    //   align: "left",
-    //   resizable: true,
-    //   render: (text, record) => (
-    //     // <Button
-    //     //   text="View"
-    //     //   target="_blank"
-    //     //   href={record.Fileurl}
-    //     // />
-
-    //     <img
-    //       src={require("../../../../../Images/Eye.png")}
-    //       alt="View"
-    //       onClick={() => window.open(record.Fileurl, "_blank")}
-    //     />
-    //   ),
-    //   responsive: ["md", "lg"],
-    //   ellipsis: true,
-    // },
   ];
 
   // private _getKey(item: any, index?: number): string {
@@ -473,6 +445,23 @@ export default function UserDepartment(Props) {
         <img
           src={require("../../../../../Images/Cancel.png")}
           alt="Delete"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
+
+  const openManageNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Updated</span>
+      ),
+      description: "You have updated the user successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/CheckMark.png")}
+          alt="Success"
           style={{ width: "20%" }}
         />
       ),
@@ -619,6 +608,8 @@ export default function UserDepartment(Props) {
       setEditEmailIDErr("");
       setEditLevelErr("");
     }
+    setManageOpen(false);
+    form.resetFields();
   };
 
   const _renderItemColumn = (item, index: number, column) => {
@@ -673,8 +664,9 @@ export default function UserDepartment(Props) {
   //   });
   // };
 
-  const handledit_Username = (event, value) => {
-    setEditUserName(value);
+  const handledit_Username = (e: any) => {
+    setEditUserName(e.target.value);
+    setOnChanged(true);
   };
 
   // const handleedit_UserMailID = (event, value) => {
@@ -683,8 +675,9 @@ export default function UserDepartment(Props) {
   //   });
   // };
 
-  const handleedit_UserMailID = (event, value) => {
-    setEditEmailID(value);
+  const handleedit_UserMailID = (e: any) => {
+    setEditEmailID(e.target.value);
+    setOnChanged(true);
   };
 
   // const handleadd_Username = (event, value) => {
@@ -768,44 +761,40 @@ export default function UserDepartment(Props) {
   // };
 
   const handleeditUser = async () => {
-    console.log("handleedituse function called");
+    console.log("handleedituser function called");
 
-    if (edit_Department != "") {
-      if (edit_UserName != "") {
-        if (edit_EmailID != "") {
-          try {
-            const sp: SPFI = getSp();
+    try {
+      const sp: SPFI = getSp();
 
-            const list: any = sp.web.lists.getByTitle("Approverlist");
+      const list: any = sp.web.lists.getByTitle("Approverlist");
 
-            await list.items
-              .getById(selecteditem)
-              .update({
-                Name: edit_UserName,
-                EmailID: edit_EmailID,
-                Department: edit_Department,
-                SubDepartment: edit_Subdepartment,
-                Level: edit_Level,
-              })
-              .then(async (res) => {
-                setIsEdited(false);
-                setItems(await sp.web.lists.getByTitle("Approverlist").items());
-                setOverallList(
-                  await sp.web.lists.getByTitle("Approverlist").items()
-                );
-              });
-          } catch (error) {
-            console.error("Error updating user:", error);
-          }
-        } else {
-          setEditEmailIDErr("Please specify User MailID");
-        }
-      } else {
-        setEditUserNameErr("Please specify UserName");
+      await list.items
+        .getById(selecteditem)
+        .update({
+          Name: edit_UserName,
+          EmailID: edit_EmailID,
+          Department: edit_Department,
+          SubDepartment: edit_Subdepartment,
+          Level: edit_Level,
+        })
+        .then(async (res) => {
+          setIsEdited(false);
+          setItems(await sp.web.lists.getByTitle("Approverlist").items());
+          setOverallList(await sp.web.lists.getByTitle("Approverlist").items());
+        });
+      if (onchanged) {
+        openManageNotification();
+        setOnChanged(false);
       }
-    } else {
-      setEditDepartmentErr("Please specify Department");
+    } catch (error) {
+      console.error("Error updating user:", error);
     }
+    // setOnChanged(false);
+
+    // {
+    //   onchanged && onchanged ? <>openManageNotification();</> : <></>;
+    // }
+    // openManageNotification();
   };
 
   // const editUser = (value) => {
@@ -822,16 +811,26 @@ export default function UserDepartment(Props) {
   //   });
   // };
 
-  const editUser = (value: any) => {
-    setEditUserName(value.Name);
-    setEditEmailID(value.EmailID);
-    setEditDepartment(value.Department);
-    setEditSubdepartment(value.SubDepartment);
-    setEditLevel(value.Level);
+  const editUser = (record: any) => {
+    console.log("Edit user function called");
+    console.log("Record:", record);
+    setEditUserName(record.Name);
+    setEditEmailID(record.EmailID);
+    setEditDepartment(record.Department);
+    setEditSubdepartment(record.SubDepartment);
+    setEditLevel(record.Level);
     setHideEditDialog(false);
     setIsEdited(true);
-    setSelectedItem(value.ID);
-    setSelectedVal(value);
+    setSelectedItem(record.ID);
+    setSelectedVal(record);
+    setManageOpen(true);
+    form.setFieldsValue({
+      "User Name": record.Name,
+      "User MailID": record.EmailID,
+      Department: record.Department,
+      "Sub Department": record.SubDepartment,
+      Level: record.Level,
+    });
   };
 
   // const DeleteUser = async (value) => {
@@ -949,13 +948,14 @@ export default function UserDepartment(Props) {
   const editDepartmentChange = async (event, value) => {
     console.log(value);
 
-    const subDept = await getSubDepartmentlist(value.text);
+    const subDept = await getSubDepartmentlist(value.value);
     //  this.setState({
     //   edit_Department: value.text,
     //   Subdepartments:subDept
     // });
-    setEditDepartment(value.text);
+    setEditDepartment(value.value);
     setSubdepartments(subDept);
+    setOnChanged(true);
   };
 
   // const addSubDepartmentChange = (event, value) => {
@@ -968,8 +968,6 @@ export default function UserDepartment(Props) {
     setAddSubdepartment(value.value);
   };
 
-  console.log(add_Subdepartment);
-
   // const editSubDepartmentChange = (event, value) => {
   //   this.setState({
   //     edit_Subdepartment: value.text,
@@ -977,10 +975,9 @@ export default function UserDepartment(Props) {
   // };
 
   const editSubDepartmentChange = (event, value) => {
-    setEditSubdepartment(value.text);
+    setEditSubdepartment(value.value);
+    setOnChanged(true);
   };
-
-  console.log(edit_Subdepartment);
 
   // const addLevelChange = (event, value) => {
   //   this.setState({
@@ -992,18 +989,15 @@ export default function UserDepartment(Props) {
     setAddLevel(value.value);
   };
 
-  console.log(add_Level);
-
   // const editLevelChange = (event, value) => {
   //   this.setState({
   //     edit_Level: value.text,
   //   });
   // };
   const editLevelChange = (event, value) => {
-    setEditLevel(value.text);
+    setEditLevel(value.value);
+    setOnChanged(true);
   };
-
-  console.log(edit_Level);
 
   // const handleAddUser = async () => {
   //   const sp:SPFI=getSp()
@@ -1046,6 +1040,7 @@ export default function UserDepartment(Props) {
   // };
 
   const handleAddUser = async () => {
+    console.log("handleAddUser function called");
     const sp: SPFI = getSp();
     if (add_Level != "") {
       if (add_Subdepartment != "") {
@@ -1116,11 +1111,16 @@ export default function UserDepartment(Props) {
 
   const showDrawer = () => {
     setOpen(true);
+    setIsAdded(true);
+    form.resetFields();
   };
 
   const onClose = () => {
     setOpen(false);
     form.resetFields();
+  };
+  const onManageClose = () => {
+    setManageOpen(false);
   };
 
   return (
@@ -1433,7 +1433,41 @@ export default function UserDepartment(Props) {
           <div>
             {isAdded ? (
               <div>
-                <Drawer title="Add User" onClose={onClose} open={open}>
+                <Drawer
+                  title="Add User"
+                  onClose={onClose}
+                  open={open}
+                  footer={
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                          width: "149px",
+                          backgroundColor: "rgba(74, 173, 146, 1)",
+                          color: "white",
+                        }}
+                        onClick={() => form.submit()} // Trigger the form submit manually
+                      >
+                        Add
+                      </Button>
+                      <Button
+                        onClick={() => toggleHideDialog()}
+                        style={{
+                          width: "149px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  }
+                >
                   <div>
                     <Form
                       name="basic"
@@ -1449,7 +1483,7 @@ export default function UserDepartment(Props) {
                             name="User Name"
                             style={{
                               maxWidth: 400,
-                              marginTop: 37,
+                              marginTop: 10,
                               fontSize: "16px",
                               fontWeight: "600",
                             }}
@@ -1617,7 +1651,7 @@ export default function UserDepartment(Props) {
                         </Col>
                       </Row>
 
-                      <Row gutter={24} style={{ marginTop: "200px" }}>
+                      {/* <Row gutter={24} style={{ marginTop: "200px" }}>
                         <Col
                           span={24}
                           style={{
@@ -1654,7 +1688,7 @@ export default function UserDepartment(Props) {
                             </Button>
                           </Form.Item>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </Form>
                   </div>
                 </Drawer>
@@ -1663,6 +1697,239 @@ export default function UserDepartment(Props) {
               <></>
             )}
           </div>
+          {isEdited ? (
+            <div>
+              <Drawer
+                title="Manage User"
+                onClose={onManageClose}
+                open={Manageopen}
+                footer={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{
+                        width: "149px",
+                        backgroundColor: "rgba(74, 173, 146, 1)",
+                        color: "white",
+                      }}
+                      onClick={() => form.submit()} // Trigger the form submit manually
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      onClick={() => toggleeditHideDialog()}
+                      style={{
+                        width: "149px",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                }
+              >
+                <div>
+                  <Form
+                    name="basic"
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={() => handleeditUser()}
+                    form={form}
+                    // initialValues={{
+                    //   "User Name": ,
+                    //   "User MailID": edit_EmailID,
+                    //   "Provide Access": Object.keys(managecheckedList).filter(
+                    //     (key) => managecheckedList[key]
+                    //   ),
+                    // }}
+                  >
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="User Name"
+                          name="User Name"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 10,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Input
+                            onChange={handledit_Username}
+                            value={edit_UserName}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="User MailID"
+                          name="User MailID"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Input
+                            onChange={handleedit_UserMailID}
+                            value={edit_EmailID}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Department"
+                          name="Department"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Select
+                            placeholder="Select an option"
+                            // disabled={valueFileType !== "Old Files"}
+                            // value={departmentKey}
+                            onChange={(event, option) =>
+                              editDepartmentChange(event, option)
+                            }
+                          >
+                            {Departments.map((option: any) => (
+                              <Select.Option
+                                key={option.key}
+                                value={option.text}
+                              >
+                                {option.text}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Sub Department"
+                          name="Sub Department"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Select
+                            placeholder="Select an option"
+                            // disabled={valueFileType !== "Old Files"}
+                            // value={departmentKey}
+                            onChange={(event, option) =>
+                              editSubDepartmentChange(event, option)
+                            }
+                            disabled={Subdepartments.length == 0 ? true : false}
+                          >
+                            {Subdepartments.map((option: any) => (
+                              <Select.Option
+                                key={option.key}
+                                value={option.text}
+                              >
+                                {option.text}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Level"
+                          name="Level"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Select
+                            placeholder="Select an option"
+                            // disabled={valueFileType !== "Old Files"}
+                            // value={departmentKey}
+                            onChange={(event, option) =>
+                              editLevelChange(event, option)
+                            }
+                            disabled={Level.length == 0 ? true : false}
+                          >
+                            {Level.map((option: any) => (
+                              <Select.Option
+                                key={option.key}
+                                value={option.text}
+                              >
+                                {option.text}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    {/* <Row gutter={24} style={{ marginTop: "100px" }}>
+                      <Col
+                        span={24}
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <Form.Item>
+                          <Button
+                            htmlType="submit"
+                            style={{
+                              width: "100px",
+                              height: "34px",
+                              padding: "0px",
+                              backgroundColor: "rgba(74, 173, 146, 1)",
+                              color: "white",
+                            }}
+                          >
+                            Submit
+                          </Button>
+                        </Form.Item>
+
+                        <Form.Item>
+                          <Button
+                            onClick={() => toggleeditHideDialog()}
+                            style={{
+                              width: "100px",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </Form.Item>
+                      </Col>
+                    </Row> */}
+                  </Form>
+                </div>
+              </Drawer>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>
