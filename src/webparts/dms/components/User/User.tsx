@@ -289,7 +289,7 @@ const columns: any = [
     title: "Document ID",
     dataIndex: "Filename",
     // width: 220,
-    width: "40%",
+    width: "32%",
     align: "left",
     resizable: true,
     ellipsis: true,
@@ -4319,6 +4319,35 @@ export default function User(props) {
                   title="Select template"
                   onClose={onClose}
                   open={showTemplateDiv}
+                  footer={
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <Button
+                        htmlType="submit"
+                        style={{
+                          width: "149px",
+                          backgroundColor: "rgba(74, 173, 146, 1)",
+                          color: "white",
+                        }}
+                        onClick={() => form.submit()} // Trigger the form submit manually
+                      >
+                        Download
+                      </Button>
+                      <Button
+                        onClick={() => toggleHideDialog()}
+                        style={{
+                          width: "149px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  }
                 >
                   <Form
                     form={form}
@@ -4391,8 +4420,8 @@ export default function User(props) {
                     ) : (
                       <div></div>
                     )}
-                    <div style={{ marginTop: "auto", textAlign: "end" }}>
-                      {/* {DownloadURI === true ? (
+                    {/* <div style={{ marginTop: "auto", textAlign: "end" }}> */}
+                    {/* {DownloadURI === true ? (
                         <Row gutter={12}>
                           <Col span={12}>
                             <Button
@@ -4425,7 +4454,7 @@ export default function User(props) {
                           </Col>
                         </Row>
                       )} */}
-                      <Row gutter={24}>
+                    {/* <Row gutter={24}>
                         <Col span={24}>
                           <Button
                             // onClick={downloadFile}
@@ -4448,8 +4477,8 @@ export default function User(props) {
                             Cancel
                           </Button>
                         </Col>
-                      </Row>
-                    </div>
+                      </Row> */}
+                    {/* </div> */}
                   </Form>
                 </Drawer>
               </>

@@ -188,8 +188,6 @@ export default function DenyPopup({ props }) {
     UniqueItem.toCallBack(true);
     console.log(UniqueItem.toCallBack(true));
     form.resetFields();
-
-    // }
   };
 
   const sendDeny = async () => {
@@ -353,7 +351,41 @@ export default function DenyPopup({ props }) {
       >
         X
       </Button>
-      <Drawer title="Rejection" onClose={onClose} open={open}>
+      <Drawer
+        title="Rejection"
+        onClose={onClose}
+        open={open}
+        footer={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                width: "149px",
+                backgroundColor: "rgba(203, 68, 68, 1)",
+                color: "white",
+              }}
+              onClick={() => form.submit()} // Trigger the form submit manually
+            >
+              Reject
+            </Button>
+            <Button
+              onClick={() => toggleHideDialog()}
+              style={{
+                width: "149px",
+                marginLeft: "5px",
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        }
+      >
         <div>
           <Row gutter={24}>
             <Col span={24}>
@@ -364,8 +396,8 @@ export default function DenyPopup({ props }) {
             <Form
               name="basic"
               layout="vertical"
-              onFinish={async () => {
-                await HandleDenystatus();
+              onFinish={() => {
+                HandleDenystatus();
               }}
               autoComplete="off"
               form={form}
@@ -402,41 +434,6 @@ export default function DenyPopup({ props }) {
                       </Form.Item>
                     </Col>
                   </Row>
-                  <div
-                    style={{
-                      // maxWidth: 400,
-                      marginTop: 340,
-                      display: "flex",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    {/* icon: <img src="/Images/Cancel.png" alt="Success" />, */}
-                    <Row gutter={24}>
-                      <Col span={24}>
-                        <Button
-                          htmlType="submit"
-                          style={{
-                            width: "100px",
-                            backgroundColor: "rgba(203, 68, 68, 1)",
-                            color: "white",
-                          }}
-                          // onClick={() => {
-                          //   SendRequest();
-                          // }}
-                        >
-                          Reject
-                        </Button>
-                        <Button
-                          style={{ width: "100px", marginLeft: "4px" }}
-                          onClick={() => {
-                            toggleHideDialog();
-                          }}
-                        >
-                          Cancel
-                        </Button>
-                      </Col>
-                    </Row>
-                  </div>
                 </div>
               ) : null}
             </Form>

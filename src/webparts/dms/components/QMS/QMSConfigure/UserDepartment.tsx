@@ -257,7 +257,7 @@ export default function UserDepartment(Props) {
       title: "User MailID",
       dataIndex: "EmailID",
       key: "User MailID",
-      width: "38%",
+      width: "32%",
       align: "left",
       resizable: true,
       responsive: ["md", "lg"],

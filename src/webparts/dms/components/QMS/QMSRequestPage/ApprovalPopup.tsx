@@ -409,6 +409,7 @@ export default function ApprovalPopup({ props }) {
       // });
       setErrmsg("Please Select level");
     }
+    setOpen(false);
     openNotification();
     await fetchData();
   };
@@ -689,7 +690,40 @@ export default function ApprovalPopup({ props }) {
         Approve
       </Button>
 
-      <Drawer title="Approval" onClose={onClose} open={open}>
+      <Drawer
+        title="Approval"
+        onClose={onClose}
+        open={open}
+        footer={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              htmlType="submit"
+              style={{
+                width: "149px",
+                backgroundColor: "rgba(74, 173, 146, 1)",
+                color: "white",
+              }}
+              onClick={() => form.submit()} // Trigger the form submit manually
+            >
+              Submit
+            </Button>
+            <Button
+              onClick={() => toggleHideDialog()}
+              style={{
+                width: "149px",
+                marginLeft: "5px",
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        }
+      >
         <div>
           <Row gutter={24}>
             <Col span={24}>
@@ -707,36 +741,37 @@ export default function ApprovalPopup({ props }) {
             autoComplete="off"
             form={form}
           >
-            {Denystatus ? (
-              <Row gutter={24}>
-                <Col span={24}>
-                  <Form.Item
-                    label="Approval Level"
-                    name="Approval Level"
-                    style={{ maxWidth: 400, marginTop: 37 }}
-                    rules={[{ required: true }]}
+            <Row gutter={24}>
+              <Col span={24}>
+                <Form.Item
+                  label="Approval Level"
+                  name="Approval Level"
+                  style={{ maxWidth: 400, marginTop: 37 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select the approver level",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select an option"
+                    onChange={(event, option) => {
+                      HandleLevel(event, option);
+                    }}
+                    style={{ width: "330px" }}
+                    value={Level}
                   >
-                    <Select
-                      placeholder="Select an option"
-                      onChange={(event, option) => {
-                        HandleLevel(event, option);
-                      }}
-                      style={{ width: "330px" }}
-                      value={Level}
-                    >
-                      {levelitems &&
-                        levelitems.map((option: any) => (
-                          <Select.Option key={option.Key} value={option.Key}>
-                            {option.Key}
-                          </Select.Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-            ) : (
-              <div></div>
-            )}
+                    {levelitems &&
+                      levelitems.map((option: any) => (
+                        <Select.Option key={option.Key} value={option.Key}>
+                          {option.Key}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
 
             <Row gutter={24}>
               <Col span={24}>
@@ -779,7 +814,7 @@ export default function ApprovalPopup({ props }) {
                 <Row gutter={24}>
                   <Col span={12}>
                     <p>Approver Info</p>
-                    <span>
+                    {/* <span>
                       {errmsgApprover ? (
                         <span
                           style={{
@@ -803,7 +838,7 @@ export default function ApprovalPopup({ props }) {
                       ) : (
                         <span></span>
                       )}
-                    </span>
+                    </span> */}
                   </Col>
                   <Col span={12}>
                     <p>Manage approver</p>
@@ -837,7 +872,7 @@ export default function ApprovalPopup({ props }) {
                 </Card>
               </div>
             </div>
-            <div
+            {/* <div
               style={{
                 maxWidth: 400,
                 marginTop: 50,
@@ -870,7 +905,7 @@ export default function ApprovalPopup({ props }) {
                   </Button>
                 </Col>
               </Row>
-            </div>
+            </div> */}
           </Form>
         </div>
       </Drawer>

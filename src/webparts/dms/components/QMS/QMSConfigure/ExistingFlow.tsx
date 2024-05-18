@@ -233,7 +233,7 @@ export default function QmsDashboard(props) {
       title: "Document ID",
       dataIndex: "Filename",
       key: "Filename",
-      width: "36%",
+      width: "31%",
       align: "left",
       resizable: true,
       responsive: ["md", "lg"],
@@ -1120,6 +1120,35 @@ export default function QmsDashboard(props) {
               open={open}
               // width={"fit-content"}
               size={"large"}
+              footer={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Button
+                    htmlType="submit"
+                    style={{
+                      width: "149px",
+                      backgroundColor: "rgba(74, 173, 146, 1)",
+                      color: "white",
+                    }}
+                    onClick={() => form.submit()} // Trigger the form submit manually
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    onClick={() => toggleeditHideDialog()}
+                    style={{
+                      width: "149px",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              }
             >
               <div>
                 <Form
@@ -1378,7 +1407,7 @@ export default function QmsDashboard(props) {
                       </Form.Item>
                     </Col>
                   </Row>
-                  <Row
+                  {/* <Row
                     gutter={24}
                     style={{ display: "flex", justifyContent: "flex-end" }}
                   >
@@ -1406,7 +1435,7 @@ export default function QmsDashboard(props) {
                         </Button>
                       </Form.Item>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Form>
               </div>
             </Drawer>

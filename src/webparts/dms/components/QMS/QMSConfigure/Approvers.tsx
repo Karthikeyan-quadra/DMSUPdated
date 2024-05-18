@@ -46,7 +46,16 @@ import {
 } from "office-ui-fabric-react";
 import { TextField, ITextFieldStyles } from "office-ui-fabric-react";
 import { useEffect, useState } from "react";
-import { Avatar, Button, Card, Col, Form, Row, Select } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Form,
+  Row,
+  Select,
+  notification,
+} from "antd";
 import { Divider } from "@fluentui/web-components";
 import { useForm } from "antd/es/form/Form";
 
@@ -61,6 +70,7 @@ const stackTokens: IStackTokens = { childrenGap: 50 };
 
 // export default class QMSConfigure extends React.Component<{}, any> {
 export default function Approvers(props) {
+  const [onChanged, setonChanged] = useState<any>(false);
   const [form] = useForm();
   const [items, setItems] = useState([]);
   const [show, setShow] = useState(true);
@@ -98,6 +108,23 @@ export default function Approvers(props) {
   });
   const [levelitems, setLevelItems] = useState<any>();
   const [Departmentitems, setDepartmentitems] = useState<any>();
+
+  const openNotification = () => {
+    notification.info({
+      message: (
+        <span style={{ color: "green", fontWeight: "bold" }}>Altered</span>
+      ),
+      description: "You have altered the flow successfully",
+      placement: "top",
+      icon: (
+        <img
+          src={require("../../../../../Images/CheckMark.png")}
+          alt="Success"
+          style={{ width: "20%" }}
+        />
+      ),
+    });
+  };
 
   // public async componentDidMount() {
   //   this.setState({
@@ -563,6 +590,7 @@ export default function Approvers(props) {
       console.error("Error in HandleLevel:", error);
       // Handle errors as needed
     }
+    setonChanged(true);
   };
 
   const Handlechange = async () => {
@@ -673,6 +701,10 @@ export default function Approvers(props) {
           });
       }
     }
+    if (onChanged) {
+      openNotification();
+      setonChanged(false);
+    }
     form.resetFields();
   };
 
@@ -764,6 +796,7 @@ export default function Approvers(props) {
       setApprover_A(await getApprover1(Department, Level, ""));
       setApprover_B(await getApprover2(Department, Level, ""));
     }
+    setonChanged(true);
   };
 
   const HandleSubDepartment = async (e, value: any) => {
@@ -805,6 +838,7 @@ export default function Approvers(props) {
 
     setApprover_A(await getApprover1(Department, Level, SubDepartment));
     setApprover_B(await getApprover2(Department, Level, SubDepartment));
+    setonChanged(true);
   };
 
   // const HandleApproverA = async (e, value: any) => {
@@ -894,6 +928,7 @@ export default function Approvers(props) {
 
     setIsChanged(false);
     setErrmsgApprover("");
+    setonChanged(true);
   };
 
   // const HandleApproverB = (e, value: any) => {
@@ -958,6 +993,7 @@ export default function Approvers(props) {
 
     setIsChanged(false);
     setErrmsgApprover("");
+    setonChanged(true);
   };
 
   const toggleHideDialog = () => {
@@ -1385,8 +1421,7 @@ export default function Approvers(props) {
             <Form.Item
               style={{
                 marginTop: 50,
-                // display: "flex",
-                // justifyContent: "flex-end",
+
                 textAlign: "end",
               }}
             >
@@ -1399,9 +1434,6 @@ export default function Approvers(props) {
                       backgroundColor: "rgba(74, 173, 146, 1)",
                       color: "white",
                     }}
-                    // onClick={() => {
-                    //   Handlechange();
-                    // }}
                   >
                     Submit
                   </Button>
