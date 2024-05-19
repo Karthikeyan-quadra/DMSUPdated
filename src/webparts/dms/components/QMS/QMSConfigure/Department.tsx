@@ -33,9 +33,20 @@ import {
 } from "office-ui-fabric-react";
 import { getDepartmentlistedit } from "../../Data/GetSiteList";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Drawer, Form, Input, Layout, Row } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Layout,
+  Row,
+} from "antd";
 import form from "antd/es/form";
 import { useForm } from "antd/es/form/Form";
+import { Edit } from "../../../../../Images/Edit.png";
 const sp: SPFI = getSp();
 const dialogContentProps = {
   type: DialogType.normal,
@@ -92,6 +103,7 @@ export default function Department(props) {
   const [edit_SectionID, setEditSectionID] = useState<any>("");
   const [value, setValue] = useState<any>();
   const [open, setOpen] = useState(false);
+  const [sectionopen, setSectionOpen] = useState(false);
 
   // public toggleDepteditHideDialog = () => {
   //   console.log(this.state.hideDepteditDialog);
@@ -114,6 +126,15 @@ export default function Department(props) {
   const onClose = () => {
     setOpen(false);
   };
+  const onSectionClose = () => {
+    setSectionOpen(false);
+  };
+
+  useEffect(() => {
+    // Fetch the initial list of departments
+    getDepartmentlistedit().then(setItems);
+    console.log(items);
+  }, []);
 
   const toggleDepteditHideDialog = () => {
     console.log(hideDepteditDialog);
@@ -276,6 +297,7 @@ export default function Department(props) {
     setAddSectionTitle("");
     setAddSectionCodeErr("");
     setAddSectionCode("");
+    setSectionOpen(false);
   };
 
   const navStyles: Partial<INavStyles> = {
@@ -527,51 +549,53 @@ export default function Department(props) {
         // })
         setIsDeptAdded(false);
         setValue(await getDepartmentlistedit().then((val) => setItems(val)));
+        const updatedItems = await getDepartmentlistedit();
+        setItems(updatedItems);
       });
 
     setOpen(false);
     form.resetFields();
   };
 
-  const handleaddSection = async () => {
-    const sp: SPFI = getSp();
+  // const handleaddSection = async () => {
+  //   const sp: SPFI = getSp();
 
-    if (add_Section_Title != "") {
-      if (add_Section_Code != "") {
-        await sp.web.lists
-          .getByTitle("Sub departments Main")
-          .items.add({
-            ParentFolders: sectionDept,
-            SubFolders: add_Section_Title,
-            Code: add_Section_Code,
-          })
-          .then(async () => {
-            // this.setState({
-            //   isSectionAdded: false,
-            //   value: await getDepartmentlistedit().then((val) =>
-            //     this.setState({
-            //       items: val,
-            //     })
-            //   ),
-            // })
-            setIsSectionAdded(false);
-            setValue(
-              await getDepartmentlistedit().then((val) => setItems(val))
-            );
-          });
-      } else {
-        // this.setState({
-        //   add_Section_Code_err: "Please specify Code",
-        // });
-        setAddSectionCodeErr("Please specify Code");
-      }
-    } else {
-      // this.setState({
-      //   add_Section_Title_err: "Please specify Department name",
-      // });
-      setAddSectionTitleErr("Please specify Department name");
-    }
-  };
+  //   if (add_Section_Title != "") {
+  //     if (add_Section_Code != "") {
+  //       await sp.web.lists
+  //         .getByTitle("Sub departments Main")
+  //         .items.add({
+  //           ParentFolders: sectionDept,
+  //           SubFolders: add_Section_Title,
+  //           Code: add_Section_Code,
+  //         })
+  //         .then(async () => {
+  //           // this.setState({
+  //           //   isSectionAdded: false,
+  //           //   value: await getDepartmentlistedit().then((val) =>
+  //           //     this.setState({
+  //           //       items: val,
+  //           //     })
+  //           //   ),
+  //           // })
+  //           setIsSectionAdded(false);
+  //           setValue(
+  //             await getDepartmentlistedit().then((val) => setItems(val))
+  //           );
+  //         });
+  //     } else {
+  //       // this.setState({
+  //       //   add_Section_Code_err: "Please specify Code",
+  //       // });
+  //       setAddSectionCodeErr("Please specify Code");
+  //     }
+  //   } else {
+  //     // this.setState({
+  //     //   add_Section_Title_err: "Please specify Department name",
+  //     // });
+  //     setAddSectionTitleErr("Please specify Department name");
+  //   }
+  // };
   // const handleadd_Dept_Title = (event, value) => {
   //   // this.setState({
   //   //   add_Dept_Title: value,
@@ -579,17 +603,52 @@ export default function Department(props) {
   //   setAddDeptTitle(value);
   // };
 
+  const handleaddSection = async () => {
+    const sp: SPFI = getSp();
+
+    await sp.web.lists
+      .getByTitle("Sub departments Main")
+      .items.add({
+        ParentFolders: sectionDept,
+        SubFolders: add_Section_Title,
+        Code: add_Section_Code,
+      })
+      .then(async () => {
+        // this.setState({
+        //   isSectionAdded: false,
+        //   value: await getDepartmentlistedit().then((val) =>
+        //     this.setState({
+        //       items: val,
+        //     })
+        //   ),
+        // })
+        setIsSectionAdded(false);
+        setValue(await getDepartmentlistedit().then((val) => setItems(val)));
+        const updatedItems = await getDepartmentlistedit();
+        setItems(updatedItems);
+      });
+    setSectionOpen(false);
+    form.resetFields();
+  };
+
   const handleadd_Dept_Title = (e: any) => {
     // this.setState({
     //   add_Dept_Title: value,
     // });
     setAddDeptTitle(e.target.value);
   };
-  const handleadd_Section_Title = (event, value) => {
+  // const handleadd_Section_Title = (event, value) => {
+  //   // this.setState({
+  //   //   add_Section_Title: value,
+  //   // });
+  //   setAddSectionTitle(value);
+  // };
+
+  const handleadd_Section_Title = (e: any) => {
     // this.setState({
     //   add_Section_Title: value,
     // });
-    setAddSectionTitle(value);
+    setAddSectionTitle(e.target.value);
   };
   const addDepartment = () => {
     // this.setState({
@@ -600,15 +659,27 @@ export default function Department(props) {
     setIsDeptAdded(true);
     setOpen(true);
   };
-  const addSection = (group) => {
+  // const addSection = (group) => {
+  //   // this.setState({
+  //   //   hideSectionDialog: false,
+  //   //   isSectionAdded: true,
+  //   //   sectionDept: group.name,
+  //   // });
+  //   setHideSectionDialog(false);
+  //   setIsSectionAdded(true);
+  //   setSectionDept(group.name);
+  // };
+  const addSection = (item) => {
+    console.log(item);
     // this.setState({
     //   hideSectionDialog: false,
     //   isSectionAdded: true,
     //   sectionDept: group.name,
     // });
+    setSectionOpen(true);
     setHideSectionDialog(false);
     setIsSectionAdded(true);
-    setSectionDept(group.name);
+    setSectionDept(item.name);
   };
   // const handleadd_Dept_Code = (event, value) => {
   //   // this.setState({
@@ -622,11 +693,18 @@ export default function Department(props) {
     // });
     setAddDeptCode(e.target.value);
   };
-  const handleadd_Section_Code = (event, value) => {
+  // const handleadd_Section_Code = (event, value) => {
+  //   // this.setState({
+  //   //   add_Section_Code: value,
+  //   // });
+  //   setAddSectionCode(value);
+  // };
+
+  const handleadd_Section_Code = (e: any) => {
     // this.setState({
-    //   add_Section_Code: value,
+    //   add_Dept_Code: value,
     // });
-    setAddSectionCode(value);
+    setAddSectionCode(e.target.value);
   };
   return (
     // <>
@@ -1045,7 +1123,7 @@ export default function Department(props) {
           {isDeptAdded ? (
             <div>
               <Drawer
-                title="Manage Flow"
+                title="Add Department"
                 onClose={onClose}
                 open={open}
                 footer={
@@ -1092,7 +1170,7 @@ export default function Department(props) {
                           label="Department Title"
                           name="Department Title"
                           style={{
-                            maxWidth: 457,
+                            maxWidth: 400,
                             marginTop: 37,
                             fontSize: "16px",
                             fontWeight: "600",
@@ -1104,21 +1182,18 @@ export default function Department(props) {
                             },
                           ]}
                         >
-                          <Input
-                            style={{ width: "457px" }}
-                            onChange={handleadd_Dept_Code}
-                          />
+                          <Input onChange={handleadd_Dept_Code} />
                         </Form.Item>
                       </Col>
                     </Row>
 
                     <Row gutter={24}>
-                      <Col>
+                      <Col span={24}>
                         <Form.Item
                           label="Department Code"
                           name="Department Code"
                           style={{
-                            maxWidth: 457,
+                            maxWidth: 400,
                             marginTop: 17,
                             fontSize: "16px",
                             fontWeight: "600",
@@ -1131,7 +1206,6 @@ export default function Department(props) {
                           ]}
                         >
                           <Input
-                            style={{ width: "457px" }}
                             onChange={handleadd_Dept_Title}
                             value={add_Dept_Title}
                           />
@@ -1145,15 +1219,195 @@ export default function Department(props) {
           ) : (
             <></>
           )}
-          {/* <div>
-            {items.map((item: any) => (
-              <Card title={item.Departments} key={item.Code}>
-                <p>{item.Departments}</p>
-              </Card>
-            ))}
-          </div> */}
+        </div>
+        <div
+          style={{
+            width: "54%",
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "10px",
+          }}
+        >
+          {items.map((item) => (
+            <Card
+              title={
+                <div style={{ display: "flex" }}>
+                  <div style={{ width: "50%" }}>
+                    <p>{item.name}</p>
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <p style={{ textAlign: "end" }}>{item.code}</p>
+                    <p>
+                      <img src={Edit} alt="Edit" />
+                    </p>
+                  </div>
+                </div>
+              }
+              key={item.code}
+              style={{ marginTop: "10px" }}
+            >
+              {/* <Card.Meta
+                avatar={<Avatar src="../../../../../Images/Group.png" />}
+                title="Card title"
+                description="This is the description"
+              /> */}
+              {/* <span>{item.name}</span>
+              <span>{item.code}</span> */}
+              {item.links.map((link) => (
+                <div
+                  key={link.Id}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>{link.name}</span>
+                  <span>{link.code}</span>
+                  <span>
+                    <img
+                      src={require("../../../../../Images/Edit.png")}
+                      alt="edit"
+                    />
+                  </span>
+                </div>
+              ))}
+              <div style={{ display: "flex" }} onClick={() => addSection(item)}>
+                <img
+                  src={require("../../../../../Images/Group.png")}
+                  alt="add"
+                  style={{ width: "4%", height: "4%" }}
+                />
+                <span
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "400",
+                    color: "rgba(18, 150, 114, 1)",
+                    textDecoration: "underline",
+                    marginLeft: "4px",
+                  }}
+                >
+                  Add Sub Department
+                </span>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
+      {isSectionAdded ? (
+        <div>
+          <Drawer
+            title="Add Section"
+            onClose={onSectionClose}
+            open={sectionopen}
+            footer={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button
+                  htmlType="submit"
+                  style={{
+                    width: "149px",
+                    backgroundColor: "rgba(74, 173, 146, 1)",
+                    color: "white",
+                  }}
+                  onClick={() => form.submit()} // Trigger the form submit manually
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={() => toggleSectionHideDialog()}
+                  style={{
+                    width: "149px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            }
+          >
+            <div>
+              <Form
+                name="basic"
+                layout="vertical"
+                autoComplete="off"
+                onFinish={() => handleaddSection()}
+                form={form}
+              >
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Department Title"
+                      name="Department Title"
+                      style={{
+                        maxWidth: 400,
+                        marginTop: 37,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      <Input defaultValue={sectionDept} disabled />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Sub-Section Title"
+                      name="Sub-Section Title"
+                      style={{
+                        maxWidth: 400,
+                        marginTop: 17,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your sub-section title!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleadd_Section_Title}
+                        value={add_Section_Title}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Sub-Section Code"
+                      name="Sub-Section Code"
+                      style={{
+                        maxWidth: 400,
+                        marginTop: 17,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your sub-section code!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleadd_Section_Code}
+                        value={add_Section_Code}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+          </Drawer>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
