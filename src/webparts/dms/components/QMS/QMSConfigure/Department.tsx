@@ -105,6 +105,7 @@ export default function Department(props) {
   const [edit_SectionID, setEditSectionID] = useState<any>("");
   const [value, setValue] = useState<any>();
   const [open, setOpen] = useState(false);
+
   const [editdeptopen, seteditdeptOpen] = useState(false);
 
   const [sectionopen, setSectionOpen] = useState(false);
@@ -835,7 +836,7 @@ export default function Department(props) {
       message: (
         <span style={{ color: "green", fontWeight: "bold" }}>Updated</span>
       ),
-      description: "You have added the department successfully",
+      description: "You have Updated the department successfully",
       placement: "top",
       icon: (
         <img
