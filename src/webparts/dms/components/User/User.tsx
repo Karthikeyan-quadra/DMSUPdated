@@ -991,13 +991,15 @@ export default function User(props) {
   // const { showFirstItem } = this.state; // Access showFirstItem from state
 
   const toggleHideDialog = () => {
+    setshowTemplateDiv(false);
+
     setOpenDialog(true);
     setHiddenDialog(false);
     setDownloadURI(true);
-    setshowTemplateDiv(true);
+    // setshowTemplateDiv(true);
     // console.log({ openDialog, hiddenDialog, DownloadURI });
+    form.resetFields();
   };
-
   const toggleHideDialogUpload = () => {
     setOpenDialogUpload(true);
     setHiddenDialogUpload(false);
@@ -4338,7 +4340,7 @@ export default function User(props) {
                         Download
                       </Button>
                       <Button
-                        onClick={() => toggleHideDialog()}
+                        onClick={() => onClose()}
                         style={{
                           width: "149px",
                           marginLeft: "5px",

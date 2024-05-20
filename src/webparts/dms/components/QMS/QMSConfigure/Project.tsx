@@ -31,7 +31,9 @@ import {
 } from "office-ui-fabric-react";
 import { getDepartmentlistedit, getProjectlist } from "../../Data/GetSiteList";
 import { useEffect, useState } from "react";
-const sp:SPFI=getSp()
+import { Button, Card, Col, Drawer, Form, Input, Row } from "antd";
+import { useForm } from "antd/es/form/Form";
+const sp: SPFI = getSp();
 const dialogContentProps = {
   type: DialogType.normal,
   title: "Add Project",
@@ -47,25 +49,26 @@ const iconClass = mergeStyles({
   textAlign: "center",
 });
 // export default class Department extends React.Component<{}, any> {
-  export default function Department(){
-    // this.state = {
-    //   items: [],
-    //   hideDialog: true,
-    //   addProjectStatus: true,
-    //   isAdded: true,
-    //   add_Project_Title_err: "",
-    //   add_Project_Title: "",
-    //   add_Project_Code_err: "",
-    //   add_Project_Code: "",
-    //   hideeditDialog: true,
-    //   isEdited: true,
-    //   edit_Project_Title_err: "",
-    //   edit_Project_Title: "",
-    //   edit_Project_Code_err: "",
-    //   edit_Project_Code: "",
-    //   edit_ID: "",
-    // };
-
+// export default function Department(){
+export default function Project() {
+  // this.state = {
+  //   items: [],
+  //   hideDialog: true,
+  //   addProjectStatus: true,
+  //   isAdded: true,
+  //   add_Project_Title_err: "",
+  //   add_Project_Title: "",
+  //   add_Project_Code_err: "",
+  //   add_Project_Code: "",
+  //   hideeditDialog: true,
+  //   isEdited: true,
+  //   edit_Project_Title_err: "",
+  //   edit_Project_Title: "",
+  //   edit_Project_Code_err: "",
+  //   edit_Project_Code: "",
+  //   edit_ID: "",
+  // };
+  const [form] = useForm();
   const [items, setItems] = useState([]);
   const [hideDialog, setHideDialog] = useState(true);
   const [addProjectStatus, setAddProjectStatus] = useState(true);
@@ -82,7 +85,8 @@ const iconClass = mergeStyles({
   const [edit_Project_Code, setEditProjectCode] = useState("");
   const [edit_ID, setEditID] = useState("");
   const [value, setValue] = useState<any>();
-  
+  const [open, setOpen] = useState(false);
+  const [disablesubmit, setDisableSubmit] = useState(false);
 
   // public async componentDidMount() {
   //   this.setState(
@@ -101,18 +105,19 @@ const iconClass = mergeStyles({
 
   const fetchData = async () => {
     try {
-      const projectList:any = await getProjectlist();
+      const projectList: any = await getProjectlist();
       setItems(projectList);
     } catch (error) {
-      console.error('Error fetching project list:', error);
+      console.error("Error fetching project list:", error);
     }
+  };
+  const onClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
   // public toggleHideDialog = () => {
   //   console.log(this.state.hideDialog);
@@ -143,8 +148,8 @@ const iconClass = mergeStyles({
       setAddProjectCodeErr("");
       setAddProjectCode("");
     }
+    setOpen(false);
   };
-
 
   // public toggleeditHideDialog = () => {
   //   console.log(this.state.hideeditDialog);
@@ -198,456 +203,548 @@ const iconClass = mergeStyles({
   //     );
   // };
 
-
   const Deleteitem = async () => {
-    const sp:SPFI=getSp()
+    const sp: SPFI = getSp();
 
-    const list:any = sp.web.lists.getByTitle("Project List");
+    const list: any = sp.web.lists.getByTitle("Project List");
     try {
       await list.items.getById(edit_ID).delete();
       setIsEdited(false);
       const projectList = await getProjectlist();
       setValue(projectList);
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
     }
     fetchData();
-
   };
 
- 
-    const navStyles: Partial<INavStyles> = {
-      root: { width: 530 },
-    };
-    const _onRenderLink = (group: INavLink) => {
-      return (
-        <table
-          style={{ tableLayout: "fixed", width: "100%", textAlign: "left" }}
-        >
-          <tr>
-            <td>{group.name}</td>
-            <td style={{ textAlign: "right" }}>{group.code}</td>
-            <td>
-              <FontIcon
-                aria-label="EditSolid12"
-                iconName="EditSolid12"
-                style={{
-                  color: "rgb(0 120 212)",
-                  float: "right",
-                  marginRight: "20px",
-                  padding: "0 10px",
-                }}
-                onClick={() => editProject(group)}
-              />
-            </td>
-          </tr>
-        </table>
-      );
-    };
-    // const handleaddProject = async () => {
-    //   const sp:SPFI=getSp()
+  const navStyles: Partial<INavStyles> = {
+    root: { width: 530 },
+  };
+  const _onRenderLink = (group: INavLink) => {
+    return (
+      <table style={{ tableLayout: "fixed", width: "100%", textAlign: "left" }}>
+        <tr>
+          <td>{group.name}</td>
+          <td style={{ textAlign: "right" }}>{group.code}</td>
+          <td>
+            <FontIcon
+              aria-label="EditSolid12"
+              iconName="EditSolid12"
+              style={{
+                color: "rgb(0 120 212)",
+                float: "right",
+                marginRight: "20px",
+                padding: "0 10px",
+              }}
+              onClick={() => editProject(group)}
+            />
+          </td>
+        </tr>
+      </table>
+    );
+  };
+  // const handleaddProject = async () => {
+  //   const sp:SPFI=getSp()
 
-    //   if (this.state.add_Project_Title != "") {
-    //     if (this.state.add_Project_Code != "") {
+  //   if (this.state.add_Project_Title != "") {
+  //     if (this.state.add_Project_Code != "") {
 
-    //       await sp.web.lists
-    //         .getByTitle("Project List")
-    //         .items.add({
-    //           ProjectName: this.state.add_Project_Title,
-    //           ProjectID: this.state.add_Project_Code,
-    //         })
-    //         .then(async (res) =>
-    //           this.setState({
-    //             isAdded: false,
-    //             value: await getProjectlist().then((val) =>
-    //               this.setState({
-    //                 items: val,
-    //               })
-    //             ),
-    //           })
-    //         );
-    //     } else {
-    //       this.setState({
-    //         add_Project_Code_err: "Please specify Code",
-    //       });
-    //     }
-    //   } else {
-    //     this.setState({
-    //       add_Project_Title_err: "Please specify project name",
-    //     });
-    //   }
-    // };
+  //       await sp.web.lists
+  //         .getByTitle("Project List")
+  //         .items.add({
+  //           ProjectName: this.state.add_Project_Title,
+  //           ProjectID: this.state.add_Project_Code,
+  //         })
+  //         .then(async (res) =>
+  //           this.setState({
+  //             isAdded: false,
+  //             value: await getProjectlist().then((val) =>
+  //               this.setState({
+  //                 items: val,
+  //               })
+  //             ),
+  //           })
+  //         );
+  //     } else {
+  //       this.setState({
+  //         add_Project_Code_err: "Please specify Code",
+  //       });
+  //     }
+  //   } else {
+  //     this.setState({
+  //       add_Project_Title_err: "Please specify project name",
+  //     });
+  //   }
+  // };
 
+  const handleaddProject = async () => {
+    const sp: SPFI = getSp();
 
-    const handleaddProject = async () => {
-      const sp:SPFI=getSp()
-  
-      if (add_Project_Title !== "") {
-        if (add_Project_Code !== "") {
-          try {
-            await sp.web.lists.getByTitle("Project List").items.add({
-              ProjectName: add_Project_Title,
-              ProjectID: add_Project_Code
-            });
-            setIsAdded(false);
-            const projectList = await getProjectlist();
-            setValue(projectList);
-          } catch (error) {
-            console.error('Error adding project:', error);
-          }
-        } else {
-          setAddProjectCodeErr("Please specify Code");
+    try {
+      await sp.web.lists.getByTitle("Project List").items.add({
+        ProjectName: add_Project_Title,
+        ProjectID: add_Project_Code,
+      });
+      setIsAdded(false);
+      const projectList = await getProjectlist();
+      setValue(projectList);
+    } catch (error) {
+      console.error("Error adding project:", error);
+    }
+
+    fetchData();
+  };
+
+  // const handleeditProject = async () => {
+  //   const sp:SPFI=getSp()
+
+  //   if (this.state.edit_Project_Title != "") {
+  //     if (this.state.edit_Project_Code != "") {
+  //       const list = sp.web.lists.getByTitle("Project List");
+
+  //       await list.items
+  //         .getById(this.state.edit_ID)
+  //         .update({
+  //           ProjectName: this.state.edit_Project_Title,
+  //           ProjectID: this.state.edit_Project_Code,
+  //         })
+  //         .then(async (res) =>
+  //           this.setState({
+  //             isEdited: false,
+  //             value: await getProjectlist().then((val) =>
+  //               this.setState({
+  //                 items: val,
+  //               })
+  //             ),
+  //           })
+  //         );
+  //     } else {
+  //       this.setState({
+  //         edit_Project_Code_err: "Please specify Code",
+  //       });
+  //     }
+  //   } else {
+  //     this.setState({
+  //       edit_Project_Title_err: "Please specify project name",
+  //     });
+  //   }
+  // };
+
+  const handleeditProject = async () => {
+    const sp: SPFI = getSp();
+
+    if (edit_Project_Title !== "") {
+      if (edit_Project_Code !== "") {
+        try {
+          const list: any = sp.web.lists.getByTitle("Project List");
+          await list.items.getById(edit_ID).update({
+            ProjectName: edit_Project_Title,
+            ProjectID: edit_Project_Code,
+          });
+          setIsEdited(false);
+          const projectList = await getProjectlist();
+          setValue(projectList); // Update items state with the new project list
+        } catch (error) {
+          console.error("Error editing project:", error);
         }
       } else {
-        setAddProjectTitleErr("Please specify project name");
+        setEditProjectCodeErr("Please specify Code");
       }
-      fetchData();
-    };
-  
+    } else {
+      setEditProjectTitleErr("Please specify project name");
+    }
+    fetchData();
+  };
 
-
-    // const handleeditProject = async () => {
-    //   const sp:SPFI=getSp()
-
-    //   if (this.state.edit_Project_Title != "") {
-    //     if (this.state.edit_Project_Code != "") {
-    //       const list = sp.web.lists.getByTitle("Project List");
-
-    //       await list.items
-    //         .getById(this.state.edit_ID)
-    //         .update({
-    //           ProjectName: this.state.edit_Project_Title,
-    //           ProjectID: this.state.edit_Project_Code,
-    //         })
-    //         .then(async (res) =>
-    //           this.setState({
-    //             isEdited: false,
-    //             value: await getProjectlist().then((val) =>
-    //               this.setState({
-    //                 items: val,
-    //               })
-    //             ),
-    //           })
-    //         );
-    //     } else {
-    //       this.setState({
-    //         edit_Project_Code_err: "Please specify Code",
-    //       });
-    //     }
-    //   } else {
-    //     this.setState({
-    //       edit_Project_Title_err: "Please specify project name",
-    //     });
-    //   }
-    // };
-
-    const handleeditProject = async () => {
-      const sp:SPFI=getSp()
-  
-      if (edit_Project_Title !== "") {
-        if (edit_Project_Code !== "") {
-          try {
-            const list:any = sp.web.lists.getByTitle("Project List");
-            await list.items.getById(edit_ID).update({
-              ProjectName: edit_Project_Title,
-              ProjectID: edit_Project_Code
-            });
-            setIsEdited(false);
-            const projectList = await getProjectlist();
-            setValue(projectList); // Update items state with the new project list
-          } catch (error) {
-            console.error('Error editing project:', error);
-          }
-        } else {
-          setEditProjectCodeErr("Please specify Code");
-        }
-      } else {
-        setEditProjectTitleErr("Please specify project name");
-      }
-      fetchData();
-
-    };
-
-
-    const _onRenderGroupHeader = (group: INavLinkGroup) => {
-      return (
-        <>
-          <b>
-            <Text variant="xLarge" style={{ fontSize: "17px" }}>
-              {group.name}
-            </Text>
-          </b>
-          <Separator />
-        </>
-      );
-    };
-    // const editProject = (value) => {
-    //   console.log(value);
-    //   this.setState({
-    //     hideeditDialog: false,
-    //     isEdited: true,
-    //     edit_Project_Title: value.name,
-    //     edit_ID: value.Id,
-    //     edit_Project_Code: value.code,
-    //   });
-    // };
-    const editProject = (value) => {
-      console.log(value);
-      setHideEditDialog(false);
-      setIsEdited(true);
-      setEditProjectTitle(value.name);
-      setEditID(value.Id);
-      setEditProjectCode(value.code);
-    };
-
-
-    // const addProject = () => {
-    //   this.setState({
-    //     hideDialog: false,
-    //     isAdded: true,
-    //   });
-    // };
-
-    const addProject = () => {
-      setHideDialog(false);
-      setIsAdded(true);
-    };
-
-    // const handleadd_Project_Title = (event, value) => {
-    //   this.setState({
-    //     add_Project_Title: value,
-    //   });
-    // };
-
-    const handleadd_Project_Title = (event, value) => {
-      // this.setState({
-      //   add_Project_Title: value,
-      // });
-      setAddProjectTitle(value);
-    };
-
-    // const handleadd_Project_Code = (event, value) => {
-    //   this.setState({
-    //     add_Project_Code: value,
-    //   });
-    // };
-
-    const handleadd_Project_Code = (event, value) => {
-      // this.setState({
-      //   add_Project_Code: value,
-      // });
-      setAddProjectCode(value);
-    };
-
-    // const handleedit_Project_Title = (event, value) => {
-    //   this.setState({
-    //     edit_Project_Title: value,
-    //   });
-    // };
-    const handleedit_Project_Title = (event, value) => {
-      // this.setState({
-      //   edit_Project_Title: value,
-      // });
-      setEditProjectTitle(value);
-    };
-
-
-    // const handleedit_Project_Code = (event, value) => {
-    //   this.setState({
-    //     edit_Project_Code: value,
-    //   });
-    // };
-
-    const handleedit_Project_Code = (event, value) => {
-      // this.setState({
-      //   edit_Project_Code: value,
-      // });
-      setEditProjectCode(value);
-    };
+  const _onRenderGroupHeader = (group: INavLinkGroup) => {
     return (
       <>
-        <div
-          className={styles.anihover}
-          onClick={addProject}
-          style={{ padding: "10px" }}
-        >
-          <FontIcon
-            aria-label="CircleAddition"
-            iconName="CircleAddition"
-            style={{
-              color: "rgb(0 120 212)",
-              padding: "0 10px",
-              fontSize: "17px",
-            }}
-          />
-          <Text style={{ marginLeft: "5px" }} variant="xLarge">
-            Add Projects
+        <b>
+          <Text variant="xLarge" style={{ fontSize: "17px" }}>
+            {group.name}
           </Text>
-        </div>
+        </b>
         <Separator />
-        <Nav
-          styles={navStyles}
-          onRenderLink={_onRenderLink}
-          onRenderGroupHeader={_onRenderGroupHeader}
-          ariaLabel="Nav example similar to one found in this demo page"
-          groups={items}
-        />
-        <Dialog
-          containerClassName={
-            "ms-dialogMainOverride " + styles.addProjectDialog
-          }
-          hidden={hideDialog}
-          dialogContentProps={dialogContentProps}
-          isBlocking={false}
-          onDismiss={toggleHideDialog}
-        >
-          {isAdded ? (
-            <div>
-              <div style={{ margin: "15px" }}>
-                <div
-                  style={{
-                    width: "350px",
-                  }}
-                >
-                  <TextField
-                    required
-                    label="Project Title"
-                    placeholder="Type Project Name"
-                    resizable={false}
-                    onChange={handleadd_Project_Title}
-                    errorMessage={add_Project_Title_err}
-                  />
-                </div>
-
-                <div style={{ width: "350px", marginTop: "15px" }}>
-                  <TextField
-                    required
-                    label="Project Code"
-                    placeholder="Type Project Unique ID"
-                    onChange={handleadd_Project_Code}
-                    resizable={false}
-                    errorMessage={add_Project_Code_err}
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <PrimaryButton
-                  style={{
-                    backgroundColor: "#0078D4",
-                  }}
-                  onClick={handleaddProject}
-                  text="Submit"
-                />
-                <DefaultButton onClick={toggleHideDialog} text="Cancel" />
-              </DialogFooter>
-            </div>
-          ) : (
-            <div>
-              <FontIcon
-                aria-label="SkypeCircleCheck"
-                iconName="SkypeCircleCheck"
-                className={iconClass}
-              />
-              <Label
-                style={{
-                  margin: "0 auto",
-                  width: "300px",
-                  textAlign: "center",
-                }}
-              >
-                Project created Successfully
-              </Label>
-
-              <DialogFooter>
-                <DefaultButton onClick={toggleHideDialog} text="Close" />
-              </DialogFooter>
-            </div>
-          )}
-        </Dialog>
-
-        {/*Edit Projects*/}
-        <Dialog
-          containerClassName={
-            "ms-dialogMainOverride " + styles.addProjectDialog
-          }
-          hidden={hideeditDialog}
-          dialogContentProps={dialogContentProps_edit}
-          isBlocking={false}
-          onDismiss={toggleeditHideDialog}
-        >
-          {isEdited ? (
-            <div>
-              <div style={{ margin: "15px" }}>
-                <div
-                  style={{
-                    width: "350px",
-                  }}
-                >
-                  <TextField
-                    required
-                    label="Project Title"
-                    placeholder="Type Project Name"
-                    resizable={false}
-                    value={edit_Project_Title}
-                    onChange={handleedit_Project_Title}
-                    errorMessage={edit_Project_Title_err}
-                  />
-                </div>
-
-                <div style={{ width: "350px", marginTop: "15px" }}>
-                  <TextField
-                    required
-                    label="Project Code"
-                    placeholder="Type Project Unique ID"
-                    onChange={handleedit_Project_Code}
-                    resizable={false}
-                    value={edit_Project_Code}
-                    errorMessage={edit_Project_Code_err}
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <DefaultButton onClick={Deleteitem} text="Delete" />
-                <PrimaryButton
-                  style={{
-                    backgroundColor: "#0078D4",
-                  }}
-                  onClick={handleeditProject}
-                  text="Submit"
-                />
-                <DefaultButton
-                  onClick={toggleeditHideDialog}
-                  text="Cancel"
-                />
-              </DialogFooter>
-            </div>
-          ) : (
-            <div>
-              <FontIcon
-                aria-label="SkypeCircleCheck"
-                iconName="SkypeCircleCheck"
-                className={iconClass}
-              />
-              <Label
-                style={{
-                  margin: "0 auto",
-                  width: "300px",
-                  textAlign: "center",
-                }}
-              >
-                Project Details Altered Successfully
-              </Label>
-
-              <DialogFooter>
-                <DefaultButton
-                  onClick={toggleeditHideDialog}
-                  text="Close"
-                />
-              </DialogFooter>
-            </div>
-          )}
-        </Dialog>
       </>
     );
-  
+  };
+  // const editProject = (value) => {
+  //   console.log(value);
+  //   this.setState({
+  //     hideeditDialog: false,
+  //     isEdited: true,
+  //     edit_Project_Title: value.name,
+  //     edit_ID: value.Id,
+  //     edit_Project_Code: value.code,
+  //   });
+  // };
+  const editProject = (value) => {
+    console.log(value);
+    setHideEditDialog(false);
+    setIsEdited(true);
+    setEditProjectTitle(value.name);
+    setEditID(value.Id);
+    setEditProjectCode(value.code);
+  };
+
+  // const addProject = () => {
+  //   this.setState({
+  //     hideDialog: false,
+  //     isAdded: true,
+  //   });
+  // };
+
+  const addProject = () => {
+    setHideDialog(false);
+    setIsAdded(true);
+  };
+
+  // const handleadd_Project_Title = (event, value) => {
+  //   this.setState({
+  //     add_Project_Title: value,
+  //   });
+  // };
+
+  const handleadd_Project_Title = (e: any) => {
+    // this.setState({
+    //   add_Project_Title: value,
+    // });
+    setAddProjectTitle(e.target.value);
+  };
+
+  // const handleadd_Project_Code = (event, value) => {
+  //   this.setState({
+  //     add_Project_Code: value,
+  //   });
+  // };
+
+  const handleadd_Project_Code = (e: any) => {
+    // this.setState({
+    //   add_Project_Code: value,
+    // });
+    setAddProjectCode(e.target.value);
+  };
+
+  // const handleedit_Project_Title = (event, value) => {
+  //   this.setState({
+  //     edit_Project_Title: value,
+  //   });
+  // };
+  const handleedit_Project_Title = (event, value) => {
+    // this.setState({
+    //   edit_Project_Title: value,
+    // });
+    setEditProjectTitle(value);
+  };
+
+  // const handleedit_Project_Code = (event, value) => {
+  //   this.setState({
+  //     edit_Project_Code: value,
+  //   });
+  // };
+
+  const handleedit_Project_Code = (event, value) => {
+    // this.setState({
+    //   edit_Project_Code: value,
+    // });
+    setEditProjectCode(value);
+  };
+  return (
+    // <>
+    //   <div
+    //     className={styles.anihover}
+    //     onClick={addProject}
+    //     style={{ padding: "10px" }}
+    //   >
+    //     <FontIcon
+    //       aria-label="CircleAddition"
+    //       iconName="CircleAddition"
+    //       style={{
+    //         color: "rgb(0 120 212)",
+    //         padding: "0 10px",
+    //         fontSize: "17px",
+    //       }}
+    //     />
+    //     <Text style={{ marginLeft: "5px" }} variant="xLarge">
+    //       Add Projects
+    //     </Text>
+    //   </div>
+    //   <Separator />
+    //   <Nav
+    //     styles={navStyles}
+    //     onRenderLink={_onRenderLink}
+    //     onRenderGroupHeader={_onRenderGroupHeader}
+    //     ariaLabel="Nav example similar to one found in this demo page"
+    //     groups={items}
+    //   />
+    //   <Dialog
+    //     containerClassName={"ms-dialogMainOverride " + styles.addProjectDialog}
+    //     hidden={hideDialog}
+    //     dialogContentProps={dialogContentProps}
+    //     isBlocking={false}
+    //     onDismiss={toggleHideDialog}
+    //   >
+    //     {isAdded ? (
+    //       <div>
+    //         <div style={{ margin: "15px" }}>
+    //           <div
+    //             style={{
+    //               width: "350px",
+    //             }}
+    //           >
+    //             <TextField
+    //               required
+    //               label="Project Title"
+    //               placeholder="Type Project Name"
+    //               resizable={false}
+    //               onChange={handleadd_Project_Title}
+    //               errorMessage={add_Project_Title_err}
+    //             />
+    //           </div>
+
+    //           <div style={{ width: "350px", marginTop: "15px" }}>
+    //             <TextField
+    //               required
+    //               label="Project Code"
+    //               placeholder="Type Project Unique ID"
+    //               onChange={handleadd_Project_Code}
+    //               resizable={false}
+    //               errorMessage={add_Project_Code_err}
+    //             />
+    //           </div>
+    //         </div>
+    //         <DialogFooter>
+    //           <PrimaryButton
+    //             style={{
+    //               backgroundColor: "#0078D4",
+    //             }}
+    //             onClick={handleaddProject}
+    //             text="Submit"
+    //           />
+    //           <DefaultButton onClick={toggleHideDialog} text="Cancel" />
+    //         </DialogFooter>
+    //       </div>
+    //     ) : (
+    //       <div>
+    //         <FontIcon
+    //           aria-label="SkypeCircleCheck"
+    //           iconName="SkypeCircleCheck"
+    //           className={iconClass}
+    //         />
+    //         <Label
+    //           style={{
+    //             margin: "0 auto",
+    //             width: "300px",
+    //             textAlign: "center",
+    //           }}
+    //         >
+    //           Project created Successfully
+    //         </Label>
+
+    //         <DialogFooter>
+    //           <DefaultButton onClick={toggleHideDialog} text="Close" />
+    //         </DialogFooter>
+    //       </div>
+    //     )}
+    //   </Dialog>
+
+    //   {/*Edit Projects*/}
+    //   <Dialog
+    //     containerClassName={"ms-dialogMainOverride " + styles.addProjectDialog}
+    //     hidden={hideeditDialog}
+    //     dialogContentProps={dialogContentProps_edit}
+    //     isBlocking={false}
+    //     onDismiss={toggleeditHideDialog}
+    //   >
+    //     {isEdited ? (
+    //       <div>
+    //         <div style={{ margin: "15px" }}>
+    //           <div
+    //             style={{
+    //               width: "350px",
+    //             }}
+    //           >
+    //             <TextField
+    //               required
+    //               label="Project Title"
+    //               placeholder="Type Project Name"
+    //               resizable={false}
+    //               value={edit_Project_Title}
+    //               onChange={handleedit_Project_Title}
+    //               errorMessage={edit_Project_Title_err}
+    //             />
+    //           </div>
+
+    //           <div style={{ width: "350px", marginTop: "15px" }}>
+    //             <TextField
+    //               required
+    //               label="Project Code"
+    //               placeholder="Type Project Unique ID"
+    //               onChange={handleedit_Project_Code}
+    //               resizable={false}
+    //               value={edit_Project_Code}
+    //               errorMessage={edit_Project_Code_err}
+    //             />
+    //           </div>
+    //         </div>
+    //         <DialogFooter>
+    //           <DefaultButton onClick={Deleteitem} text="Delete" />
+    //           <PrimaryButton
+    //             style={{
+    //               backgroundColor: "#0078D4",
+    //             }}
+    //             onClick={handleeditProject}
+    //             text="Submit"
+    //           />
+    //           <DefaultButton onClick={toggleeditHideDialog} text="Cancel" />
+    //         </DialogFooter>
+    //       </div>
+    //     ) : (
+    //       <div>
+    //         <FontIcon
+    //           aria-label="SkypeCircleCheck"
+    //           iconName="SkypeCircleCheck"
+    //           className={iconClass}
+    //         />
+    //         <Label
+    //           style={{
+    //             margin: "0 auto",
+    //             width: "300px",
+    //             textAlign: "center",
+    //           }}
+    //         >
+    //           Project Details Altered Successfully
+    //         </Label>
+
+    //         <DialogFooter>
+    //           <DefaultButton onClick={toggleeditHideDialog} text="Close" />
+    //         </DialogFooter>
+    //       </div>
+    //     )}
+    //   </Dialog>
+    // </>
+    <div style={{ width: "100%" }}>
+      <div style={{ display: "flex" }}>
+        <div style={{ width: "50%" }}>
+          <span style={{ fontSize: "20px", fontWeight: "600" }}>Project</span>
+        </div>
+        <div style={{ width: "50%", textAlign: "end" }}>
+          <span>
+            <img src={require("../../../../../Images/Group.png")} alt="add" />
+          </span>
+        </div>
+      </div>
+      {isEdited ? (
+        <div>
+          <Drawer
+            title="Add Project"
+            onClose={onClose}
+            open={open}
+            footer={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button
+                  htmlType="submit"
+                  style={{
+                    width: "149px",
+                    backgroundColor: "rgba(74, 173, 146, 1)",
+                    color: "white",
+                  }}
+                  disabled={disablesubmit}
+                  onClick={() => form.submit()} // Trigger the form submit manually
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={() => toggleHideDialog()}
+                  style={{
+                    width: "149px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            }
+          >
+            <div>
+              <Form
+                name="basic"
+                layout="vertical"
+                autoComplete="off"
+                onFinish={() => handleaddProject()}
+                form={form}
+              >
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Project Title"
+                      name="Project Title"
+                      style={{
+                        maxWidth: 400,
+                        marginTop: 37,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your department title!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleadd_Project_Title}
+                        value={add_Project_Title}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Project Code"
+                      name="Project Code"
+                      style={{
+                        maxWidth: 400,
+                        marginTop: 17,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your department code!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleadd_Project_Code}
+                        value={add_Project_Code}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+          </Drawer>
+        </div>
+      ) : (
+        <></>
+      )}
+      {/* <div>
+      {items.map((item) => (
+        <Card title={item.add_Project_Title} bordered={false}>
+        <p>Project Code: {item.ProjectID}</p>
+      ))}
+
+      </div> */}
+    </div>
+  );
 }

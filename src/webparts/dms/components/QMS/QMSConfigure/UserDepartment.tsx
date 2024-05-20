@@ -1042,68 +1042,30 @@ export default function UserDepartment(Props) {
   const handleAddUser = async () => {
     console.log("handleAddUser function called");
     const sp: SPFI = getSp();
-    if (add_Level != "") {
-      if (add_Subdepartment != "") {
-        if (add_Department != "") {
-          if (add_UserName != "") {
-            if (add_EmailID != "") {
-              await sp.web.lists
-                .getByTitle("Approverlist")
-                .items.add({
-                  Name: add_UserName,
-                  EmailID: add_EmailID,
-                  Department: add_Department,
-                  SubDepartment: add_Subdepartment,
-                  Level: add_Level,
-                })
-                .then(async (res) =>
-                  // this.setState({
-                  //   isAdded: false,
-                  //   items: await sp.web.lists.getByTitle("Approverlist").items(),
-                  //   overalllist: await sp.web.lists
-                  //     .getByTitle("Approverlist")
-                  //     .items(),
-                  // })
-                  {
-                    setIsAdded(false);
-                    setItems(
-                      await sp.web.lists.getByTitle("Approverlist").items()
-                    );
-                    setOverallList(
-                      await sp.web.lists.getByTitle("Approverlist").items()
-                    );
-                  }
-                );
-            } else {
-              // this.setState({
-              //   add_EmailID_err: "Please specify User MailID",
-              // });
-              setAddEmailID("Please specify User MailID");
-            }
-          } else {
-            // this.setState({
-            //   add_UserName_err: "Please specify UserName",
-            // });
-            setAddUserNameErr("Please specify UserName");
-          }
-        } else {
-          // this.setState({
-          //   add_Department_err: "Please specify Department",
-          // });
-          setAddDepartmentErr("Please specify Department");
-        }
-      } else {
+    await sp.web.lists
+      .getByTitle("Approverlist")
+      .items.add({
+        Name: add_UserName,
+        EmailID: add_EmailID,
+        Department: add_Department,
+        SubDepartment: add_Subdepartment,
+        Level: add_Level,
+      })
+      .then(async (res) =>
         // this.setState({
-        //   add_Subdepartment_err: "Please specify Sub Department",
-        // });
-        setAddSubdepartmentErr("Please specify Sub Department");
-      }
-    } else {
-      // this.setState({
-      //   add_Level_err: "Please specify Level",
-      // });
-      setAddLevelErr("Please specify Level");
-    }
+        //   isAdded: false,
+        //   items: await sp.web.lists.getByTitle("Approverlist").items(),
+        //   overalllist: await sp.web.lists
+        //     .getByTitle("Approverlist")
+        //     .items(),
+        // })
+        {
+          setIsAdded(false);
+          setItems(await sp.web.lists.getByTitle("Approverlist").items());
+          setOverallList(await sp.web.lists.getByTitle("Approverlist").items());
+        }
+      );
+
     setOpen(false);
     form.resetFields();
     openNotification();
