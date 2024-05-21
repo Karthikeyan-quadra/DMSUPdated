@@ -1264,8 +1264,16 @@ export default function Department(props) {
     //     )}
     //   </Dialog>
     // </>
-    <div>
-      {/* <div>
+    <div
+      style={{
+        marginLeft: "3%",
+        marginTop: "50px",
+        width: "98%",
+        display: "flex",
+      }}
+    >
+      <div style={{ width: "54%", display: "flex" }}>
+        {/* <div>
         <Row gutter={24}>
           <Row gutter={24}>
             <Col span={16}>
@@ -1289,34 +1297,34 @@ export default function Department(props) {
         </Row>
       </div> */}
 
-      <div style={{ marginLeft: "3%", marginTop: "50px", width: "98%" }}>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              width: "54%",
-              display: "flex",
-              backgroundColor: "rgba(237, 247, 245, 1)",
-              border: "1px solid rgba(237, 247, 245, 1)",
-              borderRadius: "7px",
-              padding: "10px",
-            }}
-          >
-            <div style={{ width: "50%" }}>
-              <span style={{ fontSize: "20px", fontWeight: "600" }}>
-                Departments
-              </span>
+        <div style={{ width: "100%" }}>
+          <div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                backgroundColor: "rgba(237, 247, 245, 1)",
+                border: "1px solid rgba(237, 247, 245, 1)",
+                borderRadius: "7px",
+                padding: "10px",
+              }}
+            >
+              <div style={{ width: "50%" }}>
+                <span style={{ fontSize: "20px", fontWeight: "600" }}>
+                  Departments
+                </span>
+              </div>
+              <div style={{ width: "50%", textAlign: "end" }}>
+                <span onClick={addDepartment}>
+                  <img
+                    src={require("../../../../../Images/Group.png")}
+                    alt="add"
+                  />
+                </span>
+              </div>
             </div>
-            <div style={{ width: "50%", textAlign: "end" }}>
-              <span onClick={addDepartment}>
-                <img
-                  src={require("../../../../../Images/Group.png")}
-                  alt="add"
-                />
-              </span>
-            </div>
-          </div>
 
-          <div
+            {/* <div
             style={{
               width: "42%",
               display: "flex",
@@ -1326,7 +1334,7 @@ export default function Department(props) {
               padding: "10px",
               marginLeft: "10px",
             }}
-          >
+          > */}
             {/* <div style={{ width: "50%" }}>
               <span style={{ fontSize: "20px", fontWeight: "600" }}>
                 Project
@@ -1340,16 +1348,191 @@ export default function Department(props) {
                 />
               </span>
             </div> */}
-            <Project />
+            {/* <Project />
+          </div> */}
+          </div>
+
+          {isDeptAdded ? (
+            <div>
+              <Drawer
+                title="Add Department"
+                onClose={onClose}
+                open={open}
+                footer={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Button
+                      htmlType="submit"
+                      style={{
+                        width: "149px",
+                        backgroundColor: "rgba(74, 173, 146, 1)",
+                        color: "white",
+                      }}
+                      disabled={disablesubmit}
+                      onClick={() => form.submit()} // Trigger the form submit manually
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      onClick={() => toggleDeptHideDialog()}
+                      style={{
+                        width: "149px",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                }
+              >
+                <div>
+                  <Form
+                    name="basic"
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={() => handleaddDept()}
+                    form={form}
+                  >
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Department Title"
+                          name="Department Title"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 37,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your department title!",
+                            },
+                          ]}
+                        >
+                          <Input
+                            onChange={handleadd_Dept_Title}
+                            value={add_Dept_Title}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={24}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Department Code"
+                          name="Department Code"
+                          style={{
+                            maxWidth: 400,
+                            marginTop: 17,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your department code!",
+                            },
+                          ]}
+                        >
+                          <Input
+                            onChange={handleadd_Dept_Code}
+                            value={add_Dept_Code}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Form>
+                </div>
+              </Drawer>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "10px",
+              marginBottom: "5px",
+            }}
+          >
+            {items.map((item) => (
+              <Card
+                title={
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span style={{ width: "50%" }}>{item.name}</span>
+
+                    <span style={{ width: "50%" }}>{item.code}</span>
+                    <span>
+                      <img
+                        onClick={() => editDept(item)}
+                        src={require("../../../../../Images/Edit.png")}
+                        alt="Edit"
+                      />
+                    </span>
+                  </div>
+                }
+                key={item.code}
+                style={{ marginTop: "10px" }}
+              >
+                {item.links.map((link) => (
+                  <div
+                    key={link.Id}
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span style={{ width: "50%" }}>{link.name}</span>
+                    <span style={{ width: "50%" }}>{link.code}</span>
+                    <span>
+                      <img
+                        onClick={() => editSection(link)}
+                        src={require("../../../../../Images/Edit.png")}
+                        alt="Edit"
+                      />
+                    </span>
+                  </div>
+                ))}
+                <div
+                  style={{ display: "flex", marginTop: "10px" }}
+                  onClick={() => addSection(item)}
+                >
+                  <img
+                    src={require("../../../../../Images/Group.png")}
+                    alt="add"
+                    style={{ width: "4%", height: "4%" }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: "400",
+                      color: "rgba(18, 150, 114, 1)",
+                      textDecoration: "underline",
+                      marginLeft: "4px",
+                    }}
+                  >
+                    Add Sub Department
+                  </span>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
 
-        {isDeptAdded ? (
+        {isDeptEdited ? (
           <div>
             <Drawer
-              title="Add Department"
-              onClose={onClose}
-              open={open}
+              title="Edit Department"
+              onClose={onEditDeptClose}
+              open={editdeptopen}
               footer={
                 <div
                   style={{
@@ -1370,13 +1553,15 @@ export default function Department(props) {
                     Submit
                   </Button>
                   <Button
-                    onClick={() => toggleDeptHideDialog()}
+                    onClick={Deleteitem}
                     style={{
                       width: "149px",
                       marginLeft: "5px",
+                      border: "1px solid rgba(203, 68, 68, 1)",
+                      color: "rgba(203, 68, 68, 1)",
                     }}
                   >
-                    Cancel
+                    Delete
                   </Button>
                 </div>
               }
@@ -1386,7 +1571,7 @@ export default function Department(props) {
                   name="basic"
                   layout="vertical"
                   autoComplete="off"
-                  onFinish={() => handleaddDept()}
+                  onFinish={() => handleeditDept()}
                   form={form}
                 >
                   <Row gutter={24}>
@@ -1408,8 +1593,8 @@ export default function Department(props) {
                         ]}
                       >
                         <Input
-                          onChange={handleadd_Dept_Title}
-                          value={add_Dept_Title}
+                          onChange={handleedit_Dept_Title}
+                          value={edit_Dept_Title}
                         />
                       </Form.Item>
                     </Col>
@@ -1434,8 +1619,8 @@ export default function Department(props) {
                         ]}
                       >
                         <Input
-                          onChange={handleadd_Dept_Code}
-                          value={add_Dept_Code}
+                          onChange={handleedit_Dept_Code}
+                          value={edit_Dept_Code}
                         />
                       </Form.Item>
                     </Col>
@@ -1447,406 +1632,240 @@ export default function Department(props) {
         ) : (
           <></>
         )}
-        <div
-          style={{
-            width: "54%",
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "10px",
-          }}
-        >
-          {items.map((item) => (
-            <Card
-              title={
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <span>{item.name}</span>
 
-                  <span>{item.code}</span>
-                  <span>
-                    <img
-                      onClick={() => editDept(item)}
-                      src={require("../../../../../Images/Edit.png")}
-                      alt="Edit"
-                    />
-                  </span>
+        {isSectionAdded ? (
+          <div>
+            <Drawer
+              title="Add Section"
+              onClose={onSectionClose}
+              open={sectionopen}
+              footer={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Button
+                    htmlType="submit"
+                    style={{
+                      width: "149px",
+                      backgroundColor: "rgba(74, 173, 146, 1)",
+                      color: "white",
+                    }}
+                    disabled={disablesubmit}
+                    onClick={() => form.submit()} // Trigger the form submit manually
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    onClick={() => toggleSectionHideDialog()}
+                    style={{
+                      width: "149px",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               }
-              key={item.code}
-              style={{ marginTop: "10px" }}
             >
-              {item.links.map((link) => (
+              <div>
+                <Form
+                  name="basic"
+                  layout="vertical"
+                  autoComplete="off"
+                  onFinish={() => handleaddSection()}
+                  form={form}
+                >
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="Department Title"
+                        name="Department Title"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 37,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        <Input defaultValue={sectionDept} disabled />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="Sub-Section Title"
+                        name="Sub-Section Title"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your sub-section title!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleadd_Section_Title}
+                          value={add_Section_Title}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="Sub-Section Code"
+                        name="Sub-Section Code"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your sub-section code!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleadd_Section_Code}
+                          value={add_Section_Code}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
+            </Drawer>
+          </div>
+        ) : (
+          <></>
+        )}
+        {isSectionEdited ? (
+          <div>
+            <Drawer
+              title="Edit Section"
+              onClose={onEditSectionClose}
+              open={editsectionopen}
+              footer={
                 <div
-                  key={link.Id}
-                  style={{ display: "flex", justifyContent: "space-between" }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
                 >
-                  <span>{link.name}</span>
-                  <span>{link.code}</span>
-                  <span>
-                    <img
-                      onClick={() => editSection(link)}
-                      src={require("../../../../../Images/Edit.png")}
-                      alt="Edit"
-                    />
-                  </span>
+                  <Button
+                    htmlType="submit"
+                    style={{
+                      width: "149px",
+                      backgroundColor: "rgba(74, 173, 146, 1)",
+                      color: "white",
+                    }}
+                    disabled={disablesubmit}
+                    onClick={() => form.submit()}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    onClick={DeleteSection}
+                    style={{
+                      width: "149px",
+                      marginLeft: "5px",
+                      border: "1px solid rgba(203, 68, 68, 1)",
+                      color: "rgba(203, 68, 68, 1)",
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </div>
-              ))}
-              <div
-                style={{ display: "flex", marginTop: "10px" }}
-                onClick={() => addSection(item)}
-              >
-                <img
-                  src={require("../../../../../Images/Group.png")}
-                  alt="add"
-                  style={{ width: "4%", height: "4%" }}
-                />
-                <span
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "400",
-                    color: "rgba(18, 150, 114, 1)",
-                    textDecoration: "underline",
-                    marginLeft: "4px",
-                  }}
+              }
+            >
+              <div>
+                <Form
+                  name="basic"
+                  layout="vertical"
+                  autoComplete="off"
+                  onFinish={() => handleeditSection()}
+                  form={form}
                 >
-                  Add Sub Department
-                </span>
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="Sub-Section Title"
+                        name="Sub-Section Title"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your sub-section title!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleedit_Section_Title}
+                          value={add_Section_Title}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={24}>
+                    <Col span={24}>
+                      <Form.Item
+                        label="Sub-Section Code"
+                        name="Sub-Section Code"
+                        style={{
+                          maxWidth: 400,
+                          marginTop: 17,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your sub-section code!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleedit_Section_Code}
+                          value={edit_Section_Code}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
               </div>
-            </Card>
-          ))}
-        </div>
+            </Drawer>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
-
-      {isDeptEdited ? (
-        <div>
-          <Drawer
-            title="Edit Department"
-            onClose={onEditDeptClose}
-            open={editdeptopen}
-            footer={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Button
-                  htmlType="submit"
-                  style={{
-                    width: "149px",
-                    backgroundColor: "rgba(74, 173, 146, 1)",
-                    color: "white",
-                  }}
-                  disabled={disablesubmit}
-                  onClick={() => form.submit()} // Trigger the form submit manually
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={Deleteitem}
-                  style={{
-                    width: "149px",
-                    marginLeft: "5px",
-                    border: "1px solid rgba(203, 68, 68, 1)",
-                    color: "rgba(203, 68, 68, 1)",
-                  }}
-                >
-                  Delete
-                </Button>
-              </div>
-            }
-          >
-            <div>
-              <Form
-                name="basic"
-                layout="vertical"
-                autoComplete="off"
-                onFinish={() => handleeditDept()}
-                form={form}
-              >
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Department Title"
-                      name="Department Title"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 37,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your department title!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleedit_Dept_Title}
-                        value={edit_Dept_Title}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Department Code"
-                      name="Department Code"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 17,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your department code!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleedit_Dept_Code}
-                        value={edit_Dept_Code}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-          </Drawer>
-        </div>
-      ) : (
-        <></>
-      )}
-
-      {isSectionAdded ? (
-        <div>
-          <Drawer
-            title="Add Section"
-            onClose={onSectionClose}
-            open={sectionopen}
-            footer={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Button
-                  htmlType="submit"
-                  style={{
-                    width: "149px",
-                    backgroundColor: "rgba(74, 173, 146, 1)",
-                    color: "white",
-                  }}
-                  disabled={disablesubmit}
-                  onClick={() => form.submit()} // Trigger the form submit manually
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={() => toggleSectionHideDialog()}
-                  style={{
-                    width: "149px",
-                    marginLeft: "5px",
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            }
-          >
-            <div>
-              <Form
-                name="basic"
-                layout="vertical"
-                autoComplete="off"
-                onFinish={() => handleaddSection()}
-                form={form}
-              >
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Department Title"
-                      name="Department Title"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 37,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      <Input defaultValue={sectionDept} disabled />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Sub-Section Title"
-                      name="Sub-Section Title"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 17,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your sub-section title!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleadd_Section_Title}
-                        value={add_Section_Title}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Sub-Section Code"
-                      name="Sub-Section Code"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 17,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your sub-section code!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleadd_Section_Code}
-                        value={add_Section_Code}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-          </Drawer>
-        </div>
-      ) : (
-        <></>
-      )}
-      {isSectionEdited ? (
-        <div>
-          <Drawer
-            title="Edit Section"
-            onClose={onEditSectionClose}
-            open={editsectionopen}
-            footer={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Button
-                  htmlType="submit"
-                  style={{
-                    width: "149px",
-                    backgroundColor: "rgba(74, 173, 146, 1)",
-                    color: "white",
-                  }}
-                  disabled={disablesubmit}
-                  onClick={() => form.submit()}
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={DeleteSection}
-                  style={{
-                    width: "149px",
-                    marginLeft: "5px",
-                    border: "1px solid rgba(203, 68, 68, 1)",
-                    color: "rgba(203, 68, 68, 1)",
-                  }}
-                >
-                  Delete
-                </Button>
-              </div>
-            }
-          >
-            <div>
-              <Form
-                name="basic"
-                layout="vertical"
-                autoComplete="off"
-                onFinish={() => handleeditSection()}
-                form={form}
-              >
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Sub-Section Title"
-                      name="Sub-Section Title"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 17,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your sub-section title!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleedit_Section_Title}
-                        value={add_Section_Title}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={24}>
-                    <Form.Item
-                      label="Sub-Section Code"
-                      name="Sub-Section Code"
-                      style={{
-                        maxWidth: 400,
-                        marginTop: 17,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your sub-section code!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleedit_Section_Code}
-                        value={edit_Section_Code}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-          </Drawer>
-        </div>
-      ) : (
-        <></>
-      )}
+      <div
+        style={{
+          width: "42%",
+          display: "flex",
+          marginLeft: "10px",
+        }}
+      >
+        <Project />
+      </div>
     </div>
   );
 }

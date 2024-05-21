@@ -717,8 +717,21 @@ export default function Project() {
     //     )}
     //   </Dialog>
     // </>
-    <div style={{ width: "100%" }}>
-      <div style={{ display: "flex" }}>
+
+    <div
+      style={{
+        width: "100%",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          backgroundColor: "rgba(237, 247, 245, 1)",
+          border: "1px solid rgba(237, 247, 245, 1)",
+          borderRadius: "7px",
+          padding: "10px",
+        }}
+      >
         <div style={{ width: "50%" }}>
           <span style={{ fontSize: "20px", fontWeight: "600" }}>Projects</span>
         </div>
@@ -838,17 +851,28 @@ export default function Project() {
       ))}
 
       </div> */}
-      <div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          marginTop: "20px",
+        }}
+      >
         {items.map((item: any) => (
           <Card title="" key={item.code}>
             {item.links.map((link) => (
               <div
                 key={link.Id}
-                style={{ display: "flex", justifyContent: "space-between" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "5px",
+                }}
               >
-                <span>{link.name}</span>
-                <span>{link.code}</span>
-                <span>
+                <span style={{ width: "50%" }}>{link.name}</span>
+                <span style={{ width: "44%" }}>{link.code}</span>
+                <span style={{ width: "6%" }}>
                   <img
                     onClick={() => editProject(link)}
                     src={require("../../../../../Images/Edit.png")}
