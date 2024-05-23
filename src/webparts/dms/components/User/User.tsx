@@ -307,7 +307,7 @@ const columns: any = [
     title: "Approver",
     dataIndex: "ApprovalStatus",
     // width: 100,
-    width: "10%",
+    width: "11%",
     align: "left",
     resizable: true,
   },
@@ -589,6 +589,8 @@ export default function User(props) {
   useEffect(() => {
     // setRadioValue("New Files");
     console.log(radiovalue);
+    setValueFileType(radiovalue);
+    console.log(valueFileType);
   }, [radiovalue]);
 
   useEffect(() => {
@@ -2018,17 +2020,145 @@ export default function User(props) {
   //   }
   // };
 
+  // const clickGenerate = async () => {
+  //   // Clear arrays and other relevant state variables
+  //   console.log("clickGenerate function called");
+
+  //   let somee: any = [];
+  //   let somee1: any = [];
+  //   let somee2: any = [];
+  //   let lastDigit: any = "";
+  //   let digitArray: any = [];
+  //   console.log(params111);
+  //   console.log(params111.length);
+  //   if (params111.length <= 0) {
+  //     alert("Please add Department Name before generating ID!");
+  //   } else if (params2.length <= 0) {
+  //     alert("Please add Document Name before generating ID!");
+  //   } else if (params5.length <= 0) {
+  //     alert("Please add Project Name before generating ID!");
+  //   } else if (SubfolderState === true && params3.length <= 0) {
+  //     alert("Please add Sub Folders Main before generating ID!");
+  //   } else if (SubfolderState1 === true && params4.length <= 0) {
+  //     alert("Please add Sub Folders before generating ID!");
+  //   } else {
+  //     if (params5.length > 0) {
+  //       await somee1.push("TEPL");
+  //       await somee1.push(params5);
+  //     }
+  //     if (params111.length > 0) {
+  //       await somee.push(params111);
+  //       await somee1.push(params111);
+  //       if (params1.length > 0) {
+  //         await somee1.push(params1);
+  //       }
+  //       await somee2.push(params11);
+  //     }
+  //     if (params3.length > 0) {
+  //       await somee.push(params3);
+  //       await somee2.push(params3);
+  //     }
+  //     if (params4.length > 0) {
+  //       await somee.push(params4);
+  //       await somee2.push(params4);
+  //     }
+  //     if (params2.length > 0) {
+  //       await somee.push(params2);
+  //       await somee1.push(params2);
+  //       await somee2.push(params22);
+  //     }
+
+  //     console.log(somee);
+  //     console.log(somee.join("/"));
+  //     console.log(somee1.join("-"));
+  //     console.log(somee2.join("/"));
+
+  //     const sp: SPFI = getSp();
+  //     // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+  //     // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
+  //     let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join(
+  //       "/"
+  //     )}`;
+
+  //     const list = sp.web.lists.getByTitle("Shared Documents1");
+  //     try {
+  //       const items = await list.items
+  //         .select("Id,Title,FileRef,FileLeafRef,FileDirRef")
+  //         .filter(`FileDirRef eq '${folderPath}'`)
+  //         .getAll();
+  //       console.log("Fetched items:", items);
+
+  //       if (items.length > 0) {
+  //         // console.log('HI')
+  //         items.forEach((item: any) => {
+  //           console.log(item);
+  //           if (item && item.FileLeafRef) {
+  //             console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
+
+  //             // Extract digits using a regular expression
+  //             let extractedDigits = item.FileLeafRef.match(/\d+/g);
+
+  //             if (extractedDigits) {
+  //               console.log("Extracted Digits:", extractedDigits);
+  //               digitArray.push(...extractedDigits); // Use spread operator to push individual digits
+  //             } else {
+  //               console.log(
+  //                 "No valid digits found in FileLeafRef:",
+  //                 item.FileLeafRef
+  //               );
+  //             }
+  //           }
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching items:", error);
+  //     }
+
+  //     if (digitArray.length > 0) {
+  //       let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
+  //       let last = sortNumbers[sortNumbers.length - 1];
+  //       let returnNumber: string = (last + 1).toString().padStart(4, "0");
+
+  //       if (returnNumber.length === 1) {
+  //         lastDigit = "000" + returnNumber;
+  //       } else if (returnNumber.length === 2) {
+  //         lastDigit = "00" + returnNumber;
+  //       } else if (returnNumber.length === 3) {
+  //         lastDigit = "0" + returnNumber;
+  //       } else if (returnNumber.length === 4) {
+  //         lastDigit = returnNumber;
+  //       }
+  //     } else {
+  //       lastDigit = "0001";
+  //     }
+
+  //     console.log("Digit Array:", digitArray);
+
+  //     somee1.push(lastDigit);
+  //     console.log(lastDigit);
+  //     console.log(somee1);
+
+  //     // this.setState({
+  //     //   fileUrl: somee2.join("/"),
+  //     //   fileNameStruct: somee1.join("-"),
+  //     // });
+  //     setFileUrl(somee2.join("/"));
+  //     setFileNameStruct(somee1.join("-"));
+
+  //     // console.log(this.state);
+  //   }
+  // };
+
   const clickGenerate = async () => {
-    // Clear arrays and other relevant state variables
     console.log("clickGenerate function called");
 
     let somee: any = [];
     let somee1: any = [];
     let somee2: any = [];
     let lastDigit: any = "";
-    let digitArray: any = [];
     console.log(params111);
     console.log(params111.length);
+
     if (params111.length <= 0) {
       alert("Please add Department Name before generating ID!");
     } else if (params2.length <= 0) {
@@ -2041,29 +2171,29 @@ export default function User(props) {
       alert("Please add Sub Folders before generating ID!");
     } else {
       if (params5.length > 0) {
-        await somee1.push("TEPL");
-        await somee1.push(params5);
+        somee1.push("TEPL");
+        somee1.push(params5);
       }
       if (params111.length > 0) {
-        await somee.push(params111);
-        await somee1.push(params111);
+        somee.push(params111);
+        somee1.push(params111);
         if (params1.length > 0) {
-          await somee1.push(params1);
+          somee1.push(params1);
         }
-        await somee2.push(params11);
+        somee2.push(params11);
       }
       if (params3.length > 0) {
-        await somee.push(params3);
-        await somee2.push(params3);
+        somee.push(params3);
+        somee2.push(params3);
       }
       if (params4.length > 0) {
-        await somee.push(params4);
-        await somee2.push(params4);
+        somee.push(params4);
+        somee2.push(params4);
       }
       if (params2.length > 0) {
-        await somee.push(params2);
-        await somee1.push(params2);
-        await somee2.push(params22);
+        somee.push(params2);
+        somee1.push(params2);
+        somee2.push(params22);
       }
 
       console.log(somee);
@@ -2072,78 +2202,129 @@ export default function User(props) {
       console.log(somee2.join("/"));
 
       const sp: SPFI = getSp();
-      // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-      // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-      let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join(
-        "/"
-      )}`;
+      const documentLibraryName = "Shared Documents1";
+      // let folderPath = `/sites/DMS-Quadra/${documentLibraryName}/${somee2.join(
+      //   "/"
+      // )}`;
 
-      const list = sp.web.lists.getByTitle("Original File");
-      try {
-        const items = await list.items
-          .select("Id,Title,FileRef,FileLeafRef,FileDirRef")
-          .filter(`FileDirRef eq '${folderPath}'`)
-          .getAll();
-        console.log("Fetched items:", items);
+      const folders = somee2.join("/").split("/");
+      let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
 
-        if (items.length > 0) {
-          // console.log('HI')
-          items.forEach((item: any) => {
-            console.log(item);
-            if (item && item.FileLeafRef) {
-              console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
-
-              // Extract digits using a regular expression
-              let extractedDigits = item.FileLeafRef.match(/\d+/g);
-
-              if (extractedDigits) {
-                console.log("Extracted Digits:", extractedDigits);
-                digitArray.push(...extractedDigits); // Use spread operator to push individual digits
-              } else {
-                console.log(
-                  "No valid digits found in FileLeafRef:",
-                  item.FileLeafRef
-                );
-              }
-            }
-          });
+      for (const folderName of folders) {
+        try {
+          currentFolderPath += `/${folderName}`;
+          console.log(currentFolderPath);
+          const folder = await sp.web.getFolderByServerRelativePath(
+            currentFolderPath
+          )();
+          console.log("folder:", folder);
+          console.log(
+            `Folder "${folderName}" already exists at path: ${currentFolderPath}`
+          );
+          // const list1 = await sp.web.lists
+          //   .getByTitle(currentFolderPath)
+          //   .items();
+          // console.log(list1);
+        } catch (error) {
+          console.error(
+            `Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`
+          );
         }
-      } catch (error) {
-        console.error("Error fetching items:", error);
       }
 
-      if (digitArray.length > 0) {
-        let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
-        let last = sortNumbers[sortNumbers.length - 1];
-        let returnNumber: string = (last + 1).toString().padStart(4, "0");
+      // let files: any = await sp.web.lists
+      //   .getByTitle("Shared Documents")
+      //   .items();
+      // console.log(files);
+      // console.log(files.ID);
 
-        if (returnNumber.length === 1) {
-          lastDigit = "000" + returnNumber;
-        } else if (returnNumber.length === 2) {
-          lastDigit = "00" + returnNumber;
-        } else if (returnNumber.length === 3) {
-          lastDigit = "0" + returnNumber;
-        } else if (returnNumber.length === 4) {
-          lastDigit = returnNumber;
-        }
+      let allFiles: any = await sp.web.lists
+        .getByTitle("Shared Documents")
+        .items.select("ID", "FileRef")
+        .getAll();
+      console.log(allFiles);
+
+      let filesInFolder = allFiles.filter((file) =>
+        file.FileRef.includes(currentFolderPath)
+      );
+      console.log("filesInFolder:", filesInFolder);
+
+      let fileIDs = filesInFolder.map((file) => file.ID);
+      console.log("File IDs in the folder:", fileIDs);
+
+      // let allFiles2 = await sp.web.lists
+      //   .getByTitle("Shared Documents")
+      //   .items.select("ID", "FileRef", "FileSystemObjectType")
+      //   .getAll();
+      // console.log(allFiles2);
+
+      // let fileID = allFiles
+      //   .filter((file) => file.FileSystemObjectType === 0)
+      //   .map((file) => file.ID);
+
+      // console.log("File ID's in the folder:", fileID);
+
+      // const rootFolders = await sp.web.lists
+      //   .getByTitle("Shared Documents")
+      //   .rootFolder.folders();
+      // console.log(rootFolders);
+
+      // for (const folder of rootFolders) {
+      //   // Get the subfolders of the current folder
+      //   const subfolders:any = await sp.web
+      //     .getFolderByServerRelativePath(folder.ServerRelativeUrl)
+      //     .folders();
+      //   console.log(subfolders);
+
+      //   // Check if the folder contains subfolders
+      //   // if (subfolders.length > 0) {
+      //   //     foldersWithSubfolders.push(folder);
+      //   // }
+      // }
+
+      // const rootFolder2 = await sp.web.lists
+      //   .getByTitle("Shared Documents")
+      //   .rootFolder();
+      //   console.log(rootFolder2);
+
+      // const rootFolder3 = await sp.web.lists
+      // .getByTitle("Shared Documents").
+
+      // Fetch the maximum ID from files in the specific folder
+      // let maxId = Math.max(...fileIDs);
+      // let nextId = maxId + 1;
+
+      // try {
+      //   // const list = sp.web.lists.getByTitle(documentLibraryName);
+      //   // console.log("List fetched:", list);
+
+      //   // const items = await list.items.select("ID").top(1)();
+      //   // console.log("Items:", items);
+
+      //   if (items.length > 0) {
+      //     maxId = items[0].ID;
+      //   }
+      // } catch (error) {
+      //   console.error("Error fetching max ID from Shared Documents1:", error);
+      // }
+      let maxId;
+      if (fileIDs.length === 0) {
+        // If no files exist in the folder, start the ID numbering from 001
+        maxId = 0;
       } else {
-        lastDigit = "0001";
+        // Find the maximum ID from existing file IDs using Math.max()
+        maxId = Math.max(...fileIDs);
       }
 
-      console.log("Digit Array:", digitArray);
+      let returnNumber = (maxId + 1).toString().padStart(4, "0");
+      lastDigit = returnNumber;
 
       somee1.push(lastDigit);
-      console.log(lastDigit);
+      console.log("Generated ID:", lastDigit);
       console.log(somee1);
 
-      // this.setState({
-      //   fileUrl: somee2.join("/"),
-      //   fileNameStruct: somee1.join("-"),
-      // });
       setFileUrl(somee2.join("/"));
       setFileNameStruct(somee1.join("-"));
-
-      // console.log(this.state);
     }
   };
 
@@ -3186,9 +3367,14 @@ export default function User(props) {
   };
 
   const filesaveold = async () => {
+    console.log("filesaveold function called");
+
+    console.log("valueFileType:", valueFileType);
+
     setDisableSubmit(true);
     console.log(filenames.length);
     console.log(fileDes.length);
+    console.log(fileNameStruct);
 
     if (Array.isArray(fileess) && fileess.length > 0) {
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
@@ -3212,6 +3398,7 @@ export default function User(props) {
       //   Uploading: true,
       // });
       setUploading(true);
+      console.log(Uploading);
 
       let Department: any = "";
       let Subdepartment: any = "";
@@ -3290,10 +3477,11 @@ export default function User(props) {
 
         // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
+        const folderPath = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+        console.log(folderPath);
+        console.log(fileUrl);
         await sp.web
-          .getFolderByServerRelativePath(
-            `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
-          )
+          .getFolderByServerRelativePath(folderPath)
           .files.addUsingPath(`${fileNameStruct}.${fileexe}`, myfile, {
             Overwrite: true,
           })
@@ -3348,6 +3536,7 @@ export default function User(props) {
         date.setDate(date.getDate() + 5);
         let { Title } = await sp.web.currentUser();
         if (valueFileType === "Old Files") {
+          console.log("Entered into old files section");
           console.log(`${fileNameStruct}.${fileexe}`);
           // update item in an sp list
           const items: any[] = await sp.web.lists
@@ -3503,6 +3692,8 @@ export default function User(props) {
 
         // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
+        console.log(folderPath);
+        console.log(fileUrl);
 
         const folder: any = sp.web.getFolderByServerRelativePath(folderPath);
 
@@ -3616,6 +3807,8 @@ export default function User(props) {
       //   projectKey:'',
       //   fileess:[]
       // });
+      // await fetchData();
+
       setOpenDialogUpload(false);
       setHiddenDialogUpload(true);
       setSubfolderState(false);
@@ -4525,7 +4718,7 @@ export default function User(props) {
                   <span>
                     <Radio.Group onChange={onChange} value={radiovalue}>
                       <Radio value={"New Files"}>New Files</Radio>
-                      <Radio value={"old files"}>Replace old files</Radio>
+                      <Radio value={"Old Files"}>Replace old files</Radio>
                     </Radio.Group>
                   </span>
                 </div>

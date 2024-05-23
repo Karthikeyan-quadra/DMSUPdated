@@ -423,7 +423,7 @@ export default function Approvers() {
           <span>
             <Button
               onClick={() => {
-                Approvemail(record);
+                Approvemail(record, record.ApprovalStatus);
               }}
               style={{
                 // color: "rgba(22, 119, 255, 1)",
@@ -1366,17 +1366,17 @@ export default function Approvers() {
                   `${destinationUrl}/${value.Filename}`
                 )
                 .checkout();
-              await sp.web
-                .getFileByServerRelativePath(
-                  `${value.RelativeURL}/${value.Filename}`
-                )
-                .recycle()
-                .then(function (data) {
-                  console.log(data);
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
+              // await sp.web
+              //   .getFileByServerRelativePath(
+              //     `${value.RelativeURL}/${value.Filename}`
+              //   )
+              //   .recycle()
+              //   .then(function (data) {
+              //     console.log(data);
+              //   })
+              //   .catch((e) => {
+              //     console.log(e);
+              //   });
 
               console.log(`${destinationUrl}/${value.Filename}`);
               // let fileurl:any = "";
@@ -1527,17 +1527,17 @@ export default function Approvers() {
                   `${destinationUrl}/${value.Filename}`
                 )
                 .checkout();
-              await sp.web
-                .getFileByServerRelativePath(
-                  `${value.RelativeURL}/${value.Filename}`
-                )
-                .recycle()
-                .then(function (data) {
-                  console.log(data);
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
+              // await sp.web
+              //   .getFileByServerRelativePath(
+              //     `${value.RelativeURL}/${value.Filename}`
+              //   )
+              //   .recycle()
+              //   .then(function (data) {
+              //     console.log(data);
+              //   })
+              //   .catch((e) => {
+              //     console.log(e);
+              //   });
 
               console.log(`${destinationUrl}/${value.Filename}`);
 

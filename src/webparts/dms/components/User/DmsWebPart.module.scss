@@ -96,7 +96,7 @@
 .newdesigndiv {
   width: 100%;
   margin-left: 12px;
-  background: rgba(243, 243, 243, 1);
+  // background: rgba(243, 243, 243, 1);
 }
 
 .rectangle {
@@ -219,19 +219,18 @@
   text-align: left;
 }
 
-.SelectOldFilestyle{
-font-family: Segoe UI;
-font-size: 20px;
-font-weight: 600;
-line-height: 26.6px;
-text-align: left;
+.SelectOldFilestyle {
+  font-family: Segoe UI;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26.6px;
+  text-align: left;
 }
 
-.ReplaceFileStyle{
-font-family: Segoe UI;
-font-size: 20px;
-font-weight: 600;
-line-height: 26.6px;
-text-align: left;
-
+.ReplaceFileStyle {
+  font-family: Segoe UI;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26.6px;
+  text-align: left;
 }

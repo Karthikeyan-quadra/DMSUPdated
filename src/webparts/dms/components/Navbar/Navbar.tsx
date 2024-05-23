@@ -457,7 +457,7 @@ export default function Navbar() {
     height: 100%;
     margin-top: -0.1px;
     padding-top: 0.1px;
-    border: 2px solid;
+    border: 2px solid #18ab83;
     border-radius: 12px;
 }
 :where(.css-dev-only-do-not-override-usln0u).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-usln0u).ant-menu-light>.ant-menu .ant-menu-item-selected {
