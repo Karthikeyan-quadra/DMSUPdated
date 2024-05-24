@@ -176,7 +176,9 @@ export default function ApprovalPopup({ props }) {
       console.error(error);
     }
   };
-
+  useEffect(() => {
+    fetchData();
+  }, []);
   // useEffect(() => {
   //   setSubDepartment(props.SubDepartment);
   //   console.log(Level);
@@ -486,6 +488,7 @@ export default function ApprovalPopup({ props }) {
       placement: "top",
       icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
     });
+    window.location.reload();
   };
 
   return (

@@ -477,53 +477,6 @@ export default function Navbar() {
 
   return (
     <div>
-      {/* <div className={styless.header}>
-            <span>
-            <p
-              style={{
-                fontSize: "30px",
-                padding: "10px",
-                color: "white",
-              }}
-            >
-              <img
-                src='https://m365x44410739.sharepoint.com/:i:/s/DMSportal/EdrtDoWgy7hMkDf20Q6JJl0BEX97dAa9He_h7v47sMJBZw?e=HCcPL3'
-                width='100px'
-                height='100px'
-                style={{ padding: "10px" }}
-              />
-              Quadra
-              <p
-                style={{
-                  float: "right",
-                  fontSize: "30px",
-                  padding: "20px",
-                  color: "white",
-                }}
-              >
-                Document Management System
-              </p>
-            </p>
-          </span>
-        </div>
-      <Pivot linkFormat={PivotLinkFormat.tabs}>
-        <PivotItem linkText="User Dashboard" itemIcon="TemporaryUser">
-          <User />
-        </PivotItem>
-
-        {showFirstItem && (
-          <PivotItem linkText="QMS" itemIcon="DocumentManagement">
-            <Qms />
-          </PivotItem>
-        )}
-
-        {showApproverTab && (
-          <PivotItem linkText="Approver Dashboard" itemIcon="DocumentApproval">
-            <Approvers />
-          </PivotItem>
-        )}
-      </Pivot> */}
-
       <div>
         <style>{styles}</style>
         <Layout className={styless.sidenavbarheight}>
@@ -533,14 +486,12 @@ export default function Navbar() {
               className={styless.margin}
               theme="light"
               mode="inline"
-              // onSelect={({ key }) => setSelectedKey(key)}
               onClick={handleMenuClick}
               selectedKeys={[selectedMenuItem]}
               defaultSelectedKeys={["1"]}
               items={[
                 {
                   key: "1",
-                  // icon: <UserOutlined />,
                   icon: (
                     <img
                       src={require("../../../../Images/Profile.png")}
@@ -548,8 +499,14 @@ export default function Navbar() {
                       style={{ width: "24px", height: "24px" }}
                     />
                   ),
-                  // Link to User Dashboard
-                  label: <Link to="/">User Dashboard</Link>,
+                  label: (
+                    <Link
+                      to="/"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      User Dashboard
+                    </Link>
+                  ),
                 },
                 {
                   key: "2",
@@ -560,7 +517,6 @@ export default function Navbar() {
                       style={{ width: "24px", height: "24px" }}
                     />
                   ) : null,
-                  // label: showFirstItem ? 'QMS' : '',
                   label: showFirstItem ? (
                     <Link
                       to="/qms"
@@ -571,17 +527,20 @@ export default function Navbar() {
                   ) : (
                     ""
                   ),
-                  //   children: showFirstItem ? [
-                  //   { key: "2.1", label: "Configure" },
-                  // ] : null,
-
-                  // children: showFirstItem ? [{ key: "2.1", label: "Configure" }] :[]
 
                   children: showFirstItem
                     ? [
                         {
                           key: "2.1",
-                          label: <Link to="/qms/configure">Configure</Link>,
+
+                          label: (
+                            <Link
+                              to="/qms/configure"
+                              style={{ color: "black", textDecoration: "none" }}
+                            >
+                              Configure
+                            </Link>
+                          ),
                         },
                       ]
                     : [],
@@ -595,9 +554,13 @@ export default function Navbar() {
                       style={{ width: "24px", height: "24px" }}
                     />
                   ) : null,
-                  // label: showApproverTab ? 'Approver Dashboard' : '',
                   label: showApproverTab ? (
-                    <Link to="/approvers">Approver Dashboard</Link> // Link to Approvers if available
+                    <Link
+                      to="/approvers"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      Approver Dashboard
+                    </Link>
                   ) : (
                     ""
                   ),
@@ -605,30 +568,6 @@ export default function Navbar() {
               ]}
             />
           </Sider>
-          {/* <div style={{width: "86%",
-    margin: "auto"}}>
-            {selectedMenuItem === '1' && <User />}
-            {selectedMenuItem === '2' && showFirstItem && <Qms />}
-            {selectedMenuItem === '3' && showApproverTab && <Approvers />}
-          </div> */}
-
-          {/* <div style={{ width: "86%", margin: "auto" }}>
-          <Routes>
-            <Route path="/">
-              <User />
-            </Route>
-            {showFirstItem &&
-              <Route path="/qms">
-                <Qms />
-              </Route>
-            }
-            {showApproverTab &&
-              <Route path="/approvers">
-                <Approvers />
-              </Route>
-            }
-          </Routes>
-        </div> */}
 
           <div style={{ width: "86%", backgroundColor: "white" }}>
             <Routes>
