@@ -227,7 +227,6 @@ export default function DenyPopup({ props }) {
                           style={{
                             width: "350px",
                             height: "190px",
-                            // marginLeft: "3%",
                           }}
                         />
                       </Form.Item>

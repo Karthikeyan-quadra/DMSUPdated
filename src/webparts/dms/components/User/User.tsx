@@ -72,12 +72,7 @@ import { Radio } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import { useForm } from "antd/es/form/Form";
-// import { useForm } from 'antd';
 
-// import form from "antd/es/form";
-
-// import styles from "../DmsWebPart.module.scss";
-// import styles1 from '../DmsWebPart.module.scss';
 var date = new Date();
 
 const options: IDropdownOption[] = [
@@ -88,8 +83,6 @@ const options: IDropdownOption[] = [
 const modelProps = {
   isBlocking: false,
 };
-
-// const dialogStyles = { main: { maxWidth: 1200 } };
 
 const stackTokens: IStackTokens = { childrenGap: 20 };
 const textFieldStyles: Partial<ITextFieldStyles> = {
@@ -111,29 +104,6 @@ const getStyles: IDialogStyles = {
   ],
   root: "",
 };
-
-// const getStyles: IDialogStyles = {
-//   main: [{
-//     selectors: {
-//       ['@media (min-width: 480px)']: {
-//         maxWidth: '700px',
-//         minWidth: '700px',
-//         minHeight: '150px !important',
-//         maxHeight: 700
-//       }
-//     }
-//   }],
-//   root: ""
-// }
-
-// const styles = {
-//   QmsDashboard: 'QmsDashboard_d428dd15',
-//   filter: 'filter_d428dd15',
-//   list: 'list_d428dd15',
-//   Popup: 'Popup_d428dd15',
-//   textDialog: 'textDialog_d428dd15',
-//   normalDialog: 'normalDialog_d428dd15'
-// };
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 200 },
@@ -165,7 +135,6 @@ function padTo2Digits(num) {
 
 function toTimestamp(strDate) {
   var datum = Date.parse(strDate);
-  // console.log(datum);
   return datum / 1000;
 }
 
@@ -177,118 +146,21 @@ function formatDate(date) {
   ].join("/");
 }
 
-// let columns = [
-//   {
-//     key: "Document No",
-//     name: "Document No",
-//     isIconOnly: false,
-//     fieldName: "Filename",
-//     minWidth: 170,
-//     data: "string",
-//     maxWidth: 170,
-//     isResizable: true,
-//     isCollapsible: true,
-//     isPadded: true,
-//   },
-//   {
-//     key: "Upload status",
-//     name: "Upload status",
-//     fieldName: "Status",
-//     minWidth: 100,
-//     maxWidth: 100,
-//     data: "string",
-//     isPadded: true,
-//     isResizable: true,
-//     isCollapsible: true,
-//     isIconOnly: false,
-//   },
-//   {
-//     key: "File Title",
-//     name: "File Title",
-//     fieldName: "FileTitle",
-//     minWidth: 110,
-//     maxWidth: 110,
-//     data: "string",
-//     isPadded: true,
-//     isResizable: true,
-//     isCollapsible: true,
-//     isIconOnly: false,
-//   },
-//   {
-//     key: "File Upload Date",
-//     name: "File Upload Date",
-//     fieldName: "FileUploadDate",
-//     minWidth: 70,
-//     maxWidth: 70,
-//     isResizable: true,
-//     isCollapsible: true,
-//     data: "string",
-//     isIconOnly: false,
-//     isPadded: true,
-//   },
-//   {
-//     key: "Approval Status",
-//     name: "Approval Status",
-//     fieldName: "ApprovalStatus",
-//     minWidth: 150,
-//     maxWidth: 150,
-//     isResizable: true,
-//     isCollapsible: true,
-//     data: "number",
-//     isIconOnly: false,
-//     isPadded: true,
-//   },
-//   {
-//     key: "Requester Name",
-//     name: "Requester Name",
-//     fieldName: "Requester",
-//     minWidth: 120,
-//     maxWidth: 120,
-//     isResizable: true,
-//     isCollapsible: true,
-//     data: "number",
-//     isIconOnly: false,
-//     isPadded: true,
-//   },
-//   {
-//     key: "Link",
-//     name: "Link",
-//     fieldName: "Fileurl",
-//     minWidth: 100,
-//     maxWidth: 100,
-//     isResizable: true,
-//     isCollapsible: true,
-//     data: "number",
-//     isIconOnly: false,
-//     isPadded: true,
-//   },
-// ];
 const { Search } = Input;
-// const [form] = useForm();
 
 const columns: any = [
   {
     title: "File Name",
     dataIndex: "FileTitle",
-    // width: 150,
     width: "14%",
     align: "left",
     resizable: true,
     responsive: ["md", "lg"],
     ellipsis: true,
-
-    // render: (text) => {
-    //   if (text.length > 10) {
-    //     return <span title={text}>{text.slice(0, 10)}...</span>;
-    //   } else {
-    //     return <span>{text}</span>;
-    //   }
-    // },
   },
   {
     title: "Document ID",
     dataIndex: "Filename",
-    // width: 220,
     width: "32%",
     align: "left",
     resizable: true,
@@ -297,7 +169,6 @@ const columns: any = [
   {
     title: "Uploaded Date",
     dataIndex: "FileUploadDate",
-    // width: 70,
     width: "12%",
     align: "left",
     resizable: true,
@@ -306,7 +177,6 @@ const columns: any = [
   {
     title: "Approver",
     dataIndex: "ApprovalStatus",
-    // width: 100,
     width: "11%",
     align: "left",
     resizable: true,
@@ -314,7 +184,6 @@ const columns: any = [
   {
     title: "Status",
     dataIndex: "Status",
-    // width: 100,
     width: "10%",
     align: "left",
     resizable: true,
@@ -323,17 +192,10 @@ const columns: any = [
   {
     title: "View",
     dataIndex: "Fileurl",
-    // width: 100,
     width: "8%",
     align: "left",
     resizable: true,
     render: (text, record) => (
-      // <Button
-      //   text="View"
-      //   target="_blank"
-      //   href={record.Fileurl}
-      // />
-
       <img
         src={require("../../../../Images/Eye.png")}
         alt="View"
@@ -370,12 +232,6 @@ const styl = `:where(.css-usln0u).ant-table-wrapper table, :where(.css-dev-only-
 `;
 
 export default function User(props) {
-  // constructor(props) {
-  //   super(props);
-  //   this.filesave = this.filesave.bind(this);
-  //   this.filesaveold = this.filesaveold.bind(this);
-
-  //   // this.handleFileChange = this.handleFileChange.bind(this);
   const [form] = useForm(); // Access the form instance
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -386,15 +242,12 @@ export default function User(props) {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [filenames, setFilenames] = useState("");
   const [fileDes, setFileDes] = useState("");
-  const [fileArray, setFileArray] = useState([]);
   const [departmentName, setDepartmentName] = useState<any>([]);
   const [documetntype, setDocumetntype] = useState("");
   const [documentType, setDocumentType] = useState([]);
   const [ProjectName, setProjectName] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
   const [SubdepartmentsMain, setSubdepartmentsMain] = useState<any>([]);
   const [Filess, setFiless] = useState([]);
-  const [SubdepartmentsMain1, setSubdepartmentsMain1] = useState([]);
   const [SubdepartmentsMain2, setSubdepartmentsMain2] = useState([]);
   const [Subdepartments2, setSubdepartments2] = useState<any>([]);
   const [choose, setChoose] = useState<any>(false);
@@ -405,7 +258,6 @@ export default function User(props) {
   const [SubfoldersParent, setSubfoldersParent] = useState<any>([]);
   const [fileUrl, setFileUrl] = useState("");
   const [valueFileType, setValueFileType] = useState("New Files");
-  const [textToCopy, setTextToCopy] = useState("");
   const [DocID, setDocID] = useState<any>("");
   const [fileNameStruct, setFileNameStruct] = useState("");
   const [params1, setParams1] = useState<any>("");
@@ -424,7 +276,6 @@ export default function User(props) {
   const [params5, setParams5] = useState<any>("");
   const [some, setSome] = useState<any>([]);
   const [CurrentUser, setCurrentUser] = useState("");
-  const [filenames1, setFilenames1] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [overalllist, setOveralllist] = useState([]);
@@ -441,7 +292,6 @@ export default function User(props) {
   const [showTemplateDiv, setshowTemplateDiv] = useState(true);
 
   const [radiovalue, setRadioValue] = useState("New Files");
-  const [fileID, setFileID] = useState(0);
   const [disablesubmit, setDisableSubmit] = useState(false);
 
   const openNotification = () => {
@@ -462,7 +312,6 @@ export default function User(props) {
       ),
       description: "You had copied the ID",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
       icon: <img src={CheckMark} alt="Success" style={{ width: "20%" }} />,
     });
   };
@@ -472,7 +321,6 @@ export default function User(props) {
       message: "",
       description: "Please select Department Name",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
     });
   };
 
@@ -481,7 +329,6 @@ export default function User(props) {
       message: "",
       description: "Please select Document Name",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
     });
   };
 
@@ -490,7 +337,6 @@ export default function User(props) {
       message: "",
       description: "Please select Sub Folders Main",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
     });
   };
 
@@ -499,7 +345,6 @@ export default function User(props) {
       message: "",
       description: "Please select Sub Folders ",
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
     });
   };
 
@@ -513,7 +358,6 @@ export default function User(props) {
         </div>
       ),
       placement: "top",
-      // icon: <img src="../../" alt="Success" />,
     });
   };
 
@@ -533,7 +377,7 @@ export default function User(props) {
       console.log("Current user email:", user.Email);
 
       // Fetch user files
-      const sss = await sp.web.lists
+      const userFiles = await sp.web.lists
         .getByTitle("User Files")
         .items.select(
           "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
@@ -541,10 +385,10 @@ export default function User(props) {
         .expand("File")
         .getAll();
 
-      console.log("User files:", sss);
+      console.log("User files:", userFiles);
 
       // Reverse the order of fetched files
-      const y: any = [...sss].reverse();
+      const y: any = [...userFiles].reverse();
 
       // Set state with fetched data
       setValue(y);
@@ -587,14 +431,12 @@ export default function User(props) {
   }, []);
 
   useEffect(() => {
-    // setRadioValue("New Files");
     console.log(radiovalue);
     setValueFileType(radiovalue);
     console.log(valueFileType);
   }, [radiovalue]);
 
   useEffect(() => {
-    // setRadioValue("New Files");
     console.log(radiovalue);
   }, []);
 
@@ -644,12 +486,9 @@ export default function User(props) {
         .getByTitle("Project List")
         .items();
       console.log(items.length);
-      // this.setState({
-      //   DocID: items.length,
-      // });
+
       setDocID(items.length);
 
-      // let DepartmentNames: IDropdownOption[] = [];
       let DepartmentNames: any = [];
 
       let DocumentType: any = [];
@@ -701,9 +540,6 @@ export default function User(props) {
         .getAll()
         .then(async (item) => {
           item.map(async (nn) => {
-            // console.log(nn)
-            // console.log(nn.ParentFolder)
-            // await SubDepartments.push({"text":nn.Subfolders,"Key":nn.Subfolders});
             await SubDepartments1.push({
               text: nn.Subfolders,
               key: nn.ParentFolder,
@@ -721,9 +557,6 @@ export default function User(props) {
           });
           await console.log(uniqueArray);
 
-          // this.setState({
-          //   SubfoldersParent: uniqueArray,
-          // });
           setSubfoldersParent(uniqueArray);
         });
 
@@ -733,18 +566,13 @@ export default function User(props) {
         .getAll()
         .then(async (item) => {
           item.map(async (nn) => {
-            // await SubdepartmentsMain.push({"text":nn.SubFolders,"Key":nn.SubFolders});
             await SubdepartmentsMain1.push({
               SubFolders: nn.SubFolders,
               ParentFolders: nn.ParentFolders,
               Code: nn.Code,
             });
 
-            // console.log()
-            //   SubfoldersMainParent: Pare
-            // })
             await SubdepartmentsMainParents.push(nn.ParentFolders);
-            // await this.setState({
           });
 
           await console.log(SubdepartmentsMainParents);
@@ -756,9 +584,6 @@ export default function User(props) {
             return self.indexOf(item) == pos;
           });
 
-          // this.setState({
-          //   SubfoldersMainParent: uniqueArray,
-          // });
           setSubfoldersMainParent(uniqueArray);
         });
 
@@ -775,60 +600,6 @@ export default function User(props) {
       console.log("SubdepartmentsMain:", SubdepartmentsMain);
       console.log("SubDepartments1:", SubDepartments1);
       console.log("ProjectName:", ProjectName);
-
-      //        const sss = await sp.web.lists.getByTitle("User Files")
-      //   .items.select(
-      //     "File,Filetype,Filename,FileTitle,Filedescription,FileUploadDate,ApprovalStatus,Fileurl,Status,Requester"
-      //   )
-      //   .expand("File")
-      //   .getAll();
-
-      // console.log("User files:", sss);
-
-      //     // Fetch Project Name
-      //     const projectNameItems:any = await sp.web.lists.getByTitle("Project List")
-      //       .items.select("ProjectName,ProjectID").getAll();
-      //     const projectNames:any = projectNameItems.map(nn => ({ key: nn.ProjectName, text: nn.ProjectID }));
-      //     // useState(prevState => ({ ...prevState, ProjectName: projectNames }));
-      //     // setState(prevState => ({ ...prevState, ProjectName: projectNames }))
-      //     setProjectName(projectNames);
-
-      //     // Fetch Department Names
-      //     const departmentNameItems:any = await sp.web.lists.getByTitle("Department Names")
-      //       .items.select("Departments,Code").getAll();
-      //     const departmentNames:any = departmentNameItems.map(nn => ({ key: nn.Code, text: nn.Departments }));
-      //     // useState(prevState => ({ ...prevState, departmentName: departmentNames }));
-      //     setDepartmentName(departmentNames);
-
-      //     // Fetch Document Type
-      //     const documentTypeItems:any = await sp.web.lists.getByTitle("Document Type")
-      //       .items.select("Documents,Code").getAll();
-      //     const documentTypes:any = documentTypeItems.map(nn => ({ key: nn.Code, text: nn.Documents }));
-      //     // useState(prevState => ({ ...prevState, documentType: documentTypes }));
-      //     setDocumentType(documentTypes);
-
-      //     // Fetch Sub departments
-      //     const subDepartmentsItems = await sp.web.lists.getByTitle("Sub departments")
-      //     .items.select("Subfolders,ParentFolder").getAll();
-      //   const subDepartments:any = subDepartmentsItems.map(nn => ({ text: nn.Subfolders, key: nn.ParentFolder }));
-      //   const subDepartmentsParents:any = subDepartmentsItems.map(nn => nn.ParentFolder);
-      //   const uniqueSubDepartmentsParents:any = Array.from(new Set(subDepartmentsParents)); // Convert Set to array
-      //   // useState(prevState => ({ ...prevState, SubdepartmentsMain: subDepartments, SubfoldersParent: uniqueSubDepartmentsParents }));
-      //   setSubdepartmentsMain(subDepartments);
-      //   setSubfoldersParent(uniqueSubDepartmentsParents);
-
-      //     // Fetch Sub departments Main
-      //     const subDepartmentsMainItems:any = await sp.web.lists.getByTitle("Sub departments Main")
-      //     .items.select("SubFolders,ParentFolders,Code").getAll();
-      //   const subDepartmentsMain:any = subDepartmentsMainItems.map(nn => ({
-      //     SubFolders: nn.SubFolders,
-      //     ParentFolders: nn.ParentFolders,
-      //     Code: nn.Code,
-      //   }));
-
-      //     // useState(prevState => ({ ...prevState, CurrentUser: user.Email, showFirstItem: uploadValue === "true" }));
-      //     setCurrentUser(user.Email);
-      //     setShowFirstItem(uploadValue==="true");
     } catch (error) {
       console.error("Error in fetchAdditionalData:", error);
     }
@@ -836,43 +607,6 @@ export default function User(props) {
   useEffect(() => {
     fetchAdditionalData();
   }, []);
-
-  // private _onFilter = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  //   text: string
-  // ): void => {
-  //   // console.log(event.target.value);
-  //   // this.setState({
-  //   //   searchValue: event.target.value
-  //   // })
-  //   let val = this.state.overalllist.filter(
-  //     (i) =>
-  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
-  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
-  //   );
-  //   console.log(val);
-  //   let condition = text.toLowerCase() ? val : this.state.overalllist;
-  //   this.setState(
-  //     {
-  //       items: text.toLowerCase()
-  //         ? val.slice(
-  //           this.state.page * this.state.rowsPerPage,
-  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //         )
-  //         : this.state.overalllist.slice(
-  //           this.state.page * this.state.rowsPerPage,
-  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //         ),
-  //     },
-  //     () => {
-  //       this.setState({
-  //         count: condition.length,
-  //         value: condition,
-  //       });
-  //     }
-  //   );
-  //   console.log(val);
-  // };
 
   const _onFilter = (text: any) => {
     const filtered: any = overalllist.filter(
@@ -884,388 +618,26 @@ export default function User(props) {
     setSearchText(text);
   };
 
-  // const _onFilter = (event: any, text: string) => {
-  //   let val: any = overalllist.filter(
-  //     (i: any) =>
-  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
-  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
-  //   );
-  //   console.log(val)
-  //   let condition = text.toLowerCase() ? val : overalllist;
-  //   console.log(condition);
-  //   // useState((prevState) => ({
-  //   //   ...prevState,
-  //   //   items: text.toLowerCase()
-  //   //     ? val.slice(
-  //   //         page * rowsPerPage,
-  //   //         page * rowsPerPage + rowsPerPage
-  //   //       )
-  //   //     : overalllist.slice(
-  //   //         page * rowsPerPage,
-  //   //         page * rowsPerPage + rowsPerPage
-  //   //       ),
-  //   //   count: condition.length,
-  //   //   value: condition,
-  //   // }));
-
-  //   setItems(text.toLowerCase()
-  //     ? val.slice(
-  //       page * rowsPerPage,
-  //       page * rowsPerPage + rowsPerPage
-  //     )
-  //     : overalllist.slice(
-  //       page * rowsPerPage,
-  //       page * rowsPerPage + rowsPerPage
-  //     ),)
-
-  // };
-  // private _onFilters = (): void => {
-  //   console.log("button pressed");
-  //   console.log(this.state.searchValue);
-  //   console.log(this.state.overalllist);
-  //   console.log(this.state.overalllist[0].FileTitle.toLowerCase());
-  //   let val= this.state.overalllist.filter(i => {
-  //                           i.FileTitle.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) > -1
-  //                           || i.Status.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) > -1
-  //   })
-  //   console.log(val);
-  //   let condition=this.state.searchValue.toLowerCase() ?val: this.state.overalllist
-  //   this.setState({
-  //     items: this.state.searchValue.toLowerCase() ?val.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage) : this.state.overalllist.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage),
-  //   },()=>{
-  //     this.setState({
-  //       count:condition.length,
-  //       value:condition
-  //     })
-  //   });
-  //   console.log(val)
-  // };
-
-  // private _getKey(item: any, index?: number): string {
-  //   return item.key;
-  // }
   const _getKey = (item: any, index: any) => {
     return item.key;
   };
 
-  // public setRowsPerPage = (value) => {
-  //   this.setState({
-  //     rowsPerPage: value,
-  //   });
-  // };
   const RowsPerPage = (value: any) => {
     setRowsPerPage(value);
   };
 
-  // public setPage = (value) => {
-  //   this.setState(
-  //     {
-  //       page: value,
-  //     },
-  //     () => {
-  //       this.setState({
-  //         items: this.state.value.slice(
-  //           this.state.page * this.state.rowsPerPage,
-  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //         ),
-  //       });
-  //     }
-  //   );
-  // };
-
   const Page = (value) => {
-    // ((prevState) => ({
-    //   ...prevState,
-    //   page: value,
-    //   items: prevState.overalllist.slice(
-    //     value * prevState.rowsPerPage,
-    //     value * prevState.rowsPerPage + prevState.rowsPerPage
-    //   ),
-    // }));
     setPage(value);
     setItems(value.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
   };
 
-  // approverslist
-
-  // var sss = [];
   var sss: any = [];
-  // const { showFirstItem } = this.state; // Access showFirstItem from state
-
-  const toggleHideDialog = () => {
-    setshowTemplateDiv(false);
-
-    setOpenDialog(true);
-    setHiddenDialog(false);
-    setDownloadURI(true);
-    // setshowTemplateDiv(true);
-    // console.log({ openDialog, hiddenDialog, DownloadURI });
-    form.resetFields();
-  };
-  const toggleHideDialogUpload = () => {
-    setOpenDialogUpload(true);
-    setHiddenDialogUpload(false);
-  };
-
-  // valueFileType
-  const changeValueFileType = async (e, value: any) => {
-    setValueFileType(value.text);
-    setSubfolderState(false);
-    setSubfolderState1(false);
-    setFileDes("");
-    setFilenames("");
-    setFileUrl("");
-    setParams1("");
-    setParams2("");
-    setParams3("");
-    setParams4("");
-    setParams5("");
-    setDepartmentKey("");
-    setDocumentKey("");
-    setProjectKey("");
-    setSubFoldersMainKey("");
-    setParams22("");
-    setParams11("");
-    setParams111("");
-    setFiless([]);
-    setFileNameStruct("");
-
-    console.log(valueFileType);
-  };
-
-  // console.log(this.state);
-  // console.log(this.context);
-
-  //original code
-  // const changeValuedepartmentName = async (e, value: any) => {
-  //   console.log(value);
-  //   this.setState({
-  //     params1: "",
-  //     params3: "",
-  //     params4: "",
-  //     params5: "",
-  //   });
-  //   console.log(this.state.SubdepartmentsMain);
-  //   console.log(this.state.Subdepartments);
-  //   await sss.push(value.text);
-  //   if (this.state.SubfoldersMainParent.includes(value.text)) {
-  //     // let array1 = [];
-  //     let array1:any = [];
-  //     console.log(this.state.SubdepartmentsMain2);
-  //     await this.state.SubdepartmentsMain2.filter((names) => {
-  //       console.log(names.ParentFolders)
-  //       console.log(names)
-  //       if (names.ParentFolders === value.text) {
-  //         console.log(names.SubFolders);
-  //         array1.push({
-  //           text: names.SubFolders,
-  //           Key: names.SubFolders,
-  //           Code: names.Code,
-  //         });
-  //       }
-  //     });
-  //     await console.log(array1);
-  //     await this.setState({
-  //       SubfolderState: true,
-  //       SubdepartmentsMain: array1,
-  //       // params1: value.text,
-  //       params111: value.Key,
-  //       params11: value.text,
-  //       some: [value.text],
-  //     });
-  //   } else {
-  //     this.setState({
-  //       SubfolderState: false,
-  //       // params1: value.Key,
-  //       params111: value.Key,
-  //       params11: value.text,
-  //     });
-  //   }
-
-  //   await console.log(this.state.some)
-  // };
-
-  // const changeValuedepartmentName = async (
-  //   // event: React.FormEvent<HTMLDivElement>,
-  //   // option?: IDropdownOption
-  //   option?: any
-  // ) => {
-  //   console.log("changeValuedepartmentName function called.");
-  //   console.log("Selected department value:", option);
-
-  //   try {
-  //     // const sp: SPFI = getSp();
-  //     // this.setState({
-  //     //   params1: "",
-  //     //   params3: "",
-  //     //   params4: "",
-  //     //   params5: "",
-  //     // });
-  //     setParams1("");
-  //     setParams3("");
-  //     setParams4("");
-  //     setParams5("");
-
-  //     const selectedDepartment = option?.text;
-  //     const selectedDepartmentKey = option?.key;
-  //     console.log("Selected department:", selectedDepartment);
-
-  //     // Check if the selected department has subfolders
-  //     if (SubfoldersMainParent.includes(selectedDepartment)) {
-  //       console.log("Selected department has subfolders.");
-
-  //       const subfolders = SubdepartmentsMain2.filter(
-  //         (subfolder: any) => subfolder.ParentFolders === selectedDepartment
-  //       ).map((subfolder: any) => ({
-  //         text: subfolder.SubFolders,
-  //         key: subfolder.SubFolders,
-  //         Code: subfolder.Code,
-  //       }));
-
-  //       console.log("SubdepartmentsMain array:", subfolders);
-
-  //       // this.setState({
-  //       //   SubfolderState: true,
-  //       //   SubdepartmentsMain: subfolders,
-  //       //   params111: option?.key,
-  //       //   params11: selectedDepartment,
-  //       //   departmentKey: selectedDepartmentKey,
-  //       //   some: [selectedDepartment],
-  //       // });
-  //       setSubfolderState(true);
-  //       setSubdepartmentsMain(subfolders);
-  //       setParams111(option?.key);
-  //       setParams11(selectedDepartment);
-  //       setDepartmentKey(selectedDepartmentKey);
-  //       setSome([selectedDepartment]);
-  //     } else {
-  //       console.log("Selected department does not have subfolders.");
-
-  //       // this.setState({
-  //       //   SubfolderState: false,
-  //       //   params111: option?.key,
-  //       //   params11: selectedDepartment,
-  //       // });
-  //     }
-
-  //     // console.log("Updated state:", this.state);
-  //   } catch (error) {
-  //     console.error("Error in changeValuedepartmentName:", error);
-  //   }
-  // };
-
-  // const changeValuedepartmentName = async (selectedValue: any) => {
-  //   console.log("changeValuedepartmentName function called.");
-  //   console.log("Selected department value:", selectedValue);
-  //   console.log("Selected value key:", selectedValue.Key);
-  //   console.log("Selected value text:", selectedValue.text);
-
-  //   try {
-  //     setParams1("");
-  //     setParams3("");
-  //     setParams4("");
-  //     setParams5("");
-
-  //     const selectedDepartment = selectedValue.text; // Use selectedValue directly
-  //     console.log("Selected department:", selectedDepartment);
-
-  //     // Assuming departmentKey is the selected key
-  //     // const selectedDepartmentKey = departmentName.find(
-  //     //   (option) => option.text === selectedDepartment
-  //     // )?.key;
-  //     const selectedDepartmentKey = selectedValue.key;
-  //     console.log("Selected department key:", selectedDepartmentKey);
-  //         console.log("Selected department:", selectedDepartment);
-
-  //     if (SubfoldersMainParent.includes(selectedDepartment)) {
-  //       console.log("Selected department has subfolders.");
-
-  //       const subfolders = SubdepartmentsMain2.filter(
-  //         (subfolder: any) => subfolder.ParentFolders === selectedDepartment
-  //       ).map((subfolder: any) => ({
-  //         text: subfolder.SubFolders,
-  //         key: subfolder.SubFolders,
-  //         Code: subfolder.Code,
-  //       }));
-
-  //       console.log("SubdepartmentsMain array:", subfolders);
-
-  //       setSubfolderState(true);
-  //       setSubdepartmentsMain(subfolders);
-  //       setParams111(selectedValue.key);
-  //       setParams11(selectedDepartment);
-  //       setDepartmentKey(selectedDepartmentKey);
-  //       setSome([selectedDepartment]);
-  //     } else {
-  //       console.log("Selected department does not have subfolders.");
-  //       setSubfolderState(false);
-  //       setParams111(selectedValue.Key);
-  //       setParams11(selectedValue.text);
-  //       setDepartmentKey(selectedDepartmentKey);
-  //       setSome([selectedDepartment]);
-  //       console.log("Params111:",params111);
-
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in changeValuedepartmentName:", error);
-  //   }
-  // };
-
-  // const changeValuedepartmentName = (e, value) => {
-  //   console.log(value);
-  //   const sp: SPFI = getSp();
-  //   this.setState({
-  //     params1: "",
-  //     params3: "",
-  //     params4: "",
-  //     params5: "",
-  //   });
-
-  //   const sssCopy = [...this.state.sss]; // Assuming sss is an array in your state
-  //   sssCopy.push(value.text);
-
-  //   if (this.state.SubfoldersMainParent.includes(value.text)) {
-  //     const array1 = this.state.SubdepartmentsMain2
-  //       .filter((names) => names.ParentFolders === value.text)
-  //       .map((names) => ({
-  //         text: names.SubFolders,
-  //         Key: names.SubFolders,
-  //         Code: names.Code,
-  //       }));
-
-  //     console.log(array1);
-
-  //     this.setState({
-  //       SubfolderState: true,
-  //       SubdepartmentsMain: array1,
-  //       params111: value.Key,
-  //       params11: value.text,
-  //       some: [value.text],
-  //     });
-  //   } else {
-  //     this.setState({
-  //       SubfolderState: false,
-  //       params111: value.Key,
-  //       params11: value.text,
-  //     });
-  //   }
-  //   console.log(this.state.departmentName);
-  //   // Update the state with the modified sssCopy array
-  //   this.setState({ sss: sssCopy });
-  // };
 
   const changeValuedepartmentName = async (event: any, value: any) => {
     console.log("changeValuedepartmentName function called.");
     console.log("Selected department value:", value);
 
     try {
-      // const sp: SPFI = getSp();
-      // this.setState({
-      //   params1: "",
-      //   params3: "",
-      //   params4: "",
-      //   params5: "",
-      // });
       setParams1("");
       setParams3("");
       setParams4("");
@@ -1290,14 +662,6 @@ export default function User(props) {
 
         console.log("SubdepartmentsMain array:", subfolders);
 
-        // this.setState({
-        //   SubfolderState: true,
-        //   SubdepartmentsMain: subfolders,
-        //   params111: option?.key,
-        //   params11: selectedDepartment,
-        //   departmentKey: selectedDepartmentKey,
-        //   some: [selectedDepartment],
-        // });
         setSubfolderState(true);
         setSubdepartmentsMain(subfolders);
         setParams111(value.key);
@@ -1307,18 +671,10 @@ export default function User(props) {
       } else {
         console.log("Selected department does not have subfolders.");
 
-        // this.setState({
-        //   SubfolderState: false,
-        //   params111: option?.key,
-        //   params11: selectedDepartment,
-        // });
-
         setSubfolderState(false);
         setParams111(value.key);
         setParams11(selectedDepartment);
       }
-
-      // console.log("Updated state:", this.state);
     } catch (error) {
       console.error("Error in changeValuedepartmentName:", error);
     }
@@ -1329,144 +685,20 @@ export default function User(props) {
     const selectedDocumentKey: any = value.key;
     console.log("Selected department:", selectedDocumentKey);
 
-    // this.setState({
-    //   params2: option?.key,
-    //   params22: option?.text,
-    //   documentKey: selectedDocumentKey,
-    // });
     setParams2(value.key);
     setParams22(value.value);
     setDocumentKey(selectedDocumentKey);
   };
 
   const changeValueProjectName = async (event: any, value: any) => {
-    // console.log(value);
     console.log(value);
     const selectedProjectKey: any = value.key;
     console.log("Selected department:", selectedProjectKey);
-    // this.setState({
-    //   params5: option?.text,
-    //   projectKey:selectedProjectKey,
-    // });
 
     setParams5(value.value);
     setProjectKey(selectedProjectKey);
   };
 
-  // const changeValueSubdepartmentsMain = async (
-  //   event: React.FormEvent<HTMLDivElement>,
-  //   option?: IDropdownOption
-  // ) => {
-  //   console.log(option);
-  //   // subFoldersMainKey
-  //   // Subfolders ,ParentFolder
-  //   const SubDepartmentmainkey: any = option?.key;
-  //   console.log(SubDepartmentmainkey);
-  //   console.log(option?.key);
-
-  //   if (SubfoldersParent.includes(option?.text)) {
-  //     // let array1 = [];
-  //     let array1: any = [];
-
-  //     // console.log(Subdepartments2);
-
-  //     await Subdepartments2.filter((names) => {
-  //       // console.log(names.ParentFolders)
-  //       // console.log(names)
-  //       if (names.ParentFolders === option?.text) {
-  //         console.log(names.SubFolders);
-  //         array1.push({ text: names.SubFolders, key: names.SubFolders });
-  //       }
-  //     });
-  //     console.log(array1);
-  //     console.log(option?.text);
-  //     console.log(option);
-  //     // this.setState({
-  //     //   SubfolderState1: true,
-  //     //   Subdepartments: array1,
-  //     //   // params1: option?.Code,
-  //     //   params1: option?.key,
-  //     //   params3: option?.text,
-  //     //   // subFoldersMainKey: SubDepartmentmainkey
-  //     // });
-  //     setSubfolderState1(true);
-  //     setSubdepartments(array1);
-  //     setParams1(option?.key);
-  //     setParams3(option?.text);
-  //   } else {
-  //     // this.setState({
-  //     //   SubfolderState1: false,
-  //     //   // params1: option?.Code,
-  //     //   params1: option?.key,
-
-  //     //   params3: option?.text,
-  //     //   subFoldersMainKey: SubDepartmentmainkey
-
-  //     // });
-  //     setSubfolderState1(false);
-  //     setParams1(option?.key);
-  //     setParams3(option?.text);
-  //     setSubFoldersMainKey(SubDepartmentmainkey);
-  //   }
-
-  //   // await console.log(this.state.some)
-  // };
-
-  // const changeValueSubdepartmentsMain = async (value?: any) => {
-  //   console.log(value);
-  //   // subFoldersMainKey
-  //   // Subfolders ,ParentFolder
-  //   const SubDepartmentmainkey: any = value?.key;
-  //   console.log(SubDepartmentmainkey);
-  //   console.log(value?.key);
-
-  //   if (SubfoldersParent.includes(value?.text)) {
-  //     // let array1 = [];
-  //     let array1: any = [];
-
-  //     // console.log(Subdepartments2);
-
-  //     await Subdepartments2.filter((names: any) => {
-  //       // console.log(names.ParentFolders)
-  //       // console.log(names)
-  //       if (names.ParentFolders === value?.text) {
-  //         console.log(names.SubFolders);
-  //         array1.push({ text: names.SubFolders, key: names.SubFolders });
-  //       }
-  //     });
-  //     console.log(array1);
-  //     console.log(value?.text);
-  //     console.log(value);
-  //     // this.setState({
-  //     //   SubfolderState1: true,
-  //     //   Subdepartments: array1,
-  //     //   // params1: option?.Code,
-  //     //   params1: option?.key,
-  //     //   params3: option?.text,
-  //     //   // subFoldersMainKey: SubDepartmentmainkey
-  //     // });
-  //     setSubfolderState1(true);
-  //     setSubdepartments(array1);
-  //     setParams1(value?.key);
-  //     setParams3(value?.text);
-  //   } else {
-  //     // this.setState({
-  //     //   SubfolderState1: false,
-  //     //   // params1: option?.Code,
-  //     //   params1: option?.key,
-
-  //     //   params3: option?.text,
-  //     //   subFoldersMainKey: SubDepartmentmainkey
-
-  //     // });
-  //     setSubfolderState1(false);
-  //     setParams1(value?.key);
-  //     setParams3(value?.text);
-  //     setSubFoldersMainKey(SubDepartmentmainkey);
-  //   }
-
-  //   // await console.log(this.state.some)
-  // };
   const changeValueSubdepartmentsMain = async (event: any, value: any) => {
     console.log("Selected value:", value);
 
@@ -1496,51 +728,26 @@ export default function User(props) {
   };
 
   const changeValueSubdepartments = async (value: any) => {
-    // console.log(value);
     if (SubfolderState1 === true) {
       await sss.push(...sss, value.text);
       console.log(sss);
     }
-    // this.setState({
-    //   params4: value.text,
-    //   some: [value.text],
-    // });
+
     setParams4(value.text);
     setSome([value.text]);
     console.log(params4);
     console.log(some);
   };
 
-  const changeSalectFilename = async (e, value: any) => {
-    console.log(value);
-    let testFile = value.text.split(".")[0];
-
-    // this.setState({
-    //   fileNameStruct: testFile,
-    // });
-    setFileNameStruct(testFile);
-  };
-
   const changeSelectFilename = async (e, value: any) => {
     console.log(value);
     let testFile = value.value.split(".")[0];
     console.log(testFile);
-    // this.setState({
-    //   fileNameStruct: testFile,
-    // });
+
     setFileNameStruct(testFile);
     console.log(fileNameStruct);
   };
   console.log(fileNameStruct);
-
-  // const changeValueFilename = async (e, value: any) => {
-  //   // console.log(value);
-  //   // this.setState({
-  //   //   filenames: value,
-  //   // });
-  //   setFilenames(value);
-  //   console.log(filenames);
-  // };
 
   const changeValueFilename = (e: any, value: any) => {
     // Update the filenames state with the new value entered in the input
@@ -1565,14 +772,6 @@ export default function User(props) {
   };
   console.log(fileess);
 
-  // const changeValueFileDescription = async (e, value: any) => {
-  //   // console.log(value);
-  //   // this.setState({
-  //   //   fileDes: value,
-  //   // });
-  //   setFileDes(value);
-  // };
-
   const changeValueFileDescription = (e: any, value: any) => {
     // Update the filenames state with the new value entered in the input
     setFileDes(e.target.value);
@@ -1587,9 +786,6 @@ export default function User(props) {
     console.log(downloadUrl.split("/")[4]);
     let fileName = downloadUrl.split("/")[4];
 
-    //  console.log(this.state.downloadUrl.split("/")[5]);
-    // let fileName = this.state.downloadUrl.split("/")[5];
-
     try {
       await sp.web
         .getFileByServerRelativePath(downloadUrl)
@@ -1603,13 +799,6 @@ export default function User(props) {
           chooose.length = 0;
         });
 
-      // this.setState({
-      //   openDialog: false,
-      //   hiddenDialog: true,
-      //   downloadUrl: "",
-      //   choose: false,
-      //   DownloadURI: true,
-      // });
       setOpenDialog(false);
       setHiddenDialog(true);
       setDownloadUrl("");
@@ -1620,534 +809,6 @@ export default function User(props) {
     }
     onClose();
   };
-
-  //ORIGINAL CODE
-  // const clickGenerate = async () => {
-  //   console.log(this.state);
-  //   // let somee = [];
-  //   // let somee1 = [];
-  //   // let somee2 = [];
-  //   let somee:any = [];
-  //   let somee1:any = [];
-  //   let somee2:any = [];
-
-  //   if (this.state.params111.length <= 0) {
-  //     alert("Please add Department Name before generating ID!");
-  //   } else if (this.state.params2.length <= 0) {
-  //     alert("Please add Document Name before generating ID!");
-  //   } else if (this.state.params5.length <= 0) {
-  //     alert("Please add Project Name before generating ID!");
-  //   } else if (
-  //     this.state.SubfolderState === true &&
-  //     this.state.params3.length <= 0
-  //   ) {
-  //     alert("Please add Sub Folders Main before generating ID!");
-  //   } else if (
-  //     this.state.SubfolderState1 === true &&
-  //     this.state.params4.length <= 0
-  //   ) {
-  //     alert("Please add Sub Folders before generating ID!");
-  //   } else {
-  //     // COMMON-TEPL-EHS-SOP-002.xlsx
-  //     // TEPL-COMMON-QL-QM-PR-0002.xlsx
-  //     if (this.state.params5.length > 0) {
-  //       console.log(this.state.params5);
-  //       await somee1.push("TEPL");
-  //       // await somee2.push("TEPL");
-  //       await somee1.push(this.state.params5);
-  //       // await somee2.push(this.state.params5);
-  //     }
-  //     if (this.state.params111.length > 0) {
-  //       console.log(this.state.params1);
-  //       await somee.push(this.state.params111);
-  //       await somee1.push(this.state.params111);
-  //       if (this.state.params1.length > 0) {
-  //         await somee1.push(this.state.params1);
-  //       }
-  //       await somee2.push(this.state.params11);
-  //     }
-  //     if (this.state.params3.length > 0) {
-  //       console.log(this.state.params3);
-  //       await somee.push(this.state.params3);
-  //       await somee2.push(this.state.params3);
-  //       // await somee1.push(this.state.params3);
-  //     }
-  //     if (this.state.params4.length > 0) {
-  //       console.log(this.state.params4);
-  //       await somee.push(this.state.params4);
-  //       await somee2.push(this.state.params4);
-  //       // await somee1.push(this.state.params4);
-  //     }
-
-  //     if (this.state.params2.length > 0) {
-  //       console.log(this.state.params2);
-  //       await somee.push(this.state.params2);
-  //       await somee1.push(this.state.params2);
-  //       await somee2.push(this.state.params22);
-  //     }
-
-  //     console.log(somee);
-  //     console.log(somee.join("/"));
-  //     console.log(somee1.join("-"));
-  //     console.log(somee2.join("/"));
-  //     // let lastDigit = "";
-  //     let lastDigit:any = "";
-  //     let params6;
-  //     // let digitArray = [];
-  //     let digitArray:any = [];
-
-  //     // console.log(
-  //     //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
-  //     // );
-  //     console.log(
-  //       `/sites/DMS-TATA/Shared%20Documents1/${somee2.join("/")}`
-  //     );
-  //     // const sp:SPFI=getSp();
-  //     // let somss:any = await sp.web
-  //     //   .getFolderByServerRelativePath(
-  //     //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
-  //     //   .files.getAll()
-
-  //     const sp:SPFI=getSp();
-  //     // let folderPath:any = `/sites/DMSportal/Original File/${somee2.join("/")}`;
-  //     // let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
-
-  //     // let folder:any = await sp.web.getFolderByServerRelativePath(folderPath).files;
-
-  //     // let somss:any = await folder.getAll().then(async (s) => {
-
-  //     let folderPath:any = `/sites/DMS-TATA/Original%20File/${somee2.join("/")}`;
-  //     let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
-  //     let somss:any = await folder.files.getAll().then(async (s) => {
-
-  //         console.log(s)
-  //         if (s.length > 0) {
-  //           console.log(s);
-  //           s.map((ss) => {
-  //             let last = ss.Name.split("-").pop();
-  //             console.log(last);
-  //             let splitFileEx = last.split(".")[0];
-  //             digitArray.push(splitFileEx);
-  //             // console.log(Number(splitFileEx) + 1);
-  //           });
-
-  //           let sortNumebrs = await digitArray.sort();
-
-  //           let last = await sortNumebrs[sortNumebrs.length - 1];
-
-  //           let returnNumber = String(Number(last) + 1);
-  //           console.log(returnNumber);
-  //           if (returnNumber.length === 1) {
-  //             console.log("00" + returnNumber);
-  //             lastDigit = "000" + returnNumber;
-  //             // return "00" + returnNumber;
-  //           } else if (returnNumber.length === 2) {
-  //             console.log("0" + returnNumber);
-  //             lastDigit = "00" + returnNumber;
-  //             return "0" + last;
-  //           } else if (returnNumber.length === 3) {
-  //             console.log(returnNumber);
-  //             lastDigit = "0" + returnNumber;
-  //             // return last;
-  //           } else if (returnNumber.length === 4) {
-  //             console.log(returnNumber);
-  //             lastDigit = returnNumber;
-  //             // return last;
-  //           }
-  //         } else {
-  //           lastDigit = "0001";
-  //         }
-
-  //         // console.log();
-  //       });
-
-  //     await somee1.push(lastDigit);
-
-  //     console.log(lastDigit);
-  //     console.log(somee1);
-  //     this.setState({
-  //       fileUrl: somee2.join("/"),
-  //       fileNameStruct: somee1.join("-"),
-  //     });
-
-  //     console.log(this.state);
-  //   }
-  // };
-
-  //  const clickGenerate = async () => {
-  //     console.log(this.state);
-  //     // let somee = [];
-  //     // let somee1 = [];
-  //     // let somee2 = [];
-  //     let somee:any = [];
-  //     let somee1:any = [];
-  //     let somee2:any = [];
-
-  //     if (this.state.params111.length <= 0) {
-  //       alert("Please add Department Name before generating ID!");
-  //     } else if (this.state.params2.length <= 0) {
-  //       alert("Please add Document Name before generating ID!");
-  //     } else if (this.state.params5.length <= 0) {
-  //       alert("Please add Project Name before generating ID!");
-  //     } else if (
-  //       this.state.SubfolderState === true &&
-  //       this.state.params3.length <= 0
-  //     ) {
-  //       alert("Please add Sub Folders Main before generating ID!");
-  //     } else if (
-  //       this.state.SubfolderState1 === true &&
-  //       this.state.params4.length <= 0
-  //     ) {
-  //       alert("Please add Sub Folders before generating ID!");
-  //     } else {
-  //       // COMMON-TEPL-EHS-SOP-002.xlsx
-  //       // TEPL-COMMON-QL-QM-PR-0002.xlsx
-  //       if (this.state.params5.length > 0) {
-  //         console.log(this.state.params5);
-  //         await somee1.push("TEPL");
-  //         // await somee2.push("TEPL");
-  //         await somee1.push(this.state.params5);
-  //         // await somee2.push(this.state.params5);
-  //       }
-  //       if (this.state.params111.length > 0) {
-  //         console.log(this.state.params1);
-  //         await somee.push(this.state.params111);
-  //         await somee1.push(this.state.params111);
-  //         if (this.state.params1.length > 0) {
-  //           await somee1.push(this.state.params1);
-  //         }
-  //         await somee2.push(this.state.params11);
-  //       }
-  //       if (this.state.params3.length > 0) {
-  //         console.log(this.state.params3);
-  //         await somee.push(this.state.params3);
-  //         await somee2.push(this.state.params3);
-  //         // await somee1.push(this.state.params3);
-  //       }
-  //       if (this.state.params4.length > 0) {
-  //         console.log(this.state.params4);
-  //         await somee.push(this.state.params4);
-  //         await somee2.push(this.state.params4);
-  //         // await somee1.push(this.state.params4);
-  //       }
-
-  //       if (this.state.params2.length > 0) {
-  //         console.log(this.state.params2);
-  //         await somee.push(this.state.params2);
-  //         await somee1.push(this.state.params2);
-  //         await somee2.push(this.state.params22);
-  //       }
-
-  //       console.log(somee);
-  //       console.log(somee.join("/"));
-  //       console.log(somee1.join("-"));
-  //       console.log(somee2.join("/"));
-  //       // let lastDigit = "";
-  //       let lastDigit:any = "";
-  //       let params6;
-  //       // let digitArray = [];
-  //       let digitArray:any = [];
-
-  //       // console.log(
-  //       //   `/sites/DMSportal/Shared Documents/${somee2.join("/")}`
-  //       // );
-  //       console.log(
-  //         `/sites/DMS-TATA/Shared Documents1/${somee2.join("/")}`
-  //       );
-  //       // const sp:SPFI=getSp();
-  //       // let somss:any = await sp.web
-  //       //   .getFolderByServerRelativePath(
-  //       //     `/sites/DMSportal/Original File/${somee2.join("/")}`)
-  //       //   .files.getAll()
-  //       // const sp:SPFI=getSp();
-  //       // let folderPath:any = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-  //       // let folder:any = await sp.web.getFolderByServerRelativePath(folderPath);
-  //       // console.log(folder);
-  //       // // Use getItemsByCAMLQuery to get all items (files) in the folder
-  //       // let somss: any = await folder.files.getAll();
-  //       // console.log(folder)
-  //       // // Process files
-  //       // somss.forEach(async (file: any) => {
-  //       //   let last = file.Name.split("-").pop();
-  //       //   console.log(last);
-
-  //       //   let splitFileEx: any = last.split(".")[0];
-  //       //   digitArray.push(splitFileEx);
-  //       // });
-
-  //       const sp: SPFI = getSp();
-  //       let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-
-  //       const list = sp.web.lists.getByTitle("Documents"); // Replace "Documents" with your actual document library name
-
-  //       // Fetch items from the folder using the CAML query
-  //       const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
-
-  //       // Process files
-  //       items.forEach((item: any) => {
-  //         let last = item.FileLeafRef.split("-").pop();
-  //         console.log(last);
-
-  //         let splitFileEx: any = last.split(".")[0];
-  //         digitArray.push(splitFileEx);
-  //       });
-
-  //       // Calculate lastDigit and update state
-  //       if (digitArray.length > 0) {
-  //         let sortNumbers = digitArray.sort();
-  //         let last = sortNumbers[sortNumbers.length - 1];
-  //         let returnNumber = String(Number(last) + 1);
-
-  //         if (returnNumber.length === 1) {
-  //           lastDigit = "000" + returnNumber;
-  //         } else if (returnNumber.length === 2) {
-  //           lastDigit = "00" + returnNumber;
-  //         } else if (returnNumber.length === 3) {
-  //           lastDigit = "0" + returnNumber;
-  //         } else if (returnNumber.length === 4) {
-  //           lastDigit = returnNumber;
-  //         }
-  //       } else {
-  //         lastDigit = "0001";
-  //       }
-
-  //       somee1.push(lastDigit);
-  //       console.log(lastDigit);
-  //       console.log(somee1);
-
-  //       this.setState({
-  //         fileUrl: somee2.join("/"),
-  //         fileNameStruct: somee1.join("-"),
-  //       });
-
-  //       console.log(this.state);
-  //     }
-  //   };
-
-  //This code works
-  // const clickGenerate = async () => {
-  //   // Clear arrays and other relevant state variables
-  //   let somee:any = [];
-  //   let somee1:any = [];
-  //   let somee2:any = [];
-  //   let lastDigit:any = "";
-  //   let digitArray:any = [];
-
-  //   if (this.state.params111.length <= 0) {
-  //     alert("Please add Department Name before generating ID!");
-  //   } else if (this.state.params2.length <= 0) {
-  //     alert("Please add Document Name before generating ID!");
-  //   } else if (this.state.params5.length <= 0) {
-  //     alert("Please add Project Name before generating ID!");
-  //   } else if (this.state.SubfolderState === true && this.state.params3.length <= 0) {
-  //     alert("Please add Sub Folders Main before generating ID!");
-  //   } else if (this.state.SubfolderState1 === true && this.state.params4.length <= 0) {
-  //     alert("Please add Sub Folders before generating ID!");
-  //   } else {
-  //     if (this.state.params5.length > 0) {
-  //       await somee1.push("TEPL");
-  //       await somee1.push(this.state.params5);
-  //     }
-  //     if (this.state.params111.length > 0) {
-  //       await somee.push(this.state.params111);
-  //       await somee1.push(this.state.params111);
-  //       if (this.state.params1.length > 0) {
-  //         await somee1.push(this.state.params1);
-  //       }
-  //       await somee2.push(this.state.params11);
-  //     }
-  //     if (this.state.params3.length > 0) {
-  //       await somee.push(this.state.params3);
-  //       await somee2.push(this.state.params3);
-  //     }
-  //     if (this.state.params4.length > 0) {
-  //       await somee.push(this.state.params4);
-  //       await somee2.push(this.state.params4);
-  //     }
-  //     if (this.state.params2.length > 0) {
-  //       await somee.push(this.state.params2);
-  //       await somee1.push(this.state.params2);
-  //       await somee2.push(this.state.params22);
-  //     }
-
-  //     console.log(somee);
-  //     console.log(somee.join("/"));
-  //     console.log(somee1.join("-"));
-  //     console.log(somee2.join("/"));
-
-  //     const sp: SPFI = getSp();
-  //     let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-
-  //     const list = sp.web.lists.getByTitle("Documents");
-  //     const items = await list.items.select("FileLeafRef").filter(`FileDirRef eq '${folderPath}'`).getAll();
-
-  //     items.forEach((item: any) => {
-  //       let last = item.FileLeafRef.split("-").pop();
-  //       console.log(last);
-  //       let splitFileEx: any = last.split(".")[0];
-  //       digitArray.push(splitFileEx);
-  //       console
-  //     });
-
-  //     if (digitArray.length > 0) {
-  //       let sortNumbers = digitArray.sort();
-  //       let last = sortNumbers[sortNumbers.length - 1];
-  //       let returnNumber = String(Number(last) + 1);
-
-  //       if (returnNumber.length === 1) {
-  //         lastDigit = "000" + returnNumber;
-  //       } else if (returnNumber.length === 2) {
-  //         lastDigit = "00" + returnNumber;
-  //       } else if (returnNumber.length === 3) {
-  //         lastDigit = "0" + returnNumber;
-  //       } else if (returnNumber.length === 4) {
-  //         lastDigit = returnNumber;
-  //       }
-  //     } else {
-  //       lastDigit = "0001";
-  //     }
-
-  //     somee1.push(lastDigit);
-  //     console.log(lastDigit);
-  //     console.log(somee1);
-
-  //     this.setState({
-  //       fileUrl: somee2.join("/"),
-  //       fileNameStruct: somee1.join("-"),
-  //     });
-
-  //     console.log(this.state);
-  //   }
-  // };
-
-  // const clickGenerate = async () => {
-  //   // Clear arrays and other relevant state variables
-  //   console.log("clickGenerate function called");
-
-  //   let somee: any = [];
-  //   let somee1: any = [];
-  //   let somee2: any = [];
-  //   let lastDigit: any = "";
-  //   let digitArray: any = [];
-  //   console.log(params111);
-  //   console.log(params111.length);
-  //   if (params111.length <= 0) {
-  //     alert("Please add Department Name before generating ID!");
-  //   } else if (params2.length <= 0) {
-  //     alert("Please add Document Name before generating ID!");
-  //   } else if (params5.length <= 0) {
-  //     alert("Please add Project Name before generating ID!");
-  //   } else if (SubfolderState === true && params3.length <= 0) {
-  //     alert("Please add Sub Folders Main before generating ID!");
-  //   } else if (SubfolderState1 === true && params4.length <= 0) {
-  //     alert("Please add Sub Folders before generating ID!");
-  //   } else {
-  //     if (params5.length > 0) {
-  //       await somee1.push("TEPL");
-  //       await somee1.push(params5);
-  //     }
-  //     if (params111.length > 0) {
-  //       await somee.push(params111);
-  //       await somee1.push(params111);
-  //       if (params1.length > 0) {
-  //         await somee1.push(params1);
-  //       }
-  //       await somee2.push(params11);
-  //     }
-  //     if (params3.length > 0) {
-  //       await somee.push(params3);
-  //       await somee2.push(params3);
-  //     }
-  //     if (params4.length > 0) {
-  //       await somee.push(params4);
-  //       await somee2.push(params4);
-  //     }
-  //     if (params2.length > 0) {
-  //       await somee.push(params2);
-  //       await somee1.push(params2);
-  //       await somee2.push(params22);
-  //     }
-
-  //     console.log(somee);
-  //     console.log(somee.join("/"));
-  //     console.log(somee1.join("-"));
-  //     console.log(somee2.join("/"));
-
-  //     const sp: SPFI = getSp();
-  //     // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-  //     // let folderPath: string = `/sites/DMS-TATA/Original File/${somee2.join("/")}`;
-  //     let folderPath: string = `/sites/DMS-Quadra/Original File/${somee2.join(
-  //       "/"
-  //     )}`;
-
-  //     const list = sp.web.lists.getByTitle("Shared Documents1");
-  //     try {
-  //       const items = await list.items
-  //         .select("Id,Title,FileRef,FileLeafRef,FileDirRef")
-  //         .filter(`FileDirRef eq '${folderPath}'`)
-  //         .getAll();
-  //       console.log("Fetched items:", items);
-
-  //       if (items.length > 0) {
-  //         // console.log('HI')
-  //         items.forEach((item: any) => {
-  //           console.log(item);
-  //           if (item && item.FileLeafRef) {
-  //             console.log("FileLeafRef:", item.FileLeafRef); // Log the full FileLeafRef
-
-  //             // Extract digits using a regular expression
-  //             let extractedDigits = item.FileLeafRef.match(/\d+/g);
-
-  //             if (extractedDigits) {
-  //               console.log("Extracted Digits:", extractedDigits);
-  //               digitArray.push(...extractedDigits); // Use spread operator to push individual digits
-  //             } else {
-  //               console.log(
-  //                 "No valid digits found in FileLeafRef:",
-  //                 item.FileLeafRef
-  //               );
-  //             }
-  //           }
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching items:", error);
-  //     }
-
-  //     if (digitArray.length > 0) {
-  //       let sortNumbers = digitArray.map(Number).sort((a, b) => a - b);
-  //       let last = sortNumbers[sortNumbers.length - 1];
-  //       let returnNumber: string = (last + 1).toString().padStart(4, "0");
-
-  //       if (returnNumber.length === 1) {
-  //         lastDigit = "000" + returnNumber;
-  //       } else if (returnNumber.length === 2) {
-  //         lastDigit = "00" + returnNumber;
-  //       } else if (returnNumber.length === 3) {
-  //         lastDigit = "0" + returnNumber;
-  //       } else if (returnNumber.length === 4) {
-  //         lastDigit = returnNumber;
-  //       }
-  //     } else {
-  //       lastDigit = "0001";
-  //     }
-
-  //     console.log("Digit Array:", digitArray);
-
-  //     somee1.push(lastDigit);
-  //     console.log(lastDigit);
-  //     console.log(somee1);
-
-  //     // this.setState({
-  //     //   fileUrl: somee2.join("/"),
-  //     //   fileNameStruct: somee1.join("-"),
-  //     // });
-  //     setFileUrl(somee2.join("/"));
-  //     setFileNameStruct(somee1.join("-"));
-
-  //     // console.log(this.state);
-  //   }
-  // };
 
   const clickGenerate = async () => {
     console.log("clickGenerate function called");
@@ -2203,9 +864,6 @@ export default function User(props) {
 
       const sp: SPFI = getSp();
       const documentLibraryName = "Shared Documents1";
-      // let folderPath = `/sites/DMS-Quadra/${documentLibraryName}/${somee2.join(
-      //   "/"
-      // )}`;
 
       const folders = somee2.join("/").split("/");
       let currentFolderPath = `/sites/DMS-Quadra/${documentLibraryName}`;
@@ -2221,22 +879,12 @@ export default function User(props) {
           console.log(
             `Folder "${folderName}" already exists at path: ${currentFolderPath}`
           );
-          // const list1 = await sp.web.lists
-          //   .getByTitle(currentFolderPath)
-          //   .items();
-          // console.log(list1);
         } catch (error) {
           console.error(
             `Folder "${folderName}" doesn't exist at path: ${currentFolderPath}`
           );
         }
       }
-
-      // let files: any = await sp.web.lists
-      //   .getByTitle("Shared Documents")
-      //   .items();
-      // console.log(files);
-      // console.log(files.ID);
 
       let allFiles: any = await sp.web.lists
         .getByTitle("Shared Documents")
@@ -2252,67 +900,10 @@ export default function User(props) {
       let fileIDs = filesInFolder.map((file) => file.ID);
       console.log("File IDs in the folder:", fileIDs);
 
-      // let allFiles2 = await sp.web.lists
-      //   .getByTitle("Shared Documents")
-      //   .items.select("ID", "FileRef", "FileSystemObjectType")
-      //   .getAll();
-      // console.log(allFiles2);
-
-      // let fileID = allFiles
-      //   .filter((file) => file.FileSystemObjectType === 0)
-      //   .map((file) => file.ID);
-
-      // console.log("File ID's in the folder:", fileID);
-
-      // const rootFolders = await sp.web.lists
-      //   .getByTitle("Shared Documents")
-      //   .rootFolder.folders();
-      // console.log(rootFolders);
-
-      // for (const folder of rootFolders) {
-      //   // Get the subfolders of the current folder
-      //   const subfolders:any = await sp.web
-      //     .getFolderByServerRelativePath(folder.ServerRelativeUrl)
-      //     .folders();
-      //   console.log(subfolders);
-
-      //   // Check if the folder contains subfolders
-      //   // if (subfolders.length > 0) {
-      //   //     foldersWithSubfolders.push(folder);
-      //   // }
-      // }
-
-      // const rootFolder2 = await sp.web.lists
-      //   .getByTitle("Shared Documents")
-      //   .rootFolder();
-      //   console.log(rootFolder2);
-
-      // const rootFolder3 = await sp.web.lists
-      // .getByTitle("Shared Documents").
-
-      // Fetch the maximum ID from files in the specific folder
-      // let maxId = Math.max(...fileIDs);
-      // let nextId = maxId + 1;
-
-      // try {
-      //   // const list = sp.web.lists.getByTitle(documentLibraryName);
-      //   // console.log("List fetched:", list);
-
-      //   // const items = await list.items.select("ID").top(1)();
-      //   // console.log("Items:", items);
-
-      //   if (items.length > 0) {
-      //     maxId = items[0].ID;
-      //   }
-      // } catch (error) {
-      //   console.error("Error fetching max ID from Shared Documents1:", error);
-      // }
       let maxId;
       if (fileIDs.length === 0) {
-        // If no files exist in the folder, start the ID numbering from 001
         maxId = 0;
       } else {
-        // Find the maximum ID from existing file IDs using Math.max()
         maxId = Math.max(...fileIDs);
       }
 
@@ -2329,50 +920,30 @@ export default function User(props) {
   };
 
   const changeValueFileID = async (e, value: any) => {
-    // console.log(value);
-    // this.setState({
-    //   fileNameStruct: this.state.fileNameStruct,
-    // });
     setFileNameStruct(fileNameStruct);
   };
 
   const clickGenerate1 = async () => {
-    // console.log(this.state);
-    // let somee = [];
-    // let somee1 = [];
     let somee: any = [];
     let somee1: any = [];
     console.log(params4);
     if (params111.length <= 0) {
-      // alert("Please add Department Name before generating ID!");
-      // alert("Please select Department Name");
       openDepartmentNotification();
     } else if (params2.length <= 0) {
-      // alert("Please add Document Name before generating ID!");
-      // alert("Please select Document Name");
       openDocumentNotification();
-    }
-    // else if(params5.length <= 0) {
-    //   alert("Please add Project Name before generating ID!")
-    // }
-    else if (SubfolderState === true && params3.length <= 0) {
-      // alert("Please add Sub Folders Main before generating ID!");
-      // alert("Please select Sub Folders Main");
+    } else if (SubfolderState === true && params3.length <= 0) {
       openSubFoldersMaintNotification();
     } else if (SubfolderState1 === true && params4.length <= 0) {
-      // alert("Please add Sub Folders before generating ID!");
       openSubFolderstNotification();
     }
 
     if (params111.length > 0) {
       console.log(params1);
-      // await somee.push(params1);
       await somee.push(params11);
     }
     if (params3.length > 0) {
       console.log(params3);
       await somee.push(params3);
-      // await somee1.push(params3);
     }
     if (params4.length > 0) {
       console.log(params4);
@@ -2387,27 +958,12 @@ export default function User(props) {
     console.log(somee);
     console.log(somee.join("/"));
     let fileUrl: any = somee.join("/");
-    // console.log(`/sites/DMSportal/Shared Documents/${fileUrl}`);
 
-    // console.log(`/sites/DMS-TATA/Shared Documents1/${fileUrl}`);
     console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
     console.log(`${fileUrl}`);
 
     const sp: SPFI = getSp();
-    // let filesName = [];
     let filesName: any = [];
-
-    //       const folder:any = sp.web.getFolderByServerRelativePath(
-    //   `/sites/DMSportal/Original File/${fileUrl}`
-    // );
-
-    // const folder:any = sp.web.getFolderByServerRelativePath(
-    //   `/sites/DMS-TATA/Original File/${fileUrl}`
-    // );
-
-    // const folder:any = sp.web.getFolderByServerRelativePath(
-    //   `/sites/DMS-Quadra/Original File/${fileUrl}`
-    // );
 
     const folder: any = await sp.web
       .getFolderByServerRelativePath(
@@ -2424,42 +980,25 @@ export default function User(props) {
         filesName.push({ key: file.Name, text: file.Name });
       });
     } else {
-      // alert("There is no file inside this folder, please create a new file!");
       openNofileNotification();
     }
 
-    // this.setState({
-    //   fileUrl: somee.join("/"),
-    //   Filess: filesName,
-    // });
     setFileUrl(somee.join("/"));
     setFiless(filesName);
-
-    // this.setState({
-    //   fileUrl: somee.join("/"),
-    //   Filess: filesName,
-    // });
   };
 
   const changeValue = async (e, value: any) => {
-    // form.resetFields();
     console.log("change value function called");
     console.log(value.value);
     console.log(value);
     console.log("chooose:", choose);
 
-    // { key: 'Work Instruction', text: 'Work Instruction' },
-    // { key: 'MSOP', text: 'MSOP' },
-    // { key: 'Forms', text: 'Forms' },
     chooose.length = 0;
     console.log("chooose:", chooose.length);
 
     if (value.value === "Work Instruction") {
       console.log("entyered in WI");
-      // this.setState({
-      //   choose: true,
-      //   Documetntype: value.text,
-      // });
+
       setChoose(true);
       setDocumetntype(value.value);
       console.log(documentType);
@@ -2483,10 +1022,6 @@ export default function User(props) {
     } else if (value.value === "MSOP") {
       console.log("entyered in MSOP");
 
-      // this.setState({
-      //   choose: true,
-      //   Documetntype: value.text,
-      // });
       setChoose(true);
       console.log(choose);
       console.log(value);
@@ -2515,10 +1050,6 @@ export default function User(props) {
     } else if (value.value === "Form") {
       console.log("entyered in Form");
 
-      // this.setState({
-      //   choose: true,
-      //   Documetntype: value.text,
-      // });
       setChoose(true);
       setDocumetntype(value.value);
 
@@ -2544,10 +1075,7 @@ export default function User(props) {
       let ID;
       let path;
       console.log("entered in else");
-      // this.setState({
-      //   choose: false,
-      // });
-      // setChoose(false);
+
       setChoose(false);
 
       console.log(choose);
@@ -2564,24 +1092,18 @@ export default function User(props) {
       });
       console.log(filteredFile);
 
-      // get relative url of file.
       await sp.web.lists
         .getByTitle("My Docs")
         .items.getById(filteredFile[0].ID)
         .select("ID,FileRef")()
         .then(async (items: any) => {
           console.log(items.FileRef);
-          // this.setState({
-          //   downloadUrl: items.FileRef,
-          //   DownloadURI: false,
-          // });
+
           setDownloadUrl(items.FileRef);
           setDownloadURI(false);
           console.log(items.FileRef);
         });
     }
-
-    // console.log(this.state);
   };
 
   const changeValue1 = async (e, value: any) => {
@@ -2590,12 +1112,6 @@ export default function User(props) {
     console.log(value);
     console.log("Selected Value:", value.key);
     console.log("Selected Text:", value.value);
-    // { key: 'Work Instruction', text: 'Work Instruction' },
-    // { key: 'MSOP', text: 'MSOP' },
-    // { key: 'Forms', text: 'Forms' },
-
-    // const optionData = JSON.parse(value["data-option"]);
-    // console.log("optionData.key:", optionData.key);
 
     let ID;
     let path;
@@ -2623,32 +1139,11 @@ export default function User(props) {
       .select("ID,FileRef")()
       .then((items: any) => {
         console.log(items.FileRef);
-        // this.setState({
-        //   downloadUrl: items.FileRef,
-        //   DownloadURI: false,
-        // });
+
         setDownloadUrl(items.FileRef);
         setDownloadURI(false);
       });
-    // form.resetFields();
   };
-
-  // const handleFileChange=(e)=>{
-  // console.log(e.target.files);
-  // this.setState({
-  //   // files:e.target.files
-  //     fileess:e.target.files
-
-  // })
-  // }
-
-  // const handleFileChange = (e:any) => {
-  //   // this.setState({
-  //   //   fileess: e.target.files,
-  //   // });
-  //   setFileess(e.target.files);
-  // };
-  // console.log(fileess);
 
   const handleFileChange = (info) => {
     // Extract the fileList from info
@@ -2665,180 +1160,6 @@ export default function User(props) {
     setFileess(filelistObject.files);
   };
   console.log(fileess);
-
-  // const handleFileChange = (fileInfoOrEvent) => {
-  //   // Check if fileInfoOrEvent is an event or an object containing file information
-  //   if (fileInfoOrEvent.target) {
-  //     // If it's an event, extract files from the event
-  //     setFileess(fileInfoOrEvent.target.files);
-  //   } else {
-  //     // If it's an object containing file information, directly set the fileList
-  //     setFileess(fileInfoOrEvent.fileList);
-  //   }
-  // };
-  // console.log(fileess);
-
-  const closeHideDialog = () => {
-    // this.setState({
-    //   openDialog: false,
-    //   choose: false,
-    //   hiddenDialog: true,
-    //   downloadUrl: "",
-    //   DownloadURI: true,
-    // });
-    setOpenDialog(false);
-    setChoose(false);
-    setHiddenDialog(true);
-    setDownloadUrl("");
-    setDownloadURI(true);
-
-    chooose.length = 0;
-  };
-
-  const closeHideDialogUpload = () => {
-    // this.setState({
-    //   openDialogUpload: false,
-    //   hiddenDialogUpload: true,
-    //   SubfolderState: false,
-    //   SubfolderState1: false,
-    //   fileUrl: "",
-    //   params1: "",
-    //   params22: "",
-    //   params11: "",
-    //   params2: "",
-    //   params3: "",
-    //   params4: "",
-    //   params5: "",
-    //   filenames: "",
-    //   fileDes: "",
-    //   Filess: [],
-    //   fileNameStruct: "",
-    //   // valueFileType: "Old Files",
-    //   valueFileType: "",
-    //   departmentKey: '',
-    //   documentKey: '',
-    //   projectKey:'',
-    // });
-    setOpenDialogUpload(false);
-    setHiddenDialogUpload(true);
-    setSubfolderState(false);
-    setSubfolderState1(false);
-    setFileUrl("");
-    setParams1("");
-    setParams22("");
-    setParams11("");
-    setParams2("");
-    setParams3("");
-    setParams4("");
-    setParams5("");
-    setFilenames("");
-    setFileDes("");
-    setFiless([]);
-    setFileNameStruct("");
-    setValueFileType("");
-    setDepartmentKey("");
-    setDocumentKey("");
-    setProjectKey("");
-
-    // console.log(this.state.openDialog)
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    console.log(event.target.value);
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const _renderItemColumn = (item, index: number, column) => {
-    const fieldContent = item[column.fieldName] as string;
-    console.log(fieldContent);
-    console.log(item);
-
-    switch (column.key) {
-      case "Upload status":
-        switch (fieldContent) {
-          case "Pending":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#4f6bed",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-          case "Processing":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#ef6950",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-
-          case "Completed":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#498205",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-          case "Rejected":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#a4262c",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-
-          default:
-            return <span>{fieldContent}</span>;
-        }
-
-      case "Link":
-        return (
-          <PrimaryButton
-            style={{
-              backgroundColor: "#0078D4",
-            }}
-            text="View"
-            target="_blank"
-            href={fieldContent}
-          />
-        );
-
-      default:
-        return <span>{fieldContent}</span>;
-    }
-  };
 
   const filesave = async () => {
     setDisableSubmit(true); // Enable the submit button
@@ -2864,12 +1185,9 @@ export default function User(props) {
     } else {
       console.log(fileNameStruct);
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
-      // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
       let myfile: any = fileToUpload;
       console.log(myfile);
-      // this.setState({
-      //   Uploading: true,
-      // });
+
       setUploading(true);
       console.log(Uploading);
 
@@ -2882,8 +1200,6 @@ export default function User(props) {
         Department = "";
       }
       if (fileess.length <= 0) {
-        // alert("The file length is 0")
-        // this.setState({ fileess: e.target.files });
       }
 
       if (params3.length >= 0) {
@@ -2895,77 +1211,17 @@ export default function User(props) {
       if (myfile.size <= 10485760) {
         const sp: SPFI = getSp();
 
-        // create item in an sp list
-        //       let somss = await web.lists.getByTitle("User Files").items();
-        // console.log(somss)
         console.log(myfile.name);
-
-        // let fileexe:any = myfile.name.split(".").pop();
-        // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-
-        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // .then(async (f) => {
-        //     await f.file.getItem().then(async (item) => {
-        //       await item
-        //         .update({
-        //           FileDescription: this.state.fileDes,
-        //           FileName: this.state.filenames,
-        //           DocID: String(this.state.DocID + 1),
-        //         })
-        //         .then(async (myupdate) => {
-        //           console.log(myupdate);
-        //         });
-
-        //       });
-        //       });
-        //     await item.getAll().then(async (myupdate) => {
-        //       console.log(myupdate);
-        //       this.setState({
-        //         fileIDs: myupdate.ID,
-        //       });
-        //       // console.log("Metadata Updated");
-        //     });
-        //   });
-        // });
 
         //This code works
         let fileexe: any = myfile.name.split(".").pop();
         console.log(fileexe);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
         console.log(`${fileNameStruct}.${fileexe}`);
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-Quadra/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
-        // const documentLibraryName = "Shared Documents1";
 
         const folderPath = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
         console.log(folderPath);
         console.log(fileUrl);
-        // Getting the folder by server relative path
-        // const folder = await sp.web.getFolderByServerRelativePath(folderPath);
-        // console.log(folder);
-
-        // Checking if the folder exists
-        // if (!folder) {
-        //     // Folder doesn't exist, so create it
-        //     await sp.web.folders.addUsingPath(folderPath).catch(err => {
-        //         console.error("Error occurred while creating the folder:", err);
-        //     });
-        // }
 
         const documentLibraryName = "Shared Documents1";
 
@@ -3030,14 +1286,6 @@ export default function User(props) {
                   console.log(myupdate);
                 });
 
-              // await item.get().then(async (myupdate) => {
-              //   console.log(myupdate);
-              //   this.setState({
-              //     fileIDs: myupdate.ID,
-              //   });
-              //   console.log("Metadata Updated");
-              // });
-
               console.log(item);
             });
           });
@@ -3046,8 +1294,6 @@ export default function User(props) {
         let fileurl: any = "";
         await sp.web
           .getFolderByServerRelativePath(
-            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
@@ -3075,15 +1321,11 @@ export default function User(props) {
             .items.filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
           console.log(items);
           const max = items.reduce(function (prev, current) {
-            // var ts = new Date("2022-04-06T09:21:13Z");
-            // console.log(ts);
-
             return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
               ? prev
               : current;
           });
           console.log(max);
-          // if (max.length > 0) {
           await sp.web.lists
             .getByTitle("User Files")
             .items.getById(max.Id)
@@ -3100,8 +1342,7 @@ export default function User(props) {
               Fileurl: fileurl,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3110,9 +1351,6 @@ export default function User(props) {
             .then((i) => {
               console.log(i);
             });
-          //  }
-
-          // alert("Updated Successfully");
         } else if (valueFileType === "New Files") {
           await sp.web.lists
             .getByTitle("User Files")
@@ -3129,8 +1367,7 @@ export default function User(props) {
               Fileurl: fileurl,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
-              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3141,42 +1378,26 @@ export default function User(props) {
             });
         }
 
-        //     console.log(this.state);
-        //     await web.lists.getById("380").rootFolder.files.get().then(t => {
-        // //add your code here if you want to do more after deleting the file
-        //     console.log(t);
-        //     });
         await fetchData();
         openNotification();
-        // alert("Created Successfully");
-        // this.setState({
-        //   Uploading: false,
-        // });
+
         setUploading(false);
       } else {
         const sp: SPFI = getSp();
         console.log(myfile.name);
         let fileexe: any = myfile.name.split(".").pop();
-        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
 
         console.log(`${fileNameStruct}.${fileexe}`);
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${fileUrl}`
-        //   )
+
         await sp.web
           .getFolderByServerRelativePath(
-            // `/sites/DMS-TATA/Shared Documents1/${fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
-            // console.log("File Uploaded");
             f.file.getItem().then(async (item) => {
-              //get item from sp
-
               await item
                 .update({
                   FileDescription: fileDes,
@@ -3185,42 +1406,19 @@ export default function User(props) {
                 })
                 .then(async (myupdate) => {
                   console.log(myupdate);
-                  // console.log("Metadata Updated");
                 });
 
               await item().then(async (myupdate) => {
                 console.log(myupdate);
-                // this.setState({
-                //   fileIDs: myupdate.ID,
-                // });
+
                 setFileIDs(myupdate.ID);
-                // console.log("Metadata Updated");
               });
             });
           });
         fileUrl;
-        // let fileurl:any = "";
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   ) // Here comes a folder/subfolder path
-        //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-        //   .select() // Fields to retrieve
-        //   .getAll()
-        //   .then(async (item) => {
-        //     console.log(item);
-        //     await item.filter((file) => {
-        //       console.log(file.LinkingUri);
-        //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-        //         fileurl = file.LinkingUri;
-        //       }
-        //     });
-        //   });
+
         let fileurl: any = "";
 
-        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
         console.log(folderPath);
         console.log(fileUrl);
@@ -3265,8 +1463,7 @@ export default function User(props) {
                 Fileurl: fileurl,
                 DocID: String(DocID + 1),
                 Status: "Pending",
-                // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
-                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+
                 RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
                 Department: Department,
@@ -3276,8 +1473,6 @@ export default function User(props) {
                 console.log(i);
               });
           }
-
-          // alert("Updated Successfully");
         } else if (valueFileType === "New Files") {
           await sp.web.lists
             .getByTitle("User Files")
@@ -3293,8 +1488,7 @@ export default function User(props) {
               Requester: Title,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3306,38 +1500,8 @@ export default function User(props) {
         }
         openNotification();
 
-        // alert("Created Successfully");
-        // this.setState({
-        //   Uploading: false,
-        // });
         setUploading(false);
       }
-
-      // this.setState({
-      //   openDialogUpload: false,
-      //   hiddenDialogUpload: true,
-      //   SubfolderState: false,
-      //   SubfolderState1: false,
-      //   fileUrl: "",
-      //   filenames: "",
-      //   fileDes: "",
-      //   Filess: [],
-      //   params1: "",
-      //   params22: "",
-      //   params11: "",
-      //   params2: "",
-      //   params3: "",
-      //   params4: "",
-      //   params5: "",
-      //   fileNameStruct: "",
-      //   valueFileType: "Old Files",
-      //   fileess:[],
-
-      //   departmentKey: '',
-      //   documentKey: '',
-      //   projectKey:'',
-
-      // });
 
       setOpenDialogUpload(false);
       setHiddenDialogUpload(true);
@@ -3360,7 +1524,6 @@ export default function User(props) {
       setDepartmentKey("");
       setDocumentKey("");
       setProjectKey("");
-      // console.log(this.state);
     }
     form.resetFields();
     setDisableSubmit(false);
@@ -3391,12 +1554,9 @@ export default function User(props) {
     } else {
       console.log(fileNameStruct);
       const fileToUpload: any = fileess[0]; // Assuming you want to upload the first file in the array
-      // let myfile:any = document.querySelector("#newfile") as HTMLInputElement
       let myfile: any = fileToUpload;
       console.log(myfile);
-      // this.setState({
-      //   Uploading: true,
-      // });
+
       setUploading(true);
       console.log(Uploading);
 
@@ -3408,10 +1568,6 @@ export default function User(props) {
       } else {
         Department = "";
       }
-      if (fileess.length <= 0) {
-        // alert("The file length is 0")
-        // this.setState({ fileess: e.target.files });
-      }
 
       if (params3.length >= 0) {
         Subdepartment = params3;
@@ -3422,60 +1578,14 @@ export default function User(props) {
       if (myfile.size <= 10485760) {
         const sp: SPFI = getSp();
 
-        // create item in an sp list
-        //       let somss = await web.lists.getByTitle("User Files").items();
-        // console.log(somss)
         console.log(myfile.name);
-
-        // let fileexe:any = myfile.name.split(".").pop();
-        // // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        //         console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
-
-        // console.log(`${this.state.fileNameStruct}.${fileexe}`);
-        // // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // .then(async (f) => {
-        //     await f.file.getItem().then(async (item) => {
-        //       await item
-        //         .update({
-        //           FileDescription: this.state.fileDes,
-        //           FileName: this.state.filenames,
-        //           DocID: String(this.state.DocID + 1),
-        //         })
-        //         .then(async (myupdate) => {
-        //           console.log(myupdate);
-        //         });
-
-        //       });
-        //       });
-        //     await item.getAll().then(async (myupdate) => {
-        //       console.log(myupdate);
-        //       this.setState({
-        //         fileIDs: myupdate.ID,
-        //       });
-        //       // console.log("Metadata Updated");
-        //     });
-        //   });
-        // });
 
         //This code works
         let fileexe: any = myfile.name.split(".").pop();
         console.log(fileexe);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
 
         console.log(`${fileNameStruct}.${fileexe}`);
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
-        // const folder:any = sp.web.getFolderByServerRelativePath(folderPath);
-
-        // await sp.web.getFolderByServerRelativePath("Shared Documents1").files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`,myfile, { Overwrite: true })
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared%20Documents1/${this.state.fileUrl}`).files.addUsingPath(folderPath, file, { Overwrite: true });
-
-        // await sp.web.getFolderByServerRelativePath(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`).files.addUsingPath(`${this.state.fileNameStruct}.${fileexe}`, myfile, { Overwrite: true })
 
         const folderPath = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
         console.log(folderPath);
@@ -3498,14 +1608,6 @@ export default function User(props) {
                   console.log(myupdate);
                 });
 
-              // await item.get().then(async (myupdate) => {
-              //   console.log(myupdate);
-              //   this.setState({
-              //     fileIDs: myupdate.ID,
-              //   });
-              //   console.log("Metadata Updated");
-              // });
-
               console.log(item);
             });
           });
@@ -3514,8 +1616,6 @@ export default function User(props) {
         let fileurl: any = "";
         await sp.web
           .getFolderByServerRelativePath(
-            // `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
           ) // Here comes a folder/subfolder path
           .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
@@ -3544,15 +1644,12 @@ export default function User(props) {
             .items.filter(`Filename eq '${fileNameStruct}.${fileexe}'`)();
           console.log(items);
           const max = items.reduce(function (prev, current) {
-            // var ts = new Date("2022-04-06T09:21:13Z");
-            // console.log(ts);
-
             return toTimestamp(prev.Modified) > toTimestamp(current.Modified)
               ? prev
               : current;
           });
           console.log(max);
-          // if (max.length > 0) {
+
           await sp.web.lists
             .getByTitle("User Files")
             .items.getById(max.Id)
@@ -3569,8 +1666,7 @@ export default function User(props) {
               Fileurl: fileurl,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3579,9 +1675,6 @@ export default function User(props) {
             .then((i) => {
               console.log(i);
             });
-          //  }
-
-          // alert("Updated Successfully");
         } else if (valueFileType === "New Files") {
           await sp.web.lists
             .getByTitle("User Files")
@@ -3598,8 +1691,7 @@ export default function User(props) {
               Fileurl: fileurl,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              //  RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3610,43 +1702,26 @@ export default function User(props) {
             });
         }
 
-        //     console.log(this.state);
-        //     await web.lists.getById("380").rootFolder.files.get().then(t => {
-        // //add your code here if you want to do more after deleting the file
-        //     console.log(t);
-        //     });
         await fetchData();
-        // alert("Created Successfully");
         openNotification();
 
-        // this.setState({
-        //   Uploading: false,
-        // });
         setUploading(false);
       } else {
         const sp: SPFI = getSp();
         console.log(myfile.name);
         let fileexe: any = myfile.name.split(".").pop();
-        // console.log(`/sites/DMSportal/Shared Documents/${this.state.fileUrl}`);
-        // console.log(`/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`);
+
         console.log(`/sites/DMS-Quadra/Shared Documents1/${fileUrl}`);
 
         console.log(`${fileNameStruct}.${fileexe}`);
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   )
+
         await sp.web
           .getFolderByServerRelativePath(
-            // `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`
             `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`
           )
           .files.addChunked(myfile.name, myfile)
           .then((f) => {
-            // console.log("File Uploaded");
             f.file.getItem().then(async (item) => {
-              //get item from sp
-
               await item
                 .update({
                   FileDescription: fileDes,
@@ -3655,42 +1730,19 @@ export default function User(props) {
                 })
                 .then(async (myupdate) => {
                   console.log(myupdate);
-                  // console.log("Metadata Updated");
                 });
 
               await item().then(async (myupdate) => {
                 console.log(myupdate);
-                // this.setState({
-                //   fileIDs: myupdate.ID,
-                // });
+
                 setFileIDs(myupdate.ID);
-                // console.log("Metadata Updated");
               });
             });
           });
         fileUrl;
-        // let fileurl:any = "";
-        // await sp.web
-        //   .getFolderByServerRelativePath(
-        //     `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`
-        //   ) // Here comes a folder/subfolder path
-        //   .files.expand("Files/ListItemAllFields,DocID") // For Metadata extraction
-        //   .select() // Fields to retrieve
-        //   .getAll()
-        //   .then(async (item) => {
-        //     console.log(item);
-        //     await item.filter((file) => {
-        //       console.log(file.LinkingUri);
-        //       if (file.Name === `${this.state.fileNameStruct}.${fileexe}`) {
-        //         fileurl = file.LinkingUri;
-        //       }
-        //     });
-        //   });
+
         let fileurl: any = "";
 
-        // const folderPath:any = `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`;
-
-        // const folderPath:any = `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`;
         const folderPath: any = `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`;
         console.log(folderPath);
         console.log(fileUrl);
@@ -3735,8 +1787,7 @@ export default function User(props) {
                 Fileurl: fileurl,
                 DocID: String(DocID + 1),
                 Status: "Pending",
-                // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-                // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+
                 RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
                 Department: Department,
@@ -3746,8 +1797,6 @@ export default function User(props) {
                 console.log(i);
               });
           }
-
-          // alert("Updated Successfully");
         } else if (valueFileType === "New Files") {
           await sp.web.lists
             .getByTitle("User Files")
@@ -3763,8 +1812,7 @@ export default function User(props) {
               Requester: Title,
               DocID: String(DocID + 1),
               Status: "Pending",
-              // RelativeURL: `/sites/DMSportal/Shared Documents/${this.state.fileUrl}`,
-              // RelativeURL: `/sites/DMS-TATA/Shared Documents1/${this.state.fileUrl}`,
+
               RelativeURL: `/sites/DMS-Quadra/Shared Documents1/${fileUrl}`,
 
               Department: Department,
@@ -3775,39 +1823,10 @@ export default function User(props) {
             });
         }
 
-        // alert("Created Successfully");
         openNotification();
 
-        // this.setState({
-        //   Uploading: false,
-        // });
         setUploading(false);
       }
-
-      // this.setState({
-      //   openDialogUpload: false,
-      //   hiddenDialogUpload: true,
-      //   SubfolderState: false,
-      //   SubfolderState1: false,
-      //   fileUrl: "",
-      //   filenames: "",
-      //   fileDes: "",
-      //   Filess: [],
-      //   params1: "",
-      //   params22: "",
-      //   params11: "",
-      //   params2: "",
-      //   params3: "",
-      //   params4: "",
-      //   params5: "",
-      //   fileNameStruct: "",
-      //   valueFileType: "Old Files",
-      //   departmentKey: '',
-      //   documentKey: '',
-      //   projectKey:'',
-      //   fileess:[]
-      // });
-      // await fetchData();
 
       setOpenDialogUpload(false);
       setHiddenDialogUpload(true);
@@ -3838,661 +1857,6 @@ export default function User(props) {
   return (
     <div>
       <style>{styl}</style>
-
-      <div className="container" style={{ marginTop: "10px", display: "none" }}>
-        <div
-          style={{
-            flex: "1",
-            flexDirection: "row",
-            //    margin:'2px',
-            //    gap:'3px',
-            // borderStyle: 'dashed',
-            // borderColor: 'black',
-            position: "relative",
-
-            columnGap: "2px",
-          }}
-        >
-          <PrimaryButton
-            text="Template"
-            style={{ backgroundColor: "#0078D4" }}
-            onClick={toggleHideDialog}
-          />
-
-          {showFirstItem && (
-            <PrimaryButton
-              text="Upload"
-              style={{
-                // borderStyle: 'dashed',
-                // borderColor: 'black',
-                position: "absolute",
-                left: "86%",
-                backgroundColor: "#0078D4",
-              }}
-              onClick={toggleHideDialogUpload}
-            />
-          )}
-        </div>
-
-        <Dialog
-          hidden={hiddenDialog}
-          // containerClassName={ 'ms-dialogMainOverride ' + styles.textDialog}
-          dialogContentProps={dialogContentProps}
-          isBlocking={false}
-        >
-          {/* <p>Download template</p> */}
-          <Dropdown
-            placeholder="Select an option"
-            label="Template"
-            options={options1}
-            onChange={changeValue}
-            styles={dropdownStyles}
-          />
-          {choose ? (
-            <Dropdown
-              placeholder="Select an option"
-              label="Sub Section"
-              options={chooose}
-              onChange={changeValue1}
-              styles={dropdownStyles}
-            />
-          ) : (
-            <div></div>
-          )}
-          <DialogFooter>
-            {DownloadURI === true ? (
-              <PrimaryButton
-                disabled={DownloadURI}
-                style={{ backgroundColor: "#989898" }}
-                onClick={downloadFile}
-                text="Download"
-              />
-            ) : (
-              <PrimaryButton
-                disabled={DownloadURI}
-                style={{ backgroundColor: "#0078D4" }}
-                onClick={downloadFile}
-                text="Download"
-              />
-            )}
-            <DefaultButton onClick={closeHideDialog} text="Cancel" />
-          </DialogFooter>
-        </Dialog>
-
-        <Dialog
-          hidden={hiddenDialogUpload}
-          containerClassName={"ms-dialogMainOverride " + styles.textDialog}
-          dialogContentProps={dialogContentPropsUpload}
-          modalProps={modelProps}
-          styles={getStyles}
-        >
-          <div>
-            {Uploading === false && (
-              <Dropdown
-                placeholder="Select an option"
-                label="File type"
-                // selectedKey={this.state.valueFileType}
-                options={options}
-                onChange={(e, value) => changeValueFileType(e, value)}
-                styles={dropdownStyles}
-              />
-            )}
-          </div>
-          {Uploading === false ? (
-            <div>
-              {valueFileType === "Old Files" ? (
-                <div
-                  style={{
-                    marginTop: "30px",
-                  }}
-                >
-                  <div>
-                    {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
-                    <div
-                      style={{
-                        height: "200px",
-                        // borderStyle: 'dashed',
-                        // borderColor: 'black',
-                        // flexDirection: 'row',
-                        position: "relative",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
-                      }}
-                    >
-                      <div
-                        style={{
-                          left: "0%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Department Name"
-                          disabled={valueFileType !== "Old Files"}
-                          selectedKey={departmentKey}
-                          options={departmentName}
-                          onChange={changeValuedepartmentName}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Document Name"
-                          disabled={valueFileType !== "Old Files"}
-                          selectedKey={documentKey}
-                          options={documentType}
-                          onChange={changeValuedocumentType}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                      {/* <div
-                  style={{
-                    left: "60%",
-                    position: "absolute",
-                    // left: '86%',
-                    // backgroundColor: "#0078D4"
-                  }}
-                >
-                  <Dropdown
-                    placeholder="Select an option"
-                    label="Project Name"
-                    options={this.state.ProjectName}
-                    onChange={changeValueProjectName}
-                    styles={dropdownStyles}
-                  />
-                </div> */}
-                      {SubfolderState === true ? (
-                        <div
-                          style={{
-                            left: "0%",
-                            marginTop: "100px",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <Dropdown
-                            placeholder="Select an option"
-                            label="Sub Folders Main"
-                            disabled={valueFileType !== "Old Files"}
-                            selectedKey={subFoldersMainKey}
-                            options={SubdepartmentsMain}
-                            onChange={changeValueSubdepartmentsMain}
-                            styles={dropdownStyles}
-                          />
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                      {SubfolderState1 === true ? (
-                        <div
-                          style={{
-                            marginTop: "100px",
-                            left: "35%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <Dropdown
-                            placeholder="Select an option"
-                            label="Sub Folders"
-                            options={Subdepartments}
-                            onChange={changeValueSubdepartments}
-                            styles={dropdownStyles}
-                          />
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-
-                      {SubfolderState1 === false ? (
-                        <div
-                          style={{
-                            marginTop: "130px",
-                            left: "35%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <PrimaryButton
-                            text="Search"
-                            style={{ backgroundColor: "#0078D4" }}
-                            onClick={clickGenerate1}
-                            disabled={valueFileType !== "Old Files"}
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            marginTop: "130px",
-                            left: "70%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <PrimaryButton
-                            text="Search"
-                            disabled={valueFileType !== "Old Files"}
-                            style={{ backgroundColor: "#0078D4" }}
-                            onClick={clickGenerate1}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        marginBottom: "30px",
-                        position: "relative",
-                      }}
-                    >
-                      <Dropdown
-                        placeholder="Select File"
-                        label="Select File"
-                        options={Filess}
-                        onChange={changeSalectFilename}
-                        style={{
-                          width: "50%",
-                        }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "50px",
-                      }}
-                    >
-                      <input
-                        type="file"
-                        name="myFile"
-                        id="newfile"
-                        accept=".doc, .docx, .xls, .xlsx"
-                        // onChange={(e) => handleFileChange(e)}
-                        disabled={valueFileType !== "Old Files"}
-                      ></input>
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "20px",
-                      }}
-                    >
-                      <TextField
-                        label="File name"
-                        value={filenames}
-                        onChange={changeValueFilename}
-                        disabled={valueFileType !== "Old Files"}
-                      />
-                      <TextField
-                        label="File description"
-                        value={fileDes}
-                        multiline
-                        rows={3}
-                        onChange={changeValueFileDescription}
-                        disabled={valueFileType !== "Old Files"}
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <PrimaryButton
-                      text="Upload"
-                      style={{ backgroundColor: "#0078D4" }}
-                      // onClick={this.filesave}
-                      onClick={filesaveold}
-                      disabled={valueFileType !== "Old Files"}
-                    />
-                    <DefaultButton
-                      onClick={closeHideDialogUpload}
-                      text="Cancel"
-                    />
-                  </DialogFooter>
-                </div>
-              ) : (
-                // New file
-                <div
-                  style={{
-                    marginTop: "30px",
-                  }}
-                >
-                  <div>
-                    {/* <PrimaryButton type="file" name="myFile" id="newfile" text="Choose file" style={{ backgroundColor: "#0078D4" }}/> */}
-                    <div
-                      style={{
-                        height: "200px",
-                        // borderStyle: 'dashed',
-                        // borderColor: 'black',
-                        // flexDirection: 'row',
-                        position: "relative",
-                        // left: '86%',
-                        // backgroundColor: "#0078D4"
-                      }}
-                    >
-                      <div
-                        style={{
-                          left: "0%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Department Name"
-                          disabled={valueFileType !== "New Files"}
-                          // defaultValue={params11}
-                          selectedKey={departmentKey}
-                          options={departmentName}
-                          onChange={changeValuedepartmentName}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          left: "35%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Document Name"
-                          disabled={valueFileType !== "New Files"}
-                          selectedKey={documentKey}
-                          options={documentType}
-                          onChange={changeValuedocumentType}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          left: "70%",
-                          position: "absolute",
-                          // left: '86%',
-                          // backgroundColor: "#0078D4"
-                        }}
-                      >
-                        <Dropdown
-                          placeholder="Select an option"
-                          label="Project Name"
-                          disabled={valueFileType !== "New Files"}
-                          options={ProjectName}
-                          selectedKey={projectKey}
-                          onChange={changeValueProjectName}
-                          styles={dropdownStyles}
-                        />
-                      </div>
-                      {SubfolderState === true ? (
-                        <div
-                          style={{
-                            left: "0%",
-                            marginTop: "100px",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <Dropdown
-                            placeholder="Select an option"
-                            label="Sub Folders Main"
-                            disabled={valueFileType !== "New Files"}
-                            options={SubdepartmentsMain}
-                            selectedKey={subFoldersMainKey}
-                            onChange={changeValueSubdepartmentsMain}
-                            styles={dropdownStyles}
-                          />
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                      {SubfolderState1 === true ? (
-                        <div
-                          style={{
-                            marginTop: "100px",
-                            left: "35%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <Dropdown
-                            placeholder="Select an option"
-                            label="Sub Folders"
-                            options={Subdepartments}
-                            onChange={changeValueSubdepartments}
-                            styles={dropdownStyles}
-                          />
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-
-                      {SubfolderState1 === false ? (
-                        <div
-                          style={{
-                            marginTop: "130px",
-                            left: "35%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <PrimaryButton
-                            text="Generate ID"
-                            style={{ backgroundColor: "#0078D4" }}
-                            onClick={clickGenerate}
-                            disabled={valueFileType !== "New Files"}
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            marginTop: "130px",
-                            left: "70%",
-                            position: "absolute",
-                            // left: '86%',
-                            // backgroundColor: "#0078D4"
-                          }}
-                        >
-                          <PrimaryButton
-                            text="Generate ID"
-                            style={{ backgroundColor: "#0078D4" }}
-                            onClick={clickGenerate}
-                            disabled={valueFileType !== "New Files"}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        marginBottom: "30px",
-                        position: "relative",
-                      }}
-                    >
-                      <div
-                        style={{
-                          // marginTop: "130px",
-                          left: "0%",
-                          position: "absolute",
-                        }}
-                      >
-                        <TextField
-                          label="ID (Please copy the generated ID before uploading)"
-                          disabled
-                          value={fileNameStruct}
-                          // style={{
-                          //   width:"50%",
-                          // }}
-                          defaultValue={fileNameStruct}
-                          onChange={changeValueFileID}
-                          // required
-                        />
-                      </div>
-                      <div
-                        style={{
-                          marginTop: "31px",
-                          left: "45%",
-                          position: "absolute",
-                        }}
-                      >
-                        <PrimaryButton
-                          text="Copy"
-                          style={{ backgroundColor: "#0078D4" }}
-                          disabled={fileNameStruct === ""}
-                          onClick={async () => {
-                            navigator.clipboard.writeText(fileNameStruct);
-                            alert("ID copied successfully!");
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "100px",
-                      }}
-                    >
-                      <input
-                        type="file"
-                        name="myFile"
-                        id="newfile"
-                        accept=".doc, .docx, .xls, .xlsx"
-                        // onChange={(e) => handleFileChange(e)}
-                        disabled={valueFileType !== "New Files"}
-                      ></input>
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "20px",
-                      }}
-                    >
-                      <TextField
-                        label="File name"
-                        value={filenames}
-                        onChange={changeValueFilename}
-                        disabled={valueFileType !== "New Files"}
-                        // required
-                      />
-                      <TextField
-                        label="File description"
-                        value={fileDes}
-                        multiline
-                        rows={3}
-                        onChange={changeValueFileDescription}
-                        disabled={valueFileType !== "New Files"}
-                        // required
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <PrimaryButton
-                      text="Upload"
-                      style={{ backgroundColor: "#0078D4" }}
-                      onClick={filesave}
-                      disabled={valueFileType !== "New Files"}
-                    />
-                    <DefaultButton
-                      onClick={closeHideDialogUpload}
-                      text="Cancel"
-                    />
-                  </DialogFooter>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div
-              style={{
-                marginTop: "70px",
-              }}
-            >
-              <ProgressIndicator
-                label="File is uploading"
-                description="It will take some time."
-              />
-            </div>
-          )}
-        </Dialog>
-
-        <div style={{ margin: "35px" }}></div>
-        <Stack
-          horizontal
-          // className={styles.filter}
-          tokens={stackTokens}
-        >
-          {/* <h5>Search:</h5> */}
-          <TextField
-            underlined
-            placeholder="Search"
-            onChange={_onFilter}
-            styles={textFieldStyles}
-          />
-          {/* <PrimaryButton
-              text="Search"
-              style={{ backgroundColor: "#0078D4" }}
-              onClick={this._onFilters}
-    /> */}
-
-          {/*<UploadFile></UploadFile>*/}
-        </Stack>
-        <div style={{ margin: "35px" }}></div>
-        {/* <DetailsList
-        className={styles.list}
-        items={items}
-        compact={false}
-        columns={columns}
-        onRenderItemColumn={_renderItemColumn}
-        selectionMode={SelectionMode.none}
-        getKey={_getKey}
-        setKey="none"
-        layoutMode={DetailsListLayoutMode.justified}
-        isHeaderVisible={true}
-      /> */}
-        {overalllist.length == 0 ? (
-          <div
-            style={{
-              // borderStyle:'dashed',
-              padding: "70px 0",
-              // height: "200px",
-              margin: "auto",
-              // width: "300px",
-              textAlign: "center",
-            }}
-          >
-            <img
-              style={{
-                // borderStyle:'dashed',
-                display: "block",
-                margin: "auto",
-                padding: "40px",
-                width: "40%",
-                // height: ""
-              }}
-              src={Logo}
-            />
-            <b style={{ fontWeight: "bold" }}>No Pending Request Available</b>
-          </div>
-        ) : (
-          <div></div>
-        )}
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={count}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </div>
 
       {!showUploadDiv ? (
         <div className={styles.newdesigndiv}>
@@ -4603,7 +1967,6 @@ export default function User(props) {
                                 <Select.Option
                                   key={option.text}
                                   value={option.text}
-                                  // data-option={JSON.stringify(option)}
                                 >
                                   {option.text}
                                 </Select.Option>
@@ -4615,65 +1978,6 @@ export default function User(props) {
                     ) : (
                       <div></div>
                     )}
-                    {/* <div style={{ marginTop: "auto", textAlign: "end" }}> */}
-                    {/* {DownloadURI === true ? (
-                        <Row gutter={12}>
-                          <Col span={12}>
-                            <Button
-                              // onClick={downloadFile}
-                              htmlType="submit"
-                              style={{
-                                background: "rgba(74, 173, 146, 1)",
-                                color: "white",
-                                width: "149px",
-                              }}
-                            >
-                              Download
-                            </Button>
-                          </Col>
-                        </Row>
-                      ) : (
-                        <Row gutter={12}>
-                          <Col span={12}>
-                            <Button
-                              // onClick={downloadFile}
-                              htmlType="submit"
-                              style={{
-                                background: "rgba(74, 173, 146, 1)",
-                                color: "white",
-                                width: "149px",
-                              }}
-                            >
-                              Download
-                            </Button>
-                          </Col>
-                        </Row>
-                      )} */}
-                    {/* <Row gutter={24}>
-                        <Col span={24}>
-                          <Button
-                            // onClick={downloadFile}
-                            htmlType="submit"
-                            style={{
-                              background: "rgba(74, 173, 146, 1)",
-                              color: "white",
-                              width: "100px",
-                            }}
-                          >
-                            Download
-                          </Button>
-                          <Button
-                            onClick={onClose}
-                            style={{
-                              width: "100px",
-                              marginLeft: "10px",
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </Col>
-                      </Row> */}
-                    {/* </div> */}
                   </Form>
                 </Drawer>
               </>
@@ -4747,8 +2051,6 @@ export default function User(props) {
                           >
                             <Select
                               placeholder="Select an option"
-                              // disabled={valueFileType !== "Old Files"}
-                              // value={departmentKey}
                               onChange={(event, option) =>
                                 changeValuedepartmentName(event, option)
                               }
@@ -4778,13 +2080,9 @@ export default function User(props) {
                           >
                             <Select
                               placeholder="Select an option"
-                              // disabled={valueFileType !== "Old Files"}
-                              // value={departmentKey}
                               onChange={(event, option) => {
                                 changeValuedocumentType(event, option);
                               }}
-
-                              // onChange={changeValuedocumentType}
                             >
                               {documentType.map((option: any) => (
                                 <Select.Option
@@ -4814,8 +2112,6 @@ export default function User(props) {
                           >
                             <Select
                               placeholder="Select an option"
-                              // disabled={valueFileType !== "Old Files"}
-                              // value={departmentKey}
                               onChange={(event, option) => {
                                 changeValueProjectName(event, option);
                               }}
@@ -4969,7 +2265,6 @@ export default function User(props) {
                                 disabled={fileNameStruct === ""}
                                 onClick={async () => {
                                   navigator.clipboard.writeText(fileNameStruct);
-                                  // alert("ID copied successfully!");
                                   openCopiedNotification();
                                 }}
                               >
@@ -5006,7 +2301,7 @@ export default function User(props) {
                             <Upload
                               accept=".doc, .docx, .xls, .xlsx"
                               onChange={handleFileChange}
-                              beforeUpload={() => false} // Prevent actual upload
+                              beforeUpload={() => false}
                             >
                               <Button
                                 icon={<UploadOutlined />}
@@ -5068,21 +2363,6 @@ export default function User(props) {
                           span={24}
                           style={{ display: "flex", marginLeft: "57%" }}
                         >
-                          {/* {enablesubmit ?
-                          (<Form.Item>
-                            <Button
-                              htmlType="submit"
-                              style={{
-                                background: "rgba(74, 173, 146, 1)",
-                                color: "white",
-                                width: "149px",
-                              }}
-                            >
-                              Submit
-                            </Button>
-                          </Form.Item>):(<>
-                          </>)} */}
-
                           <Form.Item>
                             <Button
                               htmlType="submit"
@@ -5124,7 +2404,6 @@ export default function User(props) {
                         onFinish={() => filesaveold()}
                         autoComplete="off"
                         style={{ maxWidth: "100%" }}
-                        // form={form}
                       >
                         <Row gutter={24}>
                           <Col span={12}>
@@ -5141,8 +2420,6 @@ export default function User(props) {
                             >
                               <Select
                                 placeholder="Select an option"
-                                // disabled={valueFileType !== "Old Files"}
-                                // value={departmentKey}
                                 onChange={(event, option) =>
                                   changeValuedepartmentName(event, option)
                                 }
@@ -5172,13 +2449,9 @@ export default function User(props) {
                             >
                               <Select
                                 placeholder="Select an option"
-                                // disabled={valueFileType !== "Old Files"}
-                                // value={departmentKey}
                                 onChange={(event, option) => {
                                   changeValuedocumentType(event, option);
                                 }}
-
-                                // onChange={changeValuedocumentType}
                               >
                                 {documentType.map((option: any) => (
                                   <Select.Option
@@ -5192,55 +2465,6 @@ export default function User(props) {
                             </Form.Item>
                           </Col>
                         </Row>
-
-                        {/* <Row gutter={24}>
-                    <Col span={12}>
-                    <Form.Item
-                      label="Project Name"
-                      name="Project Name"
-                      style={{ maxWidth: 400, marginTop: 17 }}
-                      rules={[{ required: true}]}
-                    >
-                      <Select
-                        placeholder="Select an option"
-                        // disabled={valueFileType !== "Old Files"}
-                        // value={departmentKey}
-                        onChange={(event, option) => {
-                          changeValueProjectName(event, option);
-                        }}
-                      >
-                        {ProjectName.map((option: any) => (
-                          <Select.Option key={option.key} value={option.text}>
-                            {option.text}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                    {SubfolderState === true ? (<Form.Item
-                      label="Sub Folders Main"
-                      name="Sub Folders Main"
-                      style={{ maxWidth: 400, marginTop: 17 }}
-                      rules={[{ required: true}]}
-                    >
-                      <Select
-                        placeholder="Select an option"
-                        onChange={(event, option) => {
-                          changeValueSubdepartmentsMain(event, option);
-                        }}
-                      >
-                        {SubdepartmentsMain.map((option: any) => (
-                          <Select.Option key={option.key} value={option.text}>
-                            {option.text}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>):
-                     (<div></div>
-                    )}
-                    </Col>
-                    </Row> */}
 
                         <Row gutter={24}>
                           <Col span={24}>
@@ -5382,13 +2606,9 @@ export default function User(props) {
                             >
                               <Select
                                 placeholder="Select File"
-                                // disabled={valueFileType !== "Old Files"}
-                                // value={departmentKey}
                                 onChange={(event, option) => {
                                   changeSelectFilename(event, option);
                                 }}
-
-                                // onChange={changeValuedocumentType}
                               >
                                 {Filess.map((option: any) => (
                                   <Select.Option

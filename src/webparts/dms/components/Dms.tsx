@@ -1,7 +1,6 @@
 import * as React from "react";
 import styles from "./Dms.module.scss";
 
-// import ReactTable from "react-table";
 import { Route, HashRouter, Routes } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 

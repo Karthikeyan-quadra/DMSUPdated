@@ -235,11 +235,6 @@ export default function QmsDashboard(props) {
       resizable: true,
 
       render: (text, record) => (
-        // <Button
-        //   text="View"
-        //   target="_blank"
-        //   href={record.Fileurl}
-        // />
         <div style={{ display: "flex", flexDirection: "row" }}>
           <ApprovalPopup props={record} />
           <DenyPopup props={record} />
@@ -247,17 +242,7 @@ export default function QmsDashboard(props) {
       ),
 
       responsive: ["md", "lg"],
-      // ellipsis: true,
     },
-    // {
-    //   title: "Deny",
-    //   dataIndex: "Status",
-    //   width: "7%",
-    //   align: "left",
-    //   resizable: true,
-    //   responsive: ["md", "lg"],
-    //   ellipsis: true,
-    // },
 
     {
       title: "View",
@@ -266,12 +251,6 @@ export default function QmsDashboard(props) {
       align: "left",
       resizable: true,
       render: (text, record) => (
-        // <Button
-        //   text="View"
-        //   target="_blank"
-        //   href={record.Fileurl}
-        // />
-
         <img
           src={require("../../../../../Images/Eye.png")}
           alt="View"
@@ -282,38 +261,6 @@ export default function QmsDashboard(props) {
       ellipsis: true,
     },
   ];
-
-  // public async componentDidMount() {
-  //   const sp:SPFI=getSp()
-  //   console.log(await sp.web.currentUser());
-  //   console.log(await (await sp.web.currentUser()).Email);
-  //   this.setState(
-  //     {
-  //       //items:await getSitelist(),
-  //       value: await getSitelist(),
-  //     },
-  //     () => {
-  //       this.setState({
-  //         count: this.state.value.length,
-  //         items: this.state.value.slice(
-  //           this.state.page * this.state.rowsPerPage,
-  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //         ),
-  //         overalllist: this.state.value,
-  //       });
-  //     }
-  //   );
-
-  //   console.log(this.state.items);
-  //   console.log(this.state.value);
-  //   console.log(this.state.overalllist);
-  //   console.log(this.state.count);
-  // }
-
-  const handlePopup = (props) => {
-    setShowApprovalPopup(true);
-    setRowItem(props);
-  };
 
   const fetchData = async () => {
     const sp: SPFI = getSp();
@@ -336,86 +283,9 @@ export default function QmsDashboard(props) {
     setOverallList(fetchedValue);
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [page, rowsPerPage]);
-
   useEffect(() => {
     fetchData();
   }, []);
-
-  //   useEffect(() => {
-  //   fetchData();
-  // }, [overalllist]);
-
-  function _getKey(item: any, index?: number): string {
-    console.log(item.key);
-    return item.key;
-  }
-
-  // private _onFilter = (
-  //   ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-  //   text: string
-  // ): void => {
-  //   let val = this.state.overalllist.filter(
-  //     (i) =>
-  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
-  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
-  //   );
-  //   console.log(val);
-
-  //   let condition = text.toLowerCase() ? val : this.state.overalllist;
-  //   console.log(condition);
-
-  //   this.setState(
-  //     {
-  //       items: text.toLowerCase()
-  //         ? val.slice(
-  //             this.state.page * this.state.rowsPerPage,
-  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //           )
-  //         : this.state.overalllist.slice(
-  //             this.state.page * this.state.rowsPerPage,
-  //             this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //           ),
-  //     },
-  //     () => {
-  //       this.setState({
-  //         count: condition.length,
-  //         value: condition,
-  //       });
-  //     }
-  //   );
-  //   console.log(val);
-  // };
-
-  // const _onFilter = (
-  //   ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-  //   text: string
-  // ) => {
-  //   let val: any = overalllist.filter(
-  //     (i: any) =>
-  //       i.FileTitle.toLowerCase().indexOf(text.toLowerCase()) > -1 ||
-  //       i.Status.toLowerCase().indexOf(text.toLowerCase()) > -1
-  //   );
-  //   console.log(val);
-
-  //   let condition = text.toLowerCase() ? val : overalllist;
-  //   console.log(condition);
-
-  //   setItems(
-  //     text.toLowerCase()
-  //       ? val.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-  //       : overalllist.slice(
-  //           page * rowsPerPage,
-  //           page * rowsPerPage + rowsPerPage
-  //         )
-  //   );
-
-  //   setCount(condition.length);
-  //   setValue(condition);
-  //   console.log(val);
-  // };
 
   const _onFilter = (text: any) => {
     const filtered: any = overalllist.filter(
@@ -425,13 +295,6 @@ export default function QmsDashboard(props) {
     );
     setFilteredData(filtered);
     setSearchText(text);
-  };
-
-  const UploadFile = () => {
-    // this.setState({
-    //   uploadfile: true,
-    // });
-    setUploadFile(true);
   };
 
   const updated = async (isupdated) => {
@@ -451,247 +314,16 @@ export default function QmsDashboard(props) {
     }
   };
 
-  // const sendApproval = () => {
-  //   console.log("hello");
-  //   // this.setState({
-  //   //   opendialog: true,
-  //   //   hideDialog: false,
-  //   // });
-  //   setOpenDialog(true);
-  //   setHideDialog(false);
-  // };
-
-  // public toggleHideDialog = () => {
-  //   this.setState((prevstate) => {
-  //     hideDialog: prevstate.hideDialog ? false : true;
-  //   });
-  //   console.log(this.state.hideDialog);
-  // };
-
-  const toggleHideDialog = (setHideDialog) => {
-    setHideDialog((prevHideDialog) => !prevHideDialog);
-  };
-
   const RowsPerPage = (value) => {
     setRowsPerPage(value);
   };
-
-  // public setPage = (value) => {
-  //   this.setState(
-  //     {
-  //       page: value,
-  //     },
-  //     () => {
-  //       this.setState({
-  //         items: this.state.value.slice(
-  //           this.state.page * this.state.rowsPerPage,
-  //           this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
-  //         ),
-  //       });
-  //     }
-  //   );
-  // };
 
   const Page = (value) => {
     setPage(value);
     setItems(value.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
   };
 
-  const handleChangePage = (event, newPage) => {
-    Page(newPage);
-    fetchData();
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    console.log(event.target.value);
-    RowsPerPage(parseInt(event.target.value, 10));
-    Page(0);
-    fetchData();
-  };
-
-  const _renderItemColumn = (item, index: number, column) => {
-    const fieldContent = item[column.fieldName] as string;
-
-    switch (column.key) {
-      case "Uploadstatus":
-        switch (fieldContent) {
-          case "Pending":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#4f6bed",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-          case "Processing":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#ef6950",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-
-          case "Completed":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#498205",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-          case "Rejected":
-            return (
-              <span
-                data-selection-disabled={true}
-                className={mergeStyles({
-                  color: "#a4262c",
-                  height: "100%",
-                  display: "block",
-                  fontWeight: "bold",
-                })}
-              >
-                {fieldContent}
-              </span>
-            );
-
-          default:
-            return <span>{fieldContent}</span>;
-        }
-
-      case "Link":
-        return (
-          <PrimaryButton
-            style={{
-              backgroundColor: "#0078D4",
-            }}
-            text="View"
-            target="_blank"
-            href={fieldContent}
-          />
-        );
-
-      case "Approval":
-        switch (fieldContent) {
-          case "Pending":
-            return (
-              <ApprovalPopup
-                props={item}
-                // {...item}
-                // toCallBack={async (isupdated) => {
-                //   console.log(this.state);
-                //   await this.updated(isupdated);
-                // }}
-              ></ApprovalPopup>
-            );
-
-          default:
-            return;
-        }
-
-      case "Deny":
-        switch (fieldContent) {
-          case "Pending":
-            return (
-              <DenyPopup
-                {...item}
-                toCallBack={async (isupdated) => {
-                  await updated(isupdated);
-                }}
-              ></DenyPopup>
-            );
-
-          default:
-            return;
-        }
-
-      default:
-        return fieldContent.length <= 150 ? (
-          <span>{fieldContent}</span>
-        ) : (
-          <span>{fieldContent.slice(0, 150)}...</span>
-        );
-    }
-  };
   return (
-    // <div className={styles.QmsDashboard}>
-    //   <Stack horizontal className={styles.filter} tokens={stackTokens}>
-    //     <TextField
-    //       underlined
-    //       placeholder="Search"
-    //       onChange={_onFilter}
-    //       styles={textFieldStyles}
-    //     />
-
-    //     {/*<UploadFile></UploadFile>*/}
-    //   </Stack>
-    //   <DetailsList
-    //     className={styles.list}
-    //     items={items}
-    //     compact={false}
-    //     columns={columns}
-    //     onRenderItemColumn={_renderItemColumn}
-    //     selectionMode={SelectionMode.none}
-    //     getKey={_getKey}
-    //     setKey="none"
-    //     layoutMode={DetailsListLayoutMode.justified}
-    //     isHeaderVisible={true}
-    //   />
-    //   {overalllist.length == 0 ? (
-    //     <div
-    //       style={{
-    //         // borderStyle:'dashed',
-    //         padding: "70px 0",
-    //         // height: "200px",
-    //         margin: "auto",
-    //         // width: "300px",
-    //         textAlign: "center",
-    //       }}
-    //     >
-    //       <img
-    //         style={{
-    //           // borderStyle:'dashed',
-    //           display: "block",
-    //           margin: "auto",
-    //           padding: "40px",
-    //           width: "40%",
-    //           // height: ""
-    //         }}
-    //         src={Logo}
-    //       />
-    //       <b style={{ fontWeight: "bold" }}>No Pending Request Available</b>
-    //     </div>
-    //   ) : (
-    //     <div></div>
-    //   )}
-    //   <TablePagination
-    //     rowsPerPageOptions={[5, 10, 25]}
-    //     component="div"
-    //     count={count}
-    //     page={page}
-    //     onPageChange={handleChangePage}
-    //     rowsPerPage={rowsPerPage}
-    //     onRowsPerPageChange={handleChangeRowsPerPage}
-    //   />
-    // </div>
     <>
       <div>
         <p className={styles.QMSstyle}>QMS Dashboard</p>

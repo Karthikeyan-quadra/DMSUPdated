@@ -57,26 +57,8 @@ const iconClass = mergeStyles({
   color: "green",
   textAlign: "center",
 });
-// export default class Department extends React.Component<{}, any> {
-// export default function Department(){
+
 export default function Project() {
-  // this.state = {
-  //   items: [],
-  //   hideDialog: true,
-  //   addProjectStatus: true,
-  //   isAdded: true,
-  //   add_Project_Title_err: "",
-  //   add_Project_Title: "",
-  //   add_Project_Code_err: "",
-  //   add_Project_Code: "",
-  //   hideeditDialog: true,
-  //   isEdited: true,
-  //   edit_Project_Title_err: "",
-  //   edit_Project_Title: "",
-  //   edit_Project_Code_err: "",
-  //   edit_Project_Code: "",
-  //   edit_ID: "",
-  // };
   const [form] = useForm();
   const [items, setItems] = useState<any>([]);
   const [hideDialog, setHideDialog] = useState(true);
@@ -99,20 +81,6 @@ export default function Project() {
   const [onchanged, setOnChanged] = useState(false);
   const [disablesubmit, setDisableSubmit] = useState(false);
 
-  // public async componentDidMount() {
-  //   this.setState(
-  //     {
-  //       value: await getProjectlist().then((val) =>
-  //         this.setState({
-  //           items: val,
-  //         })
-  //       ),
-  //     },
-  //     () => {
-  //       console.log(this.state.items);
-  //     }
-  //   );
-  // }
   const openNotification = () => {
     notification.info({
       message: (
@@ -180,23 +148,6 @@ export default function Project() {
     fetchData();
   }, []);
 
-  // public toggleHideDialog = () => {
-  //   console.log(this.state.hideDialog);
-  //   if (this.state.hideDialog)
-  //     this.setState({
-  //       hideDialog: false,
-  //     });
-  //   else
-  //     this.setState({
-  //       hideDialog: true,
-  //       isAdded: true,
-  //       add_Project_Title_err: "",
-  //       add_Project_Title: "",
-  //       add_Project_Code_err: "",
-  //       add_Project_Code: "",
-  //     });
-  // };
-
   const toggleHideDialog = () => {
     console.log(hideDialog);
     if (hideDialog) {
@@ -211,24 +162,6 @@ export default function Project() {
     }
     setOpen(false);
   };
-
-  // public toggleeditHideDialog = () => {
-  //   console.log(this.state.hideeditDialog);
-  //   if (this.state.hideeditDialog)
-  //     this.setState({
-  //       hideeditDialog: false,
-  //     });
-  //   else
-  //     this.setState({
-  //       hideeditDialog: true,
-  //       isEdited: true,
-  //       edit_Project_Title_err: "",
-  //       edit_Project_Title: "",
-  //       edit_Project_Code_err: "",
-  //       edit_Project_Code: "",
-  //       edit_ID: "",
-  //     });
-  // };
 
   const toggleeditHideDialog = () => {
     console.log(hideeditDialog);
@@ -245,25 +178,6 @@ export default function Project() {
     }
     setEditOpen(false);
   };
-
-  // public Deleteitem = async () => {
-  //   const sp:SPFI=getSp()
-
-  //   const list = sp.web.lists.getByTitle("Project List");
-  //   await list.items
-  //     .getById(this.state.edit_ID)
-  //     .delete()
-  //     .then(async (res) =>
-  //       this.setState({
-  //         isEdited: false,
-  //         value: await getProjectlist().then((val) =>
-  //           this.setState({
-  //             items: val,
-  //           })
-  //         ),
-  //       })
-  //     );
-  // };
 
   const Deleteitem = async () => {
     const sp: SPFI = getSp();
@@ -311,39 +225,6 @@ export default function Project() {
       </table>
     );
   };
-  // const handleaddProject = async () => {
-  //   const sp:SPFI=getSp()
-
-  //   if (this.state.add_Project_Title != "") {
-  //     if (this.state.add_Project_Code != "") {
-
-  //       await sp.web.lists
-  //         .getByTitle("Project List")
-  //         .items.add({
-  //           ProjectName: this.state.add_Project_Title,
-  //           ProjectID: this.state.add_Project_Code,
-  //         })
-  //         .then(async (res) =>
-  //           this.setState({
-  //             isAdded: false,
-  //             value: await getProjectlist().then((val) =>
-  //               this.setState({
-  //                 items: val,
-  //               })
-  //             ),
-  //           })
-  //         );
-  //     } else {
-  //       this.setState({
-  //         add_Project_Code_err: "Please specify Code",
-  //       });
-  //     }
-  //   } else {
-  //     this.setState({
-  //       add_Project_Title_err: "Please specify project name",
-  //     });
-  //   }
-  // };
 
   const handleaddProject = async () => {
     setDisableSubmit(true);
@@ -372,41 +253,6 @@ export default function Project() {
     setDisableSubmit(false);
     fetchData();
   };
-
-  // const handleeditProject = async () => {
-  //   const sp:SPFI=getSp()
-
-  //   if (this.state.edit_Project_Title != "") {
-  //     if (this.state.edit_Project_Code != "") {
-  //       const list = sp.web.lists.getByTitle("Project List");
-
-  //       await list.items
-  //         .getById(this.state.edit_ID)
-  //         .update({
-  //           ProjectName: this.state.edit_Project_Title,
-  //           ProjectID: this.state.edit_Project_Code,
-  //         })
-  //         .then(async (res) =>
-  //           this.setState({
-  //             isEdited: false,
-  //             value: await getProjectlist().then((val) =>
-  //               this.setState({
-  //                 items: val,
-  //               })
-  //             ),
-  //           })
-  //         );
-  //     } else {
-  //       this.setState({
-  //         edit_Project_Code_err: "Please specify Code",
-  //       });
-  //     }
-  //   } else {
-  //     this.setState({
-  //       edit_Project_Title_err: "Please specify project name",
-  //     });
-  //   }
-  // };
 
   const handleeditProject = async () => {
     setDisableSubmit(true);
@@ -453,16 +299,7 @@ export default function Project() {
       </>
     );
   };
-  // const editProject = (value) => {
-  //   console.log(value);
-  //   this.setState({
-  //     hideeditDialog: false,
-  //     isEdited: true,
-  //     edit_Project_Title: value.name,
-  //     edit_ID: value.Id,
-  //     edit_Project_Code: value.code,
-  //   });
-  // };
+
   const editProject = (value) => {
     setEditOpen(true);
     console.log(value);
@@ -477,13 +314,6 @@ export default function Project() {
     });
   };
 
-  // const addProject = () => {
-  //   this.setState({
-  //     hideDialog: false,
-  //     isAdded: true,
-  //   });
-  // };
-
   const addProject = () => {
     setHideDialog(false);
     setIsAdded(true);
@@ -491,233 +321,24 @@ export default function Project() {
     form.resetFields();
   };
 
-  // const handleadd_Project_Title = (event, value) => {
-  //   this.setState({
-  //     add_Project_Title: value,
-  //   });
-  // };
-
   const handleadd_Project_Title = (e: any) => {
-    // this.setState({
-    //   add_Project_Title: value,
-    // });
     setAddProjectTitle(e.target.value);
   };
 
-  // const handleadd_Project_Code = (event, value) => {
-  //   this.setState({
-  //     add_Project_Code: value,
-  //   });
-  // };
-
   const handleadd_Project_Code = (e: any) => {
-    // this.setState({
-    //   add_Project_Code: value,
-    // });
     setAddProjectCode(e.target.value);
   };
 
-  // const handleedit_Project_Title = (event, value) => {
-  //   this.setState({
-  //     edit_Project_Title: value,
-  //   });
-  // };
   const handleedit_Project_Title = (e: any) => {
-    // this.setState({
-    //   edit_Project_Title: value,
-    // });
     setEditProjectTitle(e.target.value);
     setOnChanged(true);
   };
 
-  // const handleedit_Project_Code = (event, value) => {
-  //   this.setState({
-  //     edit_Project_Code: value,
-  //   });
-  // };
-
   const handleedit_Project_Code = (e: any) => {
-    // this.setState({
-    //   edit_Project_Code: value,
-    // });
     setEditProjectCode(e.target.value);
     setOnChanged(true);
   };
   return (
-    // <>
-    //   <div
-    //     className={styles.anihover}
-    //     onClick={addProject}
-    //     style={{ padding: "10px" }}
-    //   >
-    //     <FontIcon
-    //       aria-label="CircleAddition"
-    //       iconName="CircleAddition"
-    //       style={{
-    //         color: "rgb(0 120 212)",
-    //         padding: "0 10px",
-    //         fontSize: "17px",
-    //       }}
-    //     />
-    //     <Text style={{ marginLeft: "5px" }} variant="xLarge">
-    //       Add Projects
-    //     </Text>
-    //   </div>
-    //   <Separator />
-    //   <Nav
-    //     styles={navStyles}
-    //     onRenderLink={_onRenderLink}
-    //     onRenderGroupHeader={_onRenderGroupHeader}
-    //     ariaLabel="Nav example similar to one found in this demo page"
-    //     groups={items}
-    //   />
-    //   <Dialog
-    //     containerClassName={"ms-dialogMainOverride " + styles.addProjectDialog}
-    //     hidden={hideDialog}
-    //     dialogContentProps={dialogContentProps}
-    //     isBlocking={false}
-    //     onDismiss={toggleHideDialog}
-    //   >
-    //     {isAdded ? (
-    //       <div>
-    //         <div style={{ margin: "15px" }}>
-    //           <div
-    //             style={{
-    //               width: "350px",
-    //             }}
-    //           >
-    //             <TextField
-    //               required
-    //               label="Project Title"
-    //               placeholder="Type Project Name"
-    //               resizable={false}
-    //               onChange={handleadd_Project_Title}
-    //               errorMessage={add_Project_Title_err}
-    //             />
-    //           </div>
-
-    //           <div style={{ width: "350px", marginTop: "15px" }}>
-    //             <TextField
-    //               required
-    //               label="Project Code"
-    //               placeholder="Type Project Unique ID"
-    //               onChange={handleadd_Project_Code}
-    //               resizable={false}
-    //               errorMessage={add_Project_Code_err}
-    //             />
-    //           </div>
-    //         </div>
-    //         <DialogFooter>
-    //           <PrimaryButton
-    //             style={{
-    //               backgroundColor: "#0078D4",
-    //             }}
-    //             onClick={handleaddProject}
-    //             text="Submit"
-    //           />
-    //           <DefaultButton onClick={toggleHideDialog} text="Cancel" />
-    //         </DialogFooter>
-    //       </div>
-    //     ) : (
-    //       <div>
-    //         <FontIcon
-    //           aria-label="SkypeCircleCheck"
-    //           iconName="SkypeCircleCheck"
-    //           className={iconClass}
-    //         />
-    //         <Label
-    //           style={{
-    //             margin: "0 auto",
-    //             width: "300px",
-    //             textAlign: "center",
-    //           }}
-    //         >
-    //           Project created Successfully
-    //         </Label>
-
-    //         <DialogFooter>
-    //           <DefaultButton onClick={toggleHideDialog} text="Close" />
-    //         </DialogFooter>
-    //       </div>
-    //     )}
-    //   </Dialog>
-
-    //   {/*Edit Projects*/}
-    //   <Dialog
-    //     containerClassName={"ms-dialogMainOverride " + styles.addProjectDialog}
-    //     hidden={hideeditDialog}
-    //     dialogContentProps={dialogContentProps_edit}
-    //     isBlocking={false}
-    //     onDismiss={toggleeditHideDialog}
-    //   >
-    //     {isEdited ? (
-    //       <div>
-    //         <div style={{ margin: "15px" }}>
-    //           <div
-    //             style={{
-    //               width: "350px",
-    //             }}
-    //           >
-    //             <TextField
-    //               required
-    //               label="Project Title"
-    //               placeholder="Type Project Name"
-    //               resizable={false}
-    //               value={edit_Project_Title}
-    //               onChange={handleedit_Project_Title}
-    //               errorMessage={edit_Project_Title_err}
-    //             />
-    //           </div>
-
-    //           <div style={{ width: "350px", marginTop: "15px" }}>
-    //             <TextField
-    //               required
-    //               label="Project Code"
-    //               placeholder="Type Project Unique ID"
-    //               onChange={handleedit_Project_Code}
-    //               resizable={false}
-    //               value={edit_Project_Code}
-    //               errorMessage={edit_Project_Code_err}
-    //             />
-    //           </div>
-    //         </div>
-    //         <DialogFooter>
-    //           <DefaultButton onClick={Deleteitem} text="Delete" />
-    //           <PrimaryButton
-    //             style={{
-    //               backgroundColor: "#0078D4",
-    //             }}
-    //             onClick={handleeditProject}
-    //             text="Submit"
-    //           />
-    //           <DefaultButton onClick={toggleeditHideDialog} text="Cancel" />
-    //         </DialogFooter>
-    //       </div>
-    //     ) : (
-    //       <div>
-    //         <FontIcon
-    //           aria-label="SkypeCircleCheck"
-    //           iconName="SkypeCircleCheck"
-    //           className={iconClass}
-    //         />
-    //         <Label
-    //           style={{
-    //             margin: "0 auto",
-    //             width: "300px",
-    //             textAlign: "center",
-    //           }}
-    //         >
-    //           Project Details Altered Successfully
-    //         </Label>
-
-    //         <DialogFooter>
-    //           <DefaultButton onClick={toggleeditHideDialog} text="Close" />
-    //         </DialogFooter>
-    //       </div>
-    //     )}
-    //   </Dialog>
-    // </>
-
     <div
       style={{
         width: "100%",
@@ -844,13 +465,7 @@ export default function Project() {
       ) : (
         <></>
       )}
-      {/* <div>
-      {items.map((item) => (
-        <Card title={item.name}>
-        <p>Project Code: {item.code}</p>
-      ))}
 
-      </div> */}
       <div
         style={{
           width: "100%",
