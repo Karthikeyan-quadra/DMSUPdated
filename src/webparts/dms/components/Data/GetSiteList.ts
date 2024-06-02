@@ -271,3 +271,9 @@ export async function getProjectlist() {
     );
   return [{ name: "Projects", links: items }];
 }
+
+export async function getCurrentUserEmail() {
+  const sp: SPFI = getSp();
+  const user = await sp.web.currentUser();
+  return user.Email;
+}

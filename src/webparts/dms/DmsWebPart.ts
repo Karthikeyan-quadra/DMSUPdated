@@ -33,6 +33,7 @@ export default class DmsWebPart extends BaseClientSideWebPart<IDmsWebPartProps> 
       environmentMessage: this._environmentMessage,
       hasTeamsContext: !!this.context.sdks.microsoftTeams,
       userDisplayName: this.context.pageContext.user.displayName,
+      userEmail: this.context.pageContext.user.email,
     });
 
     ReactDom.render(element, this.domElement);
